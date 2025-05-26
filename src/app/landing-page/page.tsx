@@ -61,6 +61,8 @@ const socialIcons = [
 ];
 
 const LandingPge = () => {
+  // make state for the carousel to set the background img index
+  const [carouselIndex, setCarouselIndex] = React.useState(0);
   // mock data for avatars
   // should be replaced with actual user data
   const profilePics = [
@@ -86,6 +88,35 @@ const LandingPge = () => {
     },
   ];
 
+  // background image data for landing page
+  const backgroundImageData = [
+    {
+      id: 1,
+      name: "House Party",
+      src: "/bg-imgs/landing-bg-img1.jpg",
+    },
+    {
+      id: 2,
+      name: "Family Activities",
+      src: "/bg-imgs/landing-bg-img2.jpg",
+    },
+    {
+      id: 3,
+      name: "Spirituality",
+      src: "/bg-imgs/landing-bg-img3.jpg",
+    },
+    {
+      id: 4,
+      name: "Sports",
+      src: "/bg-imgs/landing-bg-img4.jpg",
+    },
+    {
+      id: 5,
+      name: "Volunteers",
+      src: "/bg-imgs/landing-bg-img5.jpg",
+    },
+  ];
+
   // colors for hobbies text
   const hobbyColors = [
     "#FF0000",
@@ -97,10 +128,52 @@ const LandingPge = () => {
     "#FF1485",
   ];
 
+  const totalSlides = 5;
+  // Auto-play carousel every 5 seconds
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCarouselIndex((prevIndex) => (prevIndex + 1) % totalSlides);
+    }, 5000);
+
+    return () => clearInterval(interval); // cleanup on unmount
+  }, []);
+  
+  const touchStartX = React.useRef<number | null>(null);
+  const touchEndX = React.useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].clientX;
+    handleSwipeGesture();
+  };
+
+  const handleSwipeGesture = () => {
+    if (touchStartX.current !== null && touchEndX.current !== null) {
+      const deltaX = touchStartX.current - touchEndX.current;
+      if (Math.abs(deltaX) > 50) {
+        if (deltaX > 0) {
+          // Swipe left
+          setCarouselIndex((prev) => (prev + 1) % totalSlides);
+        } else {
+          // Swipe right
+          setCarouselIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
+        }
+      }
+    }
+    // Reset
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   return (
     <div
       className="min-h-screen bg-cover bg-center text-white flex flex-col justify-between"
-      style={{ backgroundImage: "url('/bg-imgs/landing-bg-img1.jpg')" }} // Replace with your actual background
+      style={{ backgroundImage: `url(${backgroundImageData[carouselIndex].src})` }} // Replace with your actual background
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Overlay to darken the background image a bit */}
       <div className="absolute inset-0 bg-black/50 z-0"></div>
@@ -117,7 +190,7 @@ const LandingPge = () => {
               width={63}
               height={50}
             />
-            <h1 className="text-3xl font-bold">House Party</h1>
+            <h1 className="text-3xl font-bold">{backgroundImageData[carouselIndex].name}</h1>
           </div>
           <div className="flex items-center">
             <div className="flex -space-x-3">
@@ -187,12 +260,14 @@ const LandingPge = () => {
 
         {/* Carousel Dots */}
         <div className="flex justify-center space-x-2 my-4">
-          {[...Array(6)].map((_, i) => (
+          {[...Array(5)].map((_, i) => (
             <div
               key={i}
               className={`w-2.5 h-2.5 rounded-full ${
-                i === 1 ? "bg-yellow-500 scale-110" : "bg-white/40"
+                i === carouselIndex ? "bg-yellow-500 scale-110" : "bg-white/40"
               } transition-all`}
+              onClick={() => setCarouselIndex(i)}
+              style={{ cursor: "pointer" }}
             ></div>
           ))}
         </div>
