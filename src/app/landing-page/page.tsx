@@ -199,7 +199,7 @@ const LandingPge = () => {
       </main>
 
       {/* Footer Navigation Section (sticky or at bottom) */}
-      <footer className="relative z-10 w-full bg-black/30 backdrop-blur-sm pt-5 pb-3">
+      <footer className="relative z-10 w-full">
         <div className="grid grid-cols-7 sm:grid-cols-7 text-center text-xs mb-5">
           {footerNavItems.map((item) => (
             <a
