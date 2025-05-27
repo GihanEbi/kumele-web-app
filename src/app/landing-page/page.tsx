@@ -1,12 +1,8 @@
 "use client";
-import Image from "next/image";
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import AvatarGroup from "@mui/material/AvatarGroup";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-// import component from shad-cn ui
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
   AboutUsIcon,
   AndroidAppIcon,
@@ -53,14 +49,15 @@ const footerNavItems = [
 ];
 
 const socialIcons = [
-  { icon: <YoutubeIcon  />, label: 'YouTube' },
-  { icon: <FacebookIcon  />, label: 'Facebook' },
-  { icon: <InstagramIcon  />, label: 'Instagram' },
-  { icon: <PinterestIcon  />, label: 'Pinterest' },
-  { icon: <TwitterIcon  />, label: 'Twitter' },
+  { icon: <YoutubeIcon />, label: "YouTube" },
+  { icon: <FacebookIcon />, label: "Facebook" },
+  { icon: <InstagramIcon />, label: "Instagram" },
+  { icon: <PinterestIcon />, label: "Pinterest" },
+  { icon: <TwitterIcon />, label: "Twitter" },
 ];
 
 const LandingPge = () => {
+  const router = useRouter();
   // make state for the carousel to set the background img index
   const [carouselIndex, setCarouselIndex] = React.useState(0);
   // mock data for avatars
@@ -137,7 +134,7 @@ const LandingPge = () => {
 
     return () => clearInterval(interval); // cleanup on unmount
   }, []);
-  
+
   const touchStartX = React.useRef<number | null>(null);
   const touchEndX = React.useRef<number | null>(null);
 
@@ -171,7 +168,9 @@ const LandingPge = () => {
   return (
     <div
       className="min-h-screen bg-cover bg-center text-white flex flex-col justify-between"
-      style={{ backgroundImage: `url(${backgroundImageData[carouselIndex].src})` }} // Replace with your actual background
+      style={{
+        backgroundImage: `url(${backgroundImageData[carouselIndex].src})`,
+      }} // Replace with your actual background
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -179,7 +178,7 @@ const LandingPge = () => {
       <div className="absolute inset-0 bg-black/50 z-0"></div>
 
       {/* Main Content - make it scrollable if content exceeds screen height */}
-      <main className="relative z-10 flex-grow flex flex-col items-center px-4 pt-6 pb-2 overflow-y-auto">
+      <main className="relative z-10 flex-grow flex flex-col items-center pt-6 overflow-y-auto">
         {/* Header Section */}
         <header className="w-full items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -190,7 +189,9 @@ const LandingPge = () => {
               width={63}
               height={50}
             />
-            <h1 className="text-3xl font-bold">{backgroundImageData[carouselIndex].name}</h1>
+            <h1 className="text-3xl font-bold">
+              {backgroundImageData[carouselIndex].name}
+            </h1>
           </div>
           <div className="flex items-center">
             <div className="flex -space-x-3">
@@ -249,10 +250,16 @@ const LandingPge = () => {
         {/* Auth Buttons Section */}
         <section className="w-full max-w-sm">
           <div className="flex rounded-full overflow-hidden border-yellow-500 shadow-md">
-            <button className="flex-1 bg-yellow-500 text-black py-3 text-center font-semibold hover:bg-yellow-400 transition-colors">
+            <button
+              className="flex-1 bg-yellow-500 text-black py-3 text-center font-semibold hover:bg-yellow-400 transition-colors"
+              onClick={() => router.push("/authentication/signin")}
+            >
               Sign in
             </button>
-            <button className="flex-1 bg-blue-600 text-white py-3 text-center font-semibold hover:bg-blue-500 transition-colors">
+            <button
+              className="flex-1 bg-blue-600 text-white py-3 text-center font-semibold hover:bg-blue-500 transition-colors"
+              onClick={() => router.push("/authentication/signup")}
+            >
               Signup
             </button>
           </div>
@@ -277,11 +284,7 @@ const LandingPge = () => {
       <footer className="relative z-10 w-full">
         <div className="grid grid-cols-7 sm:grid-cols-7 text-center text-xs mb-5">
           {footerNavItems.map((item) => (
-            <a
-              key={item.label}
-              href="#"
-              className="flex flex-col items-center"
-            >
+            <a key={item.label} href="#" className="flex flex-col items-center">
               <div className="">{item.icon}</div>
               <span className="text-xs">{item.label}</span>
             </a>
