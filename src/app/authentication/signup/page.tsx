@@ -190,7 +190,10 @@ const Signup = () => {
         </div>
         {/* footer signup button */}
         <div className="pt-4">
-          <button className="w-full bg-black text-white py-3.5 rounded-lg font-semibold text-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50 transition duration-150 ease-in-out">
+          <button
+            className="w-full bg-black text-white py-3.5 rounded-lg font-semibold text-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50 transition duration-150 ease-in-out"
+            onClick={() => router.push("/user")}
+          >
             Sign up
           </button>
         </div>
