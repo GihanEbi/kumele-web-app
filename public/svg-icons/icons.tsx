@@ -686,3 +686,36 @@ export function DownArrow() {
     </svg>
   );
 }
+
+export function PasskeyIcon() {
+  return (
+    <svg
+      width="44"
+      height="45"
+      viewBox="0 0 44 45"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        y="0.745239"
+        width="44"
+        height="44"
+        fill="url(#pattern0_2382_5449)"
+      />
+      <defs>
+        <pattern
+          id="pattern0_2382_5449"
+          patternContentUnits="objectBoundingBox"
+          width="1"
+          height="1"
+        ></pattern>
+        <image
+          id="image0_2382_5449"
+          width="24"
+          height="24"
+          preserveAspectRatio="none"
+        />
+      </defs>
+    </svg>
+  );
+}

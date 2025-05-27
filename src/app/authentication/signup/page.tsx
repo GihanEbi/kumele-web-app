@@ -1,15 +1,14 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
-  DownArrow,
   EyeIcon,
   GoogleIcon,
   MailIcon,
   PasswordIcon,
-  RobotIcon,
   UserIcon,
 } from "../../../../public/svg-icons/icons";
-import Image from "next/image";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/RadioButtonGroupComponent";
 import { authConstants } from "@/constants/auth-constants";
@@ -17,6 +16,7 @@ import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
 
 const Signup = () => {
+  const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
@@ -194,12 +194,17 @@ const Signup = () => {
             Sign up
           </button>
         </div>
-        <p className="mt-8 text-center text-sm text-gray-500">
-          Already have an account?{" "}
-          <a href="#" className="font-semibold text-black hover:underline">
+        <div className="flex flex-row items-center justify-center mt-6">
+          <p className="text-center text-sm text-gray-500">
+            Already have an account?{" "}
+          </p>
+          <p
+            onClick={() => router.push("/authentication/signin")}
+            className="font-semibold text-xs underline text-black hover:underline"
+          >
             Sign in
-          </a>
-        </p>
+          </p>
+        </div>
         <div className="h-16"></div> {/* Spacer for bottom scroll */}
       </div>
     </div>
