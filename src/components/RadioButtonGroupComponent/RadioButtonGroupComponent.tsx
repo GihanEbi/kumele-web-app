@@ -32,6 +32,7 @@ const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
               type="radio"
               name={name || ""}
               value={gender.value}
+              onChange={onChange ? (e) => onChange(e.target.value) : undefined}
               className="form-radio h-4 w-4 text-blue-800 border-blue-800" 
             />
             <p className="text-xs text-gray-700">{gender.label}</p>

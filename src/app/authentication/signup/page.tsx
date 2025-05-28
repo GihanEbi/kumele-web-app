@@ -14,11 +14,105 @@ import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/Ra
 import { authConstants } from "@/constants/auth-constants";
 import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
+import { config } from "@/config";
+import { register } from "@/routes/signup_and_signin";
+
+// ---------- types --------------
+type registrationForm = {
+  email: string;
+  password: string;
+  confirm_password: string;
+  name: string;
+  gender: string;
+  date_of_birth: string;
+  referrer_code: string;
+  above_legal_age: Boolean;
+  terms_and_conditions: Boolean;
+  subscribe_to_newsletter: Boolean;
+};
 
 const Signup = () => {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
+  // ------------ from for user details -----------
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    confirm_password: "",
+    name: "",
+    gender: "",
+    date_of_birth: "",
+    referrer_code: "",
+    above_legal_age: false,
+    terms_and_conditions: false,
+    subscribe_to_newsletter: false,
+  });
+
+  // set separate birthday component value together
+  const [birthDay, setBirthday] = useState({
+    DD: "",
+    MM: "",
+    YYYY: "",
+  });
+  // state for store data of i am not robot
+  const [isRobot, setIsRobot] = useState(false);
+  // --------- form errors for user group details ----------
+  const [formErrors, setFormErrors] = useState<any>({});
+
+  // --------- state for loading spinner ---------
+  const [loading, setLoading] = useState(false);
+
+  // -------- handleChange for input fields ---------
+  const handleInputChange = (value: string | Boolean, name: string) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // -------- handleSubmit for form submission ---------
+  const handleSubmit = async () => {
+    // -------- check full form validation
+    // -------- prevent multiple submission
+    if (loading) return;
+    setLoading(true);
+    // backend form data
+    let correctBirthday = birthDay.YYYY + "-" + birthDay.MM + "-" + birthDay.DD;
+    const dataObj = {
+      email: form.email,
+      password: form.password,
+      confirm_password: form.confirm_password,
+      name: form.name,
+      gender: form.gender,
+      date_of_birth: correctBirthday,
+      above_legal_age: form.above_legal_age,
+      terms_and_conditions: form.terms_and_conditions,
+      subscribe_to_newsletter: form.subscribe_to_newsletter,
+    };
+
+    try {
+      // const res = await fetch(`${config.baseUrl}/auth/signup/`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json", // Set this explicitly
+      //   },
+      //   body: JSON.stringify(dataObj),
+      // });
+      // const data = await res.json();
+
+      const data = await register(dataObj);
+      if (data.success) {
+        console.log(data);
+        router.push("/user");
+      } else {
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // --------- set loading to false ---------
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="">
@@ -85,18 +179,36 @@ const Signup = () => {
         {/* form */}
         <div className="space-y-4 mb-5">
           <div className="relative">
-            <InputComponent icon={<UserIcon />} placeholder="Enter name" />
+            <InputComponent
+              icon={<UserIcon />}
+              placeholder="Enter name"
+              value={form.name}
+              onChange={(e) => {
+                handleInputChange(e.target.value, "name");
+              }}
+            />
           </div>
         </div>
         <div className="space-y-4  mb-5">
           <div className="relative">
-            <InputComponent icon={<MailIcon />} placeholder="Enter email" />
+            <InputComponent
+              icon={<MailIcon />}
+              placeholder="Enter email"
+              value={form.email}
+              onChange={(e) => {
+                handleInputChange(e.target.value, "email");
+              }}
+            />
           </div>
         </div>
         <div className="pt-1">
           <RadioButtonGroupComponent
             name="Gender"
             options={authConstants.gender}
+            value={form.gender}
+            onChange={(value) => {
+              handleInputChange(value, "gender");
+            }}
           />
         </div>
         <div className="pt-5">
@@ -105,17 +217,23 @@ const Signup = () => {
           </p>
           <div className="flex space-x-2">
             <SelectComponent
-              handleChange={() => {}}
+              handleChange={(e) => {
+                setBirthday((prev) => ({ ...prev, DD: e.target.value }));
+              }}
+              items={authConstants.dayList}
+              placeholder="DD"
+            />
+            <SelectComponent
+              handleChange={(e) => {
+                setBirthday((prev) => ({ ...prev, MM: e.target.value }));
+              }}
               items={authConstants.monthList}
               placeholder="MM"
             />
             <SelectComponent
-              handleChange={() => {}}
-              items={authConstants.monthList}
-              placeholder="DD"
-            />
-            <SelectComponent
-              handleChange={() => {}}
+              handleChange={(e) => {
+                setBirthday((prev) => ({ ...prev, YYYY: e.target.value }));
+              }}
               items={authConstants.yearList}
               placeholder="YYYY"
             />
@@ -126,6 +244,11 @@ const Signup = () => {
           <InputComponent
             icon={<PasswordIcon />}
             placeholder="Enter Password"
+            onChange={(e) => {
+              handleInputChange(e.target.value, "password");
+            }}
+            value={form.password}
+            type={passwordVisible ? "text" : "password"}
           />
           <button
             type="button"
@@ -140,10 +263,15 @@ const Signup = () => {
           <InputComponent
             icon={<PasswordIcon />}
             placeholder="Confirm Password"
+            onChange={(e) => {
+              handleInputChange(e.target.value, "confirm_password");
+            }}
+            value={form.confirm_password}
+            type={confirmPasswordVisible ? "text" : "password"}
           />
           <button
             type="button"
-            onClick={() => setPasswordVisible(!passwordVisible)}
+            onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
           >
             {passwordVisible ? <EyeIcon /> : <EyeIcon />}
@@ -154,15 +282,46 @@ const Signup = () => {
           <p className="text-sm font-medium text-gray-800 mb-1">
             Referral code <span className="text-gray-500">(Optional)</span>
           </p>
-          <InputComponent placeholder="e.g. DF3R435" />
+          <InputComponent
+            placeholder="e.g. DF3R435"
+            onChange={(e) => {
+              handleInputChange(e.target.value, "referrer_code");
+            }}
+            value={form.referrer_code}
+          />
         </div>
         {/* check boxes */}
         <div className="space-y-3 pt-2">
-          <CheckBoxComponent label="I am a legal adult (18/21+)" />
-          <CheckBoxComponent label="Subscribe to newsletter" />
-          <CheckBoxComponent label="By creating an account you agree to Terms & Conditions" />
+          <CheckBoxComponent
+            label="I am a legal adult (18/21+)"
+            onChange={(e) => {
+              handleInputChange(e.target.checked, "above_legal_age");
+            }}
+            value={form.above_legal_age}
+          />
+          <CheckBoxComponent
+            label="Subscribe to newsletter"
+            onChange={(e) => {
+              handleInputChange(e.target.checked, "subscribe_to_newsletter");
+            }}
+            value={form.subscribe_to_newsletter}
+          />
+          <CheckBoxComponent
+            label="By creating an account you agree to Terms & Conditions"
+            onChange={(e) => {
+              handleInputChange(e.target.checked, "terms_and_conditions");
+            }}
+            value={form.terms_and_conditions}
+          />
           <div className="flex items-center">
-            <CheckBoxComponent label="I am not a robot" />
+            <CheckBoxComponent
+              label="I am not a robot"
+              onChange={(e) => {
+                console.log(e.target.checked);
+                setIsRobot(e.target.checked);
+              }}
+              value={isRobot}
+            />
             <Image
               src="/bg-imgs/auth/robot-img.png"
               alt="robot icon"
@@ -192,7 +351,7 @@ const Signup = () => {
         <div className="pt-4">
           <button
             className="w-full bg-black text-white py-3.5 rounded-lg font-semibold text-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50 transition duration-150 ease-in-out"
-            onClick={() => router.push("/user")}
+            onClick={() => handleSubmit()}
           >
             Sign up
           </button>

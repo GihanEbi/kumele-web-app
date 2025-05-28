@@ -43,7 +43,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
         defaultValue={defaultValue}
         className={`w-full ${
           icon ? "pl-10" : "pl-3"
-        } pr-3 py-3 bg-gray-200 border rounded-lg text-sm focus:ring-1 placeholder-gray-400`}
+        } pr-3 py-3 bg-gray-200 text-black border rounded-lg text-sm focus:ring-1 placeholder-gray-400`}
       />
     </div>
   );

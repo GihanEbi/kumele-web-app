@@ -20,7 +20,13 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
 }) => {
   return (
     <div className="relative flex-1">
-      <select className="w-full appearance-none bg-gray-50 border border-gray-300 rounded-lg py-3 px-3 text-sm text-gray-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+      <select
+        onChange={(e) => {
+          handleChange(e);
+        }}
+        value={value}
+        className="w-full appearance-none bg-gray-50 border border-gray-300 rounded-lg py-3 px-3 text-sm text-gray-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+      >
         <option>{placeholder}</option>
 
         {items.map((item) => (

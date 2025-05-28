@@ -15,27 +15,23 @@ import More from "./more/page";
 import Profile from "./profile/page";
 
 const navItems = [
-  { href: "/home", label: "Home", icon: <HomeIcon />, page: <Home /> },
+  { label: "Home", icon: <HomeIcon />, page: <Home /> },
   {
-    href: "/blog",
     label: "Blog",
     icon: <BlogHomeIcon />,
     page: <Blog />,
   },
   {
-    href: "/shop",
     label: "Shop",
     icon: <ShopIcon />,
     page: <Shop />,
   },
   {
-    href: "/more",
     label: "More",
     icon: <MoreIcon />,
     page: <More />,
   },
   {
-    href: "/profile",
     label: "Profile",
     icon: <ProfileIcon />,
     page: <Profile />,
@@ -55,8 +51,16 @@ const page = () => {
               setActivePageIndex(index);
             }}
           >
-            <div className="flex flex-col items-center">
-              {item.icon}
+            <div
+              className={`flex flex-col items-center text-white`}
+            >
+              <div
+                className={`rounded-4xl p-2 text-white ${
+                  activePageIndex === index ? "bg-blue-500 color" : ""
+                }`}
+              >
+                {item.icon}
+              </div>
               <div className="text-black">{item.label}</div>
             </div>
           </div>
