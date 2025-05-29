@@ -16,6 +16,7 @@ import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
 import { config } from "@/config";
 import { register } from "@/routes/signup_and_signin";
+import EmailVerificationModel from "@/components/Models/EmailVerificationModel/EmailVerificationModel";
 
 // ---------- types --------------
 type registrationForm = {
@@ -60,6 +61,9 @@ const Signup = () => {
   const [isRobot, setIsRobot] = useState(false);
   // --------- form errors for user group details ----------
   const [formErrors, setFormErrors] = useState<any>({});
+  // --------- show email verification model ----------
+  const [showEmailVerificationModel, setShowEmailVerificationModel] =
+    useState(false);
 
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
@@ -90,19 +94,11 @@ const Signup = () => {
     };
 
     try {
-      // const res = await fetch(`${config.baseUrl}/auth/signup/`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json", // Set this explicitly
-      //   },
-      //   body: JSON.stringify(dataObj),
-      // });
-      // const data = await res.json();
-
       const data = await register(dataObj);
       if (data.success) {
         console.log(data);
-        router.push("/user");
+        setShowEmailVerificationModel(true);
+        // router.push("/user");
       } else {
         console.log(data);
       }
@@ -161,7 +157,11 @@ const Signup = () => {
       </div>
 
       {/* form area */}
-      <div className="bg-white px-6 py-6 relative z-10">
+      <div
+        className={`${
+          showEmailVerificationModel ? "bg-gray-300" : "bg-white"
+        } px-6 py-6 relative z-10`}
+      >
         <div className="mb-6">
           <p className="text-xs text-gray-500 mb-2">Language choice:</p>
           <div className="flex space-x-2">
@@ -369,6 +369,15 @@ const Signup = () => {
         </div>
         <div className="h-16"></div> {/* Spacer for bottom scroll */}
       </div>
+
+      {/* Email Verification Model */}
+      {showEmailVerificationModel && (
+        <EmailVerificationModel
+          onClose={() => setShowEmailVerificationModel(false)}
+          isOpen={showEmailVerificationModel}
+          email={form.email}
+        />
+      )}
     </div>
   );
 };
