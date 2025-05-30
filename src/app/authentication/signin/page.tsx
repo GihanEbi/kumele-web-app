@@ -14,14 +14,79 @@ import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/Ra
 import { authConstants } from "@/constants/auth-constants";
 import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
+import { login } from "@/routes/signup_and_signin";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
+import { saveToken } from "@/utils/authUtils";
 
 const Signin = () => {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
+  // ---------- form for login details -----------
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+
+  // --------- state for loading spinner ---------
+  const [loading, setLoading] = useState(false);
+
+  // --------- state for checkbox value ---------
+  const [rememberMe, setRememberMe] = useState(false);
+  const [notRobot, setNotRobot] = useState(false);
+
+  // -------- handleChange for input fields ---------
+  const handleInputChange = (value: string | Boolean, name: string) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // -------- handleSubmit for form submission ---------
+  const handleSubmit = async () => {
+    // -------- check full form validation
+    // -------- prevent multiple submission
+    if (loading) return;
+    setLoading(true);
+    if (!form.email || !form.password) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const data = await login(form);
+      if (data.success) {
+        saveToken(data.data.user_token);
+        setLoading(false);
+        // --------- show success model ---------
+        setShowSuccessModel(true);
+        setTimeout(() => {
+          setShowSuccessModel(false);
+        }, 1000); // Hide after 2 seconds
+        router.push("/user");
+      } else {
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // --------- set loading to false ---------
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
+      {/* Loading spinner */}
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
+
       {/* Header Section */}
       <div className="relative h-[200px]">
         {" "}
@@ -88,12 +153,24 @@ const Signin = () => {
             <InputComponent
               icon={<UserIcon />}
               placeholder="Enter email | Nick name"
+              value={form.email}
+              onChange={(e) => {
+                handleInputChange(e.target.value, "email");
+              }}
             />
           </div>
         </div>
         {/* enter password */}
         <div className="relative mt-5">
-          <InputComponent icon={<PasswordIcon />} placeholder="Password" />
+          <InputComponent
+            icon={<PasswordIcon />}
+            placeholder="Password"
+            onChange={(e) => {
+              handleInputChange(e.target.value, "password");
+            }}
+            value={form.password}
+            type={passwordVisible ? "text" : "password"}
+          />
           <button
             type="button"
             onClick={() => setPasswordVisible(!passwordVisible)}
@@ -105,12 +182,20 @@ const Signin = () => {
         {/* checkboxes */}
         <div className="flex justify-between mt-5">
           <div>
-            <CheckBoxComponent label="Remember me" />
+            <CheckBoxComponent
+              label="Remember me"
+              onChange={(e) => setRememberMe(e.target.checked)}
+              value={rememberMe}
+            />
           </div>
           <p className="text-blue-600 text-xs font-bold">Forgot password?</p>
         </div>
         <div className="flex items-center mt-3">
-          <CheckBoxComponent label="I am not a robot" />
+          <CheckBoxComponent
+            label="I am not a robot"
+            onChange={(e) => setNotRobot(e.target.checked)}
+            value={notRobot}
+          />
           <Image
             src="/bg-imgs/auth/robot-img.png"
             alt="robot icon"
@@ -122,7 +207,8 @@ const Signin = () => {
         <div className="pt-4">
           <button
             className="w-full bg-black text-white py-3.5 rounded-lg font-semibold text-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50 transition duration-150 ease-in-out"
-            onClick={() => router.push("/user")}
+            onClick={() => handleSubmit()}
+            disabled={loading} // Disable button if loading
           >
             Sign in
           </button>
@@ -158,6 +244,29 @@ const Signin = () => {
           and a pleasant user experience.
         </p>
       </div>
+      {/* if login successful */}
+      {showSuccessModel && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50 transition-opacity duration-300 ease-in-out">
+          <div
+            className={`bg-white w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out `}
+            onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
+          >
+            <div className="flex flex-col items-center">
+              <div className="mb-4">
+                <Image
+                  src="/common-gifs/email-verification-succsess.gif"
+                  alt="Success"
+                  width={100}
+                  height={100}
+                />
+              </div>
+              <p className="text-gray-600 text-sm mb-6 text-center">
+                Login successful
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

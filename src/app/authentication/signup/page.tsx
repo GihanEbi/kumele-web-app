@@ -16,6 +16,7 @@ import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
 import { register } from "@/routes/signup_and_signin";
 import EmailVerificationModel from "@/components/Models/EmailVerificationModel/EmailVerificationModel";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 
 const Signup = () => {
   const router = useRouter();
@@ -97,6 +98,12 @@ const Signup = () => {
 
   return (
     <div className="">
+      {/* Loading spinner */}
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
       {/* Header Section */}
       <div className="relative h-[200px]">
         {" "}
