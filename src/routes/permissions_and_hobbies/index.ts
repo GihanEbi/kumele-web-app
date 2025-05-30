@@ -10,7 +10,7 @@ type updatePermissionsForm = {
 
 type setUserNamesForm = {
   action: string; // other option is "skip" if skip request is performed do not keep username field at all
-  username: string;
+  username?: string;
 };
 
 type selectHobbiesForUsers = {
@@ -39,10 +39,11 @@ export async function user_permissions(dataObj: updatePermissionsForm) {
 
 export async function set_user_name(dataObj: setUserNamesForm) {
   try {
-    const res = await fetch(`${commonUrl}/set-username//`, {
+    const res = await fetch(`${commonUrl}/set-username/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Token ${getToken()}`, // Uncomment if you need to send a token
       },
       body: JSON.stringify(dataObj),
     });
@@ -55,10 +56,11 @@ export async function set_user_name(dataObj: setUserNamesForm) {
 
 export async function select_hobbies_for_users(dataObj: selectHobbiesForUsers) {
   try {
-    const res = await fetch(`${commonUrl}/select-hobbies/`, {
+    const res = await fetch(`${config.baseUrl}/api/select-hobbies/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Token ${getToken()}`, // Uncomment if you need to send a token
       },
       body: JSON.stringify(dataObj),
     });

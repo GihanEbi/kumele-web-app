@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   get_hobbies_list,
+  select_hobbies_for_users,
+  set_user_name,
   user_permissions,
 } from "@/routes/permissions_and_hobbies";
 import { BackArrow, DownArrow } from "../../../../public/svg-icons/icons";
@@ -56,6 +58,11 @@ const ChooseInterests = () => {
     allow_location: "",
   });
 
+  // ------- state to hold the selected interests ------
+  const [selectedInterestsIds, setSelectedInterestsIds] = useState<number[]>(
+    []
+  );
+
   // This effect runs once when the component mounts to set notification permission
   // You can replace this with actual permission request logic if needed
   useEffect(() => {
@@ -77,19 +84,26 @@ const ChooseInterests = () => {
   };
 
   // Function to submit the permissions form
-  const handleSubmitPermission = async () => {
+  const handleSubmitPermission = async (locationVal: string) => {
     setLoading(true);
     try {
       // Here you would typically send the form data to your backend
       console.log("Submitting form with data:", form);
-      
-      const data = await user_permissions(form);
+
+      // Update the form with the location value
+      let dataObj = {
+        allow_notifications: form.allow_notifications,
+        allow_photos: form.allow_photos,
+        allow_location: locationVal, // Use the passed location value
+      };
+
+      const data = await user_permissions(dataObj);
+      console.log("Form submission response:", data);
 
       if (data.success) {
         setLocationPermission(false);
         setUserNamePermission(true); // Show username permission after location
         setLoading(false); // Reset loading state after submission
-        
       } else {
         console.error("Failed to submit form:", data);
         setLoading(false); // Reset loading state on failure
@@ -97,17 +111,36 @@ const ChooseInterests = () => {
     } catch (error) {
       console.error("Error submitting form:", error);
       setLoading(false);
-    }finally{
+    } finally {
       // Reset permissions states after submission
       setNotificationPermission(false);
       setPhotosPermission(false);
       setLocationPermission(false);
-      setUserNamePermission(false);
       setLoading(false);
     }
   };
 
-  // Function to submit username
+  // function to submit the interests
+  const handleSubmitInterests = async () => {
+    setLoading(true);
+    console.log(selectedInterestsIds);
+
+    try {
+      const data = await select_hobbies_for_users({
+        hobbies: selectedInterestsIds,
+      });
+      if (data.success) {
+        // redirect to earnMedals page
+        router.push("/authentication/earnMedals");
+      } else {
+        console.error("Failed to submit interests:", data);
+      }
+    } catch (error) {
+      console.error("Error submitting interests:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -142,13 +175,36 @@ const ChooseInterests = () => {
               <InterestCard
                 key={interest.id}
                 interest={interest}
-                isSelected={false} // Replace with actual selection logic
+                isSelected={selectedInterestsIds.includes(interest.id)}
                 onToggle={(id) => {
                   // Handle interest selection logic here
                   console.log("Toggled interest:", id);
+                  // push or remove interest from selectedInterestsIds
+                  const interestId = parseInt(id, 10);
+                  if (selectedInterestsIds.includes(interestId)) {
+                    setSelectedInterestsIds((prev) =>
+                      prev.filter((i) => i !== interestId)
+                    );
+                  } else if (selectedInterestsIds.length < MAX_SELECTIONS) {
+                    setSelectedInterestsIds((prev) => [...prev, interestId]);
+                  } else {
+                    alert(
+                      `You can only select up to ${MAX_SELECTIONS} interests.`
+                    );
+                  }
                 }}
               />
             ))}
+          </div>
+          <div className="space-y-3">
+            <button
+              onClick={() => {
+                handleSubmitInterests();
+              }}
+              className="w-full mt-5 bg-black text-white py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+            >
+              Continue
+            </button>
           </div>
         </div>
       </div>
@@ -181,17 +237,15 @@ const ChooseInterests = () => {
           onClose={(value: string) => {
             console.log("Location permission:", value);
             setForm((prev) => ({ ...prev, allow_location: value }));
-            handleSubmitPermission()
+            handleSubmitPermission(value);
           }}
         />
       )}
       {userNamePermission && !locationPermission && (
         <ChooseUserNameModel
           isOpen={userNamePermission}
-          onClose={(value: string) => {
-            console.log("Username permission:", value);
-            setForm((prev) => ({ ...prev, allow_username: value }));
-            handleSubmitPermission();
+          onClose={() => {
+            setUserNamePermission(false);
           }}
         />
       )}
