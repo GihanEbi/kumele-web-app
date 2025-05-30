@@ -1,4 +1,5 @@
 import { config } from "@/config";
+import { getToken } from "@/utils/authUtils";
 
 // ---------- types --------------
 type updatePermissionsForm = {
@@ -19,12 +20,13 @@ type selectHobbiesForUsers = {
 const commonUrl = `${config.baseUrl}/auth`;
 // should have to get the token and set it on the request
 
-export async function register(dataObj: updatePermissionsForm) {
+export async function user_permissions(dataObj: updatePermissionsForm) {
   try {
     const res = await fetch(`${commonUrl}/update-permissions/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Token ${getToken()}`, // Uncomment if you need to send a token
       },
       body: JSON.stringify(dataObj),
     });

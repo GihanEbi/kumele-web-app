@@ -14,23 +14,8 @@ import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/Ra
 import { authConstants } from "@/constants/auth-constants";
 import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
-import { config } from "@/config";
 import { register } from "@/routes/signup_and_signin";
 import EmailVerificationModel from "@/components/Models/EmailVerificationModel/EmailVerificationModel";
-
-// ---------- types --------------
-type registrationForm = {
-  email: string;
-  password: string;
-  confirm_password: string;
-  name: string;
-  gender: string;
-  date_of_birth: string;
-  referrer_code: string;
-  above_legal_age: Boolean;
-  terms_and_conditions: Boolean;
-  subscribe_to_newsletter: Boolean;
-};
 
 const Signup = () => {
   const router = useRouter();

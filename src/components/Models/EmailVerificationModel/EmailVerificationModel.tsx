@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { VerifyEmailIcon } from "../../../../public/svg-icons/icons";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import Image from "next/image";
 import { verification_email } from "@/routes/signup_and_signin";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
+import { saveToken } from "@/utils/authUtils";
 
 // props types
 type EmailVerificationModelProps = {
@@ -19,6 +21,7 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
   onClose,
   email,
 }) => {
+  const router = useRouter();
   const [verificationCode, setVerificationCode] = useState<string>("");
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const [showVerificationFailed, setShowVerificationFailed] =
@@ -49,6 +52,9 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
         if (data.success) {
           setIsVerified(true);
           setShowVerificationFailed(false);
+          console.log(data.data.user_token);
+          saveToken(data.data.user_token);
+          router.push("/authentication/chooseInterests");
         } else {
           setIsVerified(false);
           setShowVerificationFailed(true);
