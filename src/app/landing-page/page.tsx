@@ -18,6 +18,7 @@ import {
   TwitterIcon,
   YoutubeIcon,
 } from "../../../public/svg-icons/icons";
+import GifCarousel from "@/components/GifCarousel/GifCarousel";
 
 // Helper component for the multi-colored "Hobbies" text
 const MultiColorText = ({
@@ -180,70 +181,71 @@ const LandingPge = () => {
       {/* Main Content - make it scrollable if content exceeds screen height */}
       <main className="relative z-10 flex-grow flex flex-col items-center pt-6 overflow-y-auto">
         {/* Header Section */}
-        <header className="w-full items-center justify-between">
-          <div className="flex items-center space-x-2">
+        <header className="w-full px-4 pt-4">
+          {/* Top Row: Logo & Header Text */}
+          <div className="relative flex items-center justify-between mb-4">
             <Image
-              className="p-2"
+              className="w 10 h-auto"
               alt="logo"
               src="/images/logo.png"
               width={63}
               height={50}
             />
-            <h1 className="text-3xl font-bold">
+            <h1 className="absolute left-1/2 transform -translate-x-1/2 text-white text-3xl font-bold">
               {backgroundImageData[carouselIndex].name}
             </h1>
           </div>
-          <div className="flex items-center">
-            <div className="flex -space-x-3">
+
+          {/* Avatar Section: Faces and guest count and names */}
+
+          <div className="flex justify-center items-center flex-col w-full mt-[-20px] mb-4">
+            <div className="flex items-end gap-0">
               {profilePics.slice(0, 4).map((pic, index) => (
                 <div
                   key={pic.name}
-                  className={`relative w-12 h-12 rounded-full ${pic.borderColor} border-2 overflow-hidden`}
+                  className="flex flex-col items-center mx-[-6px]"
                 >
-                  <div className="flex flex-row">
-                    <div>
-                      <Image
-                        src={pic.src}
-                        alt={pic.name}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-full"
-                      />
-                    </div>
-                    <div className="">{pic.name}</div>
+                  <div
+                    className={`relative w-14 h-14 rounded-full ${pic.borderColor} border-2 overflow-hidden`}
+                  >
+                    <Image
+                      src={pic.src}
+                      alt={pic.name}
+                      fill
+                      className="object-cover rounded-full"
+                    />
                   </div>
+                  <span className="text-white text-xs mt-1">{pic.name}</span>
                 </div>
               ))}
-            </div>
-            <div className="bg-white text-black text-xs px-2 py-1 rounded-full flex items-center font-semibold">
-              +20 Guest <LandingPageIcon1 />
+              <div className="flex flex-col items-center ml-[-6px] h-15">
+                <div className="bg-white text-black text-xs px-3 rounded-full font-semibold flex items-center h-7">
+                  +20 Guest <LandingPageIcon1 />
+                </div>
+              </div>
             </div>
           </div>
         </header>
 
         {/* Hobby Meetups Section */}
-        <section className="flex flex-col items-center mt-8">
-          <Image
-            className="p-2"
-            alt="logo"
-            src="/images/landing-page-body -img.png"
-            width={145}
-            height={145}
-          />
-          <p className=" text-lg font-normal">Hobby Meetups</p>
+        <section className="flex flex-col items-center mt-[-30px]">
+          <div>
+            <GifCarousel width={40} height={40} />
+          </div>
+          <p className="text-lg font-normal mt-1">Hobby Meetups</p>
         </section>
 
         {/* Quote Section */}
-        <section className="text-center max-w-md">
+        <section className="text-center max-w-md mt-6 flex flex-row">
           <p className="font-bold">
             “Let your <MultiColorText text="Hobbies" colors={hobbyColors} />{" "}
             define your character”
           </p>
-          <p className="text-sm text-gray-300 mt-1">- G. Baku</p>
-        </section>
+          <p className="text-[10px] text-gray-300 mt-2 mx-1">- G. Baku</p>
+        </section> 
 
         {/* Slogan Section */}
-        <p className="text-center text-md my-4">
+        <p className="text-center text-md my-4 ">
           We play. We overcome. We experience.
         </p>
 
@@ -266,7 +268,7 @@ const LandingPge = () => {
         </section>
 
         {/* Carousel Dots */}
-        <div className="flex justify-center space-x-2 my-4">
+        <div className="flex justify-center space-x-14 mt-14">
           {[...Array(5)].map((_, i) => (
             <div
               key={i}
