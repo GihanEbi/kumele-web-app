@@ -3,6 +3,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { CloseIcon, UserIcon } from "../../../../public/svg-icons/icons";
+import { set_user_name } from "@/routes/permissions_and_hobbies";
+import InputComponent from "@/components/InputComponent/InputComponent";
 
 // props types
 type UserNameProps = {
@@ -13,6 +15,58 @@ type UserNameProps = {
 const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
+
+  // ------- state for username permissions ------
+  const [userNameForm, setUserNameForm] = useState({
+    action: "skip", // default action is skip
+    username: "",
+  });
+
+  //   state for username input
+  const [usernameInput, setUsernameInput] = useState("");
+
+  // Function to submit username
+  const handleSubmitUserName = async (action :string) => {
+    setLoading(true);
+    let dataObj;
+
+    if (action === "skip") {
+      // If action is skip, we don't need to send username
+      dataObj = {
+        action: action,
+      };
+    } else {
+      dataObj = {
+        action: action,
+        username: usernameInput.trim(), // Use trimmed input
+      };
+    }
+    try {
+      // Here you would typically send the username data to your backend
+      console.log("Submitting username with data:", dataObj);
+
+      const data = await set_user_name(dataObj);
+      console.log("Username submission response:", data);
+      
+
+      if (data.success) {
+        console.log("Username submitted successfully");
+        setLoading(false); // Reset loading state after submission
+        onClose();
+      } else {
+        console.error("Failed to submit username:", data);
+        setLoading(false); // Reset loading state on failure
+        onClose();
+      }
+    } catch (error) {
+      console.error("Error submitting username:", error);
+      setLoading(false);
+      onClose();
+    } finally {
+      setLoading(false);
+      onClose();
+    }
+  };
   return (
     <div>
       {/* Loading spinner */}
@@ -40,13 +94,49 @@ const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
             </h2>
             <button
               onClick={() => {
-                onClose(false);
+                setUserNameForm((prev) => ({ ...prev, action: "skip" }));
+                handleSubmitUserName("skip");
               }}
               aria-label="Close notification prompt"
               className="p-1 -m-1 text-gray-500 hover:text-gray-700 transition-colors"
             >
               <CloseIcon />
             </button>
+          </div>
+
+          <p className="text-sm text-black text-center mb-6 px-2">
+            Usernames can only be changed every 3 months
+          </p>
+
+          <div className="w-full">
+            <div className="mb-6">
+              <p className="text-sm text-black mb-1 px-2">Username</p>
+              <InputComponent
+                placeholder="Enter your user name"
+                value={usernameInput}
+                onChange={(e) => setUsernameInput(e.target.value)}
+              />
+            </div>
+            <div className="space-y-3">
+              <button
+                className="w-full bg-black text-white py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+                onClick={() => {
+                  setUserNameForm((prev) => ({ ...prev, action: "skip" }));
+                  handleSubmitUserName("skip");
+                }}
+              >
+                Skip
+              </button>
+              <button
+                onClick={() => {
+                  setUserNameForm((prev) => ({ ...prev, action: "save" }));
+                  handleSubmitUserName("save");
+                }}
+                className="w-full bg-black text-white py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </div>
