@@ -34,13 +34,13 @@ const settingsGroup1 = [
 ];
 
 const settingsGroup2 = [
-  { icon: <ContactIcon />, text: "Contact", link: "/user/profile/contact" },
+  { icon: <ContactIcon />, text: "Contact" },
   {
     icon: <GuidelinesIcon />,
     text: "Guidelines",
     link: "/user/profile/guidelines",
   },
-  { icon: <ReferIcon />, text: "Refer a Friend", link: "/user/profile/referral" },
+  { icon: <ReferIcon />, text: "Refer a Friend" },
   {
     icon: <TermsAndConditionsIcon />,
     text: "Terms and Conditions",
@@ -49,12 +49,10 @@ const settingsGroup2 = [
   {
     icon: <NightModeIcon />,
     text: "Night Mode",
-    link: "#",
   },
   {
     icon: <DeleteAccountIcon />,
     text: "Delete Account",
-    link: "/user/profile/delete-account",
   },
   { icon: <SignOutIcon />, text: "Sign Out", link: "#" },
 ];
@@ -227,7 +225,10 @@ const Profile = () => {
                     : ""
                 }`}
                 onClick={() => {
-                  router.push(item.link);
+                  // Handle special cases for certain items
+                  {
+                    item.link ? router.push(item.link) : null;
+                  }
                 }}
               >
                 <div className="flex items-center space-x-3">

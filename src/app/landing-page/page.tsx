@@ -268,7 +268,7 @@ const LandingPge = () => {
         </section>
 
         {/* Carousel Dots */}
-        <div className="flex justify-center space-x-14 mt-14">
+        <div className="flex justify-center space-x-14 mt-14 mb-5">
           {[...Array(5)].map((_, i) => (
             <div
               key={i}
