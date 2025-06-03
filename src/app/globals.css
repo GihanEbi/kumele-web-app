@@ -43,7 +43,14 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-my-new-color: var(--my-new-color);
+  --color-k-primary-color: var(--k-primary-color);
+  --color-k-secondary-color: var(--k-secondary-color);
+  --color-k-background-primary: var(--k-background-primary);
+  --color-k-background-secondary: var(--k-background-secondary);
+  --color-k-blue: var(--k-blue);
+  --color-k-text-primary: var(--k-text-primary);
+  --color-k-text-secondary: var(--k-text-secondary);
+  --color-k-text-tertiary: var(--k-text-tertiary);
 }
 
 :root {
