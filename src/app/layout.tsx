@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono , Fredoka} from "next/font/google";
+import { Geist, Geist_Mono , Fredoka, Plus_Jakarta_Sans} from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry";
@@ -9,11 +9,17 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const geistMono = Geist_Mono({ // Geist Mono supports 400 and 700 weights
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  weight: ['400', '500', '600', '700'], // Available weights for Plus Jakarta Sans
+  variable: "--font-plus-jakarta-sans",
+  subsets: ["latin"],
+});
 const fredoka = Fredoka({
   weight: ['400'], // 'Fredoka One' only supports 400
   subsets: ['latin'],
@@ -34,8 +40,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        className={fredoka.className}
+        className={`${fredoka.variable} ${plusJakartaSans.variable} antialiased`}
+        // className={fredoka.className }
       >
         <ThemeProvider
           attribute="class"
