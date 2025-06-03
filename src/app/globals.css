@@ -120,3 +120,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide scrollbar completely */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Optional: Add this if you want to ensure smooth scrolling on iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+  .scrollable-tabs {
+    -webkit-overflow-scrolling: touch;
+  }
+} 
