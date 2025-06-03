@@ -8,6 +8,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-fredoka: var(--font-fredoka);
+  --font-plusJakartaSans: var(--font-plus-jakarta-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -41,6 +43,14 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-k-primary-color: var(--k-primary-color);
+  --color-k-secondary-color: var(--k-secondary-color);
+  --color-k-background-primary: var(--k-background-primary);
+  --color-k-background-secondary: var(--k-background-secondary);
+  --color-k-blue: var(--k-blue);
+  --color-k-text-primary: var(--k-text-primary);
+  --color-k-text-secondary: var(--k-text-secondary);
+  --color-k-text-tertiary: var(--k-text-tertiary);
 }
 
 :root {
@@ -76,6 +86,15 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --k-primary-color:oklch(0.9672 0 0); /* #F0F0F0 color (gray color) */
+  --k-secondary-color:oklch(0.8531 0.162 85.01); /* #FFC533 color (yellow color) */
+  --k-background-primary: oklch(1 0 0); /* #FFFFFF color (white color) */
+  --k-background-secondary: oklch(0.9219 0 0); /* #e5e5e5 color (light gray color) */
+  --k-blue: oklch(0.5202 0.2679 263.21); /* #004DFF color (blue color) */
+  --k-text-primary: oklch(0 0 0); /* #000000 color (black color) */
+  --k-text-secondary: oklch(0.7348 0 89.88); /* #A9A9A9 color (dark gray color) */
+  --k-text-tertiary: oklch(0.9672 0 89.88); /* #F4F4F4 color (light gray color) */
+
 }
 
 .dark {
@@ -110,6 +129,14 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --k-primary-color:oklch(0.2393 0 0); /* #1F1F1F color (dark gray color) */
+  --k-secondary-color:oklch(0.8531 0.162 85.01); /* #FFC533 color (yellow color) */
+  --k-background-primary: oklch(0 0 0); /* #000000 color (black color) */
+  --k-background-secondary: oklch(0.2134 0 0); /* #191919 color (dark gray color) */
+  --k-blue: oklch(0.5202 0.2679 263.21); /* #004DFF color (blue color) */
+  --k-text-primary: oklch(1 0 0); /* #FFFFFF color (white color) */
+  --k-text-secondary: oklch(0.7952 0 0); /* #BCBCBC color (gray color) */
+  --k-text-tertiary: oklch(0.2046 0 0); /* #171717 color (dark gray color) */
 }
 
 @layer base {
@@ -119,6 +146,38 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+/* HEADING */
+.text-heading {
+  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-weight: 700;
+  font-size: 23px;
+  line-height: 100%; /* or 1 */
+  letter-spacing: -0.3px;
+}
+/* TITLE */
+.text-title {
+  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 100%; /* or 1 */
+  letter-spacing: 0%;
+}
+/* BODY */
+.text-body {
+  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%; /* or 1 */
+  letter-spacing: 0%;
+}
+/* CAPTION */
+.text-caption {
+  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 100%; /* or 1 */
+  letter-spacing: 0%;
 }
 
 /* Hide scrollbar completely */

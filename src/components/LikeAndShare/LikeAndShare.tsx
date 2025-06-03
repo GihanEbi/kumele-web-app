@@ -18,9 +18,9 @@ export default function LikeAndShare({ initialLikes = 0 }: LikeAndShareProps) {
   };
 
   return (
-    <div className="flex items-center gap-4 mt-2">
+    <div className="flex items-center gap-4 mt-2 ">
       <button 
-        className="flex items-center gap-1 text-gray-600 hover:text-red-500 transition-colors"
+        className="flex items-center gap-1 text-black hover:text-red-500 transition-colors"
         onClick={handleLike}
       >
         <FaHeart className={isLiked ? "text-red-500" : "text-gray-400 hover:text-red-500"} />

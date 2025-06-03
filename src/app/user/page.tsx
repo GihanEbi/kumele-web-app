@@ -43,7 +43,7 @@ const page = () => {
   const [activePageIndex, setActivePageIndex] = React.useState(0);
   return (
     <div className=" bg-white">
-      <div className="fixed p-2 bottom-0 left-0 right-0 h-tab-bar bg-white flex justify-around items-center border-t border-gray-200 shadow-tab-bar pb-safe-bottom z-[1000]">
+      <div className="fixed p-2 bottom-0 left-0 right-0 h-tab-bar bg-gray-100 flex justify-around items-center border-t border-gray-200 shadow-tab-bar pb-safe-bottom z-[1000]">
         {navItems.map((item, index) => (
           <div
             key={index}
@@ -66,7 +66,7 @@ const page = () => {
           </div>
         ))}
       </div>
-      <div>{navItems[activePageIndex].page}</div>
+      <div className="pb-20">{navItems[activePageIndex].page}</div>
     </div>
   );
 };

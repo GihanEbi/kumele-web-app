@@ -16,11 +16,11 @@ export default function CommentForm({ onSubmit }: CommentFormProps) {
 
   return (
     <div className="mt-8">
-      <h3 className="text-lg font-semibold mb-4">Comment</h3>
+      <h3 className="text-lg font-semibold mb-4 text-black">Comment</h3>
       <form onSubmit={handleSubmit}>
         <textarea
           name="comment"
-          className="w-full p-3 border border-gray-100 rounded-md bg-gray-100"
+          className="w-full p-3 border border-gray-100 rounded-md bg-gray-200"
           rows={4}
           placeholder="Add your comment..."
           required

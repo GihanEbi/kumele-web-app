@@ -34,7 +34,7 @@ export default function CommentList({ comments }: CommentListProps) {
                 />
               ) : (
                 <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                  <span className="text-gray-600 font-medium">
+                  <span className="text-black font-medium">
                     {comment.author.charAt(0)}
                   </span>
                 </div>
@@ -42,17 +42,17 @@ export default function CommentList({ comments }: CommentListProps) {
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <h4 className="font-bold text-lg">{comment.author}</h4>
+                <h4 className="font-bold text-lg text-black">{comment.author}</h4>
                 
               </div>
               <div className='flex items-center gap-2'>
-              <p className="text-gray-500 text-sm mt-1">
+              <p className="text-black text-sm mt-1">
                 {comment.date}
               </p>
-              <span className="text-gray-500 text-xl">•</span>
+              <span className="text-black text-xl">•</span>
                 <span className="text-blue-500 text-m">Reply</span>
                 </div>
-              <p className="mt-2 text-gray-700">
+              <p className="mt-2 text-black">
                 {comment.content}
               </p>
             </div>
