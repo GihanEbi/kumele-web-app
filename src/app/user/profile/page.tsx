@@ -20,19 +20,43 @@ import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { fetch_profile } from "@/routes/profile";
 import { useRouter } from "next/navigation";
 const settingsGroup1 = [
-  { icon: <SoundIcon />, text: "Notifications" },
-  { icon: <PaymentIcon />, text: "Payments & Subscriptions" },
-  { icon: <SecurityIcon />, text: "Security" },
+  {
+    icon: <SoundIcon />,
+    text: "Notifications",
+    link: "/user/profile/notifications",
+  },
+  {
+    icon: <PaymentIcon />,
+    text: "Payments & Subscriptions",
+    link: "/user/profile/payment",
+  },
+  { icon: <SecurityIcon />, text: "Security", link: "/user/profile/security" },
 ];
 
 const settingsGroup2 = [
-  { icon: <ContactIcon />, text: "Contact" },
-  { icon: <GuidelinesIcon />, text: "Guidelines" },
-  { icon: <ReferIcon />, text: "Refer a Friend" },
-  { icon: <TermsAndConditionsIcon />, text: "Terms and Conditions" },
-  { icon: <NightModeIcon />, text: "Night Mode" },
-  { icon: <DeleteAccountIcon />, text: "Delete Account" },
-  { icon: <SignOutIcon />, text: "Sign Out" },
+  { icon: <ContactIcon />, text: "Contact", link: "/user/profile/contact" },
+  {
+    icon: <GuidelinesIcon />,
+    text: "Guidelines",
+    link: "/user/profile/guidelines",
+  },
+  { icon: <ReferIcon />, text: "Refer a Friend", link: "/user/profile/referral" },
+  {
+    icon: <TermsAndConditionsIcon />,
+    text: "Terms and Conditions",
+    link: "/user/profile/terms-conditions",
+  },
+  {
+    icon: <NightModeIcon />,
+    text: "Night Mode",
+    link: "#",
+  },
+  {
+    icon: <DeleteAccountIcon />,
+    text: "Delete Account",
+    link: "/user/profile/delete-account",
+  },
+  { icon: <SignOutIcon />, text: "Sign Out", link: "#" },
 ];
 
 // ---------- interface ----------
@@ -179,9 +203,7 @@ const Profile = () => {
                     : ""
                 }`}
                 onClick={() => {
-                  if (item.text === "Notifications") {
-                    router.push(`/user/profile/notifications?sound_notifications=${userData?.sound_notifications}&email_notifications=${userData?.email_notifications}`);
-                  }
+                  router.push(item.link);
                 }}
               >
                 <div className="flex items-center space-x-3">
@@ -204,6 +226,9 @@ const Profile = () => {
                     ? "border-b border-white"
                     : ""
                 }`}
+                onClick={() => {
+                  router.push(item.link);
+                }}
               >
                 <div className="flex items-center space-x-3">
                   {item.icon}
