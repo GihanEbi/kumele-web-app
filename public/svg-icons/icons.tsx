@@ -1,6 +1,11 @@
 import { SVGProps } from "react";
 
 export type PropsType = SVGProps<SVGSVGElement>;
+type mailProps = React.SVGProps<SVGSVGElement>;
+type eyeProps = React.SVGProps<SVGSVGElement>;
+type downProps = React.SVGProps<SVGSVGElement>;
+type passwordProps = React.SVGProps<SVGSVGElement>;
+type userProps = React.SVGProps<SVGSVGElement>;
 
 export function LandingPageIcon1() {
   return (
@@ -546,7 +551,7 @@ export function GoogleIcon() {
   );
 }
 
-export function UserIcon() {
+export function UserIcon(props: userProps) {
   return (
     <svg
       width="23"
@@ -554,26 +559,27 @@ export function UserIcon() {
       viewBox="0 0 23 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+    {...props}
     >
       <path
         opacity="0.35"
         d="M17.6843 16.4211H5.05273V21.4737H17.6843V16.4211Z"
-        fill="black"
+        fill="currentColor"
       />
       <path
         opacity="0.35"
         d="M11.3685 12.6316C14.8566 12.6316 17.6843 9.8039 17.6843 6.31579C17.6843 2.82767 14.8566 0 11.3685 0C7.88041 0 5.05273 2.82767 5.05273 6.31579C5.05273 9.8039 7.88041 12.6316 11.3685 12.6316Z"
-        fill="black"
+        fill="currentColor"
       />
       <path
         d="M22.665 19.4602C22.3202 17.6602 20.6439 16.4211 18.8111 16.4211H15.158L11.3686 21.4737L7.5791 16.4211H5.05405C2.09321 16.4211 0.416997 17.6602 0.0721546 19.4602C-0.392687 21.8817 1.45152 24 3.78963 24H18.9475C21.2856 24 23.1298 21.8817 22.665 19.4602Z"
-        fill="black"
+        fill="currentColor"
       />
     </svg>
   );
 }
 
-export function MailIcon() {
+export function MailIcon(props: mailProps) {
   return (
     <svg
       width="24"
@@ -581,21 +587,22 @@ export function MailIcon() {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+    {...props}
     >
       <path
         opacity="0.35"
         d="M2 17V7C2 5.343 3.343 4 5 4H19C20.657 4 22 5.343 22 7V17C22 18.657 20.657 20 19 20H5C3.343 20 2 18.657 2 17Z"
-        fill="black"
+        fill="currentColor"
       />
       <path
         d="M22 7C22 6.522 21.878 6.076 21.679 5.675L13.492 10.587C12.573 11.139 11.429 11.139 10.509 10.587L2.321 5.675C2.122 6.076 2 6.522 2 7V8.981L8.964 13.16C9.901 13.722 10.95 14.003 12 14.003C13.049 14.003 14.1 13.722 15.035 13.16L22 8.981V7Z"
-        fill="black"
+        fill="currentColor"
       />
     </svg>
   );
 }
 
-export function PasswordIcon() {
+export function PasswordIcon(props: passwordProps) {
   return (
     <svg
       width="24"
@@ -603,33 +610,34 @@ export function PasswordIcon() {
       viewBox="0 0 24 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+    {...props}
     >
       <path
         opacity="0.35"
         d="M18 21.1843H6C4.343 21.1843 3 19.8413 3 18.1843V10.1843C3 8.52727 4.343 7.18427 6 7.18427H18C19.657 7.18427 21 8.52727 21 10.1843V18.1843C21 19.8413 19.657 21.1843 18 21.1843Z"
-        fill="black"
+        fill="currentColor"
       />
       <path
         d="M8 7.18427C8 4.97527 9.791 3.18427 12 3.18427C14.209 3.18427 16 4.97527 16 7.18427H18C18 3.87027 15.314 1.18427 12 1.18427C8.686 1.18427 6 3.87027 6 7.18427H8Z"
-        fill="black"
+        fill="currentColor"
       />
       <path
         d="M12 15.6843C12.8284 15.6843 13.5 15.0127 13.5 14.1843C13.5 13.3558 12.8284 12.6843 12 12.6843C11.1716 12.6843 10.5 13.3558 10.5 14.1843C10.5 15.0127 11.1716 15.6843 12 15.6843Z"
-        fill="black"
+        fill="currentColor"
       />
       <path
         d="M17 15.6843C17.8284 15.6843 18.5 15.0127 18.5 14.1843C18.5 13.3558 17.8284 12.6843 17 12.6843C16.1716 12.6843 15.5 13.3558 15.5 14.1843C15.5 15.0127 16.1716 15.6843 17 15.6843Z"
-        fill="black"
+        fill="currentColor"
       />
       <path
         d="M7 15.6843C7.82843 15.6843 8.5 15.0127 8.5 14.1843C8.5 13.3558 7.82843 12.6843 7 12.6843C6.17157 12.6843 5.5 13.3558 5.5 14.1843C5.5 15.0127 6.17157 15.6843 7 15.6843Z"
-        fill="black"
+        fill="currentColor"
       />
     </svg>
   );
 }
 
-export function EyeIcon() {
+export function EyeIcon(props: eyeProps) {
   return (
     <svg
       width="24"
@@ -637,15 +645,16 @@ export function EyeIcon() {
       viewBox="0 0 24 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         opacity="0.35"
         d="M2.26895 15.8093C0.593945 13.6793 0.593945 10.6883 2.26895 8.55826C4.23495 6.05926 7.47895 3.18427 11.9999 3.18427C16.5209 3.18427 19.7649 6.05927 21.7309 8.55927C23.4059 10.6893 23.4059 13.6803 21.7309 15.8103C19.7649 18.3093 16.5209 21.1843 11.9999 21.1843C7.47895 21.1843 4.23495 18.3093 2.26895 15.8093Z"
-        fill="black"
+        fill="currentColor"
       />
       <path
         d="M12 6.18427C8.686 6.18427 6 8.87027 6 12.1843C6 15.4983 8.686 18.1843 12 18.1843C15.314 18.1843 18 15.4983 18 12.1843C18 8.87027 15.314 6.18427 12 6.18427ZM13 13.1843C11.895 13.1843 11 12.2893 11 11.1843C11 10.0793 11.895 9.18427 13 9.18427C14.105 9.18427 15 10.0793 15 11.1843C15 12.2893 14.105 13.1843 13 13.1843Z"
-        fill="black"
+        fill="currentColor"
       />
     </svg>
   );
@@ -665,7 +674,7 @@ export function RobotIcon() {
   );
 }
 
-export function DownArrow() {
+export function DownArrow(props: downProps) {
   return (
     <svg
       width="15"
@@ -673,15 +682,16 @@ export function DownArrow() {
       viewBox="0 0 15 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+    {...props}
     >
       <path
         opacity="0.35"
         d="M8.30505 8.93924C7.96322 8.59741 4.56355 5.19774 4.22172 4.85591C3.53805 4.17224 2.4303 4.17224 1.74664 4.85591C1.06297 5.53958 1.06297 6.64733 1.74664 7.33099C2.08847 7.67283 5.48814 11.0725 5.82997 11.4143C6.51364 12.098 7.62139 12.098 8.30505 11.4143C8.98872 10.7307 8.98872 9.62233 8.30505 8.93924Z"
-        fill="black"
+        fill="currentColor"
       />
       <path
         d="M8.30522 11.4137C8.64705 11.0719 12.0467 7.67223 12.3885 7.3304C13.0722 6.64673 13.0722 5.53898 12.3885 4.85532C11.7049 4.17165 10.5971 4.17165 9.91347 4.85532C9.57163 5.19715 6.17197 8.59682 5.83013 8.93865C5.14647 9.62232 5.14647 10.7301 5.83013 11.4137C6.5138 12.0974 7.62213 12.0974 8.30522 11.4137Z"
-        fill="black"
+        fill="currentColor"
       />
     </svg>
   );

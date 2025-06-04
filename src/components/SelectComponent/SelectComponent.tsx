@@ -19,24 +19,30 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
   required,
 }) => {
   return (
-    <div className="relative flex-1">
+    <div className="relative flex-1 ">
       <select
         onChange={(e) => {
           handleChange(e);
         }}
         value={value}
-        className="w-full appearance-none bg-gray-50 border border-gray-300 rounded-lg py-3 px-3 text-sm text-gray-500 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+        className="w-full appearance-none font-plusJakartaSans bg-k-primary-color rounded-lg py-3 px-3 text-sm text-k-text-button"
       >
-        <option>{placeholder}</option>
+        <option value="" disabled hidden>
+          {placeholder}
+        </option>
 
         {items.map((item) => (
-          <option key={item.value} value={item.value}>
+          <option
+            key={item.value}
+            value={item.value}
+            className="bg-k-background-primary text-k-text-button text-center font-plusJakartaSans text-xs rounded-lg "
+          >
             {item.label}
           </option>
         ))}
       </select>
-      <div className="h-5 w-5 text-gray-400 absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none">
-        <DownArrow />
+      <div className="h-5 w-5 text-k-text-primary absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none">
+        <DownArrow className="text-k-text-primary" />
       </div>
     </div>
   );

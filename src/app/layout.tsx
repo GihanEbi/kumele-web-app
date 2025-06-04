@@ -21,7 +21,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
 });
 const fredoka = Fredoka({
-  weight: ['400'], // 'Fredoka One' only supports 400
+  weight: ['400', '500', '600', '700'], // 'Fredoka One' only supports 400
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-fredoka',
