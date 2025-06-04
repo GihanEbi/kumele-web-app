@@ -28,7 +28,7 @@ const TimeDurationSelector: React.FC = () => {
     <div className="flex items-center p-1  max-w-xs">
       {/* Time Display Section */}
       <div
-        className={`bg-black text-white font-medium text-sm px-3 py-2.5 ${
+        className={`bg-black text-white text-text-caption px-3 py-2.5 ${
           isBlueSectionVisible ? "rounded-l-lg" : "rounded-lg"
         } min-w-[70px] text-center`}
       >

@@ -43,7 +43,7 @@ const TimePicker: React.FC<TimePickerDisplayProps> = ({
     <div className="w-full">
       {" "}
       {/* Each time picker takes full width of its container */}
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label className="block text-body mb-1">
         {label}
       </label>
       <button
@@ -56,7 +56,7 @@ const TimePicker: React.FC<TimePickerDisplayProps> = ({
       >
         <div className="flex items-center space-x-2.5">
           <ClockIcon />
-          <span className="text-sm text-gray-800 font-medium">
+          <span className="text-text-caption">
             {currentTimeDisplay}
           </span>
         </div>

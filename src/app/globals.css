@@ -90,6 +90,7 @@
   --k-secondary-color:oklch(0.8531 0.162 85.01); /* #FFC533 color (yellow color) */
   --k-background-primary: oklch(1 0 0); /* #FFFFFF color (white color) */
   --k-background-secondary: oklch(0.9219 0 0); /* #e5e5e5 color (light gray color) */
+  --k-background-tertiary: oklch(0.9672 0 89.88); /* #A9A9A9 color (dark gray color) */
   --k-blue: oklch(0.5202 0.2679 263.21); /* #004DFF color (blue color) */
   --k-text-primary: oklch(0 0 0); /* #000000 color (black color) */
   --k-text-secondary: oklch(0.7348 0 89.88); /* #A9A9A9 color (dark gray color) */
@@ -137,8 +138,7 @@
   --k-text-primary: oklch(1 0 0); /* #FFFFFF color (white color) */
   --k-text-secondary: oklch(0.7952 0 0); /* #BCBCBC color (gray color) */
   --k-text-tertiary: oklch(0.2046 0 0); /* #171717 color (dark gray color) */
-}
-
+}                                
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -178,6 +178,114 @@
   font-size: 13px;
   line-height: 100%; /* or 1 */
   letter-spacing: 0%;
+}
+
+/*
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/ /
+//
+//
+
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+*/
+
+/*SUB CAPTIONS */
+.text-sub-caption {
+  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-weight: 900;
+  font-size: 11.29px;
+  line-height: 100%; /* or 1 */
+  letter-spacing: 0%;
+  ;
+}
+
+/*SUB TEXTS*/
+.sub-texts {
+  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-weight: 500;
+  font-size: 13.89px;
+  line-height: 100%; /* or 1 */
+  letter-spacing: 0%;
+  ;
+}
+
+/*PARAGRAPH */
+.paragraph {
+  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 100%; /* or 1 */
+  letter-spacing: 0%;
+  ;
 }
 
 /* Hide scrollbar completely */

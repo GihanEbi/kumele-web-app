@@ -17,6 +17,10 @@ import {
 import TimeDurationSelector from "@/components/TimeDurationSelector/TimeDurationSelector";
 import DatePicker from "@/components/DatePicker/DatePicker";
 import TimePicker from "@/components/TimePicker/TimePicker";
+import UserAvailabilityCheck from "@/components/EventUserAvailabilityCheck/UserAvailabilityCheck";
+import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
+import GuestCounter from "./GuestCounter/GuestCounter";
+import PaymentSelection from "./PaymentSelection/PaymentSelection";
 
 const EVENT_CATEGORIES = [
   { id: "spirituality", label: "Spirituality", icon: <EventCategory1 /> },
@@ -29,6 +33,20 @@ const EVENT_CATEGORIES = [
   { id: "tech", label: "Tech", icon: <EventCategory2 /> },
 ];
 
+// Define the data for your payment options directly in the parent
+interface OptionConfig {
+  id: string;
+  mainLabel: string;
+  valueText: string;
+  value: string; // This is the value for the radio button
+}
+
+const paymentOptionsConfig: OptionConfig[] = [
+  { id: 'payment-free', mainLabel: 'Free Event', valueText: 'Free', value: 'free' },
+  { id: 'payment-card', mainLabel: 'Card Payment', valueText: '20$', value: 'card_20' },
+  { id: 'payment-cash', mainLabel: 'Cash On Entry', valueText: '50$', value: 'cash_50' },
+];
+
 const CreateEventSection = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -38,7 +56,7 @@ const CreateEventSection = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-// State for event details
+  // State for event details
   const [eventName, setEventName] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
@@ -51,6 +69,9 @@ const CreateEventSection = () => {
   const [state, setState] = useState<string>("");
 
   const maxCharacters = 1200; // Set your max character limit
+
+  //payment selection state
+  const [selectedPayment, setSelectedPayment] = useState<string>("free");
 
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
@@ -131,24 +152,42 @@ const CreateEventSection = () => {
     console.log("End time display clicked! Open time picker here.");
   };
 
+  const handleUserAvailability = (guests: number) => {
+    console.log(`Checking availability for ${guests} guests.`);
+    // Add your API call or logic here
+  };
+  const handleAgeRangeChange = (values: [number, number]) => {
+    console.log("Selected age range (Radix):", values);
+  };
+
+  const handleGuestAddToCart = (guests: number) => {
+    console.log(`Adding ${guests} guests to cart.`);
+    // Add your cart logic here
+  };
+
+  const handlePaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setSelectedPayment(newValue);
+    console.log("Selected Payment Method:", newValue);
+    // Update your form state or perform actions based on the selection
+  };
+
   return (
     <div className="max-w-full mx-auto p-6 bg-white rounded-lg">
       <div className="flex flex-row gap-5">
-        <div className="mt-1">
+        <div className="">
           <BackToPageIcon />
         </div>
 
-        <h2 className="text-2xl font-bold mb-6">Create event</h2>
+        <h2 className="text-heading mb-6">Create event</h2>
       </div>
 
       {/* Event Category Section */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Event Category
-        </label>
+        <label className="text-body">Event Category</label>
 
         {/* Horizontally scrollable categories with drag functionality */}
-        <div className="relative">
+        <div className="relative mt-3">
           <div
             ref={categoriesContainerRef}
             className="flex space-x-3 overflow-x-auto pb-3 -mx-4 px-4 no-scrollbar"
@@ -172,13 +211,13 @@ const CreateEventSection = () => {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`flex flex-col items-center justify-center p-3 rounded-lg flex-shrink-0 transition-all duration-200 ${
                   selectedCategory === category.id
-                    ? "bg-yellow-300 border-none"
+                    ? "bg-k-secondary-color border-none"
                     : "bg-gray-100 hover:bg-gray-200 border-2 border-transparent"
                 }`}
                 style={{ minWidth: "80px" }}
               >
                 <div className="mb-1 text-xl">{category.icon}</div>
-                <span className="text-xs font-medium text-center">
+                <span className="text-text-title text-center">
                   {category.label}
                 </span>
               </button>
@@ -189,10 +228,8 @@ const CreateEventSection = () => {
 
       {/* Event Image Section */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Event Image
-        </label>
-        <p className="text-xs text-gray-500 mb-3">
+        <label className="block text-body mb-2">Event Image</label>
+        <p className="text-text-sub-caption mb-3">
           (Recommended size 400*400px)
         </p>
 
@@ -216,7 +253,7 @@ const CreateEventSection = () => {
                 <UploadImageIcon />
               </div>
 
-              <p className="text-sm text-gray-600">Upload an image</p>
+              <p className="text-text-sub-caption">Upload an image</p>
             </>
           )}
           <input
@@ -239,7 +276,7 @@ const CreateEventSection = () => {
             height={20}
             className="mr-3"
           />
-          <span className="text-sm font-medium">PayPal Connected</span>
+          <span className="text-sub-texts">PayPal Connected</span>
           <div className="flex bg-gray-100 ml-3 p-2 rounded-md">
             <RightIcon />
           </div>
@@ -249,9 +286,7 @@ const CreateEventSection = () => {
       <div className="space-y-4 mt-6">
         {/* Event Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Event Name
-          </label>
+          <label className="block text-body mb-1">Event Name</label>
           <InputComponent
             placeholder="Add a title"
             value={eventName}
@@ -261,9 +296,7 @@ const CreateEventSection = () => {
 
         {/* Subtitle */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Subtitle
-          </label>
+          <label className="text-body mb-1">Subtitle</label>
           <InputComponent
             placeholder="Add a subtitle"
             value={subtitle}
@@ -273,14 +306,12 @@ const CreateEventSection = () => {
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Description
-          </label>
+          <label className="block text-body mb-1">Description</label>
           <textarea
             value={description}
             onChange={handleDescriptionChange}
             maxLength={maxCharacters}
-            placeholder="Add a description"
+            placeholder="More About the event"
             className="w-full h-32 p-3 bg-gray-100  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500"
           />
           <p className="text-xs text-gray-500 mt-1 text-right">
@@ -290,9 +321,7 @@ const CreateEventSection = () => {
       </div>
       <div>
         <div className="flex flex-row gap-3 mb-3 mt-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Event starts in
-          </label>
+          <label className="block text-body mb-1">Event starts in</label>
           <div className="mt-[-6px]">
             <InformationIcon />
           </div>
@@ -320,61 +349,108 @@ const CreateEventSection = () => {
           onClick={handleEndTimeClick}
         />
       </div>
-       <div className="space-y-4 mt-6">
-      <h3 className="text-sm font-medium text-gray-700">Event Address</h3>
-      
-      {/* Street + Home Number Row */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <InputComponent
-            placeholder="Street"
-            value={street}
-            onChange={(e) => setStreet(e.target.value)}
-          />
+      <div className="space-y-4 mt-6">
+        <h3 className="text-body">Event Address</h3>
+
+        {/* Street + Home Number Row */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="border rounded-lg">
+            <InputComponent
+              placeholder="Street"
+              value={street}
+              onChange={(e) => setStreet(e.target.value)}
+            />
+          </div>
+          <div>
+            <InputComponent
+              placeholder="Home Number"
+              value={homeNumber}
+              onChange={(e) => setHomeNumber(e.target.value)}
+            />
+          </div>
         </div>
-        <div>
-          <InputComponent
-            placeholder="Home Number"
-            value={homeNumber}
-            onChange={(e) => setHomeNumber(e.target.value)}
-          />
+
+        {/* District + Postal Code Row */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <InputComponent
+              placeholder="District"
+              value={district}
+              onChange={(e) => setDistrict(e.target.value)}
+            />
+          </div>
+          <div>
+            <InputComponent
+              placeholder="Postal / Zip code"
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* State (Half Width) */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <InputComponent
+              placeholder="State"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+            />
+          </div>
+          {/* Empty div to maintain grid alignment */}
+          <div></div>
         </div>
       </div>
-      
-      {/* District + Postal Code Row */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <InputComponent
-            placeholder="District"
-            value={district}
-            onChange={(e) => setDistrict(e.target.value)}
-          />
-        </div>
-        <div>
-          <InputComponent
-            placeholder="Postal / Zip code"
-            value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
-          />
-        </div>
+
+      {/* User Availability Check Section */}
+      <div className="mt-6">
+        <UserAvailabilityCheck
+          onCheckAvailability={handleUserAvailability}
+          initialGuestCount={50} // Example: override initial guest count
+        />
       </div>
-      
-      {/* State (Half Width) */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <InputComponent
-            placeholder="State"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-          />
-        </div>
-        {/* Empty div to maintain grid alignment */}
-        <div></div>
+      <div className="mt-6">
+        <label className="block text-body mb-15">Age Range</label>
+        {/* Age Range Slider Section using Radix UI */}
+        <RadixAgeRangeSlider
+          //label="Age range"
+          min={0}
+          max={100}
+          initialValues={[18, 28]} // As shown in your image
+          step={1}
+          onValueChange={handleAgeRangeChange}
+        />
       </div>
-    </div>
+      <div>
+        <div className="flex flex-row gap-3 mb-3 mt-3">
+          <label className="text-body">Number of Guests</label>
+          <div className="mt-[-6px]">
+            <InformationIcon />
+          </div>
+        </div>
+        <GuestCounter
+          initialGuests={1} // Or any number between 0-99
+          onAddToCart={handleGuestAddToCart}
+        />
+      </div>
+
+       <div className="grid grid-cols-3 gap-x-4 mt-6"> {/* Use grid-cols-3 */}
+            {paymentOptionsConfig.map((option) => (
+              <PaymentSelection 
+                key={option.id}
+                id={option.id}
+                mainLabel={option.mainLabel}
+                valueText={option.valueText}
+                name="paymentMethod" // Same name for the radio group
+                value={option.value}
+                checked={selectedPayment === option.value}
+                onChange={handlePaymentChange}
+              />
+            ))}
+          </div>
 
       {/* Create Event Button */}
-      <button className="w-full mt-6 bg-black hover:bg-yellow-500 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+      <button className="w-full mt-6 bg-black hover:bg-yellow-500 text-text-caption text-white py-3 px-4 rounded-lg transition-colors">
         Preview Event
       </button>
     </div>

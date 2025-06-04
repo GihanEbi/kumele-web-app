@@ -57,7 +57,7 @@ const DatePicker: React.FC<DatePickerDisplayProps> = ({
       {" "}
       {/* Adjust max-w-xs as needed */}
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-body mb-1">
           {label}
         </label>
       )}
@@ -71,7 +71,7 @@ const DatePicker: React.FC<DatePickerDisplayProps> = ({
       >
         <div className="flex items-center space-x-2.5">
           <CalenderIcon />
-          <span className="text-sm text-gray-800 font-medium">
+          <span className="text-text-caption">
             {currentDateDisplay}
           </span>
         </div>
