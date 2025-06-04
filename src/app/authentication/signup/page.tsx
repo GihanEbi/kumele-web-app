@@ -124,15 +124,15 @@ const Signup = () => {
       to match your logo.png and how it should appear on background.png.
       The initial 'top-4 left-6' attempts to replicate the padding from the previous CSS logo.
   */}
-        <div className="absolute top-4 left-6 z-10">
+        <div className="absolute top-4 left-18 z-10">
           {" "}
           {/* z-10 ensures logo is above the background image */}
           <Image
             className="p-2"
             alt="logo"
             src="/images/logo.png"
-            width={63}
-            height={50}
+            width={100}
+            height={100}
           />
         </div>
         {/* Sign up Text & Google Icon */}
@@ -140,10 +140,12 @@ const Signup = () => {
       Ensure the part of your background.png where this text appears
       has sufficient contrast for the 'text-black'.
   */}
-        <div className="absolute bottom-4 left-6 flex items-center space-x-2 z-10">
+        <div className="absolute bottom-1 left-5 flex items-center space-x-2 z-10">
           {" "}
           {/* z-10 ensures text is above background */}
-          <h1 className="text-3xl font-bold text-black">Sign up</h1>
+          <h1 className="text-xl font-bold text-k-text-heading font-plusJakartaSans">
+            Sign up
+          </h1>
           <GoogleIcon />
         </div>
       </div>
@@ -151,19 +153,23 @@ const Signup = () => {
       {/* form area */}
       <div
         className={`${
-          showEmailVerificationModel ? "bg-gray-300" : "bg-white"
+          showEmailVerificationModel
+            ? "k-background-secondary"
+            : "bg-k-background-primary"
         } px-6 py-6 relative z-10`}
       >
         <div className="mb-6">
-          <p className="text-xs text-gray-500 mb-2">Language choice:</p>
+          <p className="text-xs font-plusJakartaSans text-k-text-primary mb-5">
+            Language choice:
+          </p>
           <div className="flex space-x-2">
-            <button className="flex-1 py-2.5 px-3 bg-yellow-400 text-black text-sm font-medium rounded-md shadow-sm">
+            <button className="flex-1 py-2.5 px-3 bg-k-secondary-color text-k-text-black font-plusJakartaSans text-sm font-medium rounded-md shadow-sm">
               English
             </button>
-            <button className="flex-1 py-2.5 px-3 bg-gray-200 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-300">
+            <button className="flex-1 py-2.5 px-3 bg-k-primary-color text-k-text-button font-plusJakartaSans text-sm font-medium rounded-md hover:bg-gray-300">
               French
             </button>
-            <button className="flex-1 py-2.5 px-3 bg-gray-200 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-300">
+            <button className="flex-1 py-2.5 px-3 bg-k-primary-color text-k-text-button font-plusJakartaSans text-sm font-medium rounded-md hover:bg-gray-300">
               Spanish
             </button>
           </div>
@@ -172,19 +178,20 @@ const Signup = () => {
         <div className="space-y-4 mb-5">
           <div className="relative">
             <InputComponent
-              icon={<UserIcon />}
+              icon={<UserIcon className="text-k-text-primary" />}
               placeholder="Enter name"
               value={form.name}
               onChange={(e) => {
                 handleInputChange(e.target.value, "name");
               }}
+              className="bg-k-primary-color"
             />
           </div>
         </div>
         <div className="space-y-4  mb-5">
           <div className="relative">
             <InputComponent
-              icon={<MailIcon />}
+              icon={<MailIcon className="text-k-text-primary" />}
               placeholder="Enter email"
               value={form.email}
               onChange={(e) => {
@@ -204,7 +211,7 @@ const Signup = () => {
           />
         </div>
         <div className="pt-5">
-          <p className="text-sm font-medium text-gray-800 mb-2">
+          <p className="text-sm font-plusJakartaSans text-k-text-primary mb-2">
             Date of Birth
           </p>
           <div className="flex space-x-2">
@@ -234,7 +241,7 @@ const Signup = () => {
         {/* enter password */}
         <div className="relative mt-5">
           <InputComponent
-            icon={<PasswordIcon />}
+            icon={<PasswordIcon className="text-k-text-primary" />}
             placeholder="Enter Password"
             onChange={(e) => {
               handleInputChange(e.target.value, "password");
@@ -247,7 +254,7 @@ const Signup = () => {
             onClick={() => setPasswordVisible(!passwordVisible)}
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
           >
-            {passwordVisible ? <EyeIcon /> : <EyeIcon />}
+            {passwordVisible ? <EyeIcon className="text-k-text-primary" /> : <EyeIcon className="text-k-text-primary" />}
           </button>
         </div>
         {/* confirm password */}
@@ -266,13 +273,13 @@ const Signup = () => {
             onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
           >
-            {passwordVisible ? <EyeIcon /> : <EyeIcon />}
+            {passwordVisible ? <EyeIcon className="text-k-text-primary" /> : <EyeIcon className="text-k-text-primary" />}
           </button>
         </div>
         {/* referral code */}
         <div className="pt-5">
-          <p className="text-sm font-medium text-gray-800 mb-1">
-            Referral code <span className="text-gray-500">(Optional)</span>
+          <p className="text-sm font-plusJakartaSans text-k-text-primary mb-1">
+            Referral code <span className="font-plusJakartaSans text-k-text-primary">(Optional)</span>
           </p>
           <InputComponent
             placeholder="e.g. DF3R435"
@@ -283,7 +290,7 @@ const Signup = () => {
           />
         </div>
         {/* check boxes */}
-        <div className="space-y-3 pt-2">
+        <div className="space-y-3 pt-5">
           <CheckBoxComponent
             label="I am a legal adult (18/21+)"
             onChange={(e) => {
@@ -322,39 +329,23 @@ const Signup = () => {
               className="ml-2"
             />
           </div>
-
-          {/* <label className="flex items-start space-x-2.5 cursor-pointer">
-                {" "}
-                <input
-                  type="checkbox"
-                  id="terms"
-                  className="form-checkbox h-4 w-4 mt-0.5 flex-shrink-0 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition duration-150 ease-in-out"
-                />
-                <span className="text-sm text-gray-700">
-                  By creating an account you agree
-                  <br /> to{" "}
-                  <a href="#" className="text-blue-600 hover:underline">
-                    Terms & Conditions
-                  </a>
-                </span>
-              </label> */}
         </div>
         {/* footer signup button */}
         <div className="pt-4">
           <button
-            className="w-full bg-black text-white py-3.5 rounded-lg font-semibold text-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50 transition duration-150 ease-in-out"
+            className="w-full bg-k-text-primary text-k-background-primary py-3.5 rounded-lg font-plusJakartaSans text-md"
             onClick={() => handleSubmit()}
           >
             Sign up
           </button>
         </div>
         <div className="flex flex-row items-center justify-center mt-6">
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-k-text-primary">
             Already have an account?{" "}
           </p>
           <p
             onClick={() => router.push("/authentication/signin")}
-            className="font-semibold text-xs underline text-black hover:underline"
+            className="font-semibold text-xs underline text-k-text-primary hover:underline"
           >
             Sign in
           </p>

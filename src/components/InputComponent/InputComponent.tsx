@@ -26,7 +26,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
   error,
 }) => {
   return (
-    <div className="">
+    <div className="bg-k-primary-color rounded-lg">
       {icon && (
         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
           {icon}
@@ -41,9 +41,9 @@ const InputComponent: React.FC<InputComponentProps> = ({
         required={required}
         disabled={disabled}
         defaultValue={defaultValue}
-        className={`w-full ${
-          icon ? "pl-10" : "pl-3"
-        } pr-3 py-3 bg-gray-200 text-black border rounded-lg text-sm focus:ring-1 placeholder-gray-400`}
+        className={`w-full placeholder:font-plusJakartaSans placeholder:text-k-text-button ${
+          icon ? "pl-12" : "pl-3"
+        } pr-3 py-3 text-k-text-primary rounded-lg text-sm focus:ring-1`}
       />
     </div>
   );

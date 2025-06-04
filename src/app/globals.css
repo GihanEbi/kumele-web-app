@@ -51,6 +51,9 @@
   --color-k-text-primary: var(--k-text-primary);
   --color-k-text-secondary: var(--k-text-secondary);
   --color-k-text-tertiary: var(--k-text-tertiary);
+  --color-k-text-heading: var(--k-text-heading);
+  --color-k-text-black: var(--k-text-black);
+  --color-k-text-button: var(--k-text-button);
 }
 
 :root {
@@ -94,6 +97,9 @@
   --k-text-primary: oklch(0 0 0); /* #000000 color (black color) */
   --k-text-secondary: oklch(0.7348 0 89.88); /* #A9A9A9 color (dark gray color) */
   --k-text-tertiary: oklch(0.9672 0 89.88); /* #F4F4F4 color (light gray color) */
+  --k-text-heading: oklch(1 0 0); /* #FFFFFF color (white color) */
+  --k-text-black: oklch(0 0 0); /* #000000 color (black color) */
+  --k-text-button: oklch(0.2686 0 0); /* #262626 color (dark gray color) */
 
 }
 
@@ -131,12 +137,15 @@
   --sidebar-ring: oklch(0.556 0 0);
   --k-primary-color:oklch(0.2393 0 0); /* #1F1F1F color (dark gray color) */
   --k-secondary-color:oklch(0.8531 0.162 85.01); /* #FFC533 color (yellow color) */
-  --k-background-primary: oklch(0 0 0); /* #000000 color (black color) */
+  --k-background-primary: oklch(0.1591 0 89.88); /* #0d0d0d color (black color) */
   --k-background-secondary: oklch(0.2134 0 0); /* #191919 color (dark gray color) */
   --k-blue: oklch(0.5202 0.2679 263.21); /* #004DFF color (blue color) */
   --k-text-primary: oklch(1 0 0); /* #FFFFFF color (white color) */
   --k-text-secondary: oklch(0.7952 0 0); /* #BCBCBC color (gray color) */
   --k-text-tertiary: oklch(0.2046 0 0); /* #171717 color (dark gray color) */
+  --k-text-heading: oklch(0 0 0); /* #000000 color (black color) */
+  --k-text-black: oklch(0 0 0); /* #000000 color (black color) */
+  --k-text-button: oklch(0.8853 0 89.88); /* #d9d9d9 color (light gray color) */
 }
 
 @layer base {
