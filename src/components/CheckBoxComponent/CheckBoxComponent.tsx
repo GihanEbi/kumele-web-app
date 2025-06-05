@@ -1,4 +1,5 @@
 import React from "react";
+import { UnCheckedIcon } from "../../../public/svg-icons/icons";
 
 type CheckBoxComponentProps = {
   label: string;
@@ -19,8 +20,9 @@ const CheckBoxComponent: React.FC<CheckBoxComponentProps> = ({
 }) => {
   
   return (
-    <div>
+    <div className="">
       <label className="flex items-center space-x-2.5 cursor-pointer">
+        {/* <UnCheckedIcon /> */}
         <input
           type="checkbox"
           id={label}

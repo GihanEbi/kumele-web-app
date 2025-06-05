@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 
 import Lottie from "lottie-react";
@@ -28,22 +27,12 @@ const LoadingComponent: React.FC<DotsLoadingAnimationProps> = ({
     },
   };
   return (
-    // <div className={`fixed inset-0 flex items-center justify-center z-50 ${className}`}>
-    //   <Lottie
-    //     animationData={animationData}
-    //     loop={loop}
-    //     autoplay={autoplay}
-    //     style={{ width, height }}
-    //   />
-    // </div>
     <Lottie
       animationData={animationData} // This is the direct way with lottie-react
       loop={loop}
       autoplay={autoplay}
       style={{ width, height }}
       className={className}
-      // For more control, you can use the options prop:
-      // options={defaultOptions}
     />
   );
 };
