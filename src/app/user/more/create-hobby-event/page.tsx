@@ -33,12 +33,12 @@ const EVENT_CATEGORIES = [
   { id: "tech", label: "Tech", icon: <EventCategory2 /> },
 ];
 
-// Define the data for your payment options directly in the parent
+// Define the data for payment options directly in the parent
 interface OptionConfig {
   id: string;
   mainLabel: string;
   valueText: string;
-  value: string; // This is the value for the radio button
+  value: string;
 }
 
 const paymentOptionsConfig: OptionConfig[] = [
@@ -73,6 +73,8 @@ const CreateEventSection = () => {
   //payment selection state
   const [selectedPayment, setSelectedPayment] = useState<string>("free");
 
+
+  //Handlers for form inputs and interactions
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -80,6 +82,8 @@ const CreateEventSection = () => {
       setDescription(e.target.value);
     }
   };
+
+  // Image upload handler
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -91,6 +95,7 @@ const CreateEventSection = () => {
     }
   };
 
+  // Trigger file input click
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
@@ -139,6 +144,7 @@ const CreateEventSection = () => {
     setIsDragging(false);
   };
 
+  // Handlers for date and time pickers
   const handleDateClick = () => {
     console.log("Date display clicked! Open calendar here.");
     // In a real app, you'd set state to show a calendar modal/popup
@@ -151,6 +157,8 @@ const CreateEventSection = () => {
   const handleEndTimeClick = () => {
     console.log("End time display clicked! Open time picker here.");
   };
+
+  // Handlers for user availability check, age range, guest counter, and payment selection
 
   const handleUserAvailability = (guests: number) => {
     console.log(`Checking availability for ${guests} guests.`);
@@ -229,13 +237,13 @@ const CreateEventSection = () => {
       {/* Event Image Section */}
       <div className="mb-6">
         <label className="block text-body mb-2">Event Image</label>
-        <p className="text-text-sub-caption mb-3">
+        <p className="text-text-sub-caption mb-3 text-[14px] text-gray-500">
           (Recommended size 400*400px)
         </p>
 
         <div
           onClick={triggerFileInput}
-          className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-yellow-400 transition-colors"
+          className="border-2 border-dashed border-gray-300 rounded-lg p-5 text-center cursor-pointer transition-colors"
         >
           {imagePreview ? (
             <div className="relative w-full h-40 rounded-md overflow-hidden">
@@ -253,7 +261,7 @@ const CreateEventSection = () => {
                 <UploadImageIcon />
               </div>
 
-              <p className="text-text-sub-caption">Upload an image</p>
+              <p className="text-text-sub-caption text-gray-500">Upload an image</p>
             </>
           )}
           <input
@@ -283,10 +291,10 @@ const CreateEventSection = () => {
         </div>
       </div>
 
-      <div className="space-y-4 mt-6">
+      <div className="space-y-6 mt-6">
         {/* Event Name */}
         <div>
-          <label className="block text-body mb-1">Event Name</label>
+          <label className="block text-body mb-3">Event Name</label>
           <InputComponent
             placeholder="Add a title"
             value={eventName}
@@ -296,7 +304,7 @@ const CreateEventSection = () => {
 
         {/* Subtitle */}
         <div>
-          <label className="text-body mb-1">Subtitle</label>
+          <label className="block text-body mb-3">Subtitle</label>
           <InputComponent
             placeholder="Add a subtitle"
             value={subtitle}
@@ -306,7 +314,7 @@ const CreateEventSection = () => {
 
         {/* Description */}
         <div>
-          <label className="block text-body mb-1">Description</label>
+          <label className="block text-body mb-3">Description</label>
           <textarea
             value={description}
             onChange={handleDescriptionChange}
@@ -315,12 +323,12 @@ const CreateEventSection = () => {
             className="w-full h-32 p-3 bg-gray-100  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500"
           />
           <p className="text-xs text-gray-500 mt-1 text-right">
-            {description.length}/{maxCharacters} characters
+            {description.length}/{maxCharacters} Max
           </p>
         </div>
       </div>
       <div>
-        <div className="flex flex-row gap-3 mb-3 mt-3">
+        <div className="flex flex-row gap-3 mb-3 mt-6">
           <label className="block text-body mb-1">Event starts in</label>
           <div className="mt-[-6px]">
             <InformationIcon />
@@ -349,7 +357,7 @@ const CreateEventSection = () => {
           onClick={handleEndTimeClick}
         />
       </div>
-      <div className="space-y-4 mt-6">
+      <div className="space-y-3 mt-6">
         <h3 className="text-body">Event Address</h3>
 
         {/* Street + Home Number Row */}
