@@ -6,6 +6,8 @@ type eyeProps = React.SVGProps<SVGSVGElement>;
 type downProps = React.SVGProps<SVGSVGElement>;
 type passwordProps = React.SVGProps<SVGSVGElement>;
 type userProps = React.SVGProps<SVGSVGElement>;
+type checkBoxProps = React.SVGProps<SVGSVGElement>;
+type unCheckBoxProps = React.SVGProps<SVGSVGElement>;
 
 export function LandingPageIcon1() {
   return (
@@ -559,7 +561,7 @@ export function UserIcon(props: userProps) {
       viewBox="0 0 23 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-    {...props}
+      {...props}
     >
       <path
         opacity="0.35"
@@ -587,7 +589,7 @@ export function MailIcon(props: mailProps) {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-    {...props}
+      {...props}
     >
       <path
         opacity="0.35"
@@ -610,7 +612,7 @@ export function PasswordIcon(props: passwordProps) {
       viewBox="0 0 24 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-    {...props}
+      {...props}
     >
       <path
         opacity="0.35"
@@ -682,7 +684,7 @@ export function DownArrow(props: downProps) {
       viewBox="0 0 15 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-    {...props}
+      {...props}
     >
       <path
         opacity="0.35"
@@ -1738,6 +1740,113 @@ export function VisaCardIcon() {
     </svg>
   );
 }
+
+export function CheckedIcon(props: checkBoxProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0,0,256,256"
+      width="24px"
+      height="24px"
+      fill-rule="nonzero"
+      stroke="none"
+      {...props}
+    >
+      <g
+        fill="currentColor"
+        fill-rule="nonzero"
+        stroke="none"
+        stroke-width="1"
+        stroke-linecap="butt"
+        stroke-linejoin="miter"
+        stroke-miterlimit="10"
+        stroke-dasharray=""
+        stroke-dashoffset="0"
+        font-family="none"
+        font-weight="none"
+        font-size="none"
+        text-anchor="none"
+      >
+        <g transform="scale(10.66667,10.66667)">
+          <path
+            d="M7.8,4.8h8.4c1.546,0 2.8,1.254 2.8,2.8v8.8c0,1.546 -1.254,2.8 -2.8,2.8h-8.4c-1.546,0 -2.8,-1.254 -2.8,-2.8v-8.8c0,-1.546 1.254,-2.8 2.8,-2.8z"
+            opacity="0.35"
+          ></path>
+          <path d="M16,6c1.105,0 2,0.895 2,2v8c0,1.105 -0.895,2 -2,2h-8c-1.105,0 -2,-0.895 -2,-2v-8c0,-1.105 0.895,-2 2,-2h8M16,3h-8c-2.757,0 -5,2.243 -5,5v8c0,2.757 2.243,5 5,5h8c2.757,0 5,-2.243 5,-5v-8c0,-2.757 -2.243,-5 -5,-5z"></path>
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+export function UnCheckedIcon(props: unCheckBoxProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0,0,256,256"
+      width="24px"
+      height="24px"
+      fill-rule="nonzero"
+      stroke="none"
+      {...props}
+    >
+      <defs>
+        <clipPath id="clip-1">
+          <path
+            d="M0,256v-256h256v256zM197.33333,181.92593v-107.85185c0,-8.50489 -6.90252,-15.40741 -15.40741,-15.40741h-107.85185c-8.50489,0 -15.40741,6.90252 -15.40741,15.40741v107.85185c0,8.50489 6.90252,15.40741 15.40741,15.40741h107.85185c8.50489,0 15.40741,-6.90252 15.40741,-15.40741z"
+            id="overlayBgMask"
+            fill="none"
+          ></path>
+        </clipPath>
+      </defs>
+      <g
+        clip-path="url(#clip-1)"
+        fill="currentColor"
+        fill-rule="nonzero"
+        stroke="none"
+        stroke-width="1"
+        stroke-linecap="butt"
+        stroke-linejoin="miter"
+        stroke-miterlimit="10"
+        stroke-dasharray=""
+        stroke-dashoffset="0"
+        font-family="none"
+        font-weight="none"
+        font-size="none"
+        text-anchor="none"
+      >
+        <g transform="scale(10.66667,10.66667)" fill="currentColor">
+          <path
+            d="M18,21h-12c-1.657,0 -3,-1.343 -3,-3v-12c0,-1.657 1.343,-3 3,-3h12c1.657,0 3,1.343 3,3v12c0,1.657 -1.343,3 -3,3z"
+            opacity="0.35"
+          ></path>
+        </g>
+      </g>
+      <g
+        fill="currentColor"
+        fill-rule="nonzero"
+        stroke="none"
+        stroke-width="1"
+        stroke-linecap="butt"
+        stroke-linejoin="miter"
+        stroke-miterlimit="10"
+        stroke-dasharray=""
+        stroke-dashoffset="0"
+        font-family="none"
+        font-weight="none"
+        font-size="none"
+        text-anchor="none"
+      >
+        <g
+          transform="translate(58.66667,58.66667) scale(15.40741,15.40741)"
+          id="overlay"
+        >
+          <path d="M8,9h-7c-0.552,0 -1,-0.448 -1,-1v-7c0,-0.552 0.448,-1 1,-1h7c0.552,0 1,0.448 1,1v7c0,0.552 -0.448,1 -1,1z"></path>
+        </g>
+      </g>
+    </svg>
+  );
+}
 //
 //
 //
@@ -2229,7 +2338,6 @@ export function EventCategory2() {
     </svg>
   );
 }
-
 
 export function TwoTicketsIcon() {
   return (
