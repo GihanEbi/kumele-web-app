@@ -15,25 +15,29 @@ import More from "./more/page";
 import Profile from "./profile/page";
 
 const navItems = [
-  { label: "Home", icon: <HomeIcon />, page: <Home /> },
+  {
+    label: "Home",
+    icon: <HomeIcon className="text-app-icon" />,
+    page: <Home />,
+  },
   {
     label: "Blog",
-    icon: <BlogHomeIcon />,
+    icon: <BlogHomeIcon className="text-app-icon" />,
     page: <Blog />,
   },
   {
     label: "Shop",
-    icon: <ShopIcon />,
+    icon: <ShopIcon className="text-app-icon" />,
     page: <Shop />,
   },
   {
     label: "More",
-    icon: <MoreIcon />,
+    icon: <MoreIcon className="text-app-icon" />,
     page: <More />,
   },
   {
     label: "Profile",
-    icon: <ProfileIcon />,
+    icon: <ProfileIcon className="text-app-icon" />,
     page: <Profile />,
   },
 ];
@@ -42,8 +46,14 @@ const page = () => {
   // set active page
   const [activePageIndex, setActivePageIndex] = React.useState(0);
   return (
-    <div className=" bg-white">
-      <div className="fixed p-2 bottom-0 left-0 right-0 h-tab-bar bg-gray-100 flex justify-around items-center border-t border-gray-200 shadow-tab-bar pb-safe-bottom z-[1000]">
+    <div className="">
+      <div
+        className={`fixed p-2 bottom-0 left-0 right-0 h-tab-bar ${
+          activePageIndex !== 0
+            ? "bg-app-background-secondary"
+            : "bg-app-background-primary"
+        } flex justify-around items-center shadow-tab-bar pb-safe-bottom z-[1000]`}
+      >
         {navItems.map((item, index) => (
           <div
             key={index}
@@ -51,22 +61,20 @@ const page = () => {
               setActivePageIndex(index);
             }}
           >
-            <div
-              className={`flex flex-col items-center text-white`}
-            >
+            <div className={`flex flex-col items-center text-app-text-primary`}>
               <div
-                className={`rounded-4xl p-2 text-white ${
-                  activePageIndex === index ? "bg-blue-500 color" : ""
+                className={`rounded-4xl p-2 text-app-text-primary ${
+                  activePageIndex === index ? "bg-app-button-blue" : ""
                 }`}
               >
                 {item.icon}
               </div>
-              <div className="text-black">{item.label}</div>
+              <div className="text-app-text-primary text-xs">{item.label}</div>
             </div>
           </div>
         ))}
       </div>
-      <div className="pb-20">{navItems[activePageIndex].page}</div>
+      <div className="pb-30">{navItems[activePageIndex].page}</div>
     </div>
   );
 };

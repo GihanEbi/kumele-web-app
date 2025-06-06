@@ -54,6 +54,24 @@
   --color-k-text-heading: var(--k-text-heading);
   --color-k-text-black: var(--k-text-black);
   --color-k-text-button: var(--k-text-button);
+  --color-app-background-primary: var(--app-background-primary);
+  --color-app-background-secondary: var(--app-background-secondary);
+  --color-app-background-model: var(--app-background-model);
+  --color-app-background-card: var(--app-background-card);
+  --color-app-input-primary: var(--app-input-primary);
+  --color-app-input-secondary: var(--app-input-secondary);
+  --color-app-input-yellow: var(--app-input-yellow);
+  --color-app-text-primary: var(--app-text-primary);
+  --color-app-text-secondary: var(--app-text-secondary);
+  --color-app-text-tertiary: var(--app-text-tertiary);
+  --color-app-text-black: var(--app-text-black);
+  --color-app-text-blue: var(--app-text-blue);
+  --color-app-button-primary: var(--app-button-primary);
+  --color-app-button-secondary: var(--app-button-secondary);
+  --color-app-button-gray: var(--app-button-gray);
+  --color-app-button-yellow: var(--app-button-yellow);
+  --color-app-button-blue: var(--app-button-blue);
+  --color-app-icon: var(--app-icon);
 }
 
 :root {
@@ -101,6 +119,35 @@
   --k-text-heading: oklch(1 0 0); /* #FFFFFF color (white color) */
   --k-text-black: oklch(0 0 0); /* #000000 color (black color) */
   --k-text-button: oklch(0.2686 0 0); /* #262626 color (dark gray color) */
+  
+  /* -------------- NEW COLOR SETUP ------------ */
+  /* BACKGROUND */
+  --app-background-primary: oklch(1 0 89.88); 
+  --app-background-secondary: oklch(0.9219 0 89.88);
+  --app-background-model: oklch(1 0 89.88);
+  --app-background-card: oklch(0.9551 0 89.88);
+
+  /* ICON */
+  --app-icon: oklch(0 0 0);
+
+  /* INPUT */
+  --app-input-primary: oklch(0.9551 0 89.88);
+  --app-input-secondary: oklch(0.8564 0.1871 83.38);
+  --app-input-yellow: oklch(0.8564 0.1871 83.38);
+
+  /* TEXT */
+  --app-text-primary: oklch(0 0 0);
+  --app-text-secondary: oklch(0.5999 0 89.88);
+  --app-text-tertiary: oklch(1 0 89.88);
+  --app-text-black: oklch(0 0 0);
+  --app-text-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
+
+  /* BUTTON */
+  --app-button-primary: oklch(0 0 0);
+  --app-button-secondary: oklch(1 0 89.88);
+  --app-button-gray: oklch(0.2393 0 89.88);
+  --app-button-yellow: oklch(0.8564 0.1871 83.38);
+  --app-button-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
 
 }
 
@@ -147,6 +194,36 @@
   --k-text-heading: oklch(0 0 0); /* #000000 color (black color) */
   --k-text-black: oklch(0 0 0); /* #000000 color (black color) */
   --k-text-button: oklch(0.8853 0 89.88); /* #d9d9d9 color (light gray color) */
+
+  /* -------------- NEW COLOR SETUP ------------ */
+  /* BACKGROUND */
+  --app-background-primary: oklch(0.1591 0 89.88); 
+  --app-background-secondary: oklch(0.2134 0 89.88);
+  --app-background-model: oklch(0 0 0);
+  --app-background-card: oklch(0.2931 0 89.88);
+
+
+  /* ICON */
+  --app-icon: oklch(1 0 89.88);
+
+  /* INPUT */
+  --app-input-primary: oklch(0.2393 0 89.88);
+  --app-input-secondary: oklch(0.8564 0.1871 83.38);
+  --app-input-yellow: oklch(0.8564 0.1871 83.38);
+
+  /* TEXT */
+  --app-text-primary: oklch(1 0 89.88);
+  --app-text-secondary: oklch(0.7952 0 0);
+  --app-text-tertiary: oklch(0.1591 0 89.88);
+  --app-text-black: oklch(0 0 0);
+  --app-text-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
+
+  /* BUTTON */
+  --app-button-primary: oklch(1 0 89.88);
+  --app-button-secondary: oklch(0.9551 0 89.88);
+  --app-button-gray: oklch(0.2393 0 89.88);
+  --app-button-yellow: oklch(0.8564 0.1871 83.38);
+  --app-button-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
 }
 
 @layer base {

@@ -51,7 +51,7 @@ const EarnMedals = () => {
       <Head>
         <title>Earn Medals</title>
       </Head>
-      <div className="min-h-screen bg-white text-gray-900">
+      <div className="min-h-screen bg-app-background-primary ">
         <div className="max-w-md mx-auto p-4 sm:p-6">
           {/* Header */}
           <header className="flex items-center mb-8">
@@ -60,13 +60,13 @@ const EarnMedals = () => {
               className="text-gray-700 hover:text-gray-900 mr-3"
               aria-label="Go back"
             >
-              <BackArrow />
+              <BackArrow className="text-app-icon"/>
             </button>
-            <h1 className="text-2xl font-bold text-gray-800">Earn Medals</h1>
+            <h1 className="text-2xl font-bold font-plusJakartaSans text-app-text-primary">Earn Medals</h1>
           </header>
 
           {/* Medal List */}
-          <main className="space-y-10">
+          <main className="space-y-8">
             {medalData.map((medal) => (
               <MedalCard key={medal.id} medal={medal} />
             ))}
@@ -102,9 +102,9 @@ const MedalCard: React.FC<MedalCardProps> = ({ medal }) => {
           unoptimized={true} // GIFs are often better unoptimized with next/image
         />
       </div>
-      <div>
-        <h2 className="text-xl font-semibold text-gray-800">{medal.title}</h2>
-        <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+      <div className="mt-5">
+        <h2 className="text-xl font-semibold font-plusJakartaSans text-app-text-primary">{medal.title}</h2>
+        <p className="text-xs font-plusJakartaSans text-app-text-secondary mt-1 leading-relaxed">
           {medal.description}
         </p>
       </div>
