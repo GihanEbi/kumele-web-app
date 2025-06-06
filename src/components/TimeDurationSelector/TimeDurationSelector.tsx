@@ -28,7 +28,7 @@ const TimeDurationSelector: React.FC = () => {
     <div className="flex items-center p-1  max-w-xs">
       {/* Time Display Section */}
       <div
-        className={`bg-black text-white text-text-caption px-4 py-2 ${
+        className={`bg-black text-white text-text-caption px-4 py-3 ${
           isBlueSectionVisible ? "rounded-l-lg" : "rounded-lg"
         } min-w-[70px] text-center`}
       >
@@ -37,13 +37,13 @@ const TimeDurationSelector: React.FC = () => {
 
       {/* Blue Cart Section (Conditional) */}
       {isBlueSectionVisible && (
-        <div className="bg-blue-600 py-2 rounded-r-lg px-6">
+        <div className="bg-blue-600 py-[11.5px] rounded-r-lg px-6">
           <BuyIcon />
         </div>
       )}
 
       {/* Increment/Decrement Section */}
-      <div className="bg-white px-3 gap-6 py-1.5 border rounded-lg flex items-center justify-between min-w-[60px] ml-4">
+      <div className="bg-white px-3 gap-6 py-2.5 border rounded-lg flex items-center justify-between min-w-[60px] ml-4">
         <button
           onClick={handleDecrement}
           disabled={currentTimeIndex === 0}

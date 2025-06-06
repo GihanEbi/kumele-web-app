@@ -77,7 +77,7 @@ const RadixAgeRangeSlider: React.FC<RadixAgeRangeSliderProps> = ({
           {currentValues[1]}
         </div>
         <SliderPrimitive.Root
-          className="relative flex items-center select-none touch-none w-full h-5 cursor-pointer"
+          className="relative flex items-center select-none touch-none w-full h-5 cursor-pointer mt-[-30px]"
           value={currentValues} // Controlled component
           onValueChange={handleValueChange}
           min={min}

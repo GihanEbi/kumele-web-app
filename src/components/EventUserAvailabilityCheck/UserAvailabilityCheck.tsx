@@ -49,7 +49,7 @@ const UserAvailabilityCheck: React.FC<UserAvailabilityCheckProps> = ({
           aria-label="Number of guests"
         />
       </div>
-      <div className="text-paragraph text-xs space-y-[-3px]">
+      <div className="text-paragraph text-[13px] space-y-[0px]">
         <p>
           <span className="text-red-500 font-semibold">*</span>To use this,
           please add your address and number of guest.
