@@ -8,6 +8,7 @@ import Image from "next/image";
 import { verification_email } from "@/routes/signup_and_signin";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { saveToken } from "@/utils/authUtils";
+import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 
 // props types
 type EmailVerificationModelProps = {
@@ -29,6 +30,8 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
 
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
+  // state for open
+  const [modelOpen, setModelOpen] = useState<boolean>(isOpen);
 
   useEffect(() => {
     if (isOpen) {
@@ -37,37 +40,55 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
     }
   }, [isOpen]);
 
+  const closeHandler = () => {
+    setIsVerified(false);
+    setShowVerificationFailed(true);
+    // set 2 seconds timeout
+    setTimeout(() => {
+      setModelOpen(true);
+      setIsVerified(false);
+      setShowVerificationFailed(false);
+    }, 2000);
+  };
+
   const handleVerify = async () => {
     // Prevent multiple clicks while loading
     if (loading) return;
     setLoading(true);
     // Check if verification code is not empty
-    if (verificationCode.trim() !== "") {
-      const dataObj = {
-        email: email,
-        code: verificationCode.trim(),
-      };
-      try {
-        const data = await verification_email(dataObj);
-        if (data.success) {
-          setIsVerified(true);
-          setShowVerificationFailed(false);
-          console.log(data.data.user_token);
-          saveToken(data.data.user_token);
-          router.push("/authentication/chooseInterests");
-        } else {
-          setIsVerified(false);
-          setShowVerificationFailed(true);
-          console.log(data);
-        }
-      } catch (error) {
-        console.error("Error during verification:", error);
-      } finally {
-        setLoading(false); // Stop loading spinner after verification attempt
-      }
-    } else {
-      alert("Please enter a verification code.");
+    // if (verificationCode.trim() !== "") {
+    //   const dataObj = {
+    //     email: email,
+    //     code: verificationCode.trim(),
+    //   };
+    try {
+      setIsVerified(true);
+      setShowVerificationFailed(false);
+      setModelOpen(false);
+      // const data = await verification_email(dataObj);
+      // if (data.success) {
+      //   setIsVerified(true);
+      //   setShowVerificationFailed(false);
+      //   console.log(data.data.user_token);
+      //   saveToken(data.data.user_token);
+    setTimeout(() => {
+        router.push("/authentication/chooseInterests");
+    }, 1000);
+      // } else {
+      //   setIsVerified(false);
+      //   setShowVerificationFailed(true);
+      //   console.log(data);
+      // }
+    } catch (error) {
+      console.error("Error during verification:", error);
+    } finally {
+      setLoading(false); // Stop loading spinner after verification attempt
     }
+    // } else {
+    //   // alert("Please enter a verification code.");
+    //   setIsVerified(false);
+    //   setShowVerificationFailed(true);
+    // }
   };
 
   if (!isOpen) {
@@ -89,21 +110,22 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-white w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <Image
+                {/* <Image
                   src="/common-gifs/email-verification-succsess.gif"
                   alt="Success"
                   width={100}
                   height={100}
-                />
+                /> */}
+                <CheckMarkGif/>
               </div>
-              <p className="text-gray-600 text-sm mb-6 text-center">
+              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
                 Verification successful
               </p>
             </div>
@@ -118,7 +140,7 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-white w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-primary  w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
@@ -132,7 +154,7 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
                   height={100}
                 />
               </div>
-              <p className="text-gray-600 text-sm mb-6 text-center">
+              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
                 Verification code is wrong
               </p>
             </div>
@@ -141,27 +163,27 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
       )}
 
       {/* verification */}
-      {isOpen && !isVerified && !showVerificationFailed && (
+      {modelOpen && !isVerified && !showVerificationFailed && (
         <div
           className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50 transition-opacity duration-300 ease-in-out"
           onClick={onClose}
         >
           <div
-            className={`bg-white w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <VerifyEmailIcon />
+                <VerifyEmailIcon className="text-app-icon" />
               </div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2 text-center">
+              <h2 className="text-2xl font-plusJakartaSans text-app-text-primary mb-2 text-center">
                 Verify E-mail
               </h2>
-              <p className="text-gray-600 text-sm mb-6 text-center">
+              {/* <p className="text-gray-600 text-sm mb-6 text-center">
                 Please enter the verification code sent to your e-mail.
-              </p>
+              </p> */}
 
               <div className="w-full">
                 <div className="mb-6">
@@ -174,13 +196,16 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
                 <div className="flex space-x-3">
                   <button
                     type="button"
-                    onClick={onClose}
-                    className="flex-1 py-1 px-4 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium transition-colors"
+                    onClick={() => {
+                      // onClose();
+                      closeHandler();
+                    }}
+                    className="flex-1 py-1 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                   >
                     Cancel
                   </button>
                   <button
-                    className="flex-1 py-3 px-4 bg-black text-white rounded-lg hover:bg-gray-800 font-medium transition-colors"
+                    className="flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                     onClick={() => {
                       handleVerify();
                     }}

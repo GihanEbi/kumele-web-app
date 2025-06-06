@@ -25,7 +25,7 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
           handleChange(e);
         }}
         value={value}
-        className="w-full appearance-none font-plusJakartaSans bg-k-primary-color rounded-lg py-3 px-3 text-sm text-k-text-button"
+        className="w-full appearance-none font-plusJakartaSans bg-app-input-primary rounded-lg py-3 px-3 text-sm text-app-text-button"
       >
         <option value="" disabled hidden>
           {placeholder}
@@ -35,14 +35,14 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
           <option
             key={item.value}
             value={item.value}
-            className="bg-k-background-primary text-k-text-button text-center font-plusJakartaSans text-xs rounded-lg "
+            className="bg-app-background-primary text-app-text-primary text-center font-plusJakartaSans text-xs rounded-lg "
           >
             {item.label}
           </option>
         ))}
       </select>
-      <div className="h-5 w-5 text-k-text-primary absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none">
-        <DownArrow className="text-k-text-primary" />
+      <div className="h-5 w-5 text-app-text-primary absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none">
+        <DownArrow className="text-app-icon" />
       </div>
     </div>
   );

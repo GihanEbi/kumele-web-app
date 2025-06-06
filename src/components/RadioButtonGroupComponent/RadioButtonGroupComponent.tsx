@@ -21,7 +21,7 @@ const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
 }) => {
   return (
     <div>
-      <p className="text-sm font-medium text-k-text-primary mb-5">{name}</p>
+      <p className="text-sm font-medium font-plusJakartaSans text-app-text-primary mb-5">{name}</p>
       <div className="flex justify-between items-center space-x-6">
         {options.map((gender, idx) => (
           <label
@@ -39,13 +39,13 @@ const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
             <div
               className={`w-5 h-5 rounded-full border-2 ${
                 gender.value !== value
-                  ? "border-k-text-primary"
-                  : "border-k-blue"
+                  ? "border-app-button-primary"
+                  : "border-app-button-blue"
               } flex items-center justify-center`}
             >
-              <div className={`w-2.5 h-2.5 rounded-full ${gender.value !== value ? "" : "bg-k-blue"} transition-all`} />
+              <div className={`w-2.5 h-2.5 rounded-full ${gender.value !== value ? "" : "bg-app-button-blue"} transition-all`} />
             </div>
-            <p className="text-sm text-k-text-primary">{gender.label}</p>
+            <p className="text-sm text-app-text-primary font-plusJakartaSans">{gender.label}</p>
           </label>
         ))}
       </div>

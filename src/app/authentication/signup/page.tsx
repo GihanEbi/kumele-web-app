@@ -80,14 +80,14 @@ const Signup = () => {
     };
 
     try {
-      const data = await register(dataObj);
-      if (data.success) {
-        console.log(data);
-        setShowEmailVerificationModel(true);
-        // router.push("/user");
-      } else {
-        console.log(data);
-      }
+      // const data = await register(dataObj);
+      setShowEmailVerificationModel(true);
+      // if (data.success) {
+      //   console.log(data);
+      //   // router.push("/user");
+      // } else {
+      //   console.log(data);
+      // }
     } catch (error) {
       console.log(error);
     } finally {
@@ -143,7 +143,7 @@ const Signup = () => {
         <div className="absolute bottom-1 left-5 flex items-center space-x-2 z-10">
           {" "}
           {/* z-10 ensures text is above background */}
-          <h1 className="text-xl font-bold text-k-text-heading font-plusJakartaSans">
+          <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
             Sign up
           </h1>
           <GoogleIcon />
@@ -154,22 +154,22 @@ const Signup = () => {
       <div
         className={`${
           showEmailVerificationModel
-            ? "k-background-secondary"
+            ? "bg-k-background-secondary"
             : "bg-k-background-primary"
         } px-6 py-6 relative z-10`}
       >
         <div className="mb-6">
-          <p className="text-xs font-plusJakartaSans text-k-text-primary mb-5">
+          <p className="text-xs font-plusJakartaSans text-app-text-primary mb-5">
             Language choice:
           </p>
           <div className="flex space-x-2">
-            <button className="flex-1 py-2.5 px-3 bg-k-secondary-color text-k-text-black font-plusJakartaSans text-sm font-medium rounded-md shadow-sm">
+            <button className="flex-1 py-2.5 px-3 bg-app-input-secondary text-app-text-black font-plusJakartaSans text-sm font-medium rounded-md shadow-sm">
               English
             </button>
-            <button className="flex-1 py-2.5 px-3 bg-k-primary-color text-k-text-button font-plusJakartaSans text-sm font-medium rounded-md hover:bg-gray-300">
+            <button className="flex-1 py-2.5 px-3 bg-app-input-primary text-app-text-secondary font-plusJakartaSans text-sm font-medium rounded-md hover:bg-gray-300">
               French
             </button>
-            <button className="flex-1 py-2.5 px-3 bg-k-primary-color text-k-text-button font-plusJakartaSans text-sm font-medium rounded-md hover:bg-gray-300">
+            <button className="flex-1 py-2.5 px-3 bg-app-input-primary text-app-text-secondary font-plusJakartaSans text-sm font-medium rounded-md hover:bg-gray-300">
               Spanish
             </button>
           </div>
@@ -178,7 +178,7 @@ const Signup = () => {
         <div className="space-y-4 mb-5">
           <div className="relative">
             <InputComponent
-              icon={<UserIcon className="text-k-text-primary" />}
+              icon={<UserIcon className="text-app-icon" />}
               placeholder="Enter name"
               value={form.name}
               onChange={(e) => {
@@ -191,7 +191,7 @@ const Signup = () => {
         <div className="space-y-4  mb-5">
           <div className="relative">
             <InputComponent
-              icon={<MailIcon className="text-k-text-primary" />}
+              icon={<MailIcon className="text-app-icon" />}
               placeholder="Enter email"
               value={form.email}
               onChange={(e) => {
@@ -211,7 +211,7 @@ const Signup = () => {
           />
         </div>
         <div className="pt-5">
-          <p className="text-sm font-plusJakartaSans text-k-text-primary mb-2">
+          <p className="text-sm font-plusJakartaSans text-app-text-primary mb-2">
             Date of Birth
           </p>
           <div className="flex space-x-2">
@@ -241,7 +241,7 @@ const Signup = () => {
         {/* enter password */}
         <div className="relative mt-5">
           <InputComponent
-            icon={<PasswordIcon className="text-k-text-primary" />}
+            icon={<PasswordIcon className="text-app-icon" />}
             placeholder="Enter Password"
             onChange={(e) => {
               handleInputChange(e.target.value, "password");
@@ -252,9 +252,9 @@ const Signup = () => {
           <button
             type="button"
             onClick={() => setPasswordVisible(!passwordVisible)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center"
           >
-            {passwordVisible ? <EyeIcon className="text-k-text-primary" /> : <EyeIcon className="text-k-text-primary" />}
+            {passwordVisible ? <EyeIcon className="text-app-icon" /> : <EyeIcon className="text-app-icon" />}
           </button>
         </div>
         {/* confirm password */}
@@ -271,15 +271,15 @@ const Signup = () => {
           <button
             type="button"
             onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center"
           >
-            {passwordVisible ? <EyeIcon className="text-k-text-primary" /> : <EyeIcon className="text-k-text-primary" />}
+            {passwordVisible ? <EyeIcon className="text-app-icon" /> : <EyeIcon className="text-app-icon" />}
           </button>
         </div>
         {/* referral code */}
         <div className="pt-5">
-          <p className="text-sm font-plusJakartaSans text-k-text-primary mb-1">
-            Referral code <span className="font-plusJakartaSans text-k-text-primary">(Optional)</span>
+          <p className="text-sm font-plusJakartaSans text-app-text-primary mb-1">
+            Referral code <span className="font-plusJakartaSans text-app-text-primary">(Optional)</span>
           </p>
           <InputComponent
             placeholder="e.g. DF3R435"
@@ -333,19 +333,19 @@ const Signup = () => {
         {/* footer signup button */}
         <div className="pt-4">
           <button
-            className="w-full bg-k-text-primary text-k-background-primary py-3.5 rounded-lg font-plusJakartaSans text-md"
+            className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-md"
             onClick={() => handleSubmit()}
           >
             Sign up
           </button>
         </div>
         <div className="flex flex-row items-center justify-center mt-6">
-          <p className="text-center text-sm text-k-text-primary">
+          <p className="text-center text-sm text-app-text-primary font-plusJakartaSans">
             Already have an account?{" "}
           </p>
           <p
             onClick={() => router.push("/authentication/signin")}
-            className="font-semibold text-xs underline text-k-text-primary hover:underline"
+            className="font-plusJakartaSans text-xs underline text-app-text-primary"
           >
             Sign in
           </p>

@@ -30,10 +30,10 @@ const CheckBoxComponent: React.FC<CheckBoxComponentProps> = ({
             onChange(e);
           }}
           checked={value}
-          className="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition duration-150 ease-in-out"
+          className="form-checkbox h-4 w-4 text-app-text-blue border-gray-300 rounded"
         />{" "}
         {/* Requires @tailwindcss/forms or use accent-blue-600 */}
-        <span className="text-sm font-plusJakartaSans text-k-text-button">{label}</span>
+        <span className="text-sm font-plusJakartaSans text-app-text-primary">{label}</span>
       </label>
     </div>
   );

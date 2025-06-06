@@ -11,8 +11,8 @@ interface animationProps {
   className?: string;
 }
 const HomePageGif: React.FC<animationProps> = ({
-  width = 100,
-  height = 100,
+  width = "100%",
+  height = "100%",
   loop = true,
   autoplay = true,
   className,
