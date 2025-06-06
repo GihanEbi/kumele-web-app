@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 
 export default function Home() {
   // This is a client component that uses the Next.js router to navigate.
@@ -16,6 +17,8 @@ export default function Home() {
 
   }, []);
   return (
-    <div></div>
+    <div>
+      <CheckMarkGif />
+    </div>
   );
 }

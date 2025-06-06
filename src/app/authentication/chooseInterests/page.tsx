@@ -8,7 +8,11 @@ import {
   set_user_name,
   user_permissions,
 } from "@/routes/permissions_and_hobbies";
-import { BackArrow, DownArrow } from "../../../../public/svg-icons/icons";
+import {
+  BackArrow,
+  DownArrow,
+  EmoryIcon,
+} from "../../../../public/svg-icons/icons";
 import InterestCard from "@/components/InterestCard/InterestCard";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import Notifications from "@/components/Models/PermissionModels/Notifications";
@@ -22,6 +26,34 @@ type ChooseInterestsProps = {
   name: string;
   icon: string;
 };
+
+const mockInterestData = [
+  {
+    id: 1,
+    name: "Sports",
+    icon: <EmoryIcon />,
+  },
+  {
+    id: 2,
+    name: "Music",
+    icon: <EmoryIcon />,
+  },
+  {
+    id: 3,
+    name: "Travel",
+    icon: <EmoryIcon />,
+  },
+  {
+    id: 4,
+    name: "Cooking",
+    icon: <EmoryIcon />,
+  },
+  {
+    id: 5,
+    name: "Art",
+    icon: <EmoryIcon />,
+  },
+];
 
 // maximum number of selections allowed
 const MAX_SELECTIONS = 5;
@@ -38,7 +70,7 @@ const ChooseInterests = () => {
   //  ------ get interest data from backend ------
   // This effect runs once when the component mounts to fetch interests
   useEffect(() => {
-    fetchInterests();
+    // fetchInterests();
   }, []);
   //  ------ states for permissions ------
   // ------- state for notification permissions ------
@@ -86,38 +118,41 @@ const ChooseInterests = () => {
   // Function to submit the permissions form
   const handleSubmitPermission = async (locationVal: string) => {
     setLoading(true);
-    try {
-      // Here you would typically send the form data to your backend
-      console.log("Submitting form with data:", form);
-
-      // Update the form with the location value
-      let dataObj = {
-        allow_notifications: form.allow_notifications,
-        allow_photos: form.allow_photos,
-        allow_location: locationVal, // Use the passed location value
-      };
-
-      const data = await user_permissions(dataObj);
-      console.log("Form submission response:", data);
-
-      if (data.success) {
         setLocationPermission(false);
         setUserNamePermission(true); // Show username permission after location
-        setLoading(false); // Reset loading state after submission
-      } else {
-        console.error("Failed to submit form:", data);
-        setLoading(false); // Reset loading state on failure
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setLoading(false);
-    } finally {
-      // Reset permissions states after submission
-      setNotificationPermission(false);
-      setPhotosPermission(false);
-      setLocationPermission(false);
-      setLoading(false);
-    }
+        setLoading(false);
+    // try {
+    //   // Here you would typically send the form data to your backend
+    //   console.log("Submitting form with data:", form);
+
+    //   // Update the form with the location value
+    //   let dataObj = {
+    //     allow_notifications: form.allow_notifications,
+    //     allow_photos: form.allow_photos,
+    //     allow_location: locationVal, // Use the passed location value
+    //   };
+
+    //   const data = await user_permissions(dataObj);
+    //   console.log("Form submission response:", data);
+
+    //   if (data.success) {
+    //     setLocationPermission(false);
+    //     setUserNamePermission(true); // Show username permission after location
+    //     setLoading(false); // Reset loading state after submission
+    //   } else {
+    //     console.error("Failed to submit form:", data);
+    //     setLoading(false); // Reset loading state on failure
+    //   }
+    // } catch (error) {
+    //   console.error("Error submitting form:", error);
+    //   setLoading(false);
+    // } finally {
+    //   // Reset permissions states after submission
+    //   setNotificationPermission(false);
+    //   setPhotosPermission(false);
+    //   setLocationPermission(false);
+    //   setLoading(false);
+    // }
   };
 
   // function to submit the interests
@@ -126,15 +161,16 @@ const ChooseInterests = () => {
     console.log(selectedInterestsIds);
 
     try {
-      const data = await select_hobbies_for_users({
-        hobbies: selectedInterestsIds,
-      });
-      if (data.success) {
-        // redirect to earnMedals page
         router.push("/authentication/earnMedals");
-      } else {
-        console.error("Failed to submit interests:", data);
-      }
+      // const data = await select_hobbies_for_users({
+      //   hobbies: selectedInterestsIds,
+      // });
+      // if (data.success) {
+      //   // redirect to earnMedals page
+      //   router.push("/authentication/earnMedals");
+      // } else {
+      //   console.error("Failed to submit interests:", data);
+      // }
     } catch (error) {
       console.error("Error submitting interests:", error);
     } finally {
@@ -146,7 +182,9 @@ const ChooseInterests = () => {
     <div>
       <div
         className={`min-h-screen ${
-          notificationPermission ? "bg-gray-300" : "bg-white"
+          notificationPermission || photosPermission || locationPermission || userNamePermission
+            ? "bg-app-background-secondary"
+            : "bg-app-background-primary"
         } flex flex-col items-center p-4 pt-6 sm:p-8`}
       >
         {/* Loading Spinner */}
@@ -157,21 +195,21 @@ const ChooseInterests = () => {
             <button
               onClick={() => router.back()}
               aria-label="Go back"
-              className="text-gray-700 hover:text-black p-2 -ml-2 rounded-full transition-colors"
+              className="hover:text-black p-2 -ml-2 rounded-full transition-colors"
             >
-              <BackArrow />
+              <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="text-2xl font-bold text-gray-800 ml-2">
+            <h1 className="text-2xl font-plusJakartaSans text-app-text-primary ml-2">
               Choose interests
             </h1>
           </div>
-          <p className="text-gray-600 text-sm mb-6 ml-5">
+          <p className="font-plusJakartaSans text-app-text-primary text-sm mb-6 ml-5">
             Choose up to {MAX_SELECTIONS} interests:
           </p>
 
           {/* Interests Grid */}
           <div className="grid grid-cols-3 gap-3 sm:gap-4">
-            {selectedInterests.map((interest) => (
+            {mockInterestData.map((interest) => (
               <InterestCard
                 key={interest.id}
                 interest={interest}
@@ -201,7 +239,7 @@ const ChooseInterests = () => {
               onClick={() => {
                 handleSubmitInterests();
               }}
-              className="w-full mt-5 bg-black text-white py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full mt-5 bg-app-button-primary text-app-text-tertiary font-plusJakartaSans py-3 px-4 rounded-lg "
             >
               Continue
             </button>
@@ -212,7 +250,6 @@ const ChooseInterests = () => {
         <Notifications
           isOpen={notificationPermission}
           onClose={(value: boolean) => {
-            console.log("Notification permission:", value);
 
             setForm((prev) => ({ ...prev, allow_notifications: value }));
             setNotificationPermission(false);

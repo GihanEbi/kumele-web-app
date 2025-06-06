@@ -1,6 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 import {
   ContactIcon,
@@ -19,42 +20,51 @@ import {
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { fetch_profile } from "@/routes/profile";
 import { useRouter } from "next/navigation";
+import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
 const settingsGroup1 = [
   {
-    icon: <SoundIcon />,
+    icon: <SoundIcon className="text-app-icon" />,
     text: "Notifications",
     link: "/user/profile/notifications",
   },
   {
-    icon: <PaymentIcon />,
+    icon: <PaymentIcon className="text-app-icon" />,
     text: "Payments & Subscriptions",
     link: "/user/profile/payment",
   },
-  { icon: <SecurityIcon />, text: "Security", link: "/user/profile/security" },
+  {
+    icon: <SecurityIcon className="text-app-icon" />,
+    text: "Security",
+    link: "/user/profile/security",
+  },
 ];
 
 const settingsGroup2 = [
-  { icon: <ContactIcon />, text: "Contact" },
+  { icon: <ContactIcon className="text-app-icon" />, text: "Contact" },
   {
-    icon: <GuidelinesIcon />,
+    icon: <GuidelinesIcon className="text-app-icon" />,
     text: "Guidelines",
     link: "/user/profile/guidelines",
   },
-  { icon: <ReferIcon />, text: "Refer a Friend" },
+  { icon: <ReferIcon className="text-app-icon" />, text: "Refer a Friend" },
   {
-    icon: <TermsAndConditionsIcon />,
+    icon: <TermsAndConditionsIcon className="text-app-icon" />,
     text: "Terms and Conditions",
     link: "/user/profile/terms-conditions",
   },
   {
-    icon: <NightModeIcon />,
+    icon: <NightModeIcon className="text-app-icon" />,
     text: "Night Mode",
   },
   {
-    icon: <DeleteAccountIcon />,
+    icon: <DeleteAccountIcon className="text-app-icon" />,
     text: "Delete Account",
   },
-  { icon: <SignOutIcon />, text: "Sign Out", link: "#" },
+  {
+    icon: <SignOutIcon className="text-app-icon" />,
+    text: "Sign Out",
+    link: "#",
+  },
 ];
 
 // ---------- interface ----------
@@ -80,7 +90,12 @@ const Profile = () => {
   // state for loading state
   const [loading, setLoading] = useState<boolean>(false);
 
+  const { theme, setTheme, systemTheme } = useTheme();
+
   useEffect(() => {
+    console.log("Current theme:", theme);
+    console.log("System theme:", systemTheme);
+
     fetchUserData();
   }, []);
 
@@ -112,18 +127,20 @@ const Profile = () => {
       <Head>
         <title>Profile Page</title>
       </Head>
-      <div className="min-h-screen bg-white text-gray-900 dark:text-gray-100 p-4 sm:p-6 font-sans">
+      <div className="min-h-screen bg-app-background-primary p-4 sm:p-6">
         <header className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
+          <h1 className="text-3xl font-bold text-app-text-primary font-plusJakartaSans">
+            Profile
+          </h1>
         </header>
 
         {/* Profile Card */}
-        <div className="bg-gray-200 p-5 rounded-xl shadow-lg mb-8 relative">
+        <div className="bg-app-background-card p-5 rounded-xl mb-8 relative">
           <button
             aria-label="Edit profile"
             className="absolute top-0 right-0 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
           >
-            <EditIcon />
+            <EditIcon className="text-app-icon" />
           </button>
           <div className="flex items-start space-x-4 mb-5">
             <div className="relative w-20 h-20 sm:w-24 sm:h-24">
@@ -133,27 +150,29 @@ const Profile = () => {
                   alt={userData.display_name}
                   width={96}
                   height={96}
-                  className="rounded-full object-cover border-4 border-pink-300 dark:border-pink-500"
+                  className="rounded-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-gray-300 rounded-full flex items-center justify-center">
-                  <span className="text-black text-3xl">
-                    {userData?.display_name[0]}
+                <div className="w-full h-full bg-app-input-primary font-plusJakartaSans rounded-full flex items-center justify-center">
+                  <span className="text-app-text-primary font-plusJakartaSans text-3xl">
+                    {userData?.display_name[0] ? userData.display_name[0] : "A"}
                   </span>
                 </div>
               )}
             </div>
             <div className="flex-1 mt-1">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-                {userData?.display_name}
+              <h2 className="text-xl sm:text-2xl font-bold font-plusJakartaSans text-app-text-primary">
+                {userData?.display_name
+                  ? userData.display_name
+                  : "Anonymous User"}
               </h2>
-              <button className="mt-1 text-xs bg-blue-800 text-white font-semibold py-1 px-3 rounded-md transition duration-150">
+              <button className="mt-1 text-xs font-plusJakartaSans bg-app-text-blue text-app-text-primary font-semibold py-1 px-3 rounded-md transition duration-150">
                 Edit hobbies
               </button>
             </div>
             <div className="w-16 h-16 sm:w-20 sm:h-20">
               <Image
-                src={userData?.qr_code_url || ""}
+                src={userData?.qr_code_url || "/images/QR-code.png"}
                 alt="QR Code"
                 width={80}
                 height={80}
@@ -162,25 +181,29 @@ const Profile = () => {
             </div>
           </div>
 
-          <p className="text-sm text-gray-800 mb-2">
+          <p className="text-sm text-app-text-primary font-plusJakartaSans mb-2">
             {userData?.bio || "No bio available."}
           </p>
           <div className="flex justify-around border-t border-white pt-4 text-center">
             <div>
-              <p className="text-xs text-gray-800">Following</p>
-              <p className="text-lg font-bold text-blue-800">
+              <p className="text-xs text-app-text-primary">Following</p>
+              <p className="text-lg font-bold text-app-text-blue font-plusJakartaSans">
                 {userData?.following_count || 0}
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-800">Followers</p>
-              <p className="text-lg font-bold text-blue-800">
+              <p className="text-xs text-app-text-primary font-plusJakartaSans">
+                Followers
+              </p>
+              <p className="text-lg font-bold text-app-text-blue font-plusJakartaSans">
                 {userData?.followers_count || 0}
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-800">Gold status</p>
-              <p className="text-lg font-bold text-blue-800">
+              <p className="text-xs text-app-text-primary font-plusJakartaSans">
+                Gold status
+              </p>
+              <p className="text-lg font-bold text-app-text-blue font-plusJakartaSans">
                 {userData?.gold_status || 0}
               </p>
             </div>
@@ -189,9 +212,11 @@ const Profile = () => {
 
         {/* Settings */}
         <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-3 text-gray-800">Settings</h3>{" "}
+          <h3 className="text-xl font-semibold mb-3 text-app-text-primary font-plusJakartaSans">
+            Settings
+          </h3>{" "}
           {/* Settings Group 1 */}
-          <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden mb-6">
+          <div className="bg-app-input-primary rounded-lg overflow-hidden mb-6">
             {settingsGroup1.map((item, index) => (
               <button
                 key={item.text}
@@ -201,21 +226,21 @@ const Profile = () => {
                     : ""
                 }`}
                 onClick={() => {
-                  router.push(item.link);
+                  // router.push(item.link);
                 }}
               >
                 <div className="flex items-center space-x-3">
                   {item.icon}
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-md font-medium text-app-text-primary font-plusJakartaSans">
                     {item.text}
                   </span>
                 </div>
-                <RightArrowIcon />
+                <RightArrowIcon className="text-app-icon" />
               </button>
             ))}
           </div>
           {/* Settings Group 2 & Other items */}
-          <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden">
+          <div className="bg-app-input-primary rounded-lg overflow-hidden">
             {settingsGroup2.map((item, index) => (
               <button
                 key={item.text}
@@ -233,11 +258,25 @@ const Profile = () => {
               >
                 <div className="flex items-center space-x-3">
                   {item.icon}
-                  <span className="text-sm font-medium text-gray-800">
+                  <span className="text-md font-medium text-app-text-primary font-plusJakartaSans">
                     {item.text}
                   </span>
                 </div>
-                <RightArrowIcon />
+                {item.text !== "Night Mode" ? (
+                  <RightArrowIcon className="text-app-icon" />
+                ) : (
+                  <SwitchComponent
+                    required
+                    disabled={false}
+                    value={
+                      theme === "dark" || systemTheme === "dark" ? true : false
+                    }
+                    // onChange={handleSoundNotificationChange}
+                    onclick={() => {
+                      setTheme(theme === "dark" ? "light" : "dark");
+                    }}
+                  />
+                )}
               </button>
             ))}
           </div>
