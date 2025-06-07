@@ -89,9 +89,9 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
       {/* Adjust max-w as needed */}
       <div className="flex items-stretch">
         {/* Left section with icon and input */}
-        <div className="flex items-center bg-gray-100 pl-3 pr-2 py-2 rounded-l-lg border border-r-0 border-gray-200 gap-3">
+        <div className="flex items-center bg-app-input-primary pl-3 pr-2 py-2 rounded-l-lg border border-r-0  gap-3">
           <TwoTicketsIcon />
-          <div className="flex items-center border border-gray-400 rounded">
+          <div className="flex items-center border gap-3 rounded-lg">
             <input
               ref={input1Ref}
               type="text"
@@ -99,7 +99,7 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
               value={digit1}
               onChange={(e) => handleInputChange(e, setDigit1, input2Ref)}
               onKeyDown={(e) => handleKeyDown(e)}
-              className="w-5 h-7 text-center text-gray-800 bg-transparent focus:outline-none appearance-none"
+              className="w-5 h-7 text-center text-app-text-secondary bg-transparent focus:outline-none appearance-none pl-2"
               aria-label="First digit of guest count"
             />
             <span className="text-gray-400 select-none">|</span>
@@ -110,10 +110,10 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
               value={digit2}
               onChange={(e) => handleInputChange(e, setDigit2)}
               onKeyDown={(e) => handleKeyDown(e, input1Ref)}
-              className="w-5 h-7 text-center text-gray-800 bg-transparent focus:outline-none appearance-none"
+              className="w-5 h-7 text-center text-app-text-secondary bg-transparent focus:outline-none appearance-none "
               aria-label="Second digit of guest count"
             />
-            <span className="text-gray-400 select-none">|</span>
+            <span className="text-app-text-secondary select-none">|</span>
             <input
               ref={input2Ref}
               type="text"
@@ -121,7 +121,7 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
               value={digit2}
               onChange={(e) => handleInputChange(e, setDigit2)}
               onKeyDown={(e) => handleKeyDown(e, input1Ref)}
-              className="w-5 h-7 text-center text-gray-800 bg-transparent focus:outline-none appearance-none"
+              className="w-5 h-7 text-center text-app-text-secondary bg-transparent focus:outline-none appearance-none pr-2"
               aria-label="Second digit of guest count"
             />
           </div>

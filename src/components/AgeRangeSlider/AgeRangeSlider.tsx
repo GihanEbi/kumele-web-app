@@ -39,8 +39,8 @@ const RadixAgeRangeSlider: React.FC<RadixAgeRangeSliderProps> = ({
   );
 
   const valueBubbleBaseStyle =
-    "absolute w-7 h-7 bg-gray-800 text-white text-xs font-bold rounded-full flex items-center justify-center transform -translate-x-1/2 pointer-events-none select-none";
-  const valueBubbleTopPosition = "-top-9"; // Adjust for spacing above the track
+    "absolute w-8 h-8  bg-app-range-slider-primary text-app-range-slider-secondary test-text-caption rounded-full flex items-center justify-center transform -translate-x-1/2 pointer-events-none select-none";
+  const valueBubbleTopPosition = "-top-10"; // Adjust for spacing above the track
 
   return (
     <div className="w-full">
@@ -62,7 +62,7 @@ const RadixAgeRangeSlider: React.FC<RadixAgeRangeSliderProps> = ({
         {/* pt-8 for tooltip space */}
         {/* Min Value Tooltip */}
         <div
-          className={`${valueBubbleBaseStyle} ${valueBubbleTopPosition} z-10`}
+          className={`${valueBubbleBaseStyle} ${valueBubbleTopPosition} z-10 ml-2`}
           style={{ left: `${getPercentage(currentValues[0])}%` }}
           aria-hidden="true"
         >
@@ -86,27 +86,27 @@ const RadixAgeRangeSlider: React.FC<RadixAgeRangeSliderProps> = ({
           minStepsBetweenThumbs={1}
           aria-label={label}
         >
-          <SliderPrimitive.Track className="bg-gray-200 relative grow rounded-full h-[3px] sm:h-1">
-            <SliderPrimitive.Range className="absolute bg-black rounded-full h-full" />
+          <SliderPrimitive.Track className="bg-app-range-slider-track-active relative grow rounded-full h-[6px] sm:h-1">
+            <SliderPrimitive.Range className="absolute bg-app-range-slider-track rounded-full h-full" />
           </SliderPrimitive.Track>
 
           {/* Thumb for min value */}
           <SliderPrimitive.Thumb
-            className="block w-4 h-4 bg-gray-800 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75"
+            className="block w-5 h-5 bg-app-range-slider-primary rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75"
             aria-label={`Minimum ${label.toLowerCase()}`}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <div className="w-[5px] h-[5px] bg-white rounded-full"></div>
+              <div className="w-[7px] h-[7px] bg-app-range-slider-secondary rounded-full"></div>
             </div>
           </SliderPrimitive.Thumb>
 
           {/* Thumb for max value */}
           <SliderPrimitive.Thumb
-            className="block w-4 h-4 bg-gray-800 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75"
+            className="block w-5 h-5 bg-app-range-slider-primary rounded-full  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75"
             aria-label={`Maximum ${label.toLowerCase()}`}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <div className="w-[5px] h-[5px] bg-white rounded-full"></div>
+              <div className="w-[7px] h-[7px] bg-app-range-slider-secondary rounded-full"></div>
             </div>
           </SliderPrimitive.Thumb>
         </SliderPrimitive.Root>

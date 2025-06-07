@@ -246,7 +246,7 @@ const CreateEventSection = () => {
 
   return (
     <div
-      className="max-w-full mx-auto p-6 bg-white rounded-lg"
+      className="max-w-full mx-auto p-6 bg-app-background-primary rounded-lg"
       onClick={closeModal}
     >
       <div className="flex flex-row gap-5">
@@ -262,10 +262,10 @@ const CreateEventSection = () => {
         <label className="text-body">Event Category</label>
 
         <div className="relative mt-3">
+          <div className="overflow-hidden">
           <div
             ref={categoriesContainerRef}
             className="flex space-x-3 overflow-x-auto pb-3 -mx-4 px-4 no-scrollbar"
-            // ... (your drag-and-drop props remain the same)
             onMouseDown={handleMouseDown}
             onMouseLeave={handleMouseLeave}
             onMouseUp={handleMouseUp}
@@ -281,7 +281,13 @@ const CreateEventSection = () => {
             }}
           >
             {EVENT_CATEGORIES.map((category) => (
-              <div className="bg-k-secondary-color border-none flex h-24 w-24 rounded-lg">
+              <div
+                className={`${
+                  selectedCategory === category.id
+                    ? "bg-k-secondary-color border-none"
+                    : "bg-app-background-card hover:bg-app-background"
+                }bg-k-secondary-color border-none flex h-24 w-24 rounded-lg`}
+              >
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
@@ -290,7 +296,7 @@ const CreateEventSection = () => {
             ${
               selectedCategory === category.id
                 ? "bg-k-secondary-color border-none"
-                : "bg-gray-100 hover:bg-gray-200 border-2 border-transparent"
+                : "bg-app-background-card hover:bg-app-background"
             }
           `}
                 >
@@ -301,6 +307,7 @@ const CreateEventSection = () => {
                 </button>
               </div>
             ))}
+          </div>
           </div>
         </div>
       </div>
@@ -393,9 +400,9 @@ const CreateEventSection = () => {
             onChange={handleDescriptionChange}
             maxLength={maxCharacters}
             placeholder="More About the event"
-            className="w-full h-32 p-3 bg-gray-100  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500"
+            className="w-full h-32 p-3 bg-app-input-primary  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500"
           />
-          <p className="text-xs text-gray-500 mt-1 text-right">
+          <p className="text-xs text-app-text-secondary mt-1 text-right">
             {description.length}/{maxCharacters} Max
           </p>
         </div>
@@ -516,7 +523,7 @@ const CreateEventSection = () => {
         />
       </div>
 
-      <div className="grid grid-cols-3 gap-x-4 mt-10">
+      <div className="grid grid-cols-3 gap-x-3 mt-10">
         {" "}
         {/* Use grid-cols-3 */}
         {paymentOptionsConfig.map((option) => (
@@ -534,7 +541,7 @@ const CreateEventSection = () => {
       </div>
 
       {/* Create Event Button */}
-      <button className="w-full mt-10 bg-black hover:bg-yellow-500 text-text-caption text-white py-3 px-4 rounded-lg transition-colors mb-10">
+      <button className="w-full mt-10 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-10">
         Preview Event
       </button>
     </div>
