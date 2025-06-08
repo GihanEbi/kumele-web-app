@@ -17,5 +17,6 @@ export interface Comment {
   date: string;
   content: string;
   isOwner?: boolean;
+  avatarUrl?: string;
 }
 

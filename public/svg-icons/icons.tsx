@@ -565,7 +565,7 @@ export function TwitterIcon() {
   );
 }
 
-export function YoutubeIcon() {
+export function YoutubeIcon(props: commonProps) {
   return (
     <svg
       width="25"
@@ -573,6 +573,7 @@ export function YoutubeIcon() {
       viewBox="0 0 25 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <rect
         x="0.819336"
@@ -580,17 +581,17 @@ export function YoutubeIcon() {
         width="24"
         height="24"
         rx="5.18919"
-        fill="white"
+        fill="currentColor"
         fill-opacity="0.6"
       />
       <path
         opacity="0.35"
         d="M19.4167 4.51566C17.8244 4.32452 15.6355 4.15155 12.9276 4.15155C10.2197 4.15155 8.03071 4.32452 6.4385 4.51566C4.7079 4.72323 3.41406 6.20474 3.41406 7.94831V15.9232C3.41406 17.6659 4.7079 19.1474 6.4385 19.3559C8.03071 19.5461 10.2197 19.7191 12.9276 19.7191C15.6355 19.7191 17.8244 19.5461 19.4167 19.355C21.1473 19.1466 22.4411 17.6659 22.4411 15.9224V7.94831C22.4411 6.20474 21.1473 4.72323 19.4167 4.51566Z"
-        fill="black"
+        fill="currentColor"
       />
       <path
         d="M15.9719 11.1606L11.7808 8.36617C11.4945 8.1759 11.1261 8.15688 10.8251 8.31947C10.5224 8.48206 10.333 8.79774 10.333 9.14109V14.7298C10.333 15.0741 10.5224 15.3889 10.8251 15.5515C10.9626 15.625 11.114 15.6613 11.2645 15.6613C11.4452 15.6613 11.6251 15.6086 11.7808 15.5048L15.9719 12.7104C16.2314 12.5374 16.3871 12.2468 16.3871 11.9355C16.3871 11.6241 16.2314 11.3335 15.9719 11.1606Z"
-        fill="black"
+        fill="currentColor"
       />
     </svg>
   );
@@ -1486,7 +1487,7 @@ export function UpArrowIcon(props: commonProps) {
   );
 }
 
-export function ClockIcon(props:commonProps) {
+export function ClockIcon(props: commonProps) {
   return (
     <svg
       width="25"
@@ -2446,7 +2447,7 @@ export function EventCategory2(props: commonProps) {
   );
 }
 
-export function TwoTicketsIcon(props:commonProps) {
+export function TwoTicketsIcon(props: commonProps) {
   return (
     <svg
       width="22"
@@ -2473,7 +2474,7 @@ export function TwoTicketsIcon(props:commonProps) {
   );
 }
 
-export function VanIcon(props:commonProps) {
+export function VanIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2510,7 +2511,7 @@ export function VanIcon(props:commonProps) {
   );
 }
 
-export function KnightIcon(props:commonProps) {
+export function KnightIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2537,7 +2538,7 @@ export function KnightIcon(props:commonProps) {
   );
 }
 
-export function MusicIcon(props:commonProps) {
+export function MusicIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2604,7 +2605,7 @@ export function MusicIcon(props:commonProps) {
     </svg>
   );
 }
-export function ClubbingIcon(props:commonProps) {
+export function ClubbingIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2666,7 +2667,7 @@ export function ClubbingIcon(props:commonProps) {
   );
 }
 
-export function FestivalIcon(props:commonProps) {
+export function FestivalIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2698,7 +2699,7 @@ export function FestivalIcon(props:commonProps) {
   );
 }
 
-export function OutdoorsIcon(props:commonProps) {
+export function OutdoorsIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2750,7 +2751,7 @@ export function OutdoorsIcon(props:commonProps) {
   );
 }
 
-export function VolunteerIcon(props:commonProps) {
+export function VolunteerIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2787,7 +2788,7 @@ export function VolunteerIcon(props:commonProps) {
   );
 }
 
-export function DYIIcon(props:commonProps) {
+export function DYIIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2834,7 +2835,7 @@ export function DYIIcon(props:commonProps) {
   );
 }
 
-export function ActivismIcon(props:commonProps) {
+export function ActivismIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2876,7 +2877,7 @@ export function ActivismIcon(props:commonProps) {
   );
 }
 
-export function PetloveIcon(props:commonProps) {
+export function PetloveIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2920,7 +2921,7 @@ export function PetloveIcon(props:commonProps) {
   );
 }
 
-export function VideoGamesIcon(props:commonProps) {
+export function VideoGamesIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2952,7 +2953,7 @@ export function VideoGamesIcon(props:commonProps) {
   );
 }
 
-export function FamilyActivityIcon(props:commonProps) {
+export function FamilyActivityIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -2987,7 +2988,7 @@ export function FamilyActivityIcon(props:commonProps) {
   );
 }
 
-export function TechIcon(props:commonProps) {
+export function TechIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -3029,7 +3030,7 @@ export function TechIcon(props:commonProps) {
   );
 }
 
-export function CostumeIcon(props:commonProps) {
+export function CostumeIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -3082,7 +3083,7 @@ export function CostumeIcon(props:commonProps) {
   );
 }
 
-export function FoodIcon(props:commonProps) {
+export function FoodIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -3126,7 +3127,7 @@ export function FoodIcon(props:commonProps) {
   );
 }
 
-export function HousePartyIcon(props:commonProps) {
+export function HousePartyIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -3173,7 +3174,7 @@ export function HousePartyIcon(props:commonProps) {
   );
 }
 
-export function CampingIcon(props:commonProps) {
+export function CampingIcon(props: commonProps) {
   return (
     <svg
       width="36"
@@ -3366,3 +3367,275 @@ export function OthersIcon(props: commonProps) {
     </svg>
   );
 }
+
+export function searchIcons(props: commonProps) {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M8.16666 0.666656C12.3067 0.666656 15.6667 4.02666 15.6667 8.16666C15.6667 12.3067 12.3067 15.6667 8.16666 15.6667C4.02666 15.6667 0.666656 12.3067 0.666656 8.16666C0.666656 4.02666 4.02666 0.666656 8.16666 0.666656ZM8.16666 14C11.3892 14 14 11.3892 14 8.16666C14 4.94332 11.3892 2.33332 8.16666 2.33332C4.94332 2.33332 2.33332 4.94332 2.33332 8.16666C2.33332 11.3892 4.94332 14 8.16666 14ZM15.2375 14.0592L17.595 16.4158L16.4158 17.595L14.0592 15.2375L15.2375 14.0592Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+export function ConfettiIcon(props: commonProps) {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 17 17"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g id="icons8-confetti-24 2">
+        <path
+          id="Vector"
+          d="M9.56511 7.33984C9.39253 7.33984 9.21995 7.27378 9.0885 7.14232C8.82491 6.87873 8.82491 6.45268 9.0885 6.18909L9.56511 5.71248C9.81993 5.45766 10.1584 5.31744 10.5183 5.31744H10.9134C10.9134 4.57387 11.5181 3.96917 12.2617 3.96917V3.29503C12.2617 2.55146 12.8664 1.94676 13.6099 1.94676H14.2841C14.6562 1.94676 14.9582 2.2481 14.9582 2.6209C14.9582 2.99369 14.6562 3.29503 14.2841 3.29503H13.6099V3.96917C13.6099 4.71274 13.0052 5.31744 12.2617 5.31744C12.2617 6.06101 11.657 6.66571 10.9134 6.66571H10.5183L10.0417 7.14232C9.91027 7.27378 9.73769 7.33984 9.56511 7.33984Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_2"
+          opacity="0.35"
+          d="M10.0338 11.5902L5.31481 6.87126C5.05122 6.60767 4.62517 6.60767 4.36158 6.87126C4.13237 7.10046 4.11485 7.44832 4.2854 7.70988L2.21378 13.3915C1.91851 14.2011 2.70388 14.9865 3.51352 14.6912L9.1958 12.6196C9.30703 12.6924 9.42973 12.741 9.55781 12.741C9.73039 12.741 9.90297 12.6749 10.0344 12.5434C10.2967 12.2805 10.2967 11.8538 10.0338 11.5902Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_3"
+          d="M11.9243 15.4294C12.4827 15.4294 12.9355 14.9767 12.9355 14.4182C12.9355 13.8597 12.4827 13.407 11.9243 13.407C11.3658 13.407 10.9131 13.8597 10.9131 14.4182C10.9131 14.9767 11.3658 15.4294 11.9243 15.4294Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_4"
+          d="M14.6211 8.01398C15.1795 8.01398 15.6323 7.56125 15.6323 7.00278C15.6323 6.44431 15.1795 5.99158 14.6211 5.99158C14.0626 5.99158 13.6099 6.44431 13.6099 7.00278C13.6099 7.56125 14.0626 8.01398 14.6211 8.01398Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_5"
+          d="M2.48667 6.66567C3.04514 6.66567 3.49787 6.21294 3.49787 5.65447C3.49787 5.096 3.04514 4.64326 2.48667 4.64326C1.92819 4.64326 1.47546 5.096 1.47546 5.65447C1.47546 6.21294 1.92819 6.66567 2.48667 6.66567Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_6"
+          d="M9.90201 3.29496C10.4605 3.29496 10.9132 2.84223 10.9132 2.28376C10.9132 1.72528 10.4605 1.27255 9.90201 1.27255C9.34354 1.27255 8.89081 1.72528 8.89081 2.28376C8.89081 2.84223 9.34354 3.29496 9.90201 3.29496Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_7"
+          d="M4.50848 1.94676C3.9503 1.94676 3.49796 2.39978 3.49796 2.95796C3.49796 3.51615 3.95097 3.96917 4.50916 3.96917H5.04105C5.67811 3.96917 6.1945 4.48555 6.1945 5.12261V5.99157C6.1945 6.3637 6.49651 6.66571 6.86863 6.66571C7.24076 6.66571 7.54277 6.3637 7.54277 5.99157V4.6433C7.54277 3.15414 6.33539 1.94676 4.84623 1.94676H4.50848Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_8"
+          d="M14.9582 11.7224C14.9582 12.2805 14.5052 12.7329 13.947 12.7329C13.3888 12.7329 12.9358 12.2799 12.9358 11.7217V11.1898C12.9358 10.5527 12.4194 10.0363 11.7823 10.0363H10.9134C10.5412 10.0363 10.2392 9.73433 10.2392 9.36221C10.2392 8.99008 10.5412 8.68807 10.9134 8.68807H12.2616C13.7508 8.68807 14.9582 9.89545 14.9582 11.3846V11.7224Z"
+          fill="currentColor"
+        />
+      </g>
+    </svg>
+  );
+}
+
+export function LikeIcon(props: commonProps) {
+  return (
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 22 22"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g id="heart icon">
+        <g id="Group">
+          <path
+            id="Vector"
+            d="M11.6948 19.7785C11.3043 20.169 10.6711 20.169 10.2806 19.7785L1.76349 11.2614C0.704337 10.2023 0.120911 8.79391 0.120911 7.29623C0.120911 5.7983 0.704337 4.3902 1.76349 3.33105C2.82264 2.2719 4.23073 1.68848 5.72866 1.68848C7.22659 1.68848 8.63468 2.2719 9.69383 3.33105L10.9877 4.62493L12.2816 3.33105C13.3407 2.2719 14.7491 1.68848 16.2468 1.68848C17.7447 1.68848 19.1528 2.2719 20.2119 3.33105C21.2713 4.3902 21.8545 5.7983 21.8545 7.29623C21.8545 8.79415 21.2713 10.2023 20.2119 11.2614L11.6948 19.7785Z"
+            fill="currentColor"
+            fill-opacity="0.35"
+          />
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+export function ShareIcon(props: commonProps) {
+  return (
+    <svg
+      width="27"
+      height="26"
+      viewBox="0 0 27 26"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g id="icons8-share-24 1">
+        <path
+          id="Vector"
+          d="M9.80242 12.7996L16.6166 9.65472C15.8203 8.90722 15.3133 7.86722 15.2592 6.70264L8.44501 9.84755C9.24234 10.5929 9.74826 11.634 9.80242 12.7996Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_2"
+          d="M16.6166 16.3466L9.80242 13.2017C9.74826 14.3662 9.24126 15.4073 8.44501 16.1548L15.2592 19.2997C15.3133 18.1341 15.8193 17.093 16.6166 16.3466Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_3"
+          opacity="0.35"
+          d="M5.48873 8.6665C3.09565 8.6665 1.1554 10.6068 1.1554 12.9998C1.1554 15.3929 3.09565 17.3332 5.48873 17.3332C7.88181 17.3332 9.82206 15.3929 9.82206 12.9998C9.82206 10.6068 7.88181 8.6665 5.48873 8.6665Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_4"
+          opacity="0.35"
+          d="M19.572 2.1665C17.1789 2.1665 15.2386 4.10675 15.2386 6.49984C15.2386 8.89292 17.1789 10.8332 19.572 10.8332C21.9651 10.8332 23.9053 8.89292 23.9053 6.49984C23.9053 4.10675 21.9651 2.1665 19.572 2.1665Z"
+          fill="currentColor"
+        />
+        <path
+          id="Vector_5"
+          opacity="0.35"
+          d="M19.572 15.1665C17.1789 15.1665 15.2386 17.1068 15.2386 19.4998C15.2386 21.8929 17.1789 23.8332 19.572 23.8332C21.9651 23.8332 23.9053 21.8929 23.9053 19.4998C23.9053 17.1068 21.9651 15.1665 19.572 15.1665Z"
+          fill="currentColor"
+        />
+      </g>
+    </svg>
+  );
+}
+
+export function BlogYoutbeIcon(props: commonProps) {
+  return (
+    <svg
+      width="27"
+      height="26"
+      viewBox="0 0 27 26"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        opacity="0.35"
+        d="M20.8254 4.61124C19.1005 4.40418 16.7292 4.2168 13.7957 4.2168C10.8623 4.2168 8.49093 4.40418 6.76607 4.61124C4.89131 4.8361 3.48969 6.44103 3.48969 8.32985V16.9691C3.48969 18.857 4.89131 20.4619 6.76607 20.6877C8.49093 20.8939 10.8623 21.0812 13.7957 21.0812C16.7292 21.0812 19.1005 20.8939 20.8254 20.6868C22.7002 20.461 24.1018 18.857 24.1018 16.9682V8.32985C24.1018 6.44103 22.7002 4.8361 20.8254 4.61124Z"
+        fill="currentColor"
+      />
+      <path
+        d="M17.0943 11.8094L12.554 8.78219C12.2439 8.57607 11.8447 8.55546 11.5187 8.7316C11.1908 8.90774 10.9856 9.24971 10.9856 9.62167V15.676C10.9856 16.0489 11.1908 16.3899 11.5187 16.5661C11.6677 16.6457 11.8316 16.6851 11.9947 16.6851C12.1905 16.6851 12.3853 16.6279 12.554 16.5155L17.0943 13.4883C17.3753 13.3009 17.544 12.9861 17.544 12.6488C17.544 12.3115 17.3753 11.9967 17.0943 11.8094Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+export function BlogFacebookIcon(props: commonProps) {
+  return (
+    <svg
+      width="27"
+      height="26"
+      viewBox="0 0 27 26"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g id="icons8-facebook-f">
+        <g id="Group 52">
+          <path
+            id="Vector"
+            d="M14.1565 21.0812H11.8568C11.4337 21.0812 11.0903 20.7378 11.0903 20.3147V8.81619C11.0903 5.74993 12.6234 4.2168 15.6897 4.2168H17.2228C17.6459 4.2168 17.9894 4.56022 17.9894 4.98336V7.28306C17.9894 7.70621 17.6459 8.04963 17.2228 8.04963H15.6897C15.2665 8.04963 14.9231 8.39305 14.9231 8.81619V20.3147C14.9231 20.7378 14.5797 21.0812 14.1565 21.0812Z"
+            fill="currentColor"
+          />
+          <g id="Group" opacity="0.35">
+            <path
+              id="Vector_2"
+              d="M17.007 10.3491H14.9227V14.182H16.6237C16.9756 14.182 17.2822 13.9428 17.3673 13.6009L17.7506 11.3012C17.8717 10.8175 17.5061 10.3491 17.007 10.3491Z"
+              fill="currentColor"
+            />
+            <path
+              id="Vector_3"
+              d="M11.0899 10.3491H9.55679C9.13364 10.3491 8.79022 10.6925 8.79022 11.1157V13.4154C8.79022 13.8385 9.13364 14.182 9.55679 14.182H11.0899V10.3491Z"
+              fill="currentColor"
+            />
+          </g>
+        </g>
+      </g>
+    </svg>
+  );
+}
+export function BlogPinterestIcon(props: commonProps) {
+  return (
+    <svg
+      width="27"
+      height="26"
+      viewBox="0 0 27 26"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        opacity="0.35"
+        d="M13.3637 21.0812C18.0207 21.0812 21.796 17.306 21.796 12.649C21.796 7.99203 18.0207 4.2168 13.3637 4.2168C8.70675 4.2168 4.93152 7.99203 4.93152 12.649C4.93152 17.306 8.70675 21.0812 13.3637 21.0812Z"
+        fill="currentColor"
+      />
+      <path
+        d="M13.5507 7.34326C9.9113 7.34326 7.97864 9.78692 7.97864 12.4464C7.97864 13.6835 8.63719 15.2223 9.69038 15.7131C9.84975 15.7873 9.93576 15.7553 9.97202 15.6009C9.99984 15.4837 10.1423 14.9112 10.2064 14.6447C10.2267 14.5596 10.2166 14.4862 10.1482 14.4027C9.8 13.9794 9.52089 13.2028 9.52089 12.4785C9.52089 10.6183 10.9291 8.8189 13.328 8.8189C15.3998 8.8189 16.8502 10.2305 16.8502 12.2491C16.8502 14.53 15.6983 16.1102 14.1999 16.1102C13.3719 16.1102 12.7521 15.4256 12.9511 14.5865C13.1889 13.5848 13.6493 12.5029 13.6493 11.7795C13.6493 11.1319 13.3019 10.5922 12.5826 10.5922C11.7369 10.5922 11.0572 11.4666 11.0572 12.6395C11.0572 13.3858 11.3094 13.8909 11.3094 13.8909C11.3094 13.8909 10.4737 17.4248 10.3203 18.0825C10.1508 18.8086 10.2165 19.8289 10.2899 20.4958C10.4805 20.5701 10.6702 20.6451 10.8675 20.7058C11.2116 20.1459 11.7251 19.2276 11.9156 18.4957C12.0185 18.1011 12.441 16.4905 12.441 16.4905C12.7159 17.015 13.5186 17.4586 14.3736 17.4586C16.9168 17.4586 18.7491 15.1203 18.7491 12.2137C18.7491 9.42771 16.4758 7.34326 13.5507 7.34326Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+export function BlogTwitterIcon(props: commonProps) {
+  return (
+    <svg
+      width="27"
+      height="26"
+      viewBox="0 0 27 26"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M17.6097 6.77734C17.0695 6.77734 16.631 7.21581 16.631 7.75607C16.631 8.29633 17.0695 8.7348 17.6097 8.7348C18.15 8.7348 18.5884 8.29633 18.5884 7.75607C18.5884 7.21581 18.15 6.77734 17.6097 6.77734Z"
+        fill="currentColor"
+      />
+      <path
+        opacity="0.35"
+        d="M23.1228 5.57919C23.4291 5.21901 23.0445 4.68854 22.608 4.87157C21.8788 5.17693 21.0811 5.44999 20.5154 5.56157C20.487 5.5694 20.4636 5.57821 20.4362 5.58604C19.5788 4.74042 18.4053 4.2168 17.1055 4.2168C14.4865 4.2168 12.3626 6.34064 12.3626 8.95971C12.3626 9.09771 12.3509 9.35218 12.3626 9.48627C9.40101 9.48627 7.03249 8.18652 5.20814 6.37391C4.7452 5.91391 3.9583 6.22515 3.92307 6.876C3.9123 7.05511 3.90741 7.23519 3.90741 7.41234C3.90741 8.88924 5.06133 10.3397 6.85925 11.2382C6.52844 11.3233 6.16338 11.385 5.78363 11.385C5.43618 11.385 4.95367 11.2421 4.56316 11.0904C4.25584 10.971 3.94852 11.2548 4.03856 11.5719C4.50443 13.2064 6.37674 14.3085 8.067 14.6481C7.67159 14.881 6.87491 14.9045 6.48636 14.9045C6.37185 14.9045 6.13499 14.883 5.87954 14.8536C5.46652 14.8066 5.18758 15.2735 5.43227 15.6092C6.26125 16.7484 7.83211 17.3797 9.34228 17.4061C8.31853 18.2087 6.63512 18.6569 4.95563 18.8517C4.36252 18.9212 4.23333 19.7326 4.77652 19.9802C6.31801 20.6839 7.85755 21.0812 9.56543 21.0812C17.3972 21.0812 21.8485 15.112 21.8485 9.48529C21.8485 9.39427 21.8465 9.20537 21.8436 9.01452C21.8436 8.99592 21.8485 8.97733 21.8485 8.95873C21.8485 8.93035 21.8397 8.90294 21.8397 8.87456C21.8367 8.73167 21.8338 8.59758 21.8299 8.52809C22.421 8.10137 22.9564 7.60026 23.4213 7.04043C23.5847 6.8437 23.389 6.55596 23.1462 6.63523C22.6217 6.80651 22.0745 6.92689 21.5108 6.99443C22.009 6.69689 22.6246 6.16544 23.1228 5.57919Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+export function BlogInstagramIcon(props: commonProps) {
+  return (
+    <svg
+      width="27"
+      height="26"
+      viewBox="0 0 27 26"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        opacity="0.35"
+        d="M16.4326 21.0812H8.93726C6.35044 21.0812 4.25269 18.9835 4.25269 16.3967V8.90137C4.25269 6.31455 6.35044 4.2168 8.93726 4.2168H16.4326C19.0194 4.2168 21.1171 6.31455 21.1171 8.90137V16.3967C21.1171 18.9835 19.0194 21.0812 16.4326 21.0812Z"
+        fill="currentColor"
+      />
+      <path
+        d="M12.6851 7.96436C10.0982 7.96436 8.00049 10.0621 8.00049 12.6489C8.00049 15.2357 10.0982 17.3335 12.6851 17.3335C15.2719 17.3335 17.3696 15.2357 17.3696 12.6489C17.3696 10.0621 15.2719 7.96436 12.6851 7.96436ZM12.6851 15.4597C11.1326 15.4597 9.87432 14.2014 9.87432 12.6489C9.87432 11.0965 11.1326 9.83818 12.6851 9.83818C14.2375 9.83818 15.4958 11.0965 15.4958 12.6489C15.4958 14.2014 14.2375 15.4597 12.6851 15.4597Z"
+        fill="currentColor"
+      />
+      <path
+        d="M17.3693 8.90117C17.8868 8.90117 18.3063 8.4817 18.3063 7.96426C18.3063 7.44681 17.8868 7.02734 17.3693 7.02734C16.8519 7.02734 16.4324 7.44681 16.4324 7.96426C16.4324 8.4817 16.8519 8.90117 17.3693 8.90117Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
