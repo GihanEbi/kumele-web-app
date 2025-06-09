@@ -36,7 +36,7 @@ const UserAvailabilityCheck: React.FC<UserAvailabilityCheckProps> = ({
       <div className="flex items-stretch space-x-2 sm:space-x-3">
         <button
           onClick={handleCheckClick}
-          className="flex-grow bg-black text-white text-text-caption px-4 py-3 rounded-xl hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+          className="flex-grow bg-app-button-primary text-app-button-text-color  px-4 py-3 rounded-xl"
         >
           Check User Availability
         </button>
@@ -44,12 +44,12 @@ const UserAvailabilityCheck: React.FC<UserAvailabilityCheckProps> = ({
           type="text" 
           value={guestCount}
           onChange={handleGuestCountChange}
-          className="w-20 sm:w-24 bg-gray-100 text-gray-900 text-sm sm:text-base font-medium text-center px-3 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-500 placeholder-gray-500"
+          className="w-20 sm:w-24 bg-app-input-primary text-app-text-primary text-sm sm:text-base font-medium text-center px-3 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-500 placeholder-white-500"
           placeholder="No."
           aria-label="Number of guests"
         />
       </div>
-      <div className="text-paragraph text-xs space-y-[-3px]">
+      <div className="text-paragraph text-[13px] space-y-[0px]">
         <p>
           <span className="text-red-500 font-semibold">*</span>To use this,
           please add your address and number of guest.

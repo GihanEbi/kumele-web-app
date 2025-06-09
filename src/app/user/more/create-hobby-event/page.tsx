@@ -13,6 +13,27 @@ import {
   UploadImageIcon,
   BackToPageIcon,
   InformationIcon,
+  OthersIcon,
+  ArtsAndCraftIcon,
+  CameraIcon,
+  GardeningIcon,
+  CampingIcon,
+  HousePartyIcon,
+  FoodIcon,
+  CostumeIcon,
+  TechIcon,
+  FamilyActivityIcon,
+  VideoGamesIcon,
+  PetloveIcon,
+  ActivismIcon,
+  DYIIcon,
+  ClubbingIcon,
+  MusicIcon,
+  KnightIcon,
+  VanIcon,
+  FestivalIcon,
+  OutdoorsIcon,
+  VolunteerIcon,
 } from "../../../../../public/svg-icons/icons";
 import TimeDurationSelector from "@/components/TimeDurationSelector/TimeDurationSelector";
 import DatePicker from "@/components/DatePicker/DatePicker";
@@ -21,30 +42,63 @@ import UserAvailabilityCheck from "@/components/EventUserAvailabilityCheck/UserA
 import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
 import GuestCounter from "./GuestCounter/GuestCounter";
 import PaymentSelection from "./PaymentSelection/PaymentSelection";
+import UsersAroundModal from "./UserAvailabilityModal/UserAvailabilityModal";
 
 const EVENT_CATEGORIES = [
   { id: "spirituality", label: "Spirituality", icon: <EventCategory1 /> },
   { id: "movies", label: "Movies", icon: <EventCategory2 /> },
   { id: "sports", label: "Sports", icon: <EventCategory3 /> },
   { id: "pubs-bars", label: "Pubs & Bars", icon: <EventCategory4 /> },
-  { id: "music", label: "Music", icon: <EventCategory1 /> },
-  { id: "food", label: "Food", icon: <EventCategory3 /> },
-  { id: "art", label: "Art", icon: <EventCategory4 /> },
-  { id: "tech", label: "Tech", icon: <EventCategory2 /> },
+  { id: "music", label: "Music", icon: <MusicIcon /> },
+  { id: "foodie", label: "Foodie", icon: <FoodIcon /> },
+  { id: "arts_and_craft", label: "Arts & Craft", icon: <ArtsAndCraftIcon /> },
+  { id: "tech", label: "Tech", icon: <TechIcon /> },
+  { id: "festival", label: "Festival", icon: <FestivalIcon /> },
+  { id: "outdoors", label: "Outdoors", icon: <OutdoorsIcon /> },
+  { id: "volunteer", label: "Volunteer", icon: <VolunteerIcon /> },
+  { id: "activism", label: "Activism", icon: <ActivismIcon /> },
+  { id: "pet_love", label: "Pet Love", icon: <PetloveIcon /> },
+  { id: "video_games", label: "Video Games", icon: <VideoGamesIcon /> },
+  {
+    id: "family_activities",
+    label: "Family Activities",
+    icon: <FamilyActivityIcon />,
+  },
+  { id: "costume", label: "Costume", icon: <CostumeIcon /> },
+  { id: "house_party", label: "House Party", icon: <HousePartyIcon /> },
+  { id: "camping", label: "Camping", icon: <CampingIcon /> },
+  { id: "gardening", label: "Gardening", icon: <GardeningIcon /> },
+  { id: "photography", label: "Photography", icon: <CameraIcon /> },
+  { id: "other", label: "Other", icon: <OthersIcon /> },
 ];
 
-// Define the data for your payment options directly in the parent
+// Define the data for payment options directly in the parent
 interface OptionConfig {
   id: string;
   mainLabel: string;
   valueText: string;
-  value: string; // This is the value for the radio button
+  value: string;
 }
 
 const paymentOptionsConfig: OptionConfig[] = [
-  { id: 'payment-free', mainLabel: 'Free Event', valueText: 'Free', value: 'free' },
-  { id: 'payment-card', mainLabel: 'Card Payment', valueText: '20$', value: 'card_20' },
-  { id: 'payment-cash', mainLabel: 'Cash On Entry', valueText: '50$', value: 'cash_50' },
+  {
+    id: "payment-free",
+    mainLabel: "Free Event",
+    valueText: "Free",
+    value: "free",
+  },
+  {
+    id: "payment-card",
+    mainLabel: "Card Payment",
+    valueText: "20$",
+    value: "card_20",
+  },
+  {
+    id: "payment-cash",
+    mainLabel: "Cash On Entry",
+    valueText: "50$",
+    value: "cash_50",
+  },
 ];
 
 const CreateEventSection = () => {
@@ -68,11 +122,22 @@ const CreateEventSection = () => {
   const [postalCode, setPostalCode] = useState<string>("");
   const [state, setState] = useState<string>("");
 
+  //set modal state
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => {
+    if (isModalOpen === true) {
+      setIsModalOpen(false);
+    }
+  };
+
   const maxCharacters = 1200; // Set your max character limit
 
   //payment selection state
   const [selectedPayment, setSelectedPayment] = useState<string>("free");
 
+  //Handlers for form inputs and interactions
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -80,6 +145,8 @@ const CreateEventSection = () => {
       setDescription(e.target.value);
     }
   };
+
+  // Image upload handler
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -91,6 +158,7 @@ const CreateEventSection = () => {
     }
   };
 
+  // Trigger file input click
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
@@ -139,6 +207,7 @@ const CreateEventSection = () => {
     setIsDragging(false);
   };
 
+  // Handlers for date and time pickers
   const handleDateClick = () => {
     console.log("Date display clicked! Open calendar here.");
     // In a real app, you'd set state to show a calendar modal/popup
@@ -152,8 +221,11 @@ const CreateEventSection = () => {
     console.log("End time display clicked! Open time picker here.");
   };
 
+  // Handlers for user availability check, age range, guest counter, and payment selection
+
   const handleUserAvailability = (guests: number) => {
     console.log(`Checking availability for ${guests} guests.`);
+    openModal();
     // Add your API call or logic here
   };
   const handleAgeRangeChange = (values: [number, number]) => {
@@ -173,7 +245,10 @@ const CreateEventSection = () => {
   };
 
   return (
-    <div className="max-w-full mx-auto p-6 bg-white rounded-lg">
+    <div
+      className="max-w-full mx-auto p-6 bg-app-background-primary rounded-lg"
+      onClick={closeModal}
+    >
       <div className="flex flex-row gap-5">
         <div className="">
           <BackToPageIcon />
@@ -186,8 +261,8 @@ const CreateEventSection = () => {
       <div className="mb-6">
         <label className="text-body">Event Category</label>
 
-        {/* Horizontally scrollable categories with drag functionality */}
         <div className="relative mt-3">
+          <div className="overflow-hidden">
           <div
             ref={categoriesContainerRef}
             className="flex space-x-3 overflow-x-auto pb-3 -mx-4 px-4 no-scrollbar"
@@ -206,22 +281,33 @@ const CreateEventSection = () => {
             }}
           >
             {EVENT_CATEGORIES.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`flex flex-col items-center justify-center p-3 rounded-lg flex-shrink-0 transition-all duration-200 ${
+              <div
+                className={`${
                   selectedCategory === category.id
                     ? "bg-k-secondary-color border-none"
-                    : "bg-gray-100 hover:bg-gray-200 border-2 border-transparent"
-                }`}
-                style={{ minWidth: "80px" }}
+                    : "bg-app-background-card hover:bg-app-background"
+                }bg-k-secondary-color border-none flex h-24 w-24 rounded-lg`}
               >
-                <div className="mb-1 text-xl">{category.icon}</div>
-                <span className="text-text-title text-center">
-                  {category.label}
-                </span>
-              </button>
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`
+            flex h-24 w-24 flex-col items-center justify-center rounded-lg p-2 text-center transition-all duration-200
+            ${
+              selectedCategory === category.id
+                ? "bg-k-secondary-color border-none"
+                : "bg-app-background-card hover:bg-app-background"
+            }
+          `}
+                >
+                  <div className="mb-1 text-xl">{category.icon}</div>
+                  <span className="text-sm font-medium leading-tight text-text-title">
+                    {category.label}
+                  </span>
+                </button>
+              </div>
             ))}
+          </div>
           </div>
         </div>
       </div>
@@ -229,13 +315,13 @@ const CreateEventSection = () => {
       {/* Event Image Section */}
       <div className="mb-6">
         <label className="block text-body mb-2">Event Image</label>
-        <p className="text-text-sub-caption mb-3">
+        <p className="text-text-sub-caption mb-3 text-[14px] text-gray-500">
           (Recommended size 400*400px)
         </p>
 
         <div
           onClick={triggerFileInput}
-          className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-yellow-400 transition-colors"
+          className="border-2 border-dashed border-gray-300 rounded-lg p-5 text-center cursor-pointer transition-colors"
         >
           {imagePreview ? (
             <div className="relative w-full h-40 rounded-md overflow-hidden">
@@ -253,7 +339,9 @@ const CreateEventSection = () => {
                 <UploadImageIcon />
               </div>
 
-              <p className="text-text-sub-caption">Upload an image</p>
+              <p className="text-text-sub-caption text-gray-500">
+                Upload an image
+              </p>
             </>
           )}
           <input
@@ -283,10 +371,10 @@ const CreateEventSection = () => {
         </div>
       </div>
 
-      <div className="space-y-4 mt-6">
+      <div className="space-y-6 mt-6">
         {/* Event Name */}
         <div>
-          <label className="block text-body mb-1">Event Name</label>
+          <label className="block text-body mb-3">Event Name</label>
           <InputComponent
             placeholder="Add a title"
             value={eventName}
@@ -296,7 +384,7 @@ const CreateEventSection = () => {
 
         {/* Subtitle */}
         <div>
-          <label className="text-body mb-1">Subtitle</label>
+          <label className="block text-body mb-3">Subtitle</label>
           <InputComponent
             placeholder="Add a subtitle"
             value={subtitle}
@@ -306,21 +394,21 @@ const CreateEventSection = () => {
 
         {/* Description */}
         <div>
-          <label className="block text-body mb-1">Description</label>
+          <label className="block text-body mb-3">Description</label>
           <textarea
             value={description}
             onChange={handleDescriptionChange}
             maxLength={maxCharacters}
             placeholder="More About the event"
-            className="w-full h-32 p-3 bg-gray-100  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500"
+            className="w-full h-32 p-3 bg-app-input-primary  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500"
           />
-          <p className="text-xs text-gray-500 mt-1 text-right">
-            {description.length}/{maxCharacters} characters
+          <p className="text-xs text-app-text-secondary mt-1 text-right">
+            {description.length}/{maxCharacters} Max
           </p>
         </div>
       </div>
       <div>
-        <div className="flex flex-row gap-3 mb-3 mt-3">
+        <div className="flex flex-row gap-3 mb-3 mt-6">
           <label className="block text-body mb-1">Event starts in</label>
           <div className="mt-[-6px]">
             <InformationIcon />
@@ -329,7 +417,7 @@ const CreateEventSection = () => {
         <TimeDurationSelector />
       </div>
 
-      <div className="mt-6 ">
+      <div className="mt-8 ">
         <DatePicker
           label="Date"
           currentDateDisplay="Tuesday, 25th June, 2024"
@@ -337,7 +425,7 @@ const CreateEventSection = () => {
         />
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 mt-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 mt-8">
         <TimePicker
           label="Event Start time"
           currentTimeDisplay="08:30 PM"
@@ -349,7 +437,7 @@ const CreateEventSection = () => {
           onClick={handleEndTimeClick}
         />
       </div>
-      <div className="space-y-4 mt-6">
+      <div className="space-y-3 mt-8">
         <h3 className="text-body">Event Address</h3>
 
         {/* Street + Home Number Row */}
@@ -403,13 +491,14 @@ const CreateEventSection = () => {
       </div>
 
       {/* User Availability Check Section */}
-      <div className="mt-6">
+      <div className="mt-8">
         <UserAvailabilityCheck
           onCheckAvailability={handleUserAvailability}
           initialGuestCount={50} // Example: override initial guest count
         />
       </div>
-      <div className="mt-6">
+      <UsersAroundModal isOpen={isModalOpen} onClose={() => {}} />
+      <div className="mt-8">
         <label className="block text-body mb-15">Age Range</label>
         {/* Age Range Slider Section using Radix UI */}
         <RadixAgeRangeSlider
@@ -422,7 +511,7 @@ const CreateEventSection = () => {
         />
       </div>
       <div>
-        <div className="flex flex-row gap-3 mb-3 mt-3">
+        <div className="flex flex-row gap-3 mb-3 mt-6">
           <label className="text-body">Number of Guests</label>
           <div className="mt-[-6px]">
             <InformationIcon />
@@ -434,23 +523,25 @@ const CreateEventSection = () => {
         />
       </div>
 
-       <div className="grid grid-cols-3 gap-x-4 mt-6"> {/* Use grid-cols-3 */}
-            {paymentOptionsConfig.map((option) => (
-              <PaymentSelection 
-                key={option.id}
-                id={option.id}
-                mainLabel={option.mainLabel}
-                valueText={option.valueText}
-                name="paymentMethod" // Same name for the radio group
-                value={option.value}
-                checked={selectedPayment === option.value}
-                onChange={handlePaymentChange}
-              />
-            ))}
-          </div>
+      <div className="grid grid-cols-3 gap-x-3 mt-10">
+        {" "}
+        {/* Use grid-cols-3 */}
+        {paymentOptionsConfig.map((option) => (
+          <PaymentSelection
+            key={option.id}
+            id={option.id}
+            mainLabel={option.mainLabel}
+            valueText={option.valueText}
+            name="paymentMethod" // Same name for the radio group
+            value={option.value}
+            checked={selectedPayment === option.value}
+            onChange={handlePaymentChange}
+          />
+        ))}
+      </div>
 
       {/* Create Event Button */}
-      <button className="w-full mt-6 bg-black hover:bg-yellow-500 text-text-caption text-white py-3 px-4 rounded-lg transition-colors">
+      <button className="w-full mt-10 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-10">
         Preview Event
       </button>
     </div>

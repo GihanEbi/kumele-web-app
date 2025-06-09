@@ -1,16 +1,30 @@
 // components/LikeAndShare.tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { FaHeart, FaTwitter, FaFacebook, FaLinkedin, FaShare } from 'react-icons/fa';
-
+import { useState } from "react";
+import { FaHeart } from 'react-icons/fa';
+import {
+  LikeIcon,
+  BlogFacebookIcon,
+  BlogInstagramIcon,
+  BlogYoutbeIcon,
+  BlogTwitterIcon,
+  BlogPinterestIcon,
+  ShareIcon,
+} from "../../../public/svg-icons/icons";
 interface LikeAndShareProps {
   initialLikes: number;
-}
+};
+import { useTheme } from "next-themes";
 
 export default function LikeAndShare({ initialLikes = 0 }: LikeAndShareProps) {
   const [likes, setLikes] = useState(initialLikes);
   const [isLiked, setIsLiked] = useState(false);
+
+  const { theme, resolvedTheme } = useTheme();
+
+  const isDark = resolvedTheme === "dark";
+  console.log("dark cehckinggg",isDark)
 
   const handleLike = () => {
     setLikes(isLiked ? likes - 1 : likes + 1);
@@ -19,26 +33,39 @@ export default function LikeAndShare({ initialLikes = 0 }: LikeAndShareProps) {
 
   return (
     <div className="flex items-center gap-4 mt-2 ">
-      <button 
-        className="flex items-center gap-1 text-black hover:text-red-500 transition-colors"
+      <button
+        className="flex items-center gap-3 text-app-blog-card-heading  transition-colors"
         onClick={handleLike}
       >
-        <FaHeart className={isLiked ? "text-red-500" : "text-gray-400 hover:text-red-500"} />
+        {isDark ? (<FaHeart
+          className={`w-5 h-5 ${isLiked ? "text-white" : "text-gray-500"}`}
+        />):(
+          <FaHeart
+          className={`w-5 h-5 ${isLiked ? "text-black" : "text-gray-500"}`}
+        />
+        )}
+
         <span>{likes} Likes</span>
       </button>
 
       <div className="flex gap-3 ml-4">
         <a href="#" aria-label="Share on Twitter">
-          <FaTwitter className="text-gray-500 hover:text-blue-400 text-lg" />
+          <BlogYoutbeIcon />
         </a>
         <a href="#" aria-label="Share on Facebook">
-          <FaFacebook className="text-gray-500 hover:text-blue-600 text-lg" />
+          <BlogFacebookIcon />
         </a>
         <a href="#" aria-label="Share on LinkedIn">
-          <FaLinkedin className="text-gray-500 hover:text-blue-700 text-lg" />
+          <BlogInstagramIcon />
         </a>
         <a href="#" aria-label="Share">
-          <FaShare className="text-gray-500 hover:text-gray-700 text-lg" />
+          <BlogPinterestIcon />
+        </a>
+        <a href="#" aria-label="Share">
+          <BlogTwitterIcon />
+        </a>
+        <a href="#" aria-label="Share">
+          <ShareIcon />
         </a>
       </div>
     </div>

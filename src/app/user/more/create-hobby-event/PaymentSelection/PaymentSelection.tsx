@@ -31,7 +31,7 @@ const PaymentSelection: React.FC<PaymentSelectionProps> = ({
       </span>
       <label
         htmlFor={id}
-        className="flex items-center space-x-2 cursor-pointer p-1 rounded-md hover:bg-gray-50 transition-colors" // Added hover & padding
+        className="flex items-center space-x-2 cursor-pointer p-1 rounded-md  transition-colors" // Added hover & padding
         role="radio"
         aria-checked={checked}
         tabIndex={0} // Make the label focusable
@@ -43,7 +43,7 @@ const PaymentSelection: React.FC<PaymentSelectionProps> = ({
           }
         }}
       >
-        <div className="bg-gray-100 text-body px-4 py-2.5 rounded-lg min-w-[70px] text-center select-none">
+        <div className="bg-app-input-primary text-app-text-secondary px-3 py-2.5 rounded-lg  text-center select-none ml-[-4px]">
           {valueText}
         </div>
         <input
@@ -61,12 +61,12 @@ const PaymentSelection: React.FC<PaymentSelectionProps> = ({
             className={`w-5 h-5 rounded-full border-2 transition-all duration-150 ease-in-out
                         ${checked
                           ? 'border-blue-600 bg-blue-600'
-                          : 'border-gray-400 bg-white hover:border-gray-500'
+                          : 'border-white bg-app-background-primary hover:border-gray-500'
                         }`}
           >
             {checked && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[0.55rem] h-[0.55rem] bg-white rounded-full transform scale-100 transition-transform duration-100 ease-out"></div>
+                <div className="w-[1rem] h-[1rem] bg-blue-600 border-3 border-app-background-primary rounded-full transform scale-100 transition-transform duration-100 ease-out"></div>
               </div>
             )}
           </div>

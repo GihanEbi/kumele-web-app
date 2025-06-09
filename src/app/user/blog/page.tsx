@@ -3,7 +3,8 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import BlogCard from "@/components/BlogCard/BlogCard";
-import { FiSearch } from 'react-icons/fi';
+import { FiSearch } from "react-icons/fi";
+import { SearchIcon } from "../../../../public/svg-icons/icons";
 
 interface BlogCardProps {
   id: string;
@@ -173,16 +174,16 @@ const Blog: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="max-w-full mx-auto rounded-lg">
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-left">
-          Blog
-        </h1>
+        <h2 className="text-heading text-  mb-6">Blog</h2>
         {/* Search Bar */}
         <div className="relative mb-6 sm:mb-8 w-full md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto sm:mx-0">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             {/* Search icon*/}
-            <FiSearch className="h-5 w-5 text-gray-400" />
+            <div className="text-app-search-bar-icon">
+              <SearchIcon />
+            </div>
           </div>
           <input
             type="search"
@@ -190,7 +191,7 @@ const Blog: React.FC = () => {
             id="search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="block w-full pl-10 pr-3 py-3 bg-gray-100 border border-transparent rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-sm placeholder-gray-500"
+            className="block w-full pl-10 pr-3 py-3 bg-app-search-bar-background border border-transparent rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-text-body placeholder-app-search-bar-text"
             placeholder="Search"
           />
         </div>
@@ -199,7 +200,7 @@ const Blog: React.FC = () => {
         <div className="mb-6 sm:mb-8 relative">
           <div
             ref={tabsContainerRef}
-            className="flex space-x-3 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-0 sm:px-0 no-scrollbar"
+            className="flex space-x-3 overflow-x-auto pb-2 no-scrollbar"
             onMouseDown={handleMouseDown}
             onMouseLeave={handleMouseLeave}
             onMouseUp={handleMouseUp}
@@ -219,12 +220,12 @@ const Blog: React.FC = () => {
                 key={tab.id}
                 id={`tab-${tab.id}`}
                 onClick={() => handleTabClick(tab.id)}
-                className={`py-2 px-5 rounded-full text-sm font-medium whitespace-nowrap flex-shrink-0 transition-colors duration-150
+                className={`py-2 px-5 rounded-full text-text-caption  whitespace-nowrap flex-shrink-0 transition-colors duration-150
                   ${
                     activeTab === tab.id
-                      ? "bg-yellow-400 text-gray-900"
-                      : "bg-gray-800 text-white hover:bg-gray-700"
-                  }`}
+                      ? "bg-app-blog-selected-tabs-background text-app-blog-selected-tabs-text"
+                      : "bg-app-blog-unselected-tabs-background text-app-blog-unselected-tabs-text hover:bg-gray-700"
+                  } `}
               >
                 {tab.label}
               </button>
