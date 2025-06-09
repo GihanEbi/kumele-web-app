@@ -5,6 +5,7 @@ import Head from "next/head";
 import { useState } from "react";
 import { BackArrow } from "../../../../../public/svg-icons/icons";
 import TabComponent from "@/components/TabComponent/TabComponent";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 
 type TabId = "guidelines" | "howto" | "popular";
 
@@ -15,7 +16,9 @@ interface TabInfo {
 }
 
 const Guidelines = () => {
-  
+  // state for loading state
+  const [loading, setLoading] = useState<boolean>(false);
+
   const tabsData: TabInfo[] = [
     {
       id: "guidelines",
@@ -39,20 +42,25 @@ const Guidelines = () => {
 
   return (
     <div>
-      <div className="min-h-screen bg-white text-gray-800 flex flex-col">
-        {/* Header with Back Arrow and Tabs */}
-        <header className="sticky top-0 bg-white z-10 p-4 flex items-center border-b border-gray-200">
-          {/* Back Button */}
-          <button
-            onClick={() =>
-              typeof window !== "undefined" && window.history.back()
-            }
-            className="p-2 -ml-2 text-gray-700 hover:text-gray-900 mr-2" // Added mr-2 for spacing
-            aria-label="Go back"
-          >
-            <BackArrow />
-          </button>
-        </header>
+      {/* Loading spinner */}
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
+      <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
+        <div className="w-full max-w-md px-4">
+          {/* Header */}
+          <header className="flex items-center">
+            <button
+              aria-label="Go back"
+              onClick={() => window.history.back()} // Simple back navigation
+              className="p-2 -ml-2 mr-2" // Added padding for easier click and negative margin to align
+            >
+              <BackArrow className="text-app-icon" />
+            </button>
+          </header>
+        </div>
         <main className="flex-grow p-5 md:p-8">
           <TabComponent tabs={tabsData} />
         </main>

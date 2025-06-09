@@ -21,6 +21,10 @@ import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { fetch_profile } from "@/routes/profile";
 import { useRouter } from "next/navigation";
 import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
+import ContactModel from "@/components/Models/ContactModel/ContactModel";
+import ReferralModel from "@/components/Models/ReferralModel/ReferralModel";
+import DeleteAccountModel from "@/components/Models/DeleteAccountModel/DeleteAccountModel";
+import SignoutModel from "@/components/Models/SignoutModel/SignoutModel";
 const settingsGroup1 = [
   {
     icon: <SoundIcon className="text-app-icon" />,
@@ -40,7 +44,11 @@ const settingsGroup1 = [
 ];
 
 const settingsGroup2 = [
-  { icon: <ContactIcon className="text-app-icon" />, text: "Contact" },
+  {
+    icon: <ContactIcon className="text-app-icon" />,
+    type: "model",
+    text: "Contact",
+  },
   {
     icon: <GuidelinesIcon className="text-app-icon" />,
     text: "Guidelines",
@@ -55,15 +63,17 @@ const settingsGroup2 = [
   {
     icon: <NightModeIcon className="text-app-icon" />,
     text: "Night Mode",
+    type: "model",
   },
   {
     icon: <DeleteAccountIcon className="text-app-icon" />,
     text: "Delete Account",
+    type: "model",
   },
   {
     icon: <SignOutIcon className="text-app-icon" />,
     text: "Sign Out",
-    link: "#",
+    type: "model",
   },
 ];
 
@@ -89,13 +99,18 @@ const Profile = () => {
 
   // state for loading state
   const [loading, setLoading] = useState<boolean>(false);
+  // --------- show contact model ----------
+  const [showContactModel, setShowContactModel] = useState(false);
+  // --------- show referral model ----------
+  const [showReferralModel, setShowReferralModel] = useState(false);
+  // --------- show delete account model ----------
+  const [showDeleteAccountModel, setShowDeleteAccountModel] = useState(false);
+  // --------- show sign out model ----------
+  const [showSignOutModel, setShowSignOutModel] = useState(false);
 
   const { theme, setTheme, systemTheme } = useTheme();
 
   useEffect(() => {
-    console.log("Current theme:", theme);
-    console.log("System theme:", systemTheme);
-
     fetchUserData();
   }, []);
 
@@ -127,7 +142,16 @@ const Profile = () => {
       <Head>
         <title>Profile Page</title>
       </Head>
-      <div className="min-h-screen bg-app-background-primary p-4 sm:p-6">
+      <div
+        className={`min-h-screen ${
+          showContactModel ||
+          showReferralModel ||
+          showDeleteAccountModel ||
+          showSignOutModel
+            ? "bg-k-background-secondary"
+            : "bg-k-background-primary"
+        } p-4 sm:p-6`}
+      >
         <header className="mb-6">
           <h1 className="text-3xl font-bold text-app-text-primary font-plusJakartaSans">
             Profile
@@ -139,6 +163,9 @@ const Profile = () => {
           <button
             aria-label="Edit profile"
             className="absolute top-0 right-0 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            onClick={() => {
+              router.push("/user/profile/edit-profile");
+            }}
           >
             <EditIcon className="text-app-icon" />
           </button>
@@ -166,7 +193,12 @@ const Profile = () => {
                   ? userData.display_name
                   : "Anonymous User"}
               </h2>
-              <button className="mt-1 text-xs font-plusJakartaSans bg-app-text-blue text-app-text-primary font-semibold py-1 px-3 rounded-md transition duration-150">
+              <button
+                className="mt-1 text-xs font-plusJakartaSans bg-app-text-blue text-app-text-primary font-semibold py-1 px-3 rounded-md transition duration-150"
+                onClick={() => {
+                  router.push("/user/profile/edit-interest");
+                }}
+              >
                 Edit hobbies
               </button>
             </div>
@@ -226,7 +258,9 @@ const Profile = () => {
                     : ""
                 }`}
                 onClick={() => {
-                  // router.push(item.link);
+                  if (item.link) {
+                    router.push(item.link);
+                  }
                 }}
               >
                 <div className="flex items-center space-x-3">
@@ -251,8 +285,21 @@ const Profile = () => {
                 }`}
                 onClick={() => {
                   // Handle special cases for certain items
-                  {
-                    item.link ? router.push(item.link) : null;
+                  if (item.text === "Delete Account") {
+                    setShowDeleteAccountModel(true);
+                  } else if (item.text === "Refer a Friend") {
+                    setShowReferralModel(true);
+                  } else if (item.text === "Contact") {
+                    setShowContactModel(true);
+                  } else if (item.text === "Sign Out") {
+                    setShowSignOutModel(true);
+                  } else if (item.text === "night Mode") {
+                    // Handle night mode logic here
+                    console.log("Night Mode clicked");
+                  } else if (item.text === "Guidelines") {
+                    router.push("/user/profile/guidelines");
+                  } else if (item.text === "Terms and Conditions") {
+                    router.push("/user/profile/terms-conditions");
                   }
                 }}
               >
@@ -281,6 +328,34 @@ const Profile = () => {
             ))}
           </div>
         </div>
+        {/* Contact Model */}
+        <ContactModel
+          isOpen={showContactModel}
+          onClose={() => {
+            setShowContactModel(false);
+          }}
+        />
+        {/* referral Model */}
+        <ReferralModel
+          isOpen={showReferralModel}
+          onClose={() => {
+            setShowReferralModel(false);
+          }}
+        />
+        {/* delete account Model */}
+        <DeleteAccountModel
+          isOpen={showDeleteAccountModel}
+          onClose={() => {
+            setShowDeleteAccountModel(false);
+          }}
+        />
+        {/* Sign Out Model */}
+        <SignoutModel
+          isOpen={showSignOutModel}
+          onClose={() => {
+            setShowSignOutModel(false);
+          }}
+        />
       </div>
     </>
   );

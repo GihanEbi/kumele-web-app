@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -18,10 +18,38 @@ import { register } from "@/routes/signup_and_signin";
 import EmailVerificationModel from "@/components/Models/EmailVerificationModel/EmailVerificationModel";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 
+const languages = [
+  {
+    id: "english",
+    label: "English",
+  },
+  {
+    id: "french",
+    label: "French",
+  },
+  {
+    id: "spanish",
+    label: "Spanish",
+  },
+  {
+    id: "chinese",
+    label: "Chinese",
+  },
+  {
+    id: "arabic",
+    label: "Arabic",
+  },
+];
 const Signup = () => {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("english");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   // ------------ from for user details -----------
   const [form, setForm] = useState({
@@ -96,6 +124,69 @@ const Signup = () => {
     }
   };
 
+  // LANGUAGE SELECTION
+
+  const handleTabClick = (tabId: string) => {
+    setActiveTab(tabId);
+    scrollToTab(tabId);
+  }; // Mobile-like drag scrolling handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartX(e.pageX - (tabsContainerRef.current?.offsetLeft || 0));
+    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !tabsContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - (tabsContainerRef.current.offsetLeft || 0);
+    const walk = (x - startX) * 2; // Scroll speed multiplier
+    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - (tabsContainerRef.current?.offsetLeft || 0));
+    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !tabsContainerRef.current) return;
+    e.preventDefault();
+    const x = e.touches[0].pageX - (tabsContainerRef.current.offsetLeft || 0);
+    const walk = (x - startX) * 2;
+    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  const scrollToTab = (tabId: string) => {
+    const tabElement = document.getElementById(`tab-${tabId}`);
+    if (tabElement && tabsContainerRef.current) {
+      const container = tabsContainerRef.current;
+      const containerWidth = container.offsetWidth;
+      const tabLeft = tabElement.offsetLeft;
+      const tabWidth = tabElement.offsetWidth;
+
+      const scrollPosition = tabLeft - (containerWidth - tabWidth) / 2;
+
+      container.scrollTo({
+        left: scrollPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div className="">
       {/* Loading spinner */}
@@ -162,16 +253,40 @@ const Signup = () => {
           <p className="text-xs font-plusJakartaSans text-app-text-primary mb-5">
             Language choice:
           </p>
-          <div className="flex space-x-2">
-            <button className="flex-1 py-2.5 px-3 bg-app-input-secondary text-app-text-black font-plusJakartaSans text-sm font-medium rounded-md shadow-sm">
-              English
-            </button>
-            <button className="flex-1 py-2.5 px-3 bg-app-input-primary text-app-text-secondary font-plusJakartaSans text-sm font-medium rounded-md hover:bg-gray-300">
-              French
-            </button>
-            <button className="flex-1 py-2.5 px-3 bg-app-input-primary text-app-text-secondary font-plusJakartaSans text-sm font-medium rounded-md hover:bg-gray-300">
-              Spanish
-            </button>
+          <div className="mb-6 sm:mb-8 relative">
+            <div
+              ref={tabsContainerRef}
+              className="flex space-x-3 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-0 sm:px-0 no-scrollbar"
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              style={{
+                cursor: isDragging ? "grabbing" : "grab",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                WebkitOverflowScrolling: "touch",
+              }}
+            >
+              {languages.map((tab, index) => (
+                <button
+                  key={tab.id}
+                  id={`tab-${tab.id}`}
+                  onClick={() => handleTabClick(tab.id)}
+                  className={`py-2 px-5 rounded-md text-sm font-medium whitespace-nowrap flex-shrink-0 transition-colors duration-150
+                  ${
+                    activeTab === tab.id
+                      ? "bg-yellow-400 text-gray-900"
+                      : "bg-gray-800 text-white hover:bg-gray-700"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
         {/* form */}
@@ -254,7 +369,11 @@ const Signup = () => {
             onClick={() => setPasswordVisible(!passwordVisible)}
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
           >
-            {passwordVisible ? <EyeIcon className="text-app-icon" /> : <EyeIcon className="text-app-icon" />}
+            {passwordVisible ? (
+              <EyeIcon className="text-app-icon" />
+            ) : (
+              <EyeIcon className="text-app-icon" />
+            )}
           </button>
         </div>
         {/* confirm password */}
@@ -273,13 +392,20 @@ const Signup = () => {
             onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
             className="absolute inset-y-0 right-0 pr-3 flex items-center"
           >
-            {passwordVisible ? <EyeIcon className="text-app-icon" /> : <EyeIcon className="text-app-icon" />}
+            {passwordVisible ? (
+              <EyeIcon className="text-app-icon" />
+            ) : (
+              <EyeIcon className="text-app-icon" />
+            )}
           </button>
         </div>
         {/* referral code */}
         <div className="pt-5">
           <p className="text-sm font-plusJakartaSans text-app-text-primary mb-1">
-            Referral code <span className="font-plusJakartaSans text-app-text-primary">(Optional)</span>
+            Referral code{" "}
+            <span className="font-plusJakartaSans text-app-text-primary">
+              (Optional)
+            </span>
           </p>
           <InputComponent
             placeholder="e.g. DF3R435"
