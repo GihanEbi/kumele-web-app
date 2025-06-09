@@ -18,5 +18,6 @@ export interface Comment {
   content: string;
   isOwner?: boolean;
   avatarUrl?: string;
+  replies?: Comment[];
 }
 
