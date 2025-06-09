@@ -10,24 +10,23 @@ interface TabInfo {
 
 const TabComponent: React.FC<{ tabs: TabInfo[] }> = ({ tabs }) => {
   return (
-    <div>
-      <Tabs defaultValue={tabs[0].label} className="w-full">
-        <TabsList>
-          {tabs.map((tab) => (
-            <TabsTrigger key={tab.label} value={tab.label}>
-              {tab.label}
-            </TabsTrigger>
+    <div className="bg-app-background-primary min-h-screen flex justify-center p-4">
+      <div className="w-full">
+        <Tabs defaultValue={tabs[0].id} className="bg-app-background-primary">
+          <TabsList className="bg-app-input-primary rounded-lg p-2 mb-4 w-full ">
+            {tabs.map((tab, index) => (
+              <TabsTrigger key={tab.id} value={tab.id} className="">
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {tabs.map((tab, index) => (
+            <TabsContent key={tab.id} value={tab.id}>
+              <div className="font-sm">{tab.content}</div>
+            </TabsContent>
           ))}
-        </TabsList>
-
-        {tabs.map((tab) => (
-          <TabsContent key={tab.label} value={tab.label}>
-            <div className="space-y-6 text-base text-gray-700 leading-relaxed">
-              {tab.content}
-            </div>
-          </TabsContent>
-        ))}
-      </Tabs>
+        </Tabs>
+      </div>
     </div>
   );
 };

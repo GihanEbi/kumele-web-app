@@ -60,9 +60,11 @@ const EarnMedals = () => {
               className="text-gray-700 hover:text-gray-900 mr-3"
               aria-label="Go back"
             >
-              <BackArrow className="text-app-icon"/>
+              <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="text-2xl font-bold font-plusJakartaSans text-app-text-primary">Earn Medals</h1>
+            <h1 className="text-2xl font-bold font-plusJakartaSans text-app-text-primary">
+              Earn Medals
+            </h1>
           </header>
 
           {/* Medal List */}
@@ -77,7 +79,7 @@ const EarnMedals = () => {
                 // navigate to home page or next step
                 router.push("/user"); // Adjust the path as needed
               }}
-              className="w-full mt-5 bg-black text-white py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full mt-5 bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             >
               Continue
             </button>
@@ -103,7 +105,9 @@ const MedalCard: React.FC<MedalCardProps> = ({ medal }) => {
         />
       </div>
       <div className="mt-5">
-        <h2 className="text-xl font-semibold font-plusJakartaSans text-app-text-primary">{medal.title}</h2>
+        <h2 className="text-xl font-semibold font-plusJakartaSans text-app-text-primary">
+          {medal.title}
+        </h2>
         <p className="text-xs font-plusJakartaSans text-app-text-secondary mt-1 leading-relaxed">
           {medal.description}
         </p>

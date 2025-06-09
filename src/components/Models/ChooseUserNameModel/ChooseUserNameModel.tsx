@@ -88,7 +88,7 @@ const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
               <UserIcon className="text-app-icon"/>
               {/* To align bell better with multi-line title */}
             </div>
-            <h2 className="font-plusJakartaSans text-app-text-primary text-center flex-grow px-3 leading-tight">
+            <h2 className="font-plusJakartaSans font-bold text-app-text-primary text-center flex-grow px-3 leading-tight">
               Choose your username
             </h2>
             <button
