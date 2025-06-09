@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
-import { BlogCardProps } from '@/types/blog';
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { BlogCardProps } from "@/types/blog";
+import { ConfettiIcon } from "../../../public/svg-icons/icons";
 
 export default function BlogCard(props: BlogCardProps) {
   return (
     <Link href={`/user/blog/${props.id}`} className="block">
-      <div className="bg-gray-100 rounded-xl p-3 shadow-sm flex flex-col relative hover:shadow-md transition-shadow duration-200 min-h-full">
+      <div className="bg-app-blog-card-background rounded-xl p-3 shadow-sm flex flex-col relative hover:shadow-md transition-shadow duration-200 min-h-full">
         {props.showIndicator && (
           <div className="absolute top-3 right-3 w-3 h-3 bg-yellow-500 rounded-full z-10"></div>
         )}
@@ -23,25 +24,19 @@ export default function BlogCard(props: BlogCardProps) {
             />
           </div>
           <div className="flex flex-col flex-grow justify-start py-1">
-            <h3 className="text-sm font-semibold text-gray-800 leading-tight mb-1.5 group-hover:text-yellow-600 transition-colors">
+            <h3 className="text-text-body  text-app-blog-card-heading leading-tight mb-3 group-hover:text-yellow-600 transition-colors">
               {props.title}
             </h3>
 
-            <div className="inline-flex items-center gap-1 bg-gray-800 text-white text-xs rounded-full px-2 py-0.5 w-fit">
-              <Image
-                src="/images/blog-category.png"
-                alt="Category"
-                width={14}
-                height={14}
-                className="w-3.5 h-3.5"
-              />
+            <div className="inline-flex items-center gap-3 bg-app-blog-card-category-background text-app-blog-card-category-text text-text-caption text-[11.52px] rounded-full px-3 py-1 w-fit">
+              <ConfettiIcon />
               <span>{props.categoryName}</span>
             </div>
+            <p className="text-app-blog-card-author-text text-text-caption pt-3 mt-[-5px]">
+              {props.author} • {props.date}
+            </p>
           </div>
         </div>
-        <p className="text-gray-500 text-xs mt-auto pt-3">
-          {props.author} • {props.date}
-        </p>
       </div>
     </Link>
   );

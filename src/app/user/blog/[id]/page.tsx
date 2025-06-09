@@ -5,6 +5,8 @@ import { BlogCardProps, Comment } from "@/types/blog";
 import LikeAndShare from "@/components/LikeAndShare/LikeAndShare";
 import CommentForm from "@/components/CommentForm/CommentForm";
 import CommentList from "@/components/CommentList/CommentList";
+import { useState } from "react";
+import { useTheme } from "next-themes";
 
 // Mock data - replace with your actual data fetching
 const blogPosts: (BlogCardProps & {
@@ -71,24 +73,76 @@ const comments: Comment[] = [
     id: 1,
     author: "Josh Durrant",
     date: "25 April 2022",
-    content: "Amazing content!",
+    content:
+      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
     isOwner: true,
+    avatarUrl: "/avatar-img/commentor3.png",
+    replies: [
+      {
+        id: 101,
+        author: "Alkesh Sharma",
+        date: "23 August 2022",
+        content: "What a display dsn cdn zxnc",
+        avatarUrl: "/avatar-img/commentor5.png", // Use different avatar for clarity
+      },
+      {
+        id: 102,
+        author: "Josh Durrant",
+        date: "23 August 2022",
+        content: "Replying to Alkesh, great point!",
+        isOwner: true,
+        avatarUrl: "/avatar-img/commentor3.png",
+      },
+      {
+        id: 103,
+        author: "Simon Pears",
+        date: "23 August 2022",
+        content: "I also agree with this assessment.",
+        avatarUrl: "/avatar-img/commentor5.png",
+      },
+    ],
   },
   {
     id: 2,
     author: "Jakob Hoffman",
     date: "23 August 2022",
-    content: "Nice writeup and beautiful design!",
+    content:
+      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+    avatarUrl: "/avatar-img/commentor5.png",
+    replies: [
+      {
+        id: 101,
+        author: "Alkesh Sharma",
+        date: "23 August 2022",
+        content: "What a display dsn cdn zxnc",
+        avatarUrl: "/avatar-img/commentor5.png", // Use different avatar for clarity
+      },
+    ],
   },
 ];
 
 export default function BlogDetailPage({ params }: { params: { id: string } }) {
   const post = blogPosts.find((b) => b.id === params.id);
+  const [isReplyOpen, setIsReplyOpen] = useState(false);
+
+  const { resolvedTheme } = useTheme();
+
+  const isDark = resolvedTheme === "dark";
+
+  console.log(isReplyOpen, "ddddddddddd");
+  // Callback function to update the state
+  const handleReplyOpen = (isOpen: boolean) => {
+    setIsReplyOpen(isOpen);
+  };
 
   if (!post) return <div className="p-4 text-red-500">Post not found.</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 font-sans bg-white">
+    <div
+      className={`w-full mx-auto p-6 font-sans mb-12 ${
+        isReplyOpen && !isDark ? "bg-gray-100" : ""
+      }`}
+    >
       {/* Blog Image */}
       <div className="mb-6">
         <Image
@@ -96,14 +150,16 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
           alt={post.title}
           width={800}
           height={400}
-          className="rounded-lg w-full h-auto"
+          className="rounded-t-4xl w-full h-auto"
           priority
         />
       </div>
       {/* Blog Header */}
       <div className="mb-6">
-        <h1 className="text-2xl text-black font-bold">{post.title}</h1>
-        <p className="text-sm text-black mt-1">
+        <h2 className="text-text-title text-app-blog-card-heading text-[19px] font-medium">
+          {post.title}
+        </h2>
+        <p className="text-text-caption text-app-blog-card-author-text mt-1">
           {post.author} • {post.date}
         </p>
 
@@ -115,14 +171,20 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
       {post.healthSupplements && (
         <div className="mb-8">
           <div className="mt-4">
-            <h3 className="font-semibold text-black">Health Supplement range:</h3>
+            <h3 className=" text-text-app-blog-card-heading text-text-body">
+              Health Supplement range:
+            </h3>
             <ul className="list-disc pl-5 mt-2">
-              <li className="text-black">
-                <span className="font-medium text-black">Home:</span>{" "}
+              <li className="text-text-app-blog-card-heading text-text-body">
+                <span className="text-text-app-blog-card-heading text-body">
+                  Home:
+                </span>{" "}
                 {post.healthSupplements.home}
               </li>
-              <li className="text-black">
-                <span className="font-medium text-black">Fair:</span>{" "}
+              <li className="text-text-app-blog-card-heading text-text-body">
+                <span className="text-text-app-blog-card-heading text-text-body">
+                  Fair:
+                </span>{" "}
                 {post.healthSupplements.fair}
               </li>
             </ul>
@@ -152,54 +214,31 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
       )}
 
       {/* Blog Content */}
-      <p className="text-black mb-6">{post.content}</p>
+      <p className="text-text-app-blog-card-heading mb-6 text-text-body">
+        {post.content}
+      </p>
 
       {/* Blog Tips Section */}
       {post.blogTips && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-2 text-black">{post.blogTips.title}</h2>
-          <p className="font-bold text-lg text-black">{post.blogTips.subtitle}</p>
-          <p className="font-bold text-blue-600 mt-2">{post.blogTips.cta}</p>
+          <h2 className="text-text-body font-bold mb-2 text-text-app-blog-card-heading">
+            {post.blogTips.title}
+          </h2>
+          <p className="text-text-body text-text-app-blog-card-heading">
+            {post.blogTips.subtitle}
+          </p>
+          <p className="font-bold text-text-app-blog-card-heading mt-2">
+            {post.blogTips.cta}
+          </p>
         </div>
       )}
 
       {/* Description Text */}
       {post.description && (
-        <div className="mb-8 bg-gray-100 p-4 rounded">
-          <p className="text-black">{post.description}</p>
-        </div>
-      )}
-
-      {/* <hr className="border-t border-gray-300 my-6" /> */}
-
-      {/* Content Sections */}
-      {post.contentSections && (
-        <div className="mb-8">
-          <h2 className="text-xl font-bold mb-4 text-black">Content</h2>
-
-          <div className="mb-6">
-            <h3 className="font-semibold mb-2 text-black">Key components:</h3>
-
-            <div className="mt-4">
-              <h4 className="font-medium text-black">Web Content:</h4>
-              <ul className="mt-2 space-y-1">
-                {post.contentSections.webContent.map((weight) => (
-                  <li className="text-black" key={weight}>{weight}kg (April 2022 - Ready)</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* <hr className="border-t border-gray-300 my-6" /> */}
-
-          <div>
-            <h3 className="font-semibold mb-2 text-black">Job Domain</h3>
-            <ul className="mt-2 space-y-1">
-              {post.contentSections.jobDomain.map((weight) => (
-                <li className="text-black" key={`job-${weight}`}>{weight}kg (April 2022 - Ready)</li>
-              ))}
-            </ul>
-          </div>
+        <div className="mb-8p-4 rounded">
+          <p className="text-text-body text-text-app-blog-card-heading">
+            {post.description}
+          </p>
         </div>
       )}
 
@@ -207,7 +246,7 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
       <CommentForm
         onSubmit={(comment) => console.log("New comment:", comment)}
       />
-      <CommentList comments={comments} />
+      <CommentList comments={comments} onReplyOpen={handleReplyOpen} />
     </div>
   );
 }

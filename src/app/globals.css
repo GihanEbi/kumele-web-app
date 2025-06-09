@@ -74,7 +74,31 @@
   --color-app-button-blue: var(--app-button-blue);
   --color-app-button-white: var(--app-button-white);
   --color-app-icon: var(--app-icon);
-  --color-app-okay-icon-background: var(--app-okay-icon-background);
+  --color-app-button-text-color: var(--app-button-text-color);
+  --color-app-range-slider-primary: var(--app-range-slider-primary);
+  --color-app-range-slider-secondary: var(--app-range-slider-secondary);
+  --color-app-range-slider-track: var(--app-range-slider-track);
+  --color-app-range-slider-track-active: var(--app-range-slider-track-active);
+  --color-app-background-card-secondary: var(--app-background-card-secondary);
+  --color-app-text-blackandwhite: var(--app-text-blackandwhite);
+  --color-app-background-tertiary: var(--app-background-tertiary);
+  --color-app-okay-icon-background:var(--app-okay-icon-background);
+
+  
+  --color-app-search-bar-background: var(--app-search-bar-background);
+  --color-app-search-bar-text: var(--app-search-bar-text);
+  --color-app-search-bar-icon: var(--app-search-bar-icon);
+  --color-app-blog-selected-tabs-background: var(--app-blog-selected-tabs-background);
+  --color-app-blog-selected-tabs-text: var(--app-blog-selected-tabs-text);
+  --color-app-blog-unselected-tabs-background: var(--app-blog-unselected-tabs-background);
+  --color-app-blog-unselected-tabs-text: var(--app-blog-unselected-tabs-text);
+  --color-app-blog-card-background: var(--app-blog-card-background);
+  --color-app-blog-card-heading: var(--app-blog-card-heading);
+  --color-app-blog-card-category-background: var(--app-blog-card-category-background);
+  --color-app-blog-card-category-text: var(--app-blog-card-category-text);
+  --color-app-blog-card-author-text: var(--app-blog-card-author-text);
+  --color-app-card-button-bg-primary:var(--app-card-button-bg-primary);
+  --color-app-card-highlight-button:var(--app-card-highlight-button);
 }
 
 :root {
@@ -122,39 +146,79 @@
   --k-text-heading: oklch(1 0 0); /* #FFFFFF color (white color) */
   --k-text-black: oklch(0 0 0); /* #000000 color (black color) */
   --k-text-button: oklch(0.2686 0 0); /* #262626 color (dark gray color) */
-  
+
   /* -------------- NEW COLOR SETUP ------------ */
   /* BACKGROUND */
-  --app-background-primary: oklch(1 0 89.88); 
-  --app-background-secondary: oklch(0.9219 0 89.88);
-  --app-background-model: oklch(1 0 89.88);
-  --app-background-card: oklch(0.9551 0 89.88);
-
+  --app-background-primary: oklch(1 0 89.88); /* #FFFFFF */
+  --app-background-secondary: oklch(0.9219 0 89.88); /* #EBEBEB */
+  --app-background-model: oklch(1 0 89.88); /* #FFFFFF */
+  --app-background-tertiary: oklch(1 0 0);
+  --app-background-card: oklch(0.9551 0 89.88); /* #F4F4F4 */
+  --app-background-card-secondary: oklch(0 0 0); /* #000000 */
   /* ICON */
   --app-icon: oklch(0 0 0);
   --app-okay-icon-background: oklch(0.9581 0 0);
 
   /* INPUT */
-  --app-input-primary: oklch(0.9551 0 89.88);
-  --app-input-secondary: oklch(0.8564 0.1871 83.38);
-  --app-input-yellow: oklch(0.8564 0.1871 83.38);
+  --app-input-primary: oklch(0.9551 0 89.88);  /* #F4F4F4 */
+  --app-input-secondary: oklch(0.8564 0.1871 83.38);  /* #FFD966 */
+  --app-input-yellow: oklch(0.8564 0.1871 83.38);  /* #FFD966 */
 
   /* TEXT */
-  --app-text-primary: oklch(0 0 0);
-  --app-text-secondary: oklch(0.5999 0 89.88);
-  --app-text-tertiary: oklch(1 0 89.88);
-  --app-text-black: oklch(0 0 0);
-  --app-text-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
-  --app-text-yellow: oklch(0.8564 0.1871 83.38);
+  --app-text-primary: oklch(0 0 0);   /* #000000 */
+  --app-text-secondary: oklch(0.5999 0 89.88); /* #999999 */
+  --app-text-tertiary: oklch(1 0 89.88);  /* #FFFFFF */
+  --app-text-black: oklch(0 0 0);  /* #000000 */
+  --app-text-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);  /* #645EFF */
+  --app-text-white: oklch(1 0 0);  /* #FFFFFF */
+  --app-text-yellow:oklch(0.8531 0.162 85.01); /*#FFC533*/
+  --app-text-blackandwhite: oklch(1 0 0);  /* #FFFFFF */
+  
 
   /* BUTTON */
-  --app-button-primary: oklch(0 0 0);
-  --app-button-secondary: oklch(1 0 89.88);
-  --app-button-gray: oklch(0.2393 0 89.88);
-  --app-button-yellow: oklch(0.8564 0.1871 83.38);
-  --app-button-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
-  --app-button-white: oklch(1 0 89.88);
+  --app-button-primary: oklch(0 0 0); /* #000000 */
+  --app-button-secondary: oklch(1 0 89.88); /* #FFFFFF */
+  --app-button-gray: oklch(0.2393 0 89.88); /* #3D3D3D */
+  --app-button-yellow: oklch(0.8564 0.1871 83.38); /* #FFD966 */
+  --app-button-blue: oklch(0.5275 0.28234714827626795 260.80097608857864); /* #645EFF */
+  --app-button-white:oklch(1 0 89.88);
 
+
+  /*BUTTON TEXT COLOR*/
+  --app-button-text-color: oklch(1 0 0); /* #FFFFFF color (white color) */
+
+  /* RANGE SLIDER */
+  --app-range-slider-primary: oklch(0.203 0.004 270); /* #343434 */
+  --app-range-slider-secondary: oklch(1 0 0); /* #FFFFFF */
+  --app-range-slider-track: oklch(0 0 0); /* #000000 */
+  --app-range-slider-track-active: oklch(0.931 0.004 20); /* #EEECEC */
+
+
+  /*SEARCH BAR*/
+  --app-search-bar-background: oklch(0.9551 0 89.88); /* #F4F4F4 */
+  --app-search-bar-text: oklch(0.5999 0 0); /* #808080*/
+  --app-search-bar-icon: oklch(0.5999 0 0);  /*#808080*/
+
+  /*BLOG PAGE*/
+  --app-blog-selected-tabs-background: oklch(0.8531 0.162 85.01);  /*#FFC533*/
+  --app-blog-selected-tabs-text: oklch(0.2393 0 0);  /*#1f1f1f*/
+  --app-blog-unselected-tabs-background: oklch(0.2393 0 0); /*#1f1f1f*/
+  --app-blog-unselected-tabs-text: oklch(1 0 0); /* #FFFFFF */
+
+  --app-blog-card-background: oklch(0.9551 0 0); /*#f0f0f0*/
+  --app-blog-card-heading: oklch(0 0 0);  /*000000*/
+  --app-blog-card-category-background: oklch(0.2393 0 0); /*#1f1f1f*/
+  --app-blog-card-category-text: oklch(1 0 0);    /* #FFFFFF */
+  --app-blog-card-author-text: oklch(0.2686 0 0); /*#262626*/
+
+  /*BLOG DETAILS PAGE*/
+  --app-blog-details-title:oklch(0 0 0);
+  --app-blog-details-subtitle:oklch(0.5999 0 89.88);
+
+  /*SHOP PAGE*/
+  --app-card-button-bg-primary:oklch(0 0 0);
+  --app-card-highlight-button:oklch(1 0 0); 
+  
 }
 
 .dark {
@@ -203,11 +267,12 @@
 
   /* -------------- NEW COLOR SETUP ------------ */
   /* BACKGROUND */
-  --app-background-primary: oklch(0.1591 0 89.88); 
+  --app-background-primary: oklch(0.1591 0 89.88);
   --app-background-secondary: oklch(0.2134 0 89.88);
   --app-background-model: oklch(0 0 0);
+  --app-background-tertiary: oklch(0 0 0);
   --app-background-card: oklch(0.2931 0 89.88);
-
+  --app-background-card-secondary: oklch(1 0 0);
 
   /* ICON */
   --app-icon: oklch(1 0 89.88);
@@ -223,6 +288,10 @@
   --app-text-secondary: oklch(0.7952 0 0);
   --app-text-tertiary: oklch(0.1591 0 89.88);
   --app-text-black: oklch(0 0 0);
+  --app-text-bcolor: oklch(0 0 0);
+  --app-text-white: oklch(1 0 0);
+  --app-text-yellow:oklch(0.8531 0.162 85.01); /*#FFC533*/
+  --app-text-blackandwhite: oklch(0 0 0);
   --app-text-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
   --app-text-yellow: oklch(0.8564 0.1871 83.38);
 
@@ -232,7 +301,37 @@
   --app-button-gray: oklch(0.2393 0 89.88);
   --app-button-yellow: oklch(0.8564 0.1871 83.38);
   --app-button-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
-  --app-button-white: oklch(1 0 89.88);
+
+  /*BUTTON TEXT COLOR*/
+  --app-button-text-color: oklch(0 0 0); /* #FFFFFF color (black color) */
+
+  /* RANGE SLIDER */
+  --app-range-slider-primary: oklch(0.861 0.006 270);
+  --app-range-slider-secondary: oklch(0.122 0.004 270);
+
+  --app-range-slider-track: oklch(1 0 0);
+  --app-range-slider-track-active: oklch(0.533 0.008 270);
+
+  /*SEARCH BAR*/
+  --app-search-bar-background: oklch(0.2046 0 0); /*#171717*/
+  --app-search-bar-text: oklch(0.7952 0 0); /*#bcbcbc*/
+  --app-search-bar-icon: oklch(0.7952 0 0); 
+
+  /*BLOG PAGE*/
+  --app-blog-selected-tabs-background: oklch(0.8531 0.162 85.01);  /*#ffc533*/
+  --app-blog-selected-tabs-text: oklch(0.1591 0 0);  /*#0d0d0d*/
+  --app-blog-unselected-tabs-background: oklch(0.2393 0 0); /*#1f1f1f*/
+  --app-blog-unselected-tabs-text: oklch(1 0 0); /*#ffffff*/
+
+  --app-blog-card-background: oklch(0.2931 0 89.88); /*#2c2c2c*/
+  --app-blog-card-heading: oklch(1 0 0); /*#ffffff*/
+  --app-blog-card-category-background: oklch(0.2393 0 0); /*#1f1f1f*/
+  --app-blog-card-category-text: oklch(1 0 0);/*#ffffff*/
+  --app-blog-card-author-text: oklch(0.8853 0 0); /*#d9d9d9*/
+
+  /*SHOP PAGE*/
+  --app-card-button-bg-primary:oklch(0.9551 0 0);
+  --app-card-highlight-button:oklch(0.9551 0 0);
 }
 
 @layer base {
@@ -394,4 +493,13 @@
   .scrollable-tabs {
     -webkit-overflow-scrolling: touch;
   }
-} 
+}
+
+
+
+
+
+
+
+  
+

@@ -49,15 +49,15 @@ const DatePicker: React.FC<DatePickerDisplayProps> = ({
   currentDateDisplay = "Wednesday, 13th April, 2022",
   onClick,
 }) => {
-  const commonInputClasses =
-    "w-full flex items-center justify-between px-3 py-2.5 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors";
+ const commonInputClasses =
+    "w-full flex items-center justify-between px-3 py-2.5 bg-k-primary-color hover:bg-k-primary-color rounded-lg";
 
   return (
     <div className="max-w-full w-full">
       {" "}
       {/* Adjust max-w-xs as needed */}
       {label && (
-        <label className="block text-body mb-1">
+        <label className="block text-body mb-2">
           {label}
         </label>
       )}
@@ -69,7 +69,7 @@ const DatePicker: React.FC<DatePickerDisplayProps> = ({
         aria-expanded="false" // This would be managed by state if interactive
         aria-label={`Selected date: ${currentDateDisplay}. Click to change date.`}
       >
-        <div className="flex items-center space-x-2.5">
+        <div className="flex items-center space-x-2.5 py-[-2px]">
           <CalenderIcon />
           <span className="text-text-caption">
             {currentDateDisplay}

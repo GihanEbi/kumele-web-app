@@ -37,13 +37,13 @@ const TimePicker: React.FC<TimePickerDisplayProps> = ({
   onClick,
 }) => {
   const commonInputClasses =
-    "w-full flex items-center justify-between px-3 py-2.5 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors";
+    "w-full flex items-center justify-between px-3 py-2.5 bg-k-primary-color hover:bg-k-primary-color rounded-lg";
 
   return (
     <div className="w-full">
       {" "}
       {/* Each time picker takes full width of its container */}
-      <label className="block text-body mb-1">
+      <label className="block text-body mb-2">
         {label}
       </label>
       <button
