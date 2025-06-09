@@ -22,6 +22,45 @@ type shearProps = React.SVGProps<SVGSVGElement>;
 
 type commonProps = React.SVGProps<SVGSVGElement>;
 
+export function BinocularsIcon(props: commonProps) {
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M10 7.99981V14.9998C10 13.8948 10.895 12.9998 12 12.9998C13.105 12.9998 14 13.8948 14 14.9998V7.99981H10Z"
+      fill="currentColor"
+    />
+    <path
+      d="M20 5H15C15 3.895 15.895 3 17 3H18C19.105 3 20 3.895 20 5Z"
+      fill="currentColor"
+    />
+    <path d="M4 5H9C9 3.895 8.105 3 7 3H6C4.895 3 4 3.895 4 5Z" fill="currentColor" />
+    <path
+      d="M22.984 18.752L22.89 18H14V19C14 20.105 14.895 21 16 21H21C22.203 21 23.133 19.946 22.984 18.752Z"
+      fill="currentColor"
+    />
+    <path
+      opacity="0.35"
+      d="M22.89 17.9998L21.375 5.87581C21.312 5.37581 20.887 4.99981 20.383 4.99981H15C14.448 4.99981 14 5.44781 14 5.99981V17.9998H22.89Z"
+      fill="currentColor"
+    />
+    <path
+      d="M1.01571 18.752L1.10971 18H9.99971V19C9.99971 20.105 9.10471 21 7.99971 21H2.99971C1.79671 21 0.866708 19.946 1.01571 18.752Z"
+      fill="currentColor"
+    />
+    <path
+      opacity="0.35"
+      d="M1.11035 17.9998L2.62535 5.87581C2.68835 5.37581 3.11335 4.99981 3.61735 4.99981H9.00035C9.55235 4.99981 10.0004 5.44781 10.0004 5.99981V17.9998H1.11035Z"
+      fill="currentColor"
+    />
+  </svg>;
+}
+
 export function SignoutIcon(props: commonProps) {
   <svg
     width="40"
@@ -40,7 +79,10 @@ export function SignoutIcon(props: commonProps) {
       d="M69.916 65.8684C69.916 69.0167 73.7135 70.601 75.9512 68.3838L91.8476 52.6384C93.8689 50.6335 93.8689 47.3669 91.8476 45.3619L75.9512 29.6166C73.7135 27.3994 69.916 28.9837 69.916 32.1319V65.8684Z"
       fill="currentColor"
     />
-    <path d="M81.3459 40.8335H49.5V57.1668H81.3459V40.8335Z" fill="currentColor" />
+    <path
+      d="M81.3459 40.8335H49.5V57.1668H81.3459V40.8335Z"
+      fill="currentColor"
+    />
     <path
       d="M49.5007 57.1668C54.011 57.1668 57.6673 53.5105 57.6673 49.0002C57.6673 44.4898 54.011 40.8335 49.5007 40.8335C44.9903 40.8335 41.334 44.4898 41.334 49.0002C41.334 53.5105 44.9903 57.1668 49.5007 57.1668Z"
       fill="currentColor"
