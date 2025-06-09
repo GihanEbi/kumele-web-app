@@ -41,7 +41,7 @@ const Notifications: React.FC<NotificationsProps> = ({ isOpen, onClose }) => {
               <NotificationIcon className="text-app-icon"/>
               {/* To align bell better with multi-line title */}
             </div>
-            <h2 className="font-plusJakartaSans text-app-text-primary text-center flex-grow px-3 leading-tight">
+            <h2 className="font-plusJakartaSans text-app-text-primary font-bold text-center flex-grow px-3 leading-tight">
               "Kumele" Would Like to
               <br />
               Send You Push Notifications

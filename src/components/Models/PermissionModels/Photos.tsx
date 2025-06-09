@@ -42,7 +42,7 @@ const Photos: React.FC<PhotosProps> = ({ isOpen, onClose }) => {
               <PictureIcon className="text-app-icon" />
               {/* To align bell better with multi-line title */}
             </div>
-            <h2 className="font-plusJakartaSans text-app-text-primary text-center flex-grow px-3 leading-tight">
+            <h2 className="font-plusJakartaSans font-bold text-app-text-primary text-center flex-grow px-3 leading-tight">
               "Kumele" Would to Access
               <br />
               Your Photos

@@ -66,12 +66,13 @@
   --color-app-text-tertiary: var(--app-text-tertiary);
   --color-app-text-black: var(--app-text-black);
   --color-app-text-blue: var(--app-text-blue);
-  --color-app-text-yellow:var(--app-text-yellow);
+  --color-app-text-yellow: var(--app-text-yellow);
   --color-app-button-primary: var(--app-button-primary);
   --color-app-button-secondary: var(--app-button-secondary);
   --color-app-button-gray: var(--app-button-gray);
   --color-app-button-yellow: var(--app-button-yellow);
   --color-app-button-blue: var(--app-button-blue);
+  --color-app-button-white: var(--app-button-white);
   --color-app-icon: var(--app-icon);
   --color-app-button-text-color: var(--app-button-text-color);
   --color-app-range-slider-primary: var(--app-range-slider-primary);
@@ -81,6 +82,7 @@
   --color-app-background-card-secondary: var(--app-background-card-secondary);
   --color-app-text-blackandwhite: var(--app-text-blackandwhite);
   --color-app-background-tertiary: var(--app-background-tertiary);
+  --color-app-okay-icon-background:var(--app-okay-icon-background);
 
   
   --color-app-search-bar-background: var(--app-search-bar-background);
@@ -154,7 +156,8 @@
   --app-background-card: oklch(0.9551 0 89.88); /* #F4F4F4 */
   --app-background-card-secondary: oklch(0 0 0); /* #000000 */
   /* ICON */
-  --app-icon: oklch(0 0 0);  /* #000000 */
+  --app-icon: oklch(0 0 0);
+  --app-okay-icon-background: oklch(0.9581 0 0);
 
   /* INPUT */
   --app-input-primary: oklch(0.9551 0 89.88);  /* #F4F4F4 */
@@ -178,6 +181,7 @@
   --app-button-gray: oklch(0.2393 0 89.88); /* #3D3D3D */
   --app-button-yellow: oklch(0.8564 0.1871 83.38); /* #FFD966 */
   --app-button-blue: oklch(0.5275 0.28234714827626795 260.80097608857864); /* #645EFF */
+  --app-button-white:oklch(1 0 89.88);
 
 
   /*BUTTON TEXT COLOR*/
@@ -272,6 +276,7 @@
 
   /* ICON */
   --app-icon: oklch(1 0 89.88);
+  --app-okay-icon-background: oklch(0.9581 0 0);
 
   /* INPUT */
   --app-input-primary: oklch(0.2393 0 89.88);
@@ -288,6 +293,7 @@
   --app-text-yellow:oklch(0.8531 0.162 85.01); /*#FFC533*/
   --app-text-blackandwhite: oklch(0 0 0);
   --app-text-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
+  --app-text-yellow: oklch(0.8564 0.1871 83.38);
 
   /* BUTTON */
   --app-button-primary: oklch(1 0 89.88);

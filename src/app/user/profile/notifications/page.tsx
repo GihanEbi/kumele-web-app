@@ -31,15 +31,15 @@ const Notification = (
     setSoundNotifications(value);
     setLoading(true); // Set loading state to true while processing
     try {
-      const dataObj = { enabled: value };
-      const data = await sound_Notifications(dataObj);
-      console.log("Sound notifications data:", data);
+      // const dataObj = { enabled: value };
+      // const data = await sound_Notifications(dataObj);
+      // console.log("Sound notifications data:", data);
 
-      if (data.success) {
-        console.log("Sound notifications updated successfully");
-      } else {
-        console.error("Failed to update sound notifications:", data.message);
-      }
+      // if (data.success) {
+      //   console.log("Sound notifications updated successfully");
+      // } else {
+      //   console.error("Failed to update sound notifications:", data.message);
+      // }
     } catch (error) {
       console.error("Error updating sound notifications:", error);
     } finally {
@@ -52,15 +52,15 @@ const Notification = (
     setEmailNotifications(value);
     setLoading(true); // Set loading state to true while processing
     try {
-      const dataObj = { enabled: value };
-      const data = await sound_Notifications(dataObj);
-      console.log("Email notifications data:", data);
+      // const dataObj = { enabled: value };
+      // const data = await sound_Notifications(dataObj);
+      // console.log("Email notifications data:", data);
 
-      if (data.success) {
-        console.log("Email notifications updated successfully");
-      } else {
-        console.error("Failed to update email notifications:", data.message);
-      }
+      // if (data.success) {
+      //   console.log("Email notifications updated successfully");
+      // } else {
+      //   console.error("Failed to update email notifications:", data.message);
+      // }
     } catch (error) {
       console.error("Error updating email notifications:", error);
     } finally {
@@ -78,7 +78,7 @@ const Notification = (
       <Head>
         <title>Notifications Settings</title>
       </Head>
-      <div className="min-h-screen bg-white flex flex-col items-center pt-6 font-sans">
+      <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
         <div className="w-full max-w-md px-4">
           {/* Header */}
           <header className="flex items-center mb-10">
@@ -87,16 +87,16 @@ const Notification = (
               onClick={() => window.history.back()} // Simple back navigation
               className="p-2 -ml-2 mr-2" // Added padding for easier click and negative margin to align
             >
-              <BackArrow />
+              <BackArrow className="text-app-icon"/>
             </button>
-            <h1 className="text-3xl font-bold text-black">Notifications</h1>
+            <h1 className="text-3xl font-bold text-app-text-primary font-plusJakartaSans">Notifications</h1>
           </header>
           {/* Notification Settings List */}
           <div className="space-y-1">
             <div className="flex justify-between items-center py-4">
               <span
                 id="email-notifications-label"
-                className="text-md text-gray-700"
+                className="text-md text-app-text-primary font-plusJakartaSans"
               >
                 Turn on Sound notifications
               </span>
@@ -113,7 +113,7 @@ const Notification = (
             <div className="flex justify-between items-center py-4">
               <span
                 id="email-notifications-label"
-                className="text-md text-gray-700"
+                className="text-md  text-app-text-primary font-plusJakartaSans"
               >
                 E-Mail notifications
               </span>

@@ -14,14 +14,9 @@ const loremIpsumParagraph3 = // This seems to be a repeat of the second long par
 const TermsAndConditions = () => {
   return (
     <div>
-      <Head>
-        <title>Terms & Conditions - Kumele</title>
-        <meta name="description" content="Kumele Terms of Use" />
-      </Head>
-
-      <div className="min-h-screen bg-white text-gray-800 flex flex-col">
+      <div className="min-h-screen bg-app-background-primary flex flex-col">
         {/* Header */}
-        <header className="sticky top-0 bg-white z-10 flex items-center justify-between p-4 shadow-sm">
+        <header className="sticky top-0 bg-app-background-primary z-10 flex items-center justify-between p-4 ">
           {/* Back Button - for actual navigation, you'd use <Link> or router.back() */}
           <button
             onClick={() =>
@@ -30,10 +25,10 @@ const TermsAndConditions = () => {
             className="p-2 -ml-2 text-gray-700 hover:text-gray-900"
             aria-label="Go back"
           >
-            <BackArrow />
+            <BackArrow className="text-app-icon" />
           </button>
 
-          <h1 className="text-2xl font-bold text-gray-900 flex-grow text-center">
+          <h1 className="text-2xl font-bold text-app-text-primary font-p flex-grow text-center font-plusJakartaSans">
             Terms & Conditions
           </h1>
 
@@ -42,11 +37,11 @@ const TermsAndConditions = () => {
         </header>
         {/* Main Content */}
         <main className="flex-grow p-5 md:p-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-5">
+          <h2 className="text-lg text-app-text-primary mb-5 font-plusJakartaSans">
             Kumele Terms of use
           </h2>
 
-          <div className="space-y-6 text-base text-gray-700 leading-relaxed">
+          <div className="space-y-6 text-sm text-app-text-primary font-plusJakartaSans leading-relaxed">
             <p>{loremIpsumParagraph1}</p>
             <p>{loremIpsumParagraph2}</p>
             <p>{loremIpsumParagraph3}</p>
