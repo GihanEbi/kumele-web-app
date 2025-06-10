@@ -76,7 +76,7 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
               <button
                 className="flex flex-col items-center gap-2 group"
                 onClick={() => {
-                  // router.push("/user/more/history");
+                  router.push("/user/more/filter");
                   onClose();
                 }}
               >

@@ -49,7 +49,7 @@ const page = () => {
   // --------- show more option model ----------
   const [showMoreOptionModel, setShowMoreOptionModel] = useState(false);
   return (
-    <div className="bg-red-100 ">
+    <div className="bg-app-background-primary">
       <div
         className={`fixed p-2 bottom-0 left-0 right-0 h-tab-bar ${
           activePageIndex !== 0

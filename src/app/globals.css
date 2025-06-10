@@ -84,6 +84,7 @@
   --color-app-text-blackandwhite: var(--app-text-blackandwhite);
   --color-app-background-tertiary: var(--app-background-tertiary);
   --color-app-okay-icon-background:var(--app-okay-icon-background);
+  --color-app-okay-icon-filter:var(--app-okay-icon-filter);
 
   
   --color-app-search-bar-background: var(--app-search-bar-background);
@@ -160,6 +161,7 @@
   /* ICON */
   --app-icon: oklch(0 0 0);
   --app-okay-icon-background: oklch(0.9581 0 0);
+  --app-okay-icon-filter: oklch(0.9581 0 0);
 
   /* INPUT */
   --app-input-primary: oklch(0.9551 0 89.88);  /* #F4F4F4 */
@@ -280,6 +282,7 @@
   /* ICON */
   --app-icon: oklch(1 0 89.88);
   --app-okay-icon-background: oklch(0.9581 0 0);
+  --app-okay-icon-filter: oklch(0.2393 0 89.88);
 
   /* INPUT */
   --app-input-primary: oklch(0.2393 0 89.88);
