@@ -101,6 +101,7 @@
   --color-app-blog-card-author-text: var(--app-blog-card-author-text);
   --color-app-card-button-bg-primary:var(--app-card-button-bg-primary);
   --color-app-card-highlight-button:var(--app-card-highlight-button);
+  --color-app-radio-button-color:var(--app-radio-button-color);
 }
 
 :root {
@@ -222,6 +223,9 @@
   /*SHOP PAGE*/
   --app-card-button-bg-primary:oklch(0 0 0);
   --app-card-highlight-button:oklch(1 0 0); 
+
+  /*RADIO BUTTON*/
+  --app-radio-button-color:oklch(0.2972 0 0);
   
 }
 
@@ -309,7 +313,7 @@
   --app-button-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
 
   /*BUTTON TEXT COLOR*/
-  --app-button-text-color: oklch(0 0 0); /* #FFFFFF color (black color) */
+  --app-button-text-color: oklch(0 0 0); /* #000000 color (black color) */
 
   /* RANGE SLIDER */
   --app-range-slider-primary: oklch(0.861 0.006 270);
@@ -338,6 +342,9 @@
   /*SHOP PAGE*/
   --app-card-button-bg-primary:oklch(0.9551 0 0);
   --app-card-highlight-button:oklch(0.9551 0 0);
+
+  /*RADIO BUTTON*/
+  --app-radio-button-color:oklch(0.8638 0 0);
 }
 
 @layer base {
