@@ -8,6 +8,11 @@ import {
   Confetti2Icon,
   TwoTicketsIcon,
 } from "../../../../public/svg-icons/icons";
+import { PaymentModal } from "@/components/PaymentModal/PaymentModal";
+import { AddCardModal } from "@/components/PaymentModal/AddNewCard/AddNewCard";
+import { SendPaymentModal } from "@/components/PaymentModal/SendPayment/SendPayment";
+import { CoinbasePaymentModal } from "@/components/PaymentModal/CoinBasePaymentModal/CoinBasePaymentModal";
+import { PaymentCompleteModal } from "@/components/PaymentModal/PaymentCompleteModal/PaymentCompleteModal";
 
 type Plan = {
   id: number;
@@ -128,6 +133,11 @@ export default function SubscriptionsPage() {
     "subscriptions"
   );
 
+  const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [isAddCardModalOpen, setAddCardModalOpen] = useState(false);
+  const [isSendPaymentOpen, setSendPaymentOpen] = useState(false);
+  const [isCoinbaseOpen, setCoinbaseOpen] = useState(false);
+  const [isThankYouOpen, setThankYouOpen] = useState(false); 
   // Determine which data to show based on the active tab
   const currentData =
     activeTab === "subscriptions" ? subscriptionPlans : guestTickets;
@@ -137,100 +147,165 @@ export default function SubscriptionsPage() {
     "bg-app-background-primary shadow text-app-blog-card-author-text";
   const inactiveTabStyles = "bg-transparent text-app-search-bar-text";
 
+  const handleOpenPayment = () => setPaymentModalOpen(true);
+  const handleClosePayment = () => setPaymentModalOpen(false);
+  const handleNavigateToAddCard = () => {
+    setPaymentModalOpen(false); // Close the current modal
+    setAddCardModalOpen(true); // Open the new one
+  };
+  const handleCloseAddCard = () => {
+    setAddCardModalOpen(false);
+    setPaymentModalOpen(true);
+   
+  };
+  const handleNavigateToSendPayment = () => {
+    setPaymentModalOpen(false); // Close the payment modal
+    setSendPaymentOpen(true);   // Open the send payment modal
+  };
+  const handleCloseSendPayment = () => {
+    setSendPaymentOpen(false);  // Close the send payment modal
+    setPaymentModalOpen(true);  // Go back to the payment modal
+  };
+
+   const handleNavigateToCoinbase = () => {
+    setSendPaymentOpen(false); // Close the current modal
+    setCoinbaseOpen(true);     // Open the new one
+  };
+  
+  const handleCloseCoinbase = () => {
+    setCoinbaseOpen(false);      // Close the coinbase modal
+    setSendPaymentOpen(true);    // Go back to the previous modal
+  };
+   const handleNavigateToThankYou = () => {
+    setCoinbaseOpen(false);      // Close the current modal
+    setThankYouOpen(true);       // Open the new one
+  };
+  
+  const handleCloseThankYou = () => {
+    setThankYouOpen(false); 
+    setPaymentModalOpen(true)     // Close the final screen, ending the flow
+  };
+
   return (
-    <div className="font-sans">
-      <div className="mx-auto p-4">
-        {/* Segmented Control Header */}
-        <div className="bg-app-range-slider-track-active p-1 rounded-lg flex items-center mt-2">
-          {/* Subscriptions Button */}
-          <button
-            onClick={() => setActiveTab("subscriptions")}
-            className={`flex-1 py-3 px-4 rounded-lg text-sm transition-all duration-300 ${
-              activeTab === "subscriptions"
-                ? activeTabStyles
-                : inactiveTabStyles
-            }`}
-          >
-            Subscriptions
-          </button>
-
-          {/* Guest Tickets Button */}
-          <button
-            onClick={() => setActiveTab("tickets")}
-            className={`flex-1 py-3 px-4 rounded-lg text-sm transition-all duration-300 ${
-              activeTab === "tickets" ? activeTabStyles : inactiveTabStyles
-            }`}
-          >
-            Guest tickets
-          </button>
-        </div>
-
-        {/* This list now dynamically renders the correct data */}
-        <div className="mt-8 space-y-4 pb-8">
-          {currentData.map((plan) => (
-            <div
-              key={`${activeTab}-${plan.id}`} // Using a unique key for each item
-              className={`rounded-2xl p-5 ${
-                plan.isHighlighted
-                  ? "bg-app-blog-selected-tabs-background"
-                  : "bg-app-blog-card-background"
+    <>
+      <div className="font-sans">
+        <div className="mx-auto p-4">
+          {/* Segmented Control Header */}
+          <div className="bg-app-range-slider-track-active p-1 rounded-lg flex items-center mt-2">
+            {/* Subscriptions Button */}
+            <button
+              onClick={() => setActiveTab("subscriptions")}
+              className={`flex-1 py-3 px-4 rounded-lg text-sm transition-all duration-300 ${
+                activeTab === "subscriptions"
+                  ? activeTabStyles
+                  : inactiveTabStyles
               }`}
             >
-              <div className="flex items-start gap-3">
-                <plan.Icon
-                  className={`w-8 h-8 flex-shrink-0 mt-1 ${
-                    plan.isHighlighted ? "text-gray-900" : ""
-                  }`}
-                />
-                <div className="flex flex-col w-full">
-                  <div className="flex justify-between items-start">
-                    <h2
-                      className={`font-bold text-lg ${
-                        plan.isHighlighted
-                          ? "text-text-title"
-                          : "text-app-blog-card-heading"
-                      }`}
-                    >
-                      {plan.title}
-                    </h2>
-                    <p
-                      className={`font-bold text-lg whitespace-nowrap ${
-                        plan.priceColor === "yellow"
-                          ? "text-app-text-yellow"
-                          : "text-blue-600"
-                      }`}
-                    >
-                      {plan.price}
-                    </p>
-                  </div>
-                  <p
-                    className={`mt-2 text-sm ${
-                      plan.isHighlighted
-                        ? "text-gray-800"
-                        : "text-app-blog-card-author-text"
+              Subscriptions
+            </button>
+
+            {/* Guest Tickets Button */}
+            <button
+              onClick={() => setActiveTab("tickets")}
+              className={`flex-1 py-3 px-4 rounded-lg text-sm transition-all duration-300 ${
+                activeTab === "tickets" ? activeTabStyles : inactiveTabStyles
+              }`}
+            >
+              Guest tickets
+            </button>
+          </div>
+
+          {/* This list now dynamically renders the correct data */}
+          <div className="mt-8 space-y-4 pb-8">
+            {currentData.map((plan) => (
+              <div
+                key={`${activeTab}-${plan.id}`} // Using a unique key for each item
+                className={`rounded-2xl p-5 ${
+                  plan.isHighlighted
+                    ? "bg-app-blog-selected-tabs-background"
+                    : "bg-app-blog-card-background"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <plan.Icon
+                    className={`w-8 h-8 flex-shrink-0 mt-1 ${
+                      plan.isHighlighted ? "text-gray-900" : ""
                     }`}
-                  >
-                    {plan.description}
-                  </p>
-                  {plan.status === "buy" ? (
-                    <div className="mt-5 flex ">
-                      <button className="bg-app-card-button-bg-primary text-app-button-text-color py-2 px-20 rounded-lg shadow-sm">
-                        Buy now
-                      </button>
+                  />
+                  <div className="flex flex-col w-full">
+                    <div className="flex justify-between items-start">
+                      <h2
+                        className={`font-bold text-lg ${
+                          plan.isHighlighted
+                            ? "text-black"
+                            : "text-app-blog-card-heading"
+                        }`}
+                      >
+                        {plan.title}
+                      </h2>
+                      <p
+                        className={`font-bold text-lg whitespace-nowrap ${
+                          plan.priceColor === "yellow"
+                            ? "text-app-text-yellow"
+                            : "text-blue-600"
+                        }`}
+                      >
+                        {plan.price}
+                      </p>
                     </div>
-                  ) : (
-                    <div className="mt-5 flex ">
-                      <button className="bg-app-card-highlight-button text-black py-2 px-22 rounded-lg shadow-sm">
-                        Active
-                      </button>
-                    </div>
-                  )}
+                    <p
+                      className={`mt-2 text-sm ${
+                        plan.isHighlighted
+                          ? "text-gray-800"
+                          : "text-app-blog-card-author-text"
+                      }`}
+                    >
+                      {plan.description}
+                    </p>
+                    {plan.status === "buy" ? (
+                      <div className="mt-5 flex ">
+                        <button
+                          onClick={handleOpenPayment}
+                          className="bg-app-card-button-bg-primary text-app-button-text-color py-2 px-20 rounded-lg shadow-sm"
+                        >
+                          Buy now
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="mt-5 flex ">
+                        <button className="bg-app-card-highlight-button text-black py-2 px-22 rounded-lg shadow-sm">
+                          Active
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+      <PaymentModal
+        onAddNewCardClick={handleNavigateToAddCard}
+        isOpen={isPaymentModalOpen}
+        onClose={handleClosePayment}
+        onPayWithWalletClick={handleNavigateToSendPayment}
+      />
+      <AddCardModal isOpen={isAddCardModalOpen} onClose={handleCloseAddCard} />
+       <SendPaymentModal
+          isOpen={isSendPaymentOpen}
+          onClose={handleCloseSendPayment} 
+           onPayWithWalletClick={handleNavigateToCoinbase}
+        />,
+         <CoinbasePaymentModal
+         onPayWithCoinbaseClick={handleNavigateToThankYou}
+        isOpen={isCoinbaseOpen}
+        onClose={handleCloseCoinbase} // You can use this for a back button if you add one
+      />
+       <PaymentCompleteModal
+              isOpen={isThankYouOpen}
+              onClose={handleCloseThankYou} // This closes the modal and ends the flow
+            />
+    </>
   );
 }
