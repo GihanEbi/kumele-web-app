@@ -1,7 +1,12 @@
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import React, { useState } from "react";
-import { BinocularsIcon, CloseIcon, CopyIcon } from "../../../../public/svg-icons/icons";
+import {
+  BinocularsIcon,
+  CloseIcon,
+  CopyIcon,
+} from "../../../../public/svg-icons/icons";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 // props types
 type MoreModelProps = {
   isOpen: boolean;
@@ -10,6 +15,7 @@ type MoreModelProps = {
 const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   if (!isOpen) {
     return null; // Don't render anything if the modal is not open
@@ -47,7 +53,13 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
               </button>
             </div>
             <div className="grid grid-cols-3 gap-y-4 p-6 pt-2 mt-4">
-              <button className="flex flex-col items-center gap-2 group">
+              <button
+                className="flex flex-col items-center gap-2 group"
+                onClick={() => {
+                  router.push("/user/more/create-hobby-event");
+                  onClose();
+                }}
+              >
                 <div className="">
                   <Image
                     src="/images/create-event-img.png"
@@ -61,7 +73,13 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                   Create Hobby Events
                 </span>
               </button>
-              <button className="flex flex-col items-center gap-2 group">
+              <button
+                className="flex flex-col items-center gap-2 group"
+                onClick={() => {
+                  // router.push("/user/more/history");
+                  onClose();
+                }}
+              >
                 <div className="">
                   <Image
                     src="/images/find-event-img.png"
@@ -75,7 +93,13 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                   Find Hobby Events
                 </span>
               </button>
-              <button className="flex flex-col items-center gap-2 group">
+              <button
+                className="flex flex-col items-center gap-2 group"
+                onClick={() => {
+                  router.push("/user/more/history");
+                  onClose();
+                }}
+              >
                 <div className="">
                   <Image
                     src="/images/history-img.png"

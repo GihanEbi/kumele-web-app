@@ -153,6 +153,7 @@
   --app-background-primary: oklch(1 0 89.88); /* #FFFFFF */
   --app-background-secondary: oklch(0.9219 0 89.88); /* #EBEBEB */
   --app-background-model: oklch(1 0 89.88); /* #FFFFFF */
+  --app-background-more-model: oklch(1 0 89.88);
   --app-background-tertiary: oklch(1 0 0);
   --app-background-card: oklch(0.9551 0 89.88); /* #F4F4F4 */
   --app-background-card-secondary: oklch(0 0 0); /* #000000 */
