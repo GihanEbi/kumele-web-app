@@ -3,6 +3,7 @@
 import InputComponent from "../../../../components/InputComponent/InputComponent";
 import React, { useState, useRef } from "react";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 import {
   RightIcon,
@@ -36,7 +37,8 @@ import {
   VolunteerIcon,
 } from "../../../../../public/svg-icons/icons";
 import TimeDurationSelector from "@/components/TimeDurationSelector/TimeDurationSelector";
-import DatePicker from "@/components/DatePicker/DatePicker";
+//import DatePicker from "@/components/DatePicker/DatePicker";
+import DatePicker from "@/components/DatePicker/DatePickerUpdate";
 import TimePicker from "@/components/TimePicker/TimePicker";
 import UserAvailabilityCheck from "@/components/EventUserAvailabilityCheck/UserAvailabilityCheck";
 import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
@@ -124,6 +126,11 @@ const CreateEventSection = () => {
 
   //set modal state
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const [isDatePickerOpen, setDatePickerOpen] = useState(false);
+
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
@@ -246,7 +253,13 @@ const CreateEventSection = () => {
 
   return (
     <div
-      className="max-w-full mx-auto p-6 bg-app-background-primary rounded-lg"
+      className={`max-w-full mx-auto p-6 ${
+        isDatePickerOpen && isDark
+          ? "bg-neutral-900"
+          : isDatePickerOpen && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
+      }   rounded-lg`}
       onClick={closeModal}
     >
       <div className="flex flex-row gap-5">
@@ -263,35 +276,35 @@ const CreateEventSection = () => {
 
         <div className="relative mt-3">
           <div className="overflow-hidden">
-          <div
-            ref={categoriesContainerRef}
-            className="flex space-x-3 overflow-x-auto pb-3 -mx-4 px-4 no-scrollbar"
-            onMouseDown={handleMouseDown}
-            onMouseLeave={handleMouseLeave}
-            onMouseUp={handleMouseUp}
-            onMouseMove={handleMouseMove}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            style={{
-              cursor: isDragging ? "grabbing" : "grab",
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-              WebkitOverflowScrolling: "touch",
-            }}
-          >
-            {EVENT_CATEGORIES.map((category) => (
-              <div
-                className={`${
-                  selectedCategory === category.id
-                    ? "bg-k-secondary-color border-none"
-                    : "bg-app-background-card hover:bg-app-background"
-                }bg-k-secondary-color border-none flex h-24 w-24 rounded-lg`}
-              >
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`
+            <div
+              ref={categoriesContainerRef}
+              className="flex space-x-3 overflow-x-auto pb-3 -mx-4 px-4 no-scrollbar"
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              style={{
+                cursor: isDragging ? "grabbing" : "grab",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                WebkitOverflowScrolling: "touch",
+              }}
+            >
+              {EVENT_CATEGORIES.map((category) => (
+                <div
+                  className={`${
+                    selectedCategory === category.id
+                      ? "bg-k-secondary-color border-none"
+                      : "bg-app-background-card hover:bg-app-background"
+                  }bg-k-secondary-color border-none flex h-24 w-24 rounded-lg`}
+                >
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`
             flex h-24 w-24 flex-col items-center justify-center rounded-lg p-2 text-center transition-all duration-200
             ${
               selectedCategory === category.id
@@ -299,15 +312,15 @@ const CreateEventSection = () => {
                 : "bg-app-background-card hover:bg-app-background"
             }
           `}
-                >
-                  <div className="mb-1 text-xl">{category.icon}</div>
-                  <span className="text-sm font-medium leading-tight text-text-title">
-                    {category.label}
-                  </span>
-                </button>
-              </div>
-            ))}
-          </div>
+                  >
+                    <div className="mb-1 text-xl">{category.icon}</div>
+                    <span className="text-sm font-medium leading-tight text-text-title">
+                      {category.label}
+                    </span>
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -420,8 +433,11 @@ const CreateEventSection = () => {
       <div className="mt-8 ">
         <DatePicker
           label="Date"
-          currentDateDisplay="Tuesday, 25th June, 2024"
-          onClick={handleDateClick}
+          isOpen={isDatePickerOpen}
+          setIsOpen={setDatePickerOpen}
+
+          //currentDateDisplay="Tuesday, 25th June, 2024"
+          //onClick={handleDateClick}
         />
       </div>
 
