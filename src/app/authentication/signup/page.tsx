@@ -253,10 +253,10 @@ const Signup = () => {
           <p className="text-xs font-plusJakartaSans text-app-text-primary mb-5">
             Language choice:
           </p>
-          <div className="mb-6 sm:mb-8 relative">
+          <div className="mb-6 sm:mb-8 relative w-full">
             <div
               ref={tabsContainerRef}
-              className="flex space-x-3 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-0 sm:px-0 no-scrollbar"
+              className="flex gap-5 space-x-3 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-0 sm:px-0 no-scrollbar"
               onMouseDown={handleMouseDown}
               onMouseLeave={handleMouseLeave}
               onMouseUp={handleMouseUp}

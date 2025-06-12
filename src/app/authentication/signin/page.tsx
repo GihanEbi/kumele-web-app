@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -17,10 +17,46 @@ import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent"
 import { login } from "@/routes/signup_and_signin";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { saveToken } from "@/utils/authUtils";
+import SignInPasskey from "./passkey-models/SignInPasskey";
+import SigninPasskeyFaceId from "./passkey-models/SigninPasskeyFaceId";
+import CreatePasskeyText from "./passkey-models/CreatePasskeyText";
+import CreatePasskey from "./passkey-models/CreatePasskey";
+import SignupOptions from "./passkey-models/SignupOptions";
+import { sign } from "crypto";
+
+const languages = [
+  {
+    id: "english",
+    label: "English",
+  },
+  {
+    id: "french",
+    label: "French",
+  },
+  {
+    id: "spanish",
+    label: "Spanish",
+  },
+  {
+    id: "chinese",
+    label: "Chinese",
+  },
+  {
+    id: "arabic",
+    label: "Arabic",
+  },
+];
 
 const Signin = () => {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("english");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   // ---------- form for login details -----------
   const [form, setForm] = useState({
@@ -39,42 +75,123 @@ const Signin = () => {
   // --------- state for checkbox value ---------
   const [rememberMe, setRememberMe] = useState(false);
   const [notRobot, setNotRobot] = useState(false);
+  // --------- show passkey model ----------
+  const [showPasskeyModel, setShowPasskeyModel] = useState(false);
+  // --------- show face id model ----------
+  const [faceIdModel, setFaceIdModel] = useState(false);
+  // --------- state for create passkey model ----------
+  const [createPasskeyModel, setCreatePasskeyModel] = useState(false);
+  // create passkey
+  const [createPasskey, setCreatePasskey] = useState(false);
+  // state for signin option
+  const [signinOption, setSigninOption] = useState(false);
 
   // -------- handleChange for input fields ---------
   const handleInputChange = (value: string | Boolean, name: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  useEffect(() => {
+    // 2 seconds time out
+    const timeout = setTimeout(() => {
+      setShowPasskeyModel(true);
+    }, 2000); // Hide after 2 seconds
+  }, []);
+
   // -------- handleSubmit for form submission ---------
   const handleSubmit = async () => {
+        router.push("/user");
     // -------- check full form validation
     // -------- prevent multiple submission
-    if (loading) return;
-    setLoading(true);
-    if (!form.email || !form.password) {
-      setLoading(false);
-      return;
-    }
+    // if (loading) return;
+    // setLoading(true);
+    // if (!form.email || !form.password) {
+    //   setLoading(false);
+    //   return;
+    // }
 
-    try {
-      const data = await login(form);
-      if (data.success) {
-        saveToken(data.data.user_token);
-        setLoading(false);
-        // --------- show success model ---------
-        setShowSuccessModel(true);
-        setTimeout(() => {
-          setShowSuccessModel(false);
-        }, 1000); // Hide after 2 seconds
-        router.push("/user");
-      } else {
-        console.log(data);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      // --------- set loading to false ---------
-      setLoading(false);
+    // try {
+    //   const data = await login(form);
+    //   if (data.success) {
+    //     saveToken(data.data.user_token);
+    //     setLoading(false);
+    //     // --------- show success model ---------
+    //     setShowSuccessModel(true);
+    //     setTimeout(() => {
+    //       setShowSuccessModel(false);
+    //     }, 1000); // Hide after 2 seconds
+    //     router.push("/user");
+    //   } else {
+    //     console.log(data);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // } finally {
+    //   // --------- set loading to false ---------
+    //   setLoading(false);
+    // }
+  };
+
+  // LANGUAGE SELECTION
+
+  const handleTabClick = (tabId: string) => {
+    setActiveTab(tabId);
+    scrollToTab(tabId);
+  }; // Mobile-like drag scrolling handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartX(e.pageX - (tabsContainerRef.current?.offsetLeft || 0));
+    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !tabsContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - (tabsContainerRef.current.offsetLeft || 0);
+    const walk = (x - startX) * 2; // Scroll speed multiplier
+    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - (tabsContainerRef.current?.offsetLeft || 0));
+    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !tabsContainerRef.current) return;
+    e.preventDefault();
+    const x = e.touches[0].pageX - (tabsContainerRef.current.offsetLeft || 0);
+    const walk = (x - startX) * 2;
+    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  const scrollToTab = (tabId: string) => {
+    const tabElement = document.getElementById(`tab-${tabId}`);
+    if (tabElement && tabsContainerRef.current) {
+      const container = tabsContainerRef.current;
+      const containerWidth = container.offsetWidth;
+      const tabLeft = tabElement.offsetLeft;
+      const tabWidth = tabElement.offsetWidth;
+
+      const scrollPosition = tabLeft - (containerWidth - tabWidth) / 2;
+
+      container.scrollTo({
+        left: scrollPosition,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -126,25 +243,63 @@ const Signin = () => {
         <div className="absolute bottom-4 left-6 flex items-center space-x-2 z-10">
           {" "}
           {/* z-10 ensures text is above background */}
-          <h1 className="text-3xl font-bold text-black">Sign up</h1>
+          <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
+            Sign in
+          </h1>
           <GoogleIcon />
         </div>
       </div>
 
       {/* form area */}
-      <div className="bg-white px-6 py-6 relative z-10">
+      <div
+        className={`${
+          showPasskeyModel ||
+          faceIdModel ||
+          createPasskeyModel ||
+          createPasskey ||
+          signinOption
+            ? "bg-k-background-secondary"
+            : "bg-k-background-primary"
+        } px-6 py-6 relative z-10`}
+      >
         <div className="mb-6">
-          <p className="text-xs text-gray-500 mb-2">Language choice:</p>
-          <div className="flex space-x-2">
-            <button className="flex-1 py-2.5 px-3 bg-yellow-400 text-black text-sm font-medium rounded-md shadow-sm">
-              English
-            </button>
-            <button className="flex-1 py-2.5 px-3 bg-gray-200 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-300">
-              French
-            </button>
-            <button className="flex-1 py-2.5 px-3 bg-gray-200 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-300">
-              Spanish
-            </button>
+          <p className="text-xs font-plusJakartaSans text-app-text-primary mb-5">
+            Language choice:
+          </p>
+          <div className="mb-6 sm:mb-8 relative w-full">
+            <div
+              ref={tabsContainerRef}
+              className="flex gap-5 space-x-3 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-0 sm:px-0 no-scrollbar"
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              style={{
+                cursor: isDragging ? "grabbing" : "grab",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                WebkitOverflowScrolling: "touch",
+              }}
+            >
+              {languages.map((tab, index) => (
+                <button
+                  key={tab.id}
+                  id={`tab-${tab.id}`}
+                  onClick={() => handleTabClick(tab.id)}
+                  className={`py-2 px-5 rounded-md text-sm font-medium whitespace-nowrap flex-shrink-0 transition-colors duration-150
+                  ${
+                    activeTab === tab.id
+                      ? "bg-yellow-400 text-gray-900"
+                      : "bg-gray-800 text-white hover:bg-gray-700"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
         {/* form */}
@@ -163,7 +318,7 @@ const Signin = () => {
         {/* enter password */}
         <div className="relative mt-5">
           <InputComponent
-            icon={<PasswordIcon />}
+            icon={<PasswordIcon className="text-app-icon" />}
             placeholder="Password"
             onChange={(e) => {
               handleInputChange(e.target.value, "password");
@@ -174,9 +329,13 @@ const Signin = () => {
           <button
             type="button"
             onClick={() => setPasswordVisible(!passwordVisible)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center"
           >
-            {passwordVisible ? <EyeIcon /> : <EyeIcon />}
+            {passwordVisible ? (
+              <EyeIcon className="text-app-icon" />
+            ) : (
+              <EyeIcon className="text-app-icon" />
+            )}
           </button>
         </div>
         {/* checkboxes */}
@@ -188,7 +347,9 @@ const Signin = () => {
               value={rememberMe}
             />
           </div>
-          <p className="text-blue-600 text-xs font-bold">Forgot password?</p>
+          <p className="font-plusJakartaSans text-app-text-blue">
+            Forgot password?
+          </p>
         </div>
         <div className="flex items-center mt-3">
           <CheckBoxComponent
@@ -206,32 +367,41 @@ const Signin = () => {
         </div>
         <div className="pt-4">
           <button
-            className="w-full bg-black text-white py-3.5 rounded-lg font-semibold text-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50 transition duration-150 ease-in-out"
+            className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-md"
             onClick={() => handleSubmit()}
             disabled={loading} // Disable button if loading
           >
             Sign in
           </button>
         </div>
-        <div className="flex flex-row items-center justify-center mt-6">
-          <p className="text-center text-sm text-gray-500">Not a member? </p>
+        <div className="flex items-center mt-6">
+          <p className="text-sm text-app-text-primary font-plusJakartaSans">
+            Not a member?{" "}
+          </p>
           <p
             onClick={() => router.push("/authentication/signup")}
-            className="font-semibold text-xs underline text-black hover:underline"
+            className="font-plusJakartaSans text-xs underline text-app-text-primary font-bold"
           >
             Sign up
           </p>
         </div>
         {/* sign in with passkey */}
         <div className="flex items-center md:my-8 mt-3">
-          <div className="flex-grow border-t border-gray-900"></div>
-          <p className="px-4 text-gray-900 md:text-lg text-sm">
+          <div className="flex-grow border-t border-app-text-primary"></div>
+          <p className="px-4 text-app-text-primary font-plusJakartaSans md:text-lg text-sm">
             Or sign in with Passkey
           </p>
-          <div className="flex-grow border-t border-gray-900"></div>
+          <div className="flex-grow border-t border-app-text-primary"></div>
         </div>
         {/* Passkey Lock GIF */}
-        <div className="my-4 md:my-8">
+        <div
+          className="my-4 md:my-8"
+          onClick={
+            () => {
+              setCreatePasskeyModel(true);
+            } // Open Passkey model on click
+          }
+        >
           <img
             src="/bg-imgs/auth/passkey.gif" // Assumes lock.gif is in the /public folder
             alt="Passkey Lock Icon"
@@ -239,7 +409,7 @@ const Signin = () => {
           />
         </div>{" "}
         {/* Recommendation Text */}
-        <p className="text-xs text-blue-600 text-center">
+        <p className="text-xs text-app-text-blue font-plusJakartaSans text-center">
           We recommend Passkey if your device supports it for better security
           and a pleasant user experience.
         </p>
@@ -248,7 +418,7 @@ const Signin = () => {
       {showSuccessModel && (
         <div className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50 transition-opacity duration-300 ease-in-out">
           <div
-            className={`bg-white w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out `}
+            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out `}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex flex-col items-center">
@@ -267,6 +437,59 @@ const Signin = () => {
           </div>
         </div>
       )}
+      {/* Sign Out Model */}
+      <SignInPasskey
+        isOpen={showPasskeyModel}
+        onClose={() => {
+          setShowPasskeyModel(false);
+        }}
+        onContinue={() => {
+          setShowPasskeyModel(false);
+          setFaceIdModel(true);
+        }}
+      />
+      {/* Face ID Model */}
+      <SigninPasskeyFaceId
+        isOpen={faceIdModel}
+        onClose={() => {
+          setFaceIdModel(false);
+        }}
+      />
+      {/* Create Passkey Model */}
+      <CreatePasskeyText
+        isOpen={createPasskeyModel}
+        onClose={() => {
+          setCreatePasskeyModel(false);
+        }}
+        onContinue={() => {
+          setCreatePasskeyModel(false);
+          setCreatePasskey(true);
+        }}
+      />
+
+      {/* Create Passkey */}
+      <CreatePasskey
+        isOpen={createPasskey}
+        onClose={() => {
+          setCreatePasskey(false);
+        }}
+        onContinue={() => {
+          setCreatePasskey(false);
+          setSigninOption(true);
+        }}
+      />
+
+      {/* Create Passkey */}
+      <SignupOptions
+        isOpen={signinOption}
+        onClose={() => {
+          setSigninOption(false);
+        }}
+        onContinue={() => {
+          router.push("/user");
+          setSigninOption(false);
+        }}
+      />
     </div>
   );
 };

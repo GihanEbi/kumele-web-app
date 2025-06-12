@@ -19,13 +19,13 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
   required,
 }) => {
   return (
-    <div className="relative flex-1 ">
+    <div className="flex items-center w-full bg-app-input-primary rounded-lg py-3 px-3">
       <select
         onChange={(e) => {
           handleChange(e);
         }}
         value={value}
-        className="w-full appearance-none font-plusJakartaSans bg-app-input-primary rounded-lg py-3 px-3 text-sm text-app-text-button"
+        className="font-plusJakartaSans text-sm text-app-text-button appearance-none"
       >
         <option value="" disabled hidden>
           {placeholder}
@@ -35,13 +35,13 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
           <option
             key={item.value}
             value={item.value}
-            className="bg-app-background-primary text-app-text-primary text-center font-plusJakartaSans text-xs rounded-lg "
+            className="bg-app-background-primary text-app-text-primary font-plusJakartaSans text-xs"
           >
             {item.label}
           </option>
         ))}
       </select>
-      <div className="h-5 w-5 text-app-text-primary absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none">
+      <div className="ml-auto">
         <DownArrow className="text-app-icon" />
       </div>
     </div>
