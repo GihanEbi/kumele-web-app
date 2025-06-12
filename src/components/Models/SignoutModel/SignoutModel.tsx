@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import { SignOutIcon } from "../../../../public/svg-icons/icons";
+import { useRouter } from "next/navigation";
 // props types
 type SignoutModelProps = {
   isOpen: boolean;
@@ -11,6 +12,7 @@ type SignoutModelProps = {
 const SignoutModel: React.FC<SignoutModelProps> = ({ isOpen, onClose }) => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   if (!isOpen) {
     return null; // Don't render anything if the modal is not open
@@ -55,7 +57,9 @@ const SignoutModel: React.FC<SignoutModelProps> = ({ isOpen, onClose }) => {
                 </button>
                 <button
                   className="flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
-                  onClick={() => {}}
+                  onClick={() => {
+                    router.push("/authentication/signin");
+                  }}
                 >
                   Signout
                 </button>

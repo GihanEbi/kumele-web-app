@@ -19,6 +19,9 @@ import {
   YoutubeIcon,
 } from "../../../public/svg-icons/icons";
 import GifCarousel from "@/components/GifCarousel/GifCarousel";
+import AboutUsModel from "@/components/Models/AboutUsModel/AboutUsModel";
+import ContactModel from "@/components/Models/ContactModel/ContactModel";
+import GuidelinesModel from "@/components/Models/GuidelinesModel/GuidelinesModel";
 
 // Helper component for the multi-colored "Hobbies" text
 const MultiColorText = ({
@@ -131,6 +134,10 @@ const LandingPge = () => {
   // make state for the carousel to set the background img index
   const [carouselIndex, setCarouselIndex] = React.useState(0);
 
+  const [aboutUs, setAboutUs] = React.useState(false);
+  const [contactModel, setContactModel] = React.useState(false);
+  const [guidelinesModel, setGuidelinesModel] = React.useState(false);
+
   const totalSlides = 5;
   // Auto-play carousel every 5 seconds
   React.useEffect(() => {
@@ -198,7 +205,7 @@ const LandingPge = () => {
               />
             </div>
             {carouselIndex !== 0 && (
-              <h1 className="flex-3/4 text-k-text-primary font-bold text-3xl font-fredoka">
+              <h1 className="flex-3/4 text-white font-bold text-3xl font-fredoka">
                 {backgroundImageData[carouselIndex].name}
               </h1>
             )}
@@ -279,13 +286,13 @@ const LandingPge = () => {
           <section className="w-3/4 max-w-sm">
             <div className="flex rounded-full overflow-hidden">
               <button
-                className="flex-1 bg-k-secondary-color text-k-text-tertiary py-3 text-center font-fredoka"
+                className="flex-1 bg-k-secondary-color text-black py-3 text-center font-fredoka"
                 onClick={() => router.push("/authentication/signin")}
               >
                 Sign in
               </button>
               <button
-                className="flex-1 bg-k-blue text-k-text-tertiary py-3 text-center font-fredoka"
+                className="flex-1 bg-k-blue text-black py-3 text-center font-fredoka"
                 onClick={() => router.push("/authentication/signup")}
               >
                 Signup
@@ -303,7 +310,7 @@ const LandingPge = () => {
                 className={`w-2.5 h-2.5 rounded-full ${
                   i === carouselIndex
                     ? "bg-k-secondary-color scale-110"
-                    : "bg-k-text-primary"
+                    : "bg-white"
                 } transition-all`}
                 onClick={() => setCarouselIndex(i)}
                 style={{ cursor: "pointer" }}
@@ -318,6 +325,15 @@ const LandingPge = () => {
                   key={item.label}
                   href="#"
                   className="flex flex-col items-center"
+                  onClick={() => {
+                    if (item.label === "About us") {
+                      setAboutUs(true);
+                    } else if (item.label === "Contact") {
+                      setContactModel(true);
+                    } else if (item.label === "Guideline") {
+                      setGuidelinesModel(true);
+                    } 
+                  }}
                 >
                   <div className="">{item.icon}</div>
                   <span className="text-xs">{item.label}</span>
@@ -341,6 +357,24 @@ const LandingPge = () => {
           </div>
         </div>
       </main>
+      <AboutUsModel
+        isOpen={aboutUs}
+        onClose={() => {
+          setAboutUs(false);
+        }}
+      />
+      <ContactModel
+        isOpen={contactModel}
+        onClose={() => {
+          setContactModel(false);
+        }}
+      />
+      <GuidelinesModel
+        isOpen={guidelinesModel}
+        onClose={() => {
+          setGuidelinesModel(false);
+        }}
+      />
     </div>
   );
 };

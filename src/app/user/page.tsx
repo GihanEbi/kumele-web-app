@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   BlogHomeIcon,
   HomeIcon,
@@ -13,6 +13,7 @@ import Home from "./home/page";
 import Shop from "./shop/page";
 import More from "./more/page";
 import Profile from "./profile/page";
+import MoreOptionModel from "@/components/Models/MoreOptionModel/MoreOptionModel";
 
 const navItems = [
   {
@@ -45,8 +46,10 @@ const navItems = [
 const page = () => {
   // set active page
   const [activePageIndex, setActivePageIndex] = React.useState(0);
+  // --------- show more option model ----------
+  const [showMoreOptionModel, setShowMoreOptionModel] = useState(false);
   return (
-    <div className="">
+    <div className="bg-app-background-primary">
       <div
         className={`fixed p-2 bottom-0 left-0 right-0 h-tab-bar ${
           activePageIndex !== 0
@@ -58,7 +61,12 @@ const page = () => {
           <div
             key={index}
             onClick={() => {
-              setActivePageIndex(index);
+              if (item.label === "More") {
+                setShowMoreOptionModel(true);
+              } else {
+                setActivePageIndex(index);
+                setShowMoreOptionModel(false);
+              }
             }}
           >
             <div className={`flex flex-col items-center text-app-text-primary`}>
@@ -75,6 +83,13 @@ const page = () => {
         ))}
       </div>
       <div className="pb-30">{navItems[activePageIndex].page}</div>
+        {/* More Option Model */}
+        <MoreOptionModel
+          isOpen={showMoreOptionModel}
+          onClose={() => {
+            setShowMoreOptionModel(false);
+          }}
+        />
     </div>
   );
 };
