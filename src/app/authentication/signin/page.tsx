@@ -100,35 +100,36 @@ const Signin = () => {
 
   // -------- handleSubmit for form submission ---------
   const handleSubmit = async () => {
+        router.push("/user");
     // -------- check full form validation
     // -------- prevent multiple submission
-    if (loading) return;
-    setLoading(true);
-    if (!form.email || !form.password) {
-      setLoading(false);
-      return;
-    }
+    // if (loading) return;
+    // setLoading(true);
+    // if (!form.email || !form.password) {
+    //   setLoading(false);
+    //   return;
+    // }
 
-    try {
-      const data = await login(form);
-      if (data.success) {
-        saveToken(data.data.user_token);
-        setLoading(false);
-        // --------- show success model ---------
-        setShowSuccessModel(true);
-        setTimeout(() => {
-          setShowSuccessModel(false);
-        }, 1000); // Hide after 2 seconds
-        router.push("/user");
-      } else {
-        console.log(data);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      // --------- set loading to false ---------
-      setLoading(false);
-    }
+    // try {
+    //   const data = await login(form);
+    //   if (data.success) {
+    //     saveToken(data.data.user_token);
+    //     setLoading(false);
+    //     // --------- show success model ---------
+    //     setShowSuccessModel(true);
+    //     setTimeout(() => {
+    //       setShowSuccessModel(false);
+    //     }, 1000); // Hide after 2 seconds
+    //     router.push("/user");
+    //   } else {
+    //     console.log(data);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // } finally {
+    //   // --------- set loading to false ---------
+    //   setLoading(false);
+    // }
   };
 
   // LANGUAGE SELECTION

@@ -12,6 +12,7 @@ import {
 import InputComponent from "@/components/InputComponent/InputComponent";
 import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
 import SliderComponent from "@/components/SliderComponent/SliderComponent";
+import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
 
 const page = () => {
   //   loading state
@@ -85,21 +86,31 @@ const page = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-6">
-              <p className="text-sm text-app-text-primary font-plusJakartaSans">
+            <div className="mt-8">
+              <label className="block text-body mb-15">
                 Distance range (in kilometers)
-              </p>
+              </label>
+              {/* Age Range Slider Section using Radix UI */}
+              <RadixAgeRangeSlider
+                //label="Age range"
+                min={0}
+                max={100}
+                initialValues={[58, 88]} // As shown in your image
+                step={1}
+                onValueChange={() => {}}
+              />
             </div>
             <div className="mt-8">
-              <SliderComponent />
-            </div>
-            <div className="mt-6">
-              <p className="text-sm text-app-text-primary font-plusJakartaSans">
-                Age range
-              </p>
-            </div>
-            <div className="mt-8">
-              <SliderComponent />
+              <label className="block text-body mb-15">Age Range</label>
+              {/* Age Range Slider Section using Radix UI */}
+              <RadixAgeRangeSlider
+                //label="Age range"
+                min={0}
+                max={100}
+                initialValues={[18, 28]} // As shown in your image
+                step={1}
+                onValueChange={() => {}}
+              />
             </div>
             {/* footer */}
             <div className="flex justify-between items-center mt-8">
