@@ -85,6 +85,7 @@
   --color-app-background-tertiary: var(--app-background-tertiary);
   --color-app-okay-icon-background:var(--app-okay-icon-background);
   --color-app-okay-icon-filter:var(--app-okay-icon-filter);
+  --color-app-button-model-text-color:var(--app-button-model-text-color);
 
   
   --color-app-search-bar-background: var(--app-search-bar-background);
@@ -191,7 +192,7 @@
 
   /*BUTTON TEXT COLOR*/
   --app-button-text-color: oklch(1 0 0); /* #FFFFFF color (white color) */
-
+  --app-button-model-text-color:oklch(0 0 0);
   /* RANGE SLIDER */
   --app-range-slider-primary: oklch(0.203 0.004 270); /* #343434 */
   --app-range-slider-secondary: oklch(1 0 0); /* #FFFFFF */
@@ -314,7 +315,7 @@
 
   /*BUTTON TEXT COLOR*/
   --app-button-text-color: oklch(0 0 0); /* #000000 color (black color) */
-
+  --app-button-model-text-color:oklch(1 0 0);
   /* RANGE SLIDER */
   --app-range-slider-primary: oklch(0.861 0.006 270);
   --app-range-slider-secondary: oklch(0.122 0.004 270);
@@ -493,7 +494,16 @@
   font-size: 10px;
   line-height: 100%; /* or 1 */
   letter-spacing: 0%;
-  ;
+  
+}
+
+/*MODEL TEXTS*/
+.model-texts{
+  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-weight: 600;
+  font-size: 13.89px;
+  line-height: 100%; /* or 1 */
+  letter-spacing: 0%;
 }
 
 /* Hide scrollbar completely */

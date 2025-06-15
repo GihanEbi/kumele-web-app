@@ -3,6 +3,7 @@
 import InputComponent from "../../../../components/InputComponent/InputComponent";
 import React, { useState, useRef } from "react";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 import {
   RightIcon,
@@ -36,13 +37,17 @@ import {
   VolunteerIcon,
 } from "../../../../../public/svg-icons/icons";
 import TimeDurationSelector from "@/components/TimeDurationSelector/TimeDurationSelector";
-import DatePicker from "@/components/DatePicker/DatePicker";
-import TimePicker from "@/components/TimePicker/TimePicker";
+//import DatePicker from "@/components/DatePicker/DatePicker";
+import DatePicker from "@/components/DatePicker/DatePickerUpdate";
+//import TimePicker from "@/components/TimePicker/TimePicker";
+import TimePicker from "@/components/TimePicker/TimePickerUpdate";
 import UserAvailabilityCheck from "@/components/EventUserAvailabilityCheck/UserAvailabilityCheck";
 import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
 import GuestCounter from "./GuestCounter/GuestCounter";
 import PaymentSelection from "./PaymentSelection/PaymentSelection";
 import UsersAroundModal from "./UserAvailabilityModal/UserAvailabilityModal";
+import TimePickerWithModal from "@/components/TimePicker/TimePickerUpdate";
+import EventPreviewModal from "./EventPreviewModal/EventPreviewModal";
 
 const EVENT_CATEGORIES = [
   { id: "spirituality", label: "Spirituality", icon: <EventCategory1 /> },
@@ -124,6 +129,34 @@ const CreateEventSection = () => {
 
   //set modal state
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
+  const [isStartTimePickerOpen, setIsStartTimePickerOpen] =
+    useState<boolean>(false);
+  const [isEndTimePickerOpen, setIsEndTimePickerOpen] =
+    useState<boolean>(false);
+
+  const [selectedStartTime, setSelectedStartTime] = useState("");
+  const [selectedEndTime, setSelectedEndTime] = useState("");
+
+  const [isAddedCartSuccess, setIsAddedCardSuccess] = useState<boolean>(false);
+
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+
+   const [isPreviewOpen, setIsPreviewOpen] = useState(false); // Add this state
+
+  const handleStartTimeChange = (newTime: string) => {
+    console.log("Selected Time:", newTime);
+    setSelectedStartTime(newTime);
+  };
+
+  const handleEndTimeChange = (newTime: string) => {
+    console.log("Selected Time:", newTime);
+    setSelectedEndTime(newTime);
+  };
+
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
@@ -213,16 +246,6 @@ const CreateEventSection = () => {
     // In a real app, you'd set state to show a calendar modal/popup
   };
 
-  const handleStartTimeClick = () => {
-    console.log("Start time display clicked! Open time picker here.");
-  };
-
-  const handleEndTimeClick = () => {
-    console.log("End time display clicked! Open time picker here.");
-  };
-
-  // Handlers for user availability check, age range, guest counter, and payment selection
-
   const handleUserAvailability = (guests: number) => {
     console.log(`Checking availability for ${guests} guests.`);
     openModal();
@@ -234,6 +257,7 @@ const CreateEventSection = () => {
 
   const handleGuestAddToCart = (guests: number) => {
     console.log(`Adding ${guests} guests to cart.`);
+    setIsAddedCardSuccess(true);
     // Add your cart logic here
   };
 
@@ -246,7 +270,37 @@ const CreateEventSection = () => {
 
   return (
     <div
-      className="max-w-full mx-auto p-6 bg-app-background-primary rounded-lg"
+      className={`max-w-full mx-auto p-6 ${
+        isDatePickerOpen && isDark
+          ? "bg-neutral-900"
+          : isDatePickerOpen && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
+      }   rounded-lg ${
+        (isStartTimePickerOpen || isEndTimePickerOpen) && isDark
+          ? "bg-neutral-900"
+          : (isStartTimePickerOpen || isEndTimePickerOpen) && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
+      } ${
+        isModalOpen && isDark
+          ? "bg-neutral-900"
+          : isModalOpen && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
+      } ${
+        isAddedCartSuccess && isDark
+          ? "bg-neutral-900"
+          : isAddedCartSuccess && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
+      } ${
+        isInviteModalOpen && isDark
+          ? "bg-neutral-900"
+          : isInviteModalOpen && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
+      }`}
       onClick={closeModal}
     >
       <div className="flex flex-row gap-5">
@@ -263,35 +317,35 @@ const CreateEventSection = () => {
 
         <div className="relative mt-3">
           <div className="overflow-hidden">
-          <div
-            ref={categoriesContainerRef}
-            className="flex space-x-3 overflow-x-auto pb-3 -mx-4 px-4 no-scrollbar"
-            onMouseDown={handleMouseDown}
-            onMouseLeave={handleMouseLeave}
-            onMouseUp={handleMouseUp}
-            onMouseMove={handleMouseMove}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            style={{
-              cursor: isDragging ? "grabbing" : "grab",
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-              WebkitOverflowScrolling: "touch",
-            }}
-          >
-            {EVENT_CATEGORIES.map((category) => (
-              <div
-                className={`${
-                  selectedCategory === category.id
-                    ? "bg-k-secondary-color border-none"
-                    : "bg-app-background-card hover:bg-app-background"
-                }bg-k-secondary-color border-none flex h-24 w-24 rounded-lg`}
-              >
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`
+            <div
+              ref={categoriesContainerRef}
+              className="flex space-x-3 overflow-x-auto pb-3 -mx-4 px-4 no-scrollbar"
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              style={{
+                cursor: isDragging ? "grabbing" : "grab",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                WebkitOverflowScrolling: "touch",
+              }}
+            >
+              {EVENT_CATEGORIES.map((category) => (
+                <div
+                  className={`${
+                    selectedCategory === category.id
+                      ? "bg-k-secondary-color border-none"
+                      : "bg-app-background-card hover:bg-app-background"
+                  }bg-k-secondary-color border-none flex h-24 w-24 rounded-lg`}
+                >
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`
             flex h-24 w-24 flex-col items-center justify-center rounded-lg p-2 text-center transition-all duration-200
             ${
               selectedCategory === category.id
@@ -299,15 +353,15 @@ const CreateEventSection = () => {
                 : "bg-app-background-card hover:bg-app-background"
             }
           `}
-                >
-                  <div className="mb-1 text-xl">{category.icon}</div>
-                  <span className="text-sm font-medium leading-tight text-text-title">
-                    {category.label}
-                  </span>
-                </button>
-              </div>
-            ))}
-          </div>
+                  >
+                    <div className="mb-1 text-xl">{category.icon}</div>
+                    <span className="text-sm font-medium leading-tight text-text-title">
+                      {category.label}
+                    </span>
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -420,21 +474,27 @@ const CreateEventSection = () => {
       <div className="mt-8 ">
         <DatePicker
           label="Date"
-          currentDateDisplay="Tuesday, 25th June, 2024"
-          onClick={handleDateClick}
+          isOpen={isDatePickerOpen}
+          setIsOpen={setDatePickerOpen}
+          //currentDateDisplay="Tuesday, 25th June, 2024"
+          //onClick={handleDateClick}
         />
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 mt-8">
-        <TimePicker
+        <TimePickerWithModal
           label="Event Start time"
-          currentTimeDisplay="08:30 PM"
-          onClick={handleStartTimeClick}
+          currentTimeDisplay={selectedStartTime}
+          onChange={handleStartTimeChange}
+          isOpen={isStartTimePickerOpen}
+          setIsOpen={setIsStartTimePickerOpen}
         />
-        <TimePicker
+        <TimePickerWithModal
           label="Event End time"
-          currentTimeDisplay="08:30 PM"
-          onClick={handleEndTimeClick}
+          currentTimeDisplay={selectedEndTime}
+          onChange={handleEndTimeChange}
+          isOpen={isEndTimePickerOpen}
+          setIsOpen={setIsEndTimePickerOpen}
         />
       </div>
       <div className="space-y-3 mt-8">
@@ -496,8 +556,10 @@ const CreateEventSection = () => {
           onCheckAvailability={handleUserAvailability}
           initialGuestCount={50} // Example: override initial guest count
         />
+
+        <UsersAroundModal isOpen={isModalOpen} onClose={closeModal} />
       </div>
-      <UsersAroundModal isOpen={isModalOpen} onClose={() => {}} />
+
       <div className="mt-8">
         <label className="block text-body mb-15">Age Range</label>
         {/* Age Range Slider Section using Radix UI */}
@@ -520,6 +582,10 @@ const CreateEventSection = () => {
         <GuestCounter
           initialGuests={1} // Or any number between 0-99
           onAddToCart={handleGuestAddToCart}
+          isSuccess={isAddedCartSuccess}
+          setIsSuccess={setIsAddedCardSuccess}
+          isInviteModalOpen={isInviteModalOpen}
+          setIsInviteModalOpen={setIsInviteModalOpen}
         />
       </div>
 
@@ -541,9 +607,13 @@ const CreateEventSection = () => {
       </div>
 
       {/* Create Event Button */}
-      <button className="w-full mt-10 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-10">
+      <button  onClick={() => setIsPreviewOpen(true)}  className="w-full mt-10 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-50">
         Preview Event
       </button>
+       <EventPreviewModal 
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+      />
     </div>
   );
 };

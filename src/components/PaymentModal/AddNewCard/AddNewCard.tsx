@@ -35,7 +35,7 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   if (!isOpen) {
