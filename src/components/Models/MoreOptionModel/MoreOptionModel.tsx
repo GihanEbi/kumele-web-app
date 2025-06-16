@@ -76,7 +76,7 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
               <button
                 className="flex flex-col items-center gap-2 group"
                 onClick={() => {
-                  router.push("/user/more/filter");
+                  router.push("/more-options/filter");
                   onClose();
                 }}
               >
@@ -96,7 +96,7 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
               <button
                 className="flex flex-col items-center gap-2 group"
                 onClick={() => {
-                  router.push("/user/more/history");
+                  router.push("/more-options/history");
                   onClose();
                 }}
               >
@@ -115,7 +115,13 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
               </button>
             </div>
             <div className="grid grid-cols-3 gap-y-4 p-6 pt-2 mt-4">
-              <button className="flex flex-col items-center gap-2 group">
+              <button
+                className="flex flex-col items-center gap-2 group"
+                onClick={() => {
+                  router.push("/more-options/notifications");
+                  onClose();
+                }}
+              >
                 <div className="">
                   <Image
                     src="/images/notification-img.png"
@@ -129,7 +135,11 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                   Notifications
                 </span>
               </button>
-              <button className="flex flex-col items-center gap-2 group">
+              <button className="flex flex-col items-center gap-2 group" 
+                onClick={() => {
+                  router.push("/user/more/chat");
+                  onClose();
+                }}>
                 <div className="">
                   <Image
                     src="/images/chat-img.png"
