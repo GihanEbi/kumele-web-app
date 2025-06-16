@@ -105,6 +105,7 @@
   --color-app-card-button-bg-primary:var(--app-card-button-bg-primary);
   --color-app-card-highlight-button:var(--app-card-highlight-button);
   --color-app-radio-button-color:var(--app-radio-button-color);
+  --color-app-bg-color-modal:var(--app-bg-color-modal);
 }
 
 :root {
@@ -234,6 +235,9 @@
 
   /*RADIO BUTTON*/
   --app-radio-button-color:oklch(0.2972 0 0);
+
+  /*EVENT PREVIEW*/
+  --app-bg-color-modal:oklch(0.9446 0.0022 17.2);
   
 }
 
@@ -357,6 +361,9 @@
 
   /*RADIO BUTTON*/
   --app-radio-button-color:oklch(0.8638 0 0);
+
+  /*EVENT PREVIEW*/
+  --app-bg-color-modal:oklch(0.2134 0 0);
 }
 
 @layer base {

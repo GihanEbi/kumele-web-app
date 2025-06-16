@@ -4,6 +4,7 @@ import Image from "next/image";
 import { BlogCardProps, Comment } from "@/types/blog";
 import LikeAndShare from "@/components/LikeAndShare/LikeAndShare";
 import CommentForm from "@/components/CommentForm/CommentForm";
+//import CommentList from "@/components/CommentListUpdate/CommentListUpdate";
 import CommentList from "@/components/CommentList/CommentList";
 import { useState } from "react";
 import { useTheme } from "next-themes";
@@ -120,6 +121,53 @@ const comments: Comment[] = [
     ],
   },
 ];
+// const mockData: CommentNew[] = [
+//   {
+//     id: 1,
+//     authorName: 'Josh Durrant',
+//     authorAvatarUrl: 'https://i.pravatar.cc/48?u=josh_main',
+//     date: '23 August 2022',
+//     text: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
+//     replies: [
+//       {
+//         id: 2,
+//         authorName: 'Alkesh Sharma',
+//         authorAvatarUrl: 'https://i.pravatar.cc/48?u=alkesh',
+//         date: '23 August 2022',
+//         replyingTo: 'Josh Durrant',
+//         text: 'What a display dsn cdn zxnc',
+//         replies: [],
+//       },
+//       {
+//         id: 3,
+//         authorName: 'Josh Durrant',
+//         authorAvatarUrl: 'https://i.pravatar.cc/48?u=josh_reply',
+//         date: '23 August 2022',
+//         replyingTo: 'Alkesh Sharma',
+//         text: 'What a display dsn cdn zxnc',
+//         replies: [],
+//       },
+//       {
+//         id: 4,
+//         authorName: 'Simon Pears',
+//         authorAvatarUrl: 'https://i.pravatar.cc/48?u=simon1',
+//         date: '23 August 2022',
+//         replyingTo: 'Josh Durrant',
+//         text: 'What a display dsn cdn zxnc',
+//         replies: [],
+//       },
+//        {
+//         id: 5,
+//         authorName: 'Simon Pears',
+//         authorAvatarUrl: 'https://i.pravatar.cc/48?u=simon2',
+//         date: '23 August 2022',
+//         replyingTo: 'Josh Durrant',
+//         text: 'What a display dsn cdn zxnc',
+//         replies: [],
+//       },
+//     ],
+//   },
+// ];
 
 export default function BlogDetailPage({ params }: { params: { id: string } }) {
   const post = blogPosts.find((b) => b.id === params.id);
@@ -247,6 +295,7 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
         onSubmit={(comment) => console.log("New comment:", comment)}
       />
       <CommentList comments={comments} onReplyOpen={handleReplyOpen} />
+      {/* <CommentList comments={mockData} /> */}
     </div>
   );
 }
