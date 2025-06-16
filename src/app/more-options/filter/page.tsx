@@ -8,7 +8,7 @@ import {
   OkayGreenIcon,
   OkayIcon,
   TermsAndConditionsIcon,
-} from "../../../../../public/svg-icons/icons";
+} from "../../../../public/svg-icons/icons";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
 import SliderComponent from "@/components/SliderComponent/SliderComponent";

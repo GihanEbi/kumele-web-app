@@ -1,14 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import { Medal, Info } from "lucide-react";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import {
   BackArrow,
   TermsAndConditionsIcon,
-} from "../../../../../public/svg-icons/icons";
+} from "../../../../public/svg-icons/icons";
 import Image from "next/image";
 import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import { authConstants } from "@/constants/auth-constants";
