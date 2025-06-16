@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   CrownIcon,
@@ -13,6 +13,7 @@ import { AddCardModal } from "@/components/PaymentModal/AddNewCard/AddNewCard";
 import { SendPaymentModal } from "@/components/PaymentModal/SendPayment/SendPayment";
 import { CoinbasePaymentModal } from "@/components/PaymentModal/CoinBasePaymentModal/CoinBasePaymentModal";
 import { PaymentCompleteModal } from "@/components/PaymentModal/PaymentCompleteModal/PaymentCompleteModal";
+import SubscriptionExpirationModal from "./InitialPopup/Modal";
 
 type Plan = {
   id: number;
@@ -137,7 +138,28 @@ export default function SubscriptionsPage() {
   const [isAddCardModalOpen, setAddCardModalOpen] = useState(false);
   const [isSendPaymentOpen, setSendPaymentOpen] = useState(false);
   const [isCoinbaseOpen, setCoinbaseOpen] = useState(false);
-  const [isThankYouOpen, setThankYouOpen] = useState(false); 
+  const [isThankYouOpen, setThankYouOpen] = useState(false);
+
+  //-----------initial pop up state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  //initial popup modal open handling
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsModalOpen(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+//lock background when modal opening
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isModalOpen]);
   // Determine which data to show based on the active tab
   const currentData =
     activeTab === "subscriptions" ? subscriptionPlans : guestTickets;
@@ -156,34 +178,33 @@ export default function SubscriptionsPage() {
   const handleCloseAddCard = () => {
     setAddCardModalOpen(false);
     setPaymentModalOpen(true);
-   
   };
   const handleNavigateToSendPayment = () => {
     setPaymentModalOpen(false); // Close the payment modal
-    setSendPaymentOpen(true);   // Open the send payment modal
+    setSendPaymentOpen(true); // Open the send payment modal
   };
   const handleCloseSendPayment = () => {
-    setSendPaymentOpen(false);  // Close the send payment modal
-    setPaymentModalOpen(true);  // Go back to the payment modal
+    setSendPaymentOpen(false); // Close the send payment modal
+    setPaymentModalOpen(true); // Go back to the payment modal
   };
 
-   const handleNavigateToCoinbase = () => {
+  const handleNavigateToCoinbase = () => {
     setSendPaymentOpen(false); // Close the current modal
-    setCoinbaseOpen(true);     // Open the new one
+    setCoinbaseOpen(true); // Open the new one
   };
-  
+
   const handleCloseCoinbase = () => {
-    setCoinbaseOpen(false);      // Close the coinbase modal
-    setSendPaymentOpen(true);    // Go back to the previous modal
+    setCoinbaseOpen(false); // Close the coinbase modal
+    setSendPaymentOpen(true); // Go back to the previous modal
   };
-   const handleNavigateToThankYou = () => {
-    setCoinbaseOpen(false);      // Close the current modal
-    setThankYouOpen(true);       // Open the new one
+  const handleNavigateToThankYou = () => {
+    setCoinbaseOpen(false); // Close the current modal
+    setThankYouOpen(true); // Open the new one
   };
-  
+
   const handleCloseThankYou = () => {
-    setThankYouOpen(false); 
-    setPaymentModalOpen(true)     // Close the final screen, ending the flow
+    setThankYouOpen(false);
+    setPaymentModalOpen(true); // Close the final screen, ending the flow
   };
 
   return (
@@ -292,20 +313,26 @@ export default function SubscriptionsPage() {
         onPayWithWalletClick={handleNavigateToSendPayment}
       />
       <AddCardModal isOpen={isAddCardModalOpen} onClose={handleCloseAddCard} />
-       <SendPaymentModal
-          isOpen={isSendPaymentOpen}
-          onClose={handleCloseSendPayment} 
-           onPayWithWalletClick={handleNavigateToCoinbase}
-        />,
-         <CoinbasePaymentModal
-         onPayWithCoinbaseClick={handleNavigateToThankYou}
+      <SendPaymentModal
+        isOpen={isSendPaymentOpen}
+        onClose={handleCloseSendPayment}
+        onPayWithWalletClick={handleNavigateToCoinbase}
+      />
+      ,
+      <CoinbasePaymentModal
+        onPayWithCoinbaseClick={handleNavigateToThankYou}
         isOpen={isCoinbaseOpen}
         onClose={handleCloseCoinbase} // You can use this for a back button if you add one
       />
-       <PaymentCompleteModal
-              isOpen={isThankYouOpen}
-              onClose={handleCloseThankYou} // This closes the modal and ends the flow
-            />
+      <PaymentCompleteModal
+        isOpen={isThankYouOpen}
+        onClose={handleCloseThankYou} // This closes the modal and ends the flow
+      />
+
+       <SubscriptionExpirationModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </>
   );
 }
