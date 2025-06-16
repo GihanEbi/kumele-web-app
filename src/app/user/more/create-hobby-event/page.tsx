@@ -1,7 +1,7 @@
 "use client";
 
 import InputComponent from "../../../../components/InputComponent/InputComponent";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
@@ -48,6 +48,9 @@ import PaymentSelection from "./PaymentSelection/PaymentSelection";
 import UsersAroundModal from "./UserAvailabilityModal/UserAvailabilityModal";
 import TimePickerWithModal from "@/components/TimePicker/TimePickerUpdate";
 import EventPreviewModal from "./EventPreviewModal/EventPreviewModal";
+import GuestPricesModal from "./GuestPriceModal/GuestPriceModal";
+import EventsTimeDetailsModal from "./EventsStartDetailsModal/EventStartDetails";
+import Link from "next/link";
 
 const EVENT_CATEGORIES = [
   { id: "spirituality", label: "Spirituality", icon: <EventCategory1 /> },
@@ -136,14 +139,20 @@ const CreateEventSection = () => {
   const [isEndTimePickerOpen, setIsEndTimePickerOpen] =
     useState<boolean>(false);
 
-  const [selectedStartTime, setSelectedStartTime] = useState("");
-  const [selectedEndTime, setSelectedEndTime] = useState("");
+  const [selectedStartTime, setSelectedStartTime] = useState<string>("");
+  const [selectedEndTime, setSelectedEndTime] = useState<string>("");
 
   const [isAddedCartSuccess, setIsAddedCardSuccess] = useState<boolean>(false);
 
-  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
 
-   const [isPreviewOpen, setIsPreviewOpen] = useState(false); // Add this state
+  const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false); // Add this state
+
+  const [isGuestPriceModalOpen, setIsGuestPriceModalOpen] =
+    useState<boolean>(false);
+
+  const [isEventTimePriceModalOpen, setIsEventTimePriceModalOpen] =
+    useState<boolean>(false);
 
   const handleStartTimeChange = (newTime: string) => {
     console.log("Selected Time:", newTime);
@@ -300,12 +309,20 @@ const CreateEventSection = () => {
           : isInviteModalOpen && !isDark
           ? "bg-gray-200"
           : "bg-app-background-primary"
+      } ${
+        isPreviewOpen && isDark
+          ? "bg-neutral-900"
+          : isPreviewOpen && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
       }`}
       onClick={closeModal}
     >
       <div className="flex flex-row gap-5">
         <div className="">
-          <BackToPageIcon />
+          <Link href="/user">
+            <BackToPageIcon />
+          </Link>
         </div>
 
         <h2 className="text-heading mb-6">Create event</h2>
@@ -354,8 +371,23 @@ const CreateEventSection = () => {
             }
           `}
                   >
-                    <div className="mb-1 text-xl">{category.icon}</div>
-                    <span className="text-sm font-medium leading-tight text-text-title">
+                    <div
+                      className={`${
+                        selectedCategory === category.id && isDark
+                          ? "text-gray-900"
+                          : ""
+                      } mb-1 text-xl`}
+                    >
+                      {category.icon}
+                    </div>
+
+                    <span
+                      className={`${
+                        selectedCategory === category.id && isDark
+                          ? "text-black"
+                          : ""
+                      } text-sm font-medium leading-tight text-text-title`}
+                    >
                       {category.label}
                     </span>
                   </button>
@@ -454,7 +486,7 @@ const CreateEventSection = () => {
             onChange={handleDescriptionChange}
             maxLength={maxCharacters}
             placeholder="More About the event"
-            className="w-full h-32 p-3 bg-app-input-primary  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500"
+            className="w-full h-32 p-3 bg-app-input-primary  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500 resize-none"
           />
           <p className="text-xs text-app-text-secondary mt-1 text-right">
             {description.length}/{maxCharacters} Max
@@ -464,7 +496,10 @@ const CreateEventSection = () => {
       <div>
         <div className="flex flex-row gap-3 mb-3 mt-6">
           <label className="block text-body mb-1">Event starts in</label>
-          <div className="mt-[-6px]">
+          <div
+            onClick={() => setIsEventTimePriceModalOpen(true)}
+            className="mt-[-6px]"
+          >
             <InformationIcon />
           </div>
         </div>
@@ -575,7 +610,10 @@ const CreateEventSection = () => {
       <div>
         <div className="flex flex-row gap-3 mb-3 mt-6">
           <label className="text-body">Number of Guests</label>
-          <div className="mt-[-6px]">
+          <div
+            onClick={() => setIsGuestPriceModalOpen(true)}
+            className="mt-[-6px]"
+          >
             <InformationIcon />
           </div>
         </div>
@@ -607,12 +645,23 @@ const CreateEventSection = () => {
       </div>
 
       {/* Create Event Button */}
-      <button  onClick={() => setIsPreviewOpen(true)}  className="w-full mt-10 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-50">
+      <button
+        onClick={() => setIsPreviewOpen(true)}
+        className="w-full mt-10 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-50"
+      >
         Preview Event
       </button>
-       <EventPreviewModal 
+      <EventPreviewModal
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
+      />
+      <GuestPricesModal
+        isOpen={isGuestPriceModalOpen}
+        onClose={() => setIsGuestPriceModalOpen(false)}
+      />
+      <EventsTimeDetailsModal
+        isOpen={isEventTimePriceModalOpen}
+        onClose={() => setIsEventTimePriceModalOpen(false)}
       />
     </div>
   );

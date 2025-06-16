@@ -19,5 +19,16 @@ export interface Comment {
   isOwner?: boolean;
   avatarUrl?: string;
   replies?: Comment[];
+  replyingTo?: string;
 }
 
+// app/lib/types.ts
+export type CommentNew = {
+  id: number;
+  authorName: string;
+  authorAvatarUrl: string;
+  date: string;
+  text: string;
+  replyingTo?: string; // Optional: The name of the person being replied to
+  replies?: CommentNew[]; // An array of nested comments (replies)
+};
