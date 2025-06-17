@@ -68,7 +68,7 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
           <button onClick={onClose} className="p-2 -ml-2">
             <BackToPageIcon className="w-6 h-6" />
           </button>
-          <h2 className="text-heading text-app-blog-card-heading">Add Card</h2>
+          <h2 className="font-plusJakartaSans font-bold text-[23px] text-app-blog-card-heading">Add Card</h2>
         </div>
       </div>
 
@@ -77,13 +77,13 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
         <div className="max-w-md mx-auto flex flex-col gap-6">
           {/* Country */}
           <div>
-            <label htmlFor="country" className="block text-body mb-3">
+            <label htmlFor="country" className="block font-plusJakartaSans font-normal text-[14px] mb-3">
               Country
             </label>
             <div className="relative">
               <select
                 id="country"
-                className={`${inputStyles} appearance-none pr-10`}
+                className={`${inputStyles} appearance-none pr-10 font-plusJakartaSans font-normal text-[16px]`}
               >
                 <option>Albania</option>
                 <option>United States</option>
@@ -98,7 +98,7 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
 
           {/* Cardholder's name */}
           <div>
-            <label htmlFor="cardholder-name" className="block text-body mb-3">
+            <label htmlFor="cardholder-name" className="block font-plusJakartaSans font-normal text-[14px] mb-3">
               Cardholder's name
             </label>
 
@@ -107,7 +107,7 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
 
           {/* Card number */}
           <div>
-            <label htmlFor="card-number" className="block text-body mb-3">
+            <label htmlFor="card-number" className="block font-plusJakartaSans font-normal text-[14px] mb-3">
               Card number
             </label>
             <div className="relative">
@@ -122,14 +122,14 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
           {/* Expiry and CVC */}
           <div className="flex gap-4">
             <div className="flex-1">
-              <label htmlFor="expiry-date" className="block text-body mb-3">
+              <label htmlFor="expiry-date" className="block font-plusJakartaSans font-normal text-[14px] mb-3">
                 Expiry date
               </label>
 
               <InputComponent placeholder="MM-YY" />
             </div>
             <div className="flex-1">
-              <label htmlFor="cvc" className="block text-body mb-3">
+              <label htmlFor="cvc" className="block font-plusJakartaSans font-normal text-[14px] mb-3">
                 CVC
               </label>
 
@@ -144,7 +144,7 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
         <div className="max-w-md mx-auto">
           <button
             onClick={handleAddCardSuccess}
-            className="w-full bg-app-background-card-secondary text-app-button-text-color text-body py-4 rounded-lg"
+            className="w-full bg-app-background-card-secondary text-app-button-text-color font-plusJakartaSans font-normal text-[16px] py-4 rounded-lg"
           >
             Add card
           </button>
@@ -163,9 +163,9 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <CheckMarkGif className="text-white" />
+                <CheckMarkGif className="bg-white" />
               </div>
-              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
+              <p className="text-app-text-primary font-plusJakartaSans font-normal text-[16px] mb-6 text-center">
                 Card added successfully
               </p>
             </div>

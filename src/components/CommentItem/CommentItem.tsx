@@ -54,9 +54,10 @@ export default function CommentItem({
 
   return (
     <div className="relative">
+      {/* horizontal dotted lines */}
       {isReply && (
         <div
-          className="absolute top-7 -left-11 h-px w-11 border-t border-dotted border-black"
+          className="absolute top-7 -left-11 h-px w-11 border-t border-dotted border-black dark:border-white"
           aria-hidden="true"
         />
       )}
@@ -80,23 +81,24 @@ export default function CommentItem({
           )}
         </div>
         <div className="relative flex-1">
+          {/* vertical lines */}
           {hasReplies && (
             <div
               ref={lineRef}
-              className="absolute -left-11 top-7 w-px border-l border-dotted border-black transition-all duration-300"
+              className="absolute -left-11 top-7 w-px border-l border-dotted border-black dark:border-white transition-all duration-300"
               aria-hidden="true"
               style={{ height: 0 }}
             />
           )}
 
           <div className="flex items-center gap-4 flex-wrap">
-            <h4 className="font-bold text-lg text-app-blog-card-heading">
+            <h4 className="font-plusJakartaSans font-bold text-[18px]text-app-blog-card-heading">
               {comment.author}
             </h4>
             {hasReplies && (
               <button
                 onClick={() => setRepliesOpen(!repliesOpen)}
-                className="inline-flex items-center px-3 py-1 rounded-full bg-app-blog-selected-tabs-background text-text-caption text-black space-x-2"
+                className="inline-flex items-center px-3 py-1 rounded-full bg-app-blog-selected-tabs-background font-plusJakartaSans font-normal text-[11.81px] text-black space-x-2"
               >
                 <span>{comment.replies?.length} Replies</span>
                 <span
@@ -109,18 +111,18 @@ export default function CommentItem({
               </button>
             )}
           </div>
-          <div className="flex items-center gap-1 text-app-search-bar-text mt-1">
+          <div className="flex items-center gap-1 text-app-search-bar-text font-plusJakartaSans font-normal text-[16px] mt-1">
             <span>•</span>
-            <span className="text-sm">{comment.date}</span>
+            <span className="">{comment.date}</span>
             <span>•</span>
             <button
               onClick={toggleReply}
-              className="font-semibold text-blue-500 hover:underline"
+              className="font-plusJakartaSans font-normal text-[16px] text-blue-500 hover:underline"
             >
               Reply
             </button>
           </div>
-          <p className="mt-2 text-app-blog-card-heading text-m">
+          <p className="mt-2 text-app-blog-card-heading font-plusJakartaSans font-normal text-[14px]">
             {comment.content}
           </p>
           {isReplying && (

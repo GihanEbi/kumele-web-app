@@ -34,7 +34,7 @@ const PlusIcon = (props: React.SVGProps<SVGSVGElement>) => (
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddNewCardClick: () => void; 
+  onAddNewCardClick: () => void;
   onPayWithWalletClick: () => void;
 }
 
@@ -42,14 +42,14 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   isOpen,
   onClose,
   onAddNewCardClick,
-  onPayWithWalletClick
+  onPayWithWalletClick,
 }) => {
-  const [isPaymentSuccess, setIsPaymentSuccess]= useState(false);
+  const [isPaymentSuccess, setIsPaymentSuccess] = useState(false);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   if (!isOpen) {
     return null;
-  };
+  }
 
   const handlePaymentSuccess = () => {
     setIsPaymentSuccess(true);
@@ -59,26 +59,34 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   };
 
   return (
-    <div className={`mx-auto fixed inset-0 z-2000 flex flex-col ${
+    <div
+      className={`mx-auto fixed inset-0 z-2000 flex flex-col ${
         isPaymentSuccess && isDark
           ? "bg-neutral-900"
           : isPaymentSuccess && !isDark
           ? "bg-gray-200"
           : "bg-app-background-primary"
-      }   font-sans`}>
+      }   font-sans`}
+    >
       <div className="flex-grow p-6 overflow-y-auto">
         {/* Header */}
         <div className="flex items-center gap-4">
           <button onClick={onClose} className="">
             <BackToPageIcon className="w-6 h-6" />
           </button>
-          <h2 className="text-heading text-app-blog-card-heading">Payment</h2>
+          <h2 className="font-plusJakartaSans font-bold text-[23px] text-app-blog-card-heading">
+            Payment
+          </h2>
         </div>
 
         {/* Amount */}
         <div className="mt-8">
-          <p className="text-app-blog-card-heading text-body">Amount to pay</p>
-          <p className="text-app-text-blue text-heading mt-1">$23.07</p>
+          <p className="text-app-blog-card-heading font-plusJakartaSans font-normal text-[16px]">
+            Amount to pay
+          </p>
+          <p className="text-app-text-blue font-plusJakartaSans font-bold text-[23px] mt-1">
+            $23.07
+          </p>
         </div>
 
         {/* Discount Code */}
@@ -86,9 +94,9 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           <input
             type="text"
             placeholder="Enter Discount code"
-            className="flex-grow bg-app-search-bar-background  rounded-lg px-4 py-3 text-white placeholder-app-search-bar-text placeholder:text-body focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-grow bg-app-search-bar-background  rounded-lg px-4 py-3 text-white placeholder-app-search-bar-text placeholder:font-plusJakartaSans placeholder:font-normal placeholder:text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button className="bg-app-background-card-secondary text-app-button-text-color text-body px-8 py-2 rounded-lg">
+          <button className="bg-app-background-card-secondary text-app-button-text-color font-plusJakartaSans font-normal text-[15px] px-8 py-2 rounded-lg">
             Apply
           </button>
         </div>
@@ -103,10 +111,12 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               </div>
 
               <div>
-                <p className="text-app-blog-card-author-text text-body tracking-wider">
+                <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px] tracking-wider">
                   •••• •••• •••• 4634
                 </p>
-                <p className="text-xs text-app-blog-card-author-text mt-1">Expires 12-08-23</p>
+                <p className="font-plusJakartaSans font-normal text-[13px] text-app-blog-card-author-text mt-1">
+                  Expires 12-08-23
+                </p>
               </div>
             </div>
             <MastercardIcon />
@@ -119,9 +129,13 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 -
               </div>
               <TwoTicketsIcon className="" />
-              <p className="text-app-blog-card-author-text text-body">6-20</p>
+              <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[13px]">
+                6-20
+              </p>
             </div>
-            <p className="text-app-blog-card-author-text text-body">10 USD</p>
+            <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">
+              10 USD
+            </p>
           </div>
 
           {/* Line Item 2 */}
@@ -131,18 +145,27 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 -
               </div>
               <div>
-                <p className="text-app-blog-card-author-text text-body">Pre event advert</p>
-                <p className="text-app-blog-card-author-text text-caption mt-1">
+                <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">
+                  Pre event advert
+                </p>
+                <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[13px] mt-1">
                   7 days pre advertising
                 </p>
               </div>
             </div>
-            <p className=" text-app-blog-card-author-text text-body">13.7 USD</p>
+            <p className=" text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">
+              13.7 USD
+            </p>
           </div>
 
           {/* Pay With */}
-          <div onClick={onPayWithWalletClick} className="flex justify-between items-center p-4 border-t border border-app-range-slider-track-active">
-            <p className="text-app-blog-card-author-text text-body">Pay with</p>
+          <div
+            onClick={onPayWithWalletClick}
+            className="flex justify-between items-center p-4 border-t border border-app-range-slider-track-active"
+          >
+            <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">
+              Pay with
+            </p>
             <div className="flex items-center gap-3">
               <CryptoIcon className="" />
               <CreditCardIcon className="" />
@@ -152,21 +175,26 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
         {/* Add new card button */}
         <div className="mt-6">
-          <button onClick={onAddNewCardClick}  className="w-full bg-app-background-card-secondary text-app-button-text-color text-body py-3 rounded-lg flex items-center justify-center gap-2">
+          <button
+            onClick={onAddNewCardClick}
+            className="w-full bg-app-background-card-secondary text-app-button-text-color font-plusJakartaSans font-normal text-[16px] py-3 rounded-lg flex items-center justify-center gap-2"
+          >
             <PlusIcon className="w-5 h-5" />
             Add new card
           </button>
         </div>
         <div className="mt-6">
-          <button onClick={handlePaymentSuccess} className="w-full bg-app-background-card-secondary text-app-button-text-color text-body py-3 rounded-lg flex items-center justify-center gap-2">
-            <PlusIcon className="w-5 h-5" />
+          <button
+            onClick={handlePaymentSuccess}
+            className="w-full bg-app-background-card-secondary text-app-button-text-color font-plusJakartaSans font-normal text-[16px] py-3 rounded-lg flex items-center justify-center gap-2"
+          >
             Pay Now
           </button>
         </div>
       </div>
 
       {/* Pay Now Button (Sticky at the bottom) */}
-       {isPaymentSuccess && (
+      {isPaymentSuccess && (
         <div
           className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50 transition-opacity duration-300 ease-in-out"
           onClick={onClose}
@@ -179,7 +207,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <CheckMarkGif className="text-white" />
+                <CheckMarkGif className="bg-white" />
               </div>
               <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
                 Payment Successful

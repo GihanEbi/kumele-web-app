@@ -11,7 +11,7 @@ export default function DashboardLayout({
   return (
     <div className="">
       <main className="mb-50">{children}</main>
-      <footer className="fixed bottom-0 left-0 right-0">
+      <footer className="fixed z-11 bottom-0 left-0 right-0">
         <BottomNavBar />
       </footer>
     </div>

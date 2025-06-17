@@ -12,7 +12,7 @@ import {
   UsersIcon,
   LocationIcon,
   CloseIcon,
-} from "../../../../../../public/svg-icons/icons";
+} from "../../../../../public/svg-icons/icons";
 import { useEffect, useState } from "react";
 
 import OtherEvents from "./otherEvents/OtherEvents";

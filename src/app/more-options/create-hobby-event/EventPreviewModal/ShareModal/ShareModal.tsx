@@ -9,7 +9,7 @@ import {
   YingyangIcon,
   Copy2Icon,
   CloseIcon,
-} from "../../../../../../../public/svg-icons/icons";
+} from "../../../../../../public/svg-icons/icons";
 
 // --- Data structure for the event ---
 interface EventDetails {
@@ -44,17 +44,17 @@ const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
   const event = mockEvent;
 
   // Effect to lock body scroll when the modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      // Cleanup
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     document.body.style.overflow = "hidden";
+  //   } else {
+  //     document.body.style.overflow = "unset";
+  //   }
+  //   return () => {
+  //     // Cleanup
+  //     document.body.style.overflow = "unset";
+  //   };
+  // }, [isOpen]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(event.eventId);

@@ -176,7 +176,9 @@ const Blog: React.FC = () => {
   return (
     <div className="max-w-full mx-auto rounded-lg bg-app-background-primary">
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        <h2 className="text-heading mb-6">Blog</h2>
+        <h2 className="font-plusJakartaSans  font-bold text-[23px] mb-6">
+          Blog
+        </h2>
         {/* Search Bar */}
         <div className="relative mb-6 sm:mb-8 w-full md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto sm:mx-0">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -191,7 +193,7 @@ const Blog: React.FC = () => {
             id="search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="block w-full pl-10 pr-3 py-3 bg-app-search-bar-background border border-transparent rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-text-body placeholder-app-search-bar-text"
+            className="block w-full pl-10 pr-3 py-3 bg-app-search-bar-background border border-transparent rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-text-body placeholder-app-search-bar-text placeholder-font-plusJakartaSans placeholder:font-normal placeholder:text-[16px]"
             placeholder="Search"
           />
         </div>
@@ -220,7 +222,7 @@ const Blog: React.FC = () => {
                 key={tab.id}
                 id={`tab-${tab.id}`}
                 onClick={() => handleTabClick(tab.id)}
-                className={`py-2 px-5 rounded-full text-text-caption  whitespace-nowrap flex-shrink-0 transition-colors duration-150
+                className={`py-2 px-5 rounded-full font-plusJakartaSans font-normal text-[13px] whitespace-nowrap flex-shrink-0 transition-colors duration-150
                   ${
                     activeTab === tab.id
                       ? "bg-app-blog-selected-tabs-background text-app-blog-selected-tabs-text"

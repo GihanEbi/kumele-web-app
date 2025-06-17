@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import {
   CloseIcon,
   SpeakerIcon,
-} from "../../../../../../public/svg-icons/icons";
+} from "../../../../../public/svg-icons/icons";
 import HotChocolateGif from "@/components/GifComponents/HotChocolateGif/HotChocolateGif";
 
 const StartTimePriceTiers = [

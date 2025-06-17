@@ -139,7 +139,7 @@ const TimePickerWithModal: React.FC<TimePickerDisplayProps> = ({
 
   return (
     <div className="relative w-full">
-      <label className="block text-body mb-3 mb-1">{label}</label>
+      <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-3 mb-1">{label}</label>
       <button
         type="button"
         className="w-full flex items-center justify-between px-3 py-2.5 bg-app-input-primary  rounded-md"
@@ -147,7 +147,7 @@ const TimePickerWithModal: React.FC<TimePickerDisplayProps> = ({
       >
         <div className="flex items-center space-x-2.5">
           <ClockIcon  />
-          <span className="text-sm font-medium text-gray-800">
+          <span className="font-plusJakartaSans font-normal text-[13.89px]">
             {displayTime}
           </span>
         </div>

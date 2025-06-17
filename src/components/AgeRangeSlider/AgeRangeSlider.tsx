@@ -39,7 +39,7 @@ const RadixAgeRangeSlider: React.FC<RadixAgeRangeSliderProps> = ({
   );
 
   const valueBubbleBaseStyle =
-    "absolute w-8 h-8  bg-app-range-slider-primary text-app-range-slider-secondary test-text-caption rounded-full flex items-center justify-center transform -translate-x-1/2 pointer-events-none select-none";
+    "absolute w-8 h-8  bg-app-range-slider-primary text-app-range-slider-secondary font-plusJakartaSans font-normal text-[12.7px] rounded-full flex items-center justify-center transform -translate-x-1/2 pointer-events-none select-none";
   const valueBubbleTopPosition = "-top-10"; // Adjust for spacing above the track
 
   return (
@@ -62,7 +62,7 @@ const RadixAgeRangeSlider: React.FC<RadixAgeRangeSliderProps> = ({
         {/* pt-8 for tooltip space */}
         {/* Min Value Tooltip */}
         <div
-          className={`${valueBubbleBaseStyle} ${valueBubbleTopPosition} z-10 ml-2`}
+          className={`${valueBubbleBaseStyle} ${valueBubbleTopPosition}  z-10 ml-2`}
           style={{ left: `${getPercentage(currentValues[0])}%` }}
           aria-hidden="true"
         >

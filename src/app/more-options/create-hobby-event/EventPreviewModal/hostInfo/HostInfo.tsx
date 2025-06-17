@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { RatingIcon } from "../../../../../../../public/svg-icons/icons";
+import { RatingIcon } from "../../../../../../public/svg-icons/icons";
 
 type HostInfoProps = {
   host: {

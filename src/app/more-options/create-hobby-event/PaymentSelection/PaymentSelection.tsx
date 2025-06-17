@@ -26,7 +26,7 @@ const PaymentSelection: React.FC<PaymentSelectionProps> = ({
 }) => {
   return (
     <div className={`flex flex-col   ${className}`}>
-      <span className="block text-body mb-1.5 sm:text-left">
+      <span className="block font-plusJakartaSans font-normal text-[13.89px] mb-1.5 sm:text-left">
         {mainLabel}
       </span>
       <label
@@ -43,7 +43,7 @@ const PaymentSelection: React.FC<PaymentSelectionProps> = ({
           }
         }}
       >
-        <div className="bg-app-input-primary text-app-text-secondary px-3 py-2.5 rounded-lg  text-center select-none ml-[-4px]">
+        <div className="bg-app-input-primary font-plusJakartaSans font-normal text-[13.89px] text-app-text-secondary px-3 py-2.5 rounded-lg  text-center select-none ml-[-4px]">
           {valueText}
         </div>
         <input
@@ -61,7 +61,7 @@ const PaymentSelection: React.FC<PaymentSelectionProps> = ({
             className={`w-5 h-5 rounded-full border-2 transition-all duration-150 ease-in-out
                         ${checked
                           ? 'border-blue-600 bg-blue-600'
-                          : 'border-white bg-app-background-primary hover:border-gray-500'
+                          : 'border-gray-400 border-3 bg-app-background-primary hover:border-gray-500'
                         }`}
           >
             {checked && (

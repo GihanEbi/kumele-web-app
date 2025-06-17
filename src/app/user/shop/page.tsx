@@ -216,7 +216,7 @@ export default function SubscriptionsPage() {
             {/* Subscriptions Button */}
             <button
               onClick={() => setActiveTab("subscriptions")}
-              className={`flex-1 py-3 px-4 rounded-lg text-sm transition-all duration-300 ${
+              className={`flex-1 py-3 px-4 rounded-lg font-plusJakartaSans font-medium text-[14px] transition-all duration-300 ${
                 activeTab === "subscriptions"
                   ? activeTabStyles
                   : inactiveTabStyles
@@ -228,7 +228,7 @@ export default function SubscriptionsPage() {
             {/* Guest Tickets Button */}
             <button
               onClick={() => setActiveTab("tickets")}
-              className={`flex-1 py-3 px-4 rounded-lg text-sm transition-all duration-300 ${
+              className={`flex-1 py-3 px-4 rounded-lg font-plusJakartaSans font-medium text-[14px] transition-all duration-300 ${
                 activeTab === "tickets" ? activeTabStyles : inactiveTabStyles
               }`}
             >
@@ -258,14 +258,14 @@ export default function SubscriptionsPage() {
                       <h2
                         className={`font-bold text-lg ${
                           plan.isHighlighted
-                            ? "text-black"
-                            : "text-app-blog-card-heading"
+                            ? "text-black font-plusJakartaSans font-700 text-[19px]"
+                            : "text-app-blog-card-heading font-plusJakartaSans font-bold text-[19px]"
                         }`}
                       >
                         {plan.title}
                       </h2>
                       <p
-                        className={`font-bold text-lg whitespace-nowrap ${
+                        className={`font-plusJakartaSans font-bold text-[19px] whitespace-nowrap ${
                           plan.priceColor === "yellow"
                             ? "text-app-text-yellow"
                             : "text-blue-600"
@@ -275,7 +275,7 @@ export default function SubscriptionsPage() {
                       </p>
                     </div>
                     <p
-                      className={`mt-2 text-sm ${
+                      className={`mt-2 font-plusJakartaSans font-normal text-[16px] ${
                         plan.isHighlighted
                           ? "text-gray-800"
                           : "text-app-blog-card-author-text"
@@ -287,14 +287,14 @@ export default function SubscriptionsPage() {
                       <div className="mt-5 flex ">
                         <button
                           onClick={handleOpenPayment}
-                          className="bg-app-card-button-bg-primary text-app-button-text-color py-2 px-20 rounded-lg shadow-sm"
+                          className="bg-app-card-button-bg-primary text-app-button-text-color font-plusJakartaSans font-normal text-[16px] py-2 px-20 rounded-lg shadow-sm"
                         >
                           Buy now
                         </button>
                       </div>
                     ) : (
                       <div className="mt-5 flex ">
-                        <button className="bg-app-card-highlight-button text-black py-2 px-22 rounded-lg shadow-sm">
+                        <button className="bg-app-card-highlight-button text-black py-2 px-22 font-plusJakartaSans font-normal text-[16px] rounded-lg shadow-sm">
                           Active
                         </button>
                       </div>
