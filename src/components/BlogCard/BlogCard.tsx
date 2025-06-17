@@ -24,15 +24,15 @@ export default function BlogCard(props: BlogCardProps) {
             />
           </div>
           <div className="flex flex-col flex-grow justify-start py-1">
-            <h3 className="text-text-body  text-app-blog-card-heading leading-tight mb-3 group-hover:text-yellow-600 transition-colors">
+            <h3 className="font-plusJakartaSans font-normal text-[16px] text-app-blog-card-heading leading-tight mb-3 group-hover:text-yellow-600 transition-colors">
               {props.title}
             </h3>
 
-            <div className="inline-flex items-center gap-3 bg-app-blog-card-category-background text-app-blog-card-category-text text-text-caption text-[11.52px] rounded-full px-3 py-1 w-fit">
+            <div className="inline-flex items-center gap-3 bg-app-blog-card-category-background text-app-blog-card-category-text font-plusJakartaSans font-normal text-[10.52px] rounded-full px-3 py-1 w-fit">
               <ConfettiIcon />
               <span>{props.categoryName}</span>
             </div>
-            <p className="text-app-blog-card-author-text text-text-caption pt-3 mt-[-5px]">
+            <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[13px] pt-3 mt-[-5px]">
               {props.author} • {props.date}
             </p>
           </div>

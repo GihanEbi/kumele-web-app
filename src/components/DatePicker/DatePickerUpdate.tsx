@@ -140,7 +140,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ label = "Date", isOpen,        
 
   return (
     <div className="max-w-full w-full relative" ref={datePickerRef}>
-      {label && <label className="block text-body mb-2">{label}</label>}
+      {label && <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-2">{label}</label>}
       <button
         type="button"
         className={commonInputClasses}
@@ -152,7 +152,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ label = "Date", isOpen,        
         <div className="flex items-center space-x-2.5 py-[-2px]">
           <CalenderIcon />
 
-          <span className="text-text-caption">{formattedDate}</span>
+          <span className="font-plusJakartaSans font-normal text-[13.89px]">{formattedDate}</span>
         </div>
         <div className="flex flex-col gap-1">
           <UpArrowIcon />

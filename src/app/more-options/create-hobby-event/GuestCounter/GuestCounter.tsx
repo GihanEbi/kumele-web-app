@@ -12,7 +12,7 @@ import React, {
 import {
   TwoTicketsIcon,
   BuyIcon,
-} from "../../../../../../public/svg-icons/icons";
+} from "../../../../../public/svg-icons/icons";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 import GuestInviteModal from "./GuestInviteModal/GuestInviteModal";
 
@@ -199,7 +199,7 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <CheckMarkGif className="text-white" />
+                <CheckMarkGif className="bg-white" />
               </div>
               <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
                 This item has been added to your cart

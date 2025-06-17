@@ -59,7 +59,7 @@ export const CoinbasePaymentModal: React.FC<CoinbasePaymentModalProps> = ({
           </button>
           <div className="flex items-center gap-2">
             <Confetti2Icon className="w-7 h-7" />
-            <h1 className="text-app-blog-card-heading text-2xl">Event Ads</h1>
+            <h1 className="text-app-blog-card-heading font-plusJakartaSans font-normal text-[28px]">Event Ads</h1>
           </div>
           {/* Empty div to balance the flexbox layout */}
           <div className="w-6 h-6 p-2"></div>
@@ -70,17 +70,17 @@ export const CoinbasePaymentModal: React.FC<CoinbasePaymentModalProps> = ({
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-2">
               <Confetti2Icon className="w-6 h-6" />
-              <h2 className="text-app-blog-card-heading text-xl">Event Ads</h2>
+              <h2 className="text-app-blog-card-heading font-plusJakartaSans font-normal text-[18px]">Event Ads</h2>
             </div>
-            <ChevronDownIcon className="w-5 h-5 text-gray-500" />
+            <ChevronDownIcon className="w-6 h-6 text-gray-500" />
           </div>
 
-          <span className="text-app-blog-card-author-text">Total</span>
-          <p className="text-app-text-blue font-semibold text-3xl mt-1">$23.07</p>
+          <span className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">Total</span>
+          <p className="text-app-text-blue font-plusJakartaSans font-bold text-[23px] mt-1">$23.07</p>
 
           <button
             onClick={onPayWithCoinbaseClick}
-             className="w-full bg-app-button-primary text-app-button-text-color text-body py-4 rounded-lg mt-4"
+             className="w-full bg-app-button-primary text-app-button-text-color font-plusJakartaSans font-normal text-[16px] py-4 rounded-lg mt-4"
           >
             Pay with Coinbase
           </button>
@@ -88,7 +88,7 @@ export const CoinbasePaymentModal: React.FC<CoinbasePaymentModalProps> = ({
         {/* "Or" Divider */}
         <div className="my-6 flex items-center gap-x-4">
           <div className="h-px flex-1 bg-app-range-slider-track-active"></div>
-          <span className="text-app-blog-card-author-text">Or select a crypto currency</span>
+          <span className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">Or select a crypto currency</span>
           <div className="h-px flex-1 bg-app-range-slider-track-active"></div>
         </div>
 
@@ -115,13 +115,13 @@ export const CoinbasePaymentModal: React.FC<CoinbasePaymentModalProps> = ({
                 </div>
 
                 <crypto.icon className={`w-6 h-6 ${crypto.colorClass}`} />
-                <span className="text-app-blog-card-author-text">{crypto.name}</span>
+                <span className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">{crypto.name}</span>
               </div>
             );
           })}
         </div>
 
-        <button className="text-blue-600 font-semibold text-sm mt-4">
+        <button className="text-blue-600 font-plusJakartaSans font-semibold text-[16px] mt-4">
           Show more
         </button>
       </div>

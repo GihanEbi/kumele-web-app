@@ -2,8 +2,15 @@ import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import React, { useState } from "react";
 import {
   BinocularsIcon,
+  CartIcon,
+  ChatIcon,
   CloseIcon,
   CopyIcon,
+  CreateHobbyIcon,
+  HistoryAndStatisticsIcon,
+  NotificationNewIcon,
+  YellowCircleIcon,
+  YellowIcon,
 } from "../../../../public/svg-icons/icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -12,6 +19,25 @@ type MoreModelProps = {
   isOpen: boolean;
   onClose: () => void;
 };
+
+export function ChatNotificationIcon() {
+  return (
+    <div className="relative inline-block">
+      <ChatIcon className="" />
+      <YellowCircleIcon className="absolute -top-0 -right-0" />
+    </div>
+  );
+}
+
+export function CartnewIcon() {
+  return (
+    <div className="relative inline-block">
+      <CartIcon className="" />
+      <YellowIcon className="absolute -top-2 -right-2" />
+    </div>
+  );
+}
+
 const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
@@ -56,18 +82,19 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
               <button
                 className="flex flex-col items-center gap-2 group"
                 onClick={() => {
-                  router.push("/user/more/create-hobby-event");
+                  router.push("/more-options/create-hobby-event");
                   onClose();
                 }}
               >
                 <div className="">
-                  <Image
+                  {/* <Image
                     src="/images/create-event-img.png"
                     alt="Copy"
                     width={36}
                     height={36}
                     className="cursor-pointer"
-                  />
+                  /> */}
+                  <CreateHobbyIcon />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
                   Create Hobby Events
@@ -80,34 +107,36 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                   onClose();
                 }}
               >
-                <div className="">
-                  <Image
+                <div className="mt-4">
+                  {/* <Image
                     src="/images/find-event-img.png"
                     alt="Copy"
                     width={36}
                     height={36}
-                    className="cursor-pointer"
-                  />
+                    className="cursor-pointer text-gray-600"
+                  /> */}
+                  <BinocularsIcon />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
                   Find Hobby Events
                 </span>
               </button>
               <button
-                className="flex flex-col items-center gap-2 group"
+                className="flex flex-col items-center gap-0 group"
                 onClick={() => {
                   router.push("/more-options/history");
                   onClose();
                 }}
               >
-                <div className="">
-                  <Image
+                <div className="mt-2">
+                  {/* <Image
                     src="/images/history-img.png"
                     alt="Copy"
                     width={36}
                     height={36}
-                    className="cursor-pointer"
-                  />
+                    className="cursor-pointer "
+                  /> */}
+                  <HistoryAndStatisticsIcon />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
                   History & Statistics
@@ -123,45 +152,56 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                 }}
               >
                 <div className="">
-                  <Image
+                  {/* <Image
                     src="/images/notification-img.png"
                     alt="Copy"
                     width={42}
                     height={42}
                     className="cursor-pointer"
-                  />
+                  /> */}
+                  <NotificationNewIcon />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
                   Notifications
                 </span>
               </button>
-              <button className="flex flex-col items-center gap-2 group" 
+              <button
+                className="flex flex-col items-center gap-0 group"
                 onClick={() => {
                   router.push("/user/more/chat");
                   onClose();
-                }}>
+                }}
+              >
                 <div className="">
-                  <Image
+                  {/* <Image
                     src="/images/chat-img.png"
                     alt="Copy"
                     width={36}
                     height={36}
                     className="cursor-pointer"
-                  />
+                  /> */}
+                  <ChatNotificationIcon />
                 </div>
-                <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
+                <span className="text-xs text-app-text-primary text-center font-plusJakartaSans ">
                   Chat
                 </span>
               </button>
-              <button className="flex flex-col items-center gap-2 group">
-                <div className="">
-                  <Image
+              <button
+                onClick={() => {
+                  router.push("/more-options/cart");
+                  onClose();
+                }}
+                className="flex flex-col items-center gap-2 group"
+              >
+                <div className="mt-2">
+                  {/* <Image
                     src="/images/cart-img.png"
                     alt="Copy"
                     width={36}
                     height={36}
                     className="cursor-pointer"
-                  />
+                  /> */}
+                  <CartnewIcon />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
                   Cart

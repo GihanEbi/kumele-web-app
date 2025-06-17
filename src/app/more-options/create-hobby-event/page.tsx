@@ -1,6 +1,6 @@
 "use client";
 
-import InputComponent from "../../../../components/InputComponent/InputComponent";
+import InputComponent from "../../../components/InputComponent/InputComponent";
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
@@ -35,12 +35,11 @@ import {
   FestivalIcon,
   OutdoorsIcon,
   VolunteerIcon,
-} from "../../../../../public/svg-icons/icons";
+} from "../../../../public/svg-icons/icons";
 import TimeDurationSelector from "@/components/TimeDurationSelector/TimeDurationSelector";
-//import DatePicker from "@/components/DatePicker/DatePicker";
+
 import DatePicker from "@/components/DatePicker/DatePickerUpdate";
-//import TimePicker from "@/components/TimePicker/TimePicker";
-import TimePicker from "@/components/TimePicker/TimePickerUpdate";
+
 import UserAvailabilityCheck from "@/components/EventUserAvailabilityCheck/UserAvailabilityCheck";
 import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
 import GuestCounter from "./GuestCounter/GuestCounter";
@@ -51,6 +50,7 @@ import EventPreviewModal from "./EventPreviewModal/EventPreviewModal";
 import GuestPricesModal from "./GuestPriceModal/GuestPriceModal";
 import EventsTimeDetailsModal from "./EventsStartDetailsModal/EventStartDetails";
 import Link from "next/link";
+import { useScrollLock } from "@/utils/useScrollHook";
 
 const EVENT_CATEGORIES = [
   { id: "spirituality", label: "Spirituality", icon: <EventCategory1 /> },
@@ -153,6 +153,9 @@ const CreateEventSection = () => {
 
   const [isEventTimePriceModalOpen, setIsEventTimePriceModalOpen] =
     useState<boolean>(false);
+
+    //scrolling locking when preview open custom hook calling
+    useScrollLock(isPreviewOpen);
 
   const handleStartTimeChange = (newTime: string) => {
     console.log("Selected Time:", newTime);
@@ -319,18 +322,22 @@ const CreateEventSection = () => {
       onClick={closeModal}
     >
       <div className="flex flex-row gap-5">
-        <div className="">
-          <Link href="/user">
+        <div className="mt-2">
+          <Link href="/user/home">
             <BackToPageIcon />
           </Link>
         </div>
 
-        <h2 className="text-heading mb-6">Create event</h2>
+        <h2 className="font-plusJakartaSans font-bold text-[23px] mb-6">
+          Create event
+        </h2>
       </div>
 
       {/* Event Category Section */}
       <div className="mb-6">
-        <label className="text-body">Event Category</label>
+        <label className="font-plusJakartaSans font-normal text-[13.89px]">
+          Event Category
+        </label>
 
         <div className="relative mt-3">
           <div className="overflow-hidden">
@@ -382,11 +389,11 @@ const CreateEventSection = () => {
                     </div>
 
                     <span
-                      className={`${
+                      className={`font-plusJakartaSans font-medium text-[8.39px] ${
                         selectedCategory === category.id && isDark
                           ? "text-black"
-                          : ""
-                      } text-sm font-medium leading-tight text-text-title`}
+                          : "text"
+                      } leading-tight`}
                     >
                       {category.label}
                     </span>
@@ -400,8 +407,10 @@ const CreateEventSection = () => {
 
       {/* Event Image Section */}
       <div className="mb-6">
-        <label className="block text-body mb-2">Event Image</label>
-        <p className="text-text-sub-caption mb-3 text-[14px] text-gray-500">
+        <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-2">
+          Event Image
+        </label>
+        <p className="text-text-sub-caption mb-3 font-plusJakartaSans font-normal text-[11.29px] text-gray-500">
           (Recommended size 400*400px)
         </p>
 
@@ -425,7 +434,7 @@ const CreateEventSection = () => {
                 <UploadImageIcon />
               </div>
 
-              <p className="text-text-sub-caption text-gray-500">
+              <p className="font-plusJakartaSans font-normal text-[11.29px] text-gray-500">
                 Upload an image
               </p>
             </>
@@ -450,8 +459,10 @@ const CreateEventSection = () => {
             height={20}
             className="mr-3"
           />
-          <span className="text-sub-texts">PayPal Connected</span>
-          <div className="flex bg-gray-100 ml-3 p-2 rounded-md">
+          <span className="font-plusJakartaSans font-medium text-[13.89px]">
+            PayPal Connected
+          </span>
+          <div className="flex bg-gray-100 dark:bg-neutral-900 ml-3 p-2 rounded-md">
             <RightIcon />
           </div>
         </div>
@@ -460,7 +471,9 @@ const CreateEventSection = () => {
       <div className="space-y-6 mt-6">
         {/* Event Name */}
         <div>
-          <label className="block text-body mb-3">Event Name</label>
+          <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-3">
+            Event Name
+          </label>
           <InputComponent
             placeholder="Add a title"
             value={eventName}
@@ -470,7 +483,9 @@ const CreateEventSection = () => {
 
         {/* Subtitle */}
         <div>
-          <label className="block text-body mb-3">Subtitle</label>
+          <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-3">
+            Subtitle
+          </label>
           <InputComponent
             placeholder="Add a subtitle"
             value={subtitle}
@@ -480,7 +495,9 @@ const CreateEventSection = () => {
 
         {/* Description */}
         <div>
-          <label className="block text-body mb-3">Description</label>
+          <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-3">
+            Description
+          </label>
           <textarea
             value={description}
             onChange={handleDescriptionChange}
@@ -488,14 +505,16 @@ const CreateEventSection = () => {
             placeholder="More About the event"
             className="w-full h-32 p-3 bg-app-input-primary  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500 resize-none"
           />
-          <p className="text-xs text-app-text-secondary mt-1 text-right">
+          <p className="font-plusJakartaSans font-normal text-[10px] text-app-text-secondary mt-1 text-right">
             {description.length}/{maxCharacters} Max
           </p>
         </div>
       </div>
       <div>
         <div className="flex flex-row gap-3 mb-3 mt-6">
-          <label className="block text-body mb-1">Event starts in</label>
+          <label className="block font-plusJakartaSans font-normal text-[13.89px] -mb-1">
+            Event starts in
+          </label>
           <div
             onClick={() => setIsEventTimePriceModalOpen(true)}
             className="mt-[-6px]"
@@ -533,7 +552,9 @@ const CreateEventSection = () => {
         />
       </div>
       <div className="space-y-3 mt-8">
-        <h3 className="text-body">Event Address</h3>
+        <h3 className="font-plusJakartaSans font-normal text-[13.89px]">
+          Event Address
+        </h3>
 
         {/* Street + Home Number Row */}
         <div className="grid grid-cols-2 gap-4">
@@ -596,7 +617,9 @@ const CreateEventSection = () => {
       </div>
 
       <div className="mt-8">
-        <label className="block text-body mb-15">Age Range</label>
+        <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-15">
+          Age Range
+        </label>
         {/* Age Range Slider Section using Radix UI */}
         <RadixAgeRangeSlider
           //label="Age range"
@@ -609,7 +632,9 @@ const CreateEventSection = () => {
       </div>
       <div>
         <div className="flex flex-row gap-3 mb-3 mt-6">
-          <label className="text-body">Number of Guests</label>
+          <label className="font-plusJakartaSans font-normal text-[13.89px]">
+            Number of Guests
+          </label>
           <div
             onClick={() => setIsGuestPriceModalOpen(true)}
             className="mt-[-6px]"
