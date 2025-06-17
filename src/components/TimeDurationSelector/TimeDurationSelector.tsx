@@ -28,7 +28,7 @@ const TimeDurationSelector: React.FC = () => {
     <div className="flex items-center p-1  max-w-xs">
       {/* Time Display Section */}
       <div
-        className={`bg-app-background-card-secondary text-app-text-blackandwhite text-text-caption px-4 py-3 ${
+        className={`bg-app-background-card-secondary text-app-text-blackandwhite font-plusJakartaSans font-normal text-[13.89px] px-4 py-3 ${
           isBlueSectionVisible ? "rounded-l-lg" : "rounded-lg"
         } min-w-[70px] text-center`}
       >
@@ -37,25 +37,25 @@ const TimeDurationSelector: React.FC = () => {
 
       {/* Blue Cart Section (Conditional) */}
       {isBlueSectionVisible && (
-        <div className="bg-blue-600 py-[11.5px] rounded-r-lg px-6">
+        <div className="bg-blue-600 py-[10px] rounded-r-lg px-6">
           <BuyIcon />
         </div>
       )}
 
       {/* Increment/Decrement Section */}
-      <div className="bg-app-background-primary px-3 gap-6 py-2.5 border rounded-lg flex items-center justify-between min-w-[60px] ml-4">
+      <div className="bg-app-background-primary px-3 gap-6 py-2 border rounded-lg flex items-center justify-between min-w-[60px] ml-4">
         <button
           onClick={handleDecrement}
-          disabled={currentTimeIndex === 0}
-          className="text-gray-600 hover:text-gray-800 disabled:opacity-40 disabled:cursor-not-allowed text-xl font-semibold"
+          //disabled={currentTimeIndex === 0}
+          className="text-neutral-500 dark:text-gray-300 disabled:opacity-40 disabled:cursor-not-allowed text-xl font-semibold"
           aria-label="Decrease time"
         >
           -
         </button>
         <button
           onClick={handleIncrement}
-          disabled={currentTimeIndex === TIME_OPTIONS.length - 1}
-          className="text-gray-600 hover:text-gray-800 disabled:opacity-40 disabled:cursor-not-allowed text-xl font-semibold"
+          //disabled={currentTimeIndex === TIME_OPTIONS.length - 1}
+          className="text-neutral-500 dark:text-gray-300  disabled:opacity-40 disabled:cursor-not-allowed text-xl font-semibold"
           aria-label="Increase time"
         >
           +

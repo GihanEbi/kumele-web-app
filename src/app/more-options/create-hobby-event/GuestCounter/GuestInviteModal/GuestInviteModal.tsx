@@ -4,7 +4,7 @@ import { TimeDigitScroller } from "../DigitScroller/DigitScrollerUpdate";
 import {
   TwoTicketsIcon,
   CloseIcon,
-} from "../../../../../../../public/svg-icons/icons";
+} from "../../../../../../public/svg-icons/icons";
 
 // --- Data ---
 const digits = Array.from({ length: 10 }, (_, i) => String(i));

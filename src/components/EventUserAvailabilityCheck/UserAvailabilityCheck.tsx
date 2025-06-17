@@ -36,7 +36,7 @@ const UserAvailabilityCheck: React.FC<UserAvailabilityCheckProps> = ({
       <div className="flex items-stretch space-x-2 sm:space-x-3">
         <button
           onClick={handleCheckClick}
-          className="flex-grow bg-app-button-primary text-app-button-text-color  px-4 py-3 rounded-xl"
+          className="flex-grow bg-app-button-primary text-app-button-text-color font-plusJakartaSans font-normal text-[14.57px]  px-4 py-3 rounded-xl"
         >
           Check User Availability
         </button>
@@ -50,11 +50,11 @@ const UserAvailabilityCheck: React.FC<UserAvailabilityCheckProps> = ({
         />
       </div>
       <div className="text-paragraph text-[13px] space-y-[0px]">
-        <p>
+        <p className='font-plusJakartaSans font-normal text-[10px]'>
           <span className="text-red-500 font-semibold">*</span>To use this,
           please add your address and number of guest.
         </p>
-        <p>
+        <p className='font-plusJakartaSans font-normal text-[10px]'>
           Disclaimer: we cannot guarantee 100% matches due to certain factors
           beyond our control.
         </p>

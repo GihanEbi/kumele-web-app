@@ -204,10 +204,10 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
       </div>
       {/* Blog Header */}
       <div className="mb-6">
-        <h2 className="text-text-title text-app-blog-card-heading text-[19px] font-medium">
+        <h2 className="font-plusJakartaSans font-bold text-[19px] text-app-blog-card-heading text-[19px] font-medium">
           {post.title}
         </h2>
-        <p className="text-text-caption text-app-blog-card-author-text mt-1">
+        <p className="font-plusJakartaSans font-normal text-[13px]text-app-blog-card-author-text mt-1">
           {post.author} • {post.date}
         </p>
 
@@ -219,18 +219,18 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
       {post.healthSupplements && (
         <div className="mb-8">
           <div className="mt-4">
-            <h3 className=" text-text-app-blog-card-heading text-text-body">
+            <h3 className=" text-text-app-blog-card-heading font-plusJakartaSans font-normal text-[16px]">
               Health Supplement range:
             </h3>
             <ul className="list-disc pl-5 mt-2">
-              <li className="text-text-app-blog-card-heading text-text-body">
-                <span className="text-text-app-blog-card-heading text-body">
+              <li className="text-text-app-blog-card-heading font-plusJakartaSans font-normal text-[16px]">
+                <span className="text-text-app-blog-card-heading font-plusJakartaSans font-normal text-[16px]">
                   Home:
                 </span>{" "}
                 {post.healthSupplements.home}
               </li>
-              <li className="text-text-app-blog-card-heading text-text-body">
-                <span className="text-text-app-blog-card-heading text-text-body">
+              <li className="text-text-app-blog-card-heading font-plusJakartaSans font-normal text-[16px]">
+                <span className="text-text-app-blog-card-heading font-plusJakartaSans font-normal text-[16px]">
                   Fair:
                 </span>{" "}
                 {post.healthSupplements.fair}
@@ -262,7 +262,7 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
       )}
 
       {/* Blog Content */}
-      <p className="text-text-app-blog-card-heading mb-6 text-text-body">
+      <p className="text-text-app-blog-card-heading mb-6 font-plusJakartaSans font-normal text-[16px]">
         {post.content}
       </p>
 
@@ -284,7 +284,7 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
       {/* Description Text */}
       {post.description && (
         <div className="mb-8p-4 rounded">
-          <p className="text-text-body text-text-app-blog-card-heading">
+          <p className="font-plusJakartaSans font-normal text-[16px] text-text-app-blog-card-heading">
             {post.description}
           </p>
         </div>

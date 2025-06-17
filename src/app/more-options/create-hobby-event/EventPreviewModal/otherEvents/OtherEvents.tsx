@@ -10,7 +10,7 @@ import {
   DollarIcon,
   ClockIcon,
   RightArrowIcon,
-} from "../../../../../../../public/svg-icons/icons";
+} from "../../../../../../public/svg-icons/icons";
 
 type OtherEventsProps = {
   events: Event[];
