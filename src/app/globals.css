@@ -60,7 +60,9 @@
   --color-app-background-more-model: var(--app-background-more-model);
   --color-app-background-card: var(--app-background-card);
   --color-app-background-bottom-navbar: var(--app-background-bottom-navbar);
+  --color-app-background-chat-card: var(--app-background-chat-card);
   --color-app-border: var(--app-border);
+  --color-app-border-profile: var(--app-border-profile);
   --color-app-input-primary: var(--app-input-primary);
   --color-app-input-secondary: var(--app-input-secondary);
   --color-app-input-yellow: var(--app-input-yellow);
@@ -70,6 +72,9 @@
   --color-app-text-black: var(--app-text-black);
   --color-app-text-blue: var(--app-text-blue);
   --color-app-text-yellow: var(--app-text-yellow);
+  --color-app-text-host: var(--app-text-host);
+  --color-app-text-profile-text: var(--app-text-profile-text);
+  --color-app-text-profile-tabs: var(--app-text-profile-tabs);
   --color-app-button-primary: var(--app-button-primary);
   --color-app-button-secondary: var(--app-button-secondary);
   --color-app-button-gray: var(--app-button-gray);
@@ -85,27 +90,32 @@
   --color-app-background-card-secondary: var(--app-background-card-secondary);
   --color-app-text-blackandwhite: var(--app-text-blackandwhite);
   --color-app-background-tertiary: var(--app-background-tertiary);
-  --color-app-okay-icon-background:var(--app-okay-icon-background);
-  --color-app-okay-icon-filter:var(--app-okay-icon-filter);
-  --color-app-button-model-text-color:var(--app-button-model-text-color);
+  --color-app-okay-icon-background: var(--app-okay-icon-background);
+  --color-app-okay-icon-filter: var(--app-okay-icon-filter);
+  --color-app-button-model-text-color: var(--app-button-model-text-color);
 
-  
   --color-app-search-bar-background: var(--app-search-bar-background);
   --color-app-search-bar-text: var(--app-search-bar-text);
   --color-app-search-bar-icon: var(--app-search-bar-icon);
-  --color-app-blog-selected-tabs-background: var(--app-blog-selected-tabs-background);
+  --color-app-blog-selected-tabs-background: var(
+    --app-blog-selected-tabs-background
+  );
   --color-app-blog-selected-tabs-text: var(--app-blog-selected-tabs-text);
-  --color-app-blog-unselected-tabs-background: var(--app-blog-unselected-tabs-background);
+  --color-app-blog-unselected-tabs-background: var(
+    --app-blog-unselected-tabs-background
+  );
   --color-app-blog-unselected-tabs-text: var(--app-blog-unselected-tabs-text);
   --color-app-blog-card-background: var(--app-blog-card-background);
   --color-app-blog-card-heading: var(--app-blog-card-heading);
-  --color-app-blog-card-category-background: var(--app-blog-card-category-background);
+  --color-app-blog-card-category-background: var(
+    --app-blog-card-category-background
+  );
   --color-app-blog-card-category-text: var(--app-blog-card-category-text);
   --color-app-blog-card-author-text: var(--app-blog-card-author-text);
-  --color-app-card-button-bg-primary:var(--app-card-button-bg-primary);
-  --color-app-card-highlight-button:var(--app-card-highlight-button);
-  --color-app-radio-button-color:var(--app-radio-button-color);
-  --color-app-bg-color-modal:var(--app-bg-color-modal);
+  --color-app-card-button-bg-primary: var(--app-card-button-bg-primary);
+  --color-app-card-highlight-button: var(--app-card-highlight-button);
+  --color-app-radio-button-color: var(--app-radio-button-color);
+  --color-app-bg-color-modal: var(--app-bg-color-modal);
 }
 
 :root {
@@ -141,15 +151,25 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --k-primary-color:oklch(0.9672 0 0); /* #F0F0F0 color (gray color) */
-  --k-secondary-color:oklch(0.8531 0.162 85.01); /* #FFC533 color (yellow color) */
+  --k-primary-color: oklch(0.9672 0 0); /* #F0F0F0 color (gray color) */
+  --k-secondary-color: oklch(
+    0.8531 0.162 85.01
+  ); /* #FFC533 color (yellow color) */
   --k-background-primary: oklch(1 0 0); /* #FFFFFF color (white color) */
-  --k-background-secondary: oklch(0.9219 0 0); /* #e5e5e5 color (light gray color) */
-  --k-background-tertiary: oklch(0.9672 0 89.88); /* #A9A9A9 color (dark gray color) */
+  --k-background-secondary: oklch(
+    0.9219 0 0
+  ); /* #e5e5e5 color (light gray color) */
+  --k-background-tertiary: oklch(
+    0.9672 0 89.88
+  ); /* #A9A9A9 color (dark gray color) */
   --k-blue: oklch(0.5202 0.2679 263.21); /* #004DFF color (blue color) */
   --k-text-primary: oklch(0 0 0); /* #000000 color (black color) */
-  --k-text-secondary: oklch(0.7348 0 89.88); /* #A9A9A9 color (dark gray color) */
-  --k-text-tertiary: oklch(0.9672 0 89.88); /* #F4F4F4 color (light gray color) */
+  --k-text-secondary: oklch(
+    0.7348 0 89.88
+  ); /* #A9A9A9 color (dark gray color) */
+  --k-text-tertiary: oklch(
+    0.9672 0 89.88
+  ); /* #F4F4F4 color (light gray color) */
   --k-text-heading: oklch(1 0 0); /* #FFFFFF color (white color) */
   --k-text-black: oklch(0 0 0); /* #000000 color (black color) */
   --k-text-button: oklch(0.2686 0 0); /* #262626 color (dark gray color) */
@@ -164,9 +184,11 @@
   --app-background-card: oklch(0.9551 0 89.88); /* #F4F4F4 */
   --app-background-card-secondary: oklch(0 0 0); /* #000000 */
   --app-background-bottom-navbar: oklch(0.9551 0 89.88); /* #f0f0f0 */
+  --app-background-chat-card: oklch(0.9551 0 89.88); /* #f0f0f0ff */
 
   /* BORDERS */
-  --app-border : oklch(0.8853 0 89.88);
+  --app-border: oklch(0.8853 0 89.88);
+  --app-border-profile: oklch(1 0 89.88);
 
   /* ICON */
   --app-icon: oklch(0 0 0);
@@ -174,71 +196,75 @@
   --app-okay-icon-filter: oklch(0.9581 0 0);
 
   /* INPUT */
-  --app-input-primary: oklch(0.9551 0 89.88);  /* #F4F4F4 */
-  --app-input-secondary: oklch(0.8564 0.1871 83.38);  /* #FFD966 */
-  --app-input-yellow: oklch(0.8564 0.1871 83.38);  /* #FFD966 */
+  --app-input-primary: oklch(0.9551 0 89.88); /* #F4F4F4 */
+  --app-input-secondary: oklch(0.8564 0.1871 83.38); /* #FFD966 */
+  --app-input-yellow: oklch(0.8564 0.1871 83.38); /* #FFD966 */
 
   /* TEXT */
-  --app-text-primary: oklch(0 0 0);   /* #000000 */
+  --app-text-primary: oklch(0 0 0); /* #000000 */
   --app-text-secondary: oklch(0.5999 0 89.88); /* #999999 */
-  --app-text-tertiary: oklch(1 0 89.88);  /* #FFFFFF */
-  --app-text-black: oklch(0 0 0);  /* #000000 */
-  --app-text-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);  /* #645EFF */
-  --app-text-white: oklch(1 0 0);  /* #FFFFFF */
-  --app-text-yellow:oklch(0.8531 0.162 85.01); /*#FFC533*/
-  --app-text-blackandwhite: oklch(1 0 0);  /* #FFFFFF */
-  
+  --app-text-tertiary: oklch(1 0 89.88); /* #FFFFFF */
+  --app-text-black: oklch(0 0 0); /* #000000 */
+  --app-text-blue: oklch(
+    0.5275 0.28234714827626795 260.80097608857864
+  ); /* #645EFF */
+  --app-text-white: oklch(1 0 0); /* #FFFFFF */
+  --app-text-yellow: oklch(0.8531 0.162 85.01); /*#FFC533*/
+  --app-text-blackandwhite: oklch(1 0 0); /* #FFFFFF */
+  --app-text-host: oklch(0.5275 0.28234714827626795 260.80097608857864);
+  --app-text-profile-text: oklch(0.2686 0 0);
+  --app-text-profile-tabs: oklch(0.2686 0 0);
+
 
   /* BUTTON */
   --app-button-primary: oklch(0 0 0); /* #000000 */
   --app-button-secondary: oklch(1 0 89.88); /* #FFFFFF */
   --app-button-gray: oklch(0.2393 0 89.88); /* #3D3D3D */
   --app-button-yellow: oklch(0.8564 0.1871 83.38); /* #FFD966 */
-  --app-button-blue: oklch(0.5275 0.28234714827626795 260.80097608857864); /* #645EFF */
-  --app-button-white:oklch(1 0 89.88);
-
+  --app-button-blue: oklch(
+    0.5275 0.28234714827626795 260.80097608857864
+  ); /* #645EFF */
+  --app-button-white: oklch(1 0 89.88);
 
   /*BUTTON TEXT COLOR*/
   --app-button-text-color: oklch(1 0 0); /* #FFFFFF color (white color) */
-  --app-button-model-text-color:oklch(0 0 0);
+  --app-button-model-text-color: oklch(0 0 0);
   /* RANGE SLIDER */
   --app-range-slider-primary: oklch(0.203 0.004 270); /* #343434 */
   --app-range-slider-secondary: oklch(1 0 0); /* #FFFFFF */
   --app-range-slider-track: oklch(0 0 0); /* #000000 */
   --app-range-slider-track-active: oklch(0.931 0.004 20); /* #EEECEC */
 
-
   /*SEARCH BAR*/
   --app-search-bar-background: oklch(0.9551 0 89.88); /* #F4F4F4 */
   --app-search-bar-text: oklch(0.5999 0 0); /* #808080*/
-  --app-search-bar-icon: oklch(0.5999 0 0);  /*#808080*/
+  --app-search-bar-icon: oklch(0.5999 0 0); /*#808080*/
 
   /*BLOG PAGE*/
-  --app-blog-selected-tabs-background: oklch(0.8531 0.162 85.01);  /*#FFC533*/
-  --app-blog-selected-tabs-text: oklch(0.2393 0 0);  /*#1f1f1f*/
+  --app-blog-selected-tabs-background: oklch(0.8531 0.162 85.01); /*#FFC533*/
+  --app-blog-selected-tabs-text: oklch(0.2393 0 0); /*#1f1f1f*/
   --app-blog-unselected-tabs-background: oklch(0.2393 0 0); /*#1f1f1f*/
   --app-blog-unselected-tabs-text: oklch(1 0 0); /* #FFFFFF */
 
   --app-blog-card-background: oklch(0.9551 0 0); /*#f0f0f0*/
-  --app-blog-card-heading: oklch(0 0 0);  /*000000*/
+  --app-blog-card-heading: oklch(0 0 0); /*000000*/
   --app-blog-card-category-background: oklch(0.2393 0 0); /*#1f1f1f*/
-  --app-blog-card-category-text: oklch(1 0 0);    /* #FFFFFF */
+  --app-blog-card-category-text: oklch(1 0 0); /* #FFFFFF */
   --app-blog-card-author-text: oklch(0.2686 0 0); /*#262626*/
 
   /*BLOG DETAILS PAGE*/
-  --app-blog-details-title:oklch(0 0 0);
-  --app-blog-details-subtitle:oklch(0.5999 0 89.88);
+  --app-blog-details-title: oklch(0 0 0);
+  --app-blog-details-subtitle: oklch(0.5999 0 89.88);
 
   /*SHOP PAGE*/
-  --app-card-button-bg-primary:oklch(0 0 0);
-  --app-card-highlight-button:oklch(1 0 0); 
+  --app-card-button-bg-primary: oklch(0 0 0);
+  --app-card-highlight-button: oklch(1 0 0);
 
   /*RADIO BUTTON*/
-  --app-radio-button-color:oklch(0.2972 0 0);
+  --app-radio-button-color: oklch(0.2972 0 0);
 
   /*EVENT PREVIEW*/
-  --app-bg-color-modal:oklch(0.9446 0.0022 17.2);
-  
+  --app-bg-color-modal: oklch(0.9446 0.0022 17.2);
 }
 
 .dark {
@@ -273,10 +299,16 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  --k-primary-color:oklch(0.2393 0 0); /* #1F1F1F color (dark gray color) */
-  --k-secondary-color:oklch(0.8531 0.162 85.01); /* #FFC533 color (yellow color) */
-  --k-background-primary: oklch(0.1591 0 89.88); /* #0d0d0d color (black color) */
-  --k-background-secondary: oklch(0.2134 0 0); /* #191919 color (dark gray color) */
+  --k-primary-color: oklch(0.2393 0 0); /* #1F1F1F color (dark gray color) */
+  --k-secondary-color: oklch(
+    0.8531 0.162 85.01
+  ); /* #FFC533 color (yellow color) */
+  --k-background-primary: oklch(
+    0.1591 0 89.88
+  ); /* #0d0d0d color (black color) */
+  --k-background-secondary: oklch(
+    0.2134 0 0
+  ); /* #191919 color (dark gray color) */
   --k-blue: oklch(0.5202 0.2679 263.21); /* #004DFF color (blue color) */
   --k-text-primary: oklch(1 0 0); /* #FFFFFF color (white color) */
   --k-text-secondary: oklch(0.7952 0 0); /* #BCBCBC color (gray color) */
@@ -295,9 +327,11 @@
   --app-background-more-model: oklch(0 0 0);
   --app-background-card-secondary: oklch(1 0 0);
   --app-background-bottom-navbar: oklch(0 0 0); /* #000000 */
+  --app-background-chat-card: oklch(0.2931 0 89.88); /* #2c2c2cff */
 
   /* BORDERS */
-  --app-border : oklch(0.5278 0 89.88);
+  --app-border: oklch(0.5278 0 89.88);
+  --app-border-profile: oklch(0.1591 0 89.88);
 
   /* ICON */
   --app-icon: oklch(1 0 89.88);
@@ -316,10 +350,13 @@
   --app-text-black: oklch(0 0 0);
   --app-text-bcolor: oklch(0 0 0);
   --app-text-white: oklch(1 0 0);
-  --app-text-yellow:oklch(0.8531 0.162 85.01); /*#FFC533*/
+  --app-text-yellow: oklch(0.8531 0.162 85.01); /*#FFC533*/
   --app-text-blackandwhite: oklch(0 0 0);
   --app-text-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
   --app-text-yellow: oklch(0.8564 0.1871 83.38);
+  --app-text-host: oklch(0.8564 0.1871 83.38);
+  --app-text-profile-text: oklch(0.9672 0 89.88);
+  --app-text-profile-tabs: oklch(0.7952 0 0);
 
   /* BUTTON */
   --app-button-primary: oklch(1 0 89.88);
@@ -330,7 +367,7 @@
 
   /*BUTTON TEXT COLOR*/
   --app-button-text-color: oklch(0 0 0); /* #000000 color (black color) */
-  --app-button-model-text-color:oklch(1 0 0);
+  --app-button-model-text-color: oklch(1 0 0);
   /* RANGE SLIDER */
   --app-range-slider-primary: oklch(0.861 0.006 270);
   --app-range-slider-secondary: oklch(0.122 0.004 270);
@@ -341,29 +378,29 @@
   /*SEARCH BAR*/
   --app-search-bar-background: oklch(0.2046 0 0); /*#171717*/
   --app-search-bar-text: oklch(0.7952 0 0); /*#bcbcbc*/
-  --app-search-bar-icon: oklch(0.7952 0 0); 
+  --app-search-bar-icon: oklch(0.7952 0 0);
 
   /*BLOG PAGE*/
-  --app-blog-selected-tabs-background: oklch(0.8531 0.162 85.01);  /*#ffc533*/
-  --app-blog-selected-tabs-text: oklch(0.1591 0 0);  /*#0d0d0d*/
+  --app-blog-selected-tabs-background: oklch(0.8531 0.162 85.01); /*#ffc533*/
+  --app-blog-selected-tabs-text: oklch(0.1591 0 0); /*#0d0d0d*/
   --app-blog-unselected-tabs-background: oklch(0.2393 0 0); /*#1f1f1f*/
   --app-blog-unselected-tabs-text: oklch(1 0 0); /*#ffffff*/
 
   --app-blog-card-background: oklch(0.2931 0 89.88); /*#2c2c2c*/
   --app-blog-card-heading: oklch(1 0 0); /*#ffffff*/
   --app-blog-card-category-background: oklch(0.2393 0 0); /*#1f1f1f*/
-  --app-blog-card-category-text: oklch(1 0 0);/*#ffffff*/
+  --app-blog-card-category-text: oklch(1 0 0); /*#ffffff*/
   --app-blog-card-author-text: oklch(0.8853 0 0); /*#d9d9d9*/
 
   /*SHOP PAGE*/
-  --app-card-button-bg-primary:oklch(0.9551 0 0);
-  --app-card-highlight-button:oklch(0.9551 0 0);
+  --app-card-button-bg-primary: oklch(0.9551 0 0);
+  --app-card-highlight-button: oklch(0.9551 0 0);
 
   /*RADIO BUTTON*/
-  --app-radio-button-color:oklch(0.8638 0 0);
+  --app-radio-button-color: oklch(0.8638 0 0);
 
   /*EVENT PREVIEW*/
-  --app-bg-color-modal:oklch(0.2134 0 0);
+  --app-bg-color-modal: oklch(0.2134 0 0);
 }
 
 @layer base {
@@ -376,7 +413,9 @@
 }
 /* HEADING */
 .text-heading {
-  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-family: var(
+    --font-plusJakartaSans
+  ); /* Uses the variable defined in @theme and layout.tsx */
   font-weight: 700;
   font-size: 23px;
   line-height: 100%; /* or 1 */
@@ -384,7 +423,9 @@
 }
 /* TITLE */
 .text-title {
-  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-family: var(
+    --font-plusJakartaSans
+  ); /* Uses the variable defined in @theme and layout.tsx */
   font-weight: 700;
   font-size: 19px;
   line-height: 100%; /* or 1 */
@@ -392,7 +433,9 @@
 }
 /* BODY */
 .text-body {
-  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-family: var(
+    --font-plusJakartaSans
+  ); /* Uses the variable defined in @theme and layout.tsx */
   font-weight: 400;
   font-size: 16px;
   line-height: 100%; /* or 1 */
@@ -400,7 +443,9 @@
 }
 /* CAPTION */
 .text-caption {
-  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-family: var(
+    --font-plusJakartaSans
+  ); /* Uses the variable defined in @theme and layout.tsx */
   font-weight: 400;
   font-size: 13px;
   line-height: 100%; /* or 1 */
@@ -487,37 +532,42 @@
 
 /*SUB CAPTIONS */
 .text-sub-caption {
-  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-family: var(
+    --font-plusJakartaSans
+  ); /* Uses the variable defined in @theme and layout.tsx */
   font-weight: 900;
   font-size: 11.29px;
   line-height: 100%; /* or 1 */
   letter-spacing: 0%;
-  ;
 }
 
 /*SUB TEXTS*/
 .sub-texts {
-  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-family: var(
+    --font-plusJakartaSans
+  ); /* Uses the variable defined in @theme and layout.tsx */
   font-weight: 500;
   font-size: 13.89px;
   line-height: 100%; /* or 1 */
   letter-spacing: 0%;
-  ;
 }
 
 /*PARAGRAPH */
 .paragraph {
-  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+  font-family: var(
+    --font-plusJakartaSans
+  ); /* Uses the variable defined in @theme and layout.tsx */
   font-weight: 400;
   font-size: 10px;
   line-height: 100%; /* or 1 */
   letter-spacing: 0%;
-  
 }
 
 /*MODEL TEXTS*/
-.model-texts{
-  font-family: var(--font-plusJakartaSans); /* Uses the variable defined in @theme and layout.tsx */
+.model-texts {
+  font-family: var(
+    --font-plusJakartaSans
+  ); /* Uses the variable defined in @theme and layout.tsx */
   font-weight: 600;
   font-size: 13.89px;
   line-height: 100%; /* or 1 */
@@ -535,12 +585,3 @@
     -webkit-overflow-scrolling: touch;
   }
 }
-
-
-
-
-
-
-
-  
-

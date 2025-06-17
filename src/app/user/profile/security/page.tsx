@@ -31,15 +31,15 @@ const Security = () => {
       <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
         <div className="w-full max-w-md px-4">
           {/* Header */}
-          <header className="flex items-center mb-10">
+          <header className="flex items-center mb-5">
             <button
               aria-label="Go back"
               onClick={() => window.history.back()} // Simple back navigation
-              className="p-2 -ml-2 mr-2" // Added padding for easier click and negative margin to align
+              className="mt-5 mr-2" // Added padding for easier click and negative margin to align
             >
               <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="text-3xl font-bold text-app-text-primary font-plusJakartaSans">
+            <h1 className="mt-5 ml-5 text-xl font-bold text-app-text-primary font-plusJakartaSans">
               Security
             </h1>
           </header>
@@ -54,7 +54,7 @@ const Security = () => {
                 >
                   <div className="flex items-center space-x-3">
                     <PasswordIcon className="text-app-icon" />
-                    <span className="text-md font-medium text-app-text-primary font-plusJakartaSans">
+                    <span className="text-sm text-app-text-profile-tabs font-plusJakartaSans">
                       Change Password
                     </span>
                   </div>
@@ -74,7 +74,7 @@ const Security = () => {
                   <PasswordIcon className="text-app-icon" />
                   <span
                     id="email-notifications-label"
-                    className="text-md text-app-text-primary font-plusJakartaSans"
+                    className="text-sm text-app-text-profile-tabs font-plusJakartaSans"
                   >
                     Two factor authentication
                   </span>

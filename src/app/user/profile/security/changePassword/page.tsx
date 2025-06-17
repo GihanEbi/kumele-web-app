@@ -27,20 +27,20 @@ const ChangePasswordPage = () => {
       <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
         <div className="w-full max-w-md px-4">
           {/* Header */}
-          <header className="flex items-center mb-10">
+          <header className="flex items-center mb-5">
             <button
               aria-label="Go back"
               onClick={() => window.history.back()} // Simple back navigation
-              className="p-2 -ml-2 mr-2" // Added padding for easier click and negative margin to align
+              className="mt-5 mr-2" // Added padding for easier click and negative margin to align
             >
               <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="text-2xl font-bold text-app-text-primary font-plusJakartaSans">
+            <h1 className="mt-5 ml-5 text-xl font-bold text-app-text-primary font-plusJakartaSans">
               Change passwords
             </h1>
           </header>
           <div>
-            <div className="space-y-4 mb-5">
+            <div className="mb-5">
               <p className="text-sm font-plusJakartaSans text-app-text-primary mb-2">
                 Current password
               </p>
@@ -68,7 +68,7 @@ const ChangePasswordPage = () => {
               </p>
               <div className="relative">
                 <InputComponent
-                  placeholder="Enter confirm new password"
+                  placeholder="Re-enter new password"
                   className="bg-k-primary-color"
                 />
               </div>
@@ -77,7 +77,7 @@ const ChangePasswordPage = () => {
           {/* footer signup button */}
           <div className="pt-50">
             <button
-              className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-md"
+              className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
               onClick={() => {}}
             >
               Update password

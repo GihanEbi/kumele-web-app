@@ -9,8 +9,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="">
-      <main className="mb-50">{children}</main>
+    <div className="min-h-screen">
+      <main className="mb-30">{children}</main>
       <footer className="fixed bottom-0 left-0 right-0">
         <BottomNavBar />
       </footer>
