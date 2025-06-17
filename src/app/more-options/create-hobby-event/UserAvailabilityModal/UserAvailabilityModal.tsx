@@ -1,7 +1,7 @@
 "use client";
 
+import HotChocolateGif from "@/components/GifComponents/HotChocolateGif/HotChocolateGif";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 
 interface UsersAroundModalProps {
   isOpen: boolean;
@@ -18,7 +18,7 @@ const UsersAroundModal: React.FC<UsersAroundModalProps> = ({
     if (isOpen) {
       const timer = setTimeout(() => {
         setShowAlternateText(true);
-      }, 3000);
+      }, 2000);
 
       return () => clearTimeout(timer);
     } else {
@@ -32,41 +32,34 @@ const UsersAroundModal: React.FC<UsersAroundModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 p-4 transition-opacity"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-3xl mx-auto rounded-2xl bg-app-background-tertiary px-6 py-15 shadow-xl"
+        className="w-full max-w-sm rounded-2xl bg-white dark:bg-black p-8 shadow-xl aspect-square flex flex-col"
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
-        <div className="flex flex-col">
-          <div className="mb-4">
-            <Image
-              src="/common-gifs/mug.gif"
-              alt="mug"
-              width={76}
-              height={76}
-            />
-          </div>
+        <div className="mb-6">
+          <HotChocolateGif className="bg-white" />
+        </div>
 
-          <h2 className="mb-2 text-title text-app-button-model-text-color">
-            {showAlternateText
-              ? "Users around"
-              : "No user around"}
+        <div className="min-h-[160px]">
+          <h2 className="mb-3 font-plusJakartaSans font-bold text-[19px] text-black dark:text-white">
+            {showAlternateText ? "Users around" : "No users around"}
           </h2>
 
-          <p className="text-body text-app-search-bar-text leading-loose">
+          <p className="font-plusJakartaSans font-normal text-[16px] text-app-search-bar-text leading-relaxed">
             {showAlternateText ? (
               <>
-               Potential matches matching your <br/>
-               criteria found currently.
-                
+                Potential matches matching your <br />
+                criteria found currently.
               </>
             ) : (
               <>
-                Unfortunately, no potential matches currently, <br />
-                but get rewarded by referring us <br />
-                to new users. <br />
+                Unfortunately, no potential matches currently but get
+                <br />
+                rewarded by referring us to new users.
+                <br />
                 It’s a win, win.
               </>
             )}

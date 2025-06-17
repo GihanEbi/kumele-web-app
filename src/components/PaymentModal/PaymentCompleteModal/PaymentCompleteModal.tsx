@@ -29,7 +29,7 @@ export const PaymentCompleteModal: React.FC<PaymentCompleteModalProps> = ({
       <div className="w-full max-w-sm mx-auto p-6 flex flex-col flex-grow">
         {/* Header */}
         <div className="flex items-center justify-center gap-2 mb-8">
-          <Confetti2Icon className="w-7 h-7" />
+          <Confetti2Icon className="w-10 h-10" />
           <h1 className="text-app-blog-card-heading font-plusJakartaSans font-normal text-[28px]">Event Ads</h1>
         </div>
 
@@ -86,6 +86,15 @@ export const PaymentCompleteModal: React.FC<PaymentCompleteModalProps> = ({
 
         {/* Spacer to push button to the bottom */}
         <div className="flex-grow"></div>
+      </div>
+      
+      <div className="w-full text-center pb-10">
+        <p className="text-sm font-plusJakartaSans font-normal text-app-blog-card-author-text">
+          Payments processed by{" "}
+          <a href="#" className="text-app-text-blue">
+            Coinbase Commerce
+          </a>
+        </p>
       </div>
     </div>
   );

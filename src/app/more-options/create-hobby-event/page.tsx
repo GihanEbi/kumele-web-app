@@ -52,6 +52,7 @@ import EventsTimeDetailsModal from "./EventsStartDetailsModal/EventStartDetails"
 import Link from "next/link";
 import { useScrollLock } from "@/utils/useScrollHook";
 
+//event category data(need to move into utils file)-------------------
 const EVENT_CATEGORIES = [
   { id: "spirituality", label: "Spirituality", icon: <EventCategory1 /> },
   { id: "movies", label: "Movies", icon: <EventCategory2 /> },
@@ -88,6 +89,7 @@ interface OptionConfig {
   value: string;
 }
 
+//payment option(need to move into utils file)
 const paymentOptionsConfig: OptionConfig[] = [
   {
     id: "payment-free",
@@ -109,7 +111,9 @@ const paymentOptionsConfig: OptionConfig[] = [
   },
 ];
 
+//main page function started--------------------------
 const CreateEventSection = () => {
+  // states
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -133,12 +137,15 @@ const CreateEventSection = () => {
   //set modal state
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  //state for date picker
   const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
+  //state for event start time selector modal opening
   const [isStartTimePickerOpen, setIsStartTimePickerOpen] =
     useState<boolean>(false);
+  //state for event end time selector modal opening
   const [isEndTimePickerOpen, setIsEndTimePickerOpen] =
     useState<boolean>(false);
-
+  //states for event start and end time
   const [selectedStartTime, setSelectedStartTime] = useState<string>("");
   const [selectedEndTime, setSelectedEndTime] = useState<string>("");
 
@@ -146,7 +153,8 @@ const CreateEventSection = () => {
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
 
-  const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false); // Add this state
+  //event preview main modal opening
+  const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false);
 
   const [isGuestPriceModalOpen, setIsGuestPriceModalOpen] =
     useState<boolean>(false);
@@ -154,22 +162,29 @@ const CreateEventSection = () => {
   const [isEventTimePriceModalOpen, setIsEventTimePriceModalOpen] =
     useState<boolean>(false);
 
-    //scrolling locking when preview open custom hook calling
-    useScrollLock(isPreviewOpen);
+  //payment selection state
+  const [selectedPayment, setSelectedPayment] = useState<string>("free");
 
+  //custom hook for scrolling locking when preview open custom hook calling
+  useScrollLock(isPreviewOpen);
+
+  //function for handle event start time
   const handleStartTimeChange = (newTime: string) => {
     console.log("Selected Time:", newTime);
     setSelectedStartTime(newTime);
   };
 
+  //function for handle event end time
   const handleEndTimeChange = (newTime: string) => {
     console.log("Selected Time:", newTime);
     setSelectedEndTime(newTime);
   };
 
+  //dark theme identification
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
+  //modal open handle
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     if (isModalOpen === true) {
@@ -177,10 +192,34 @@ const CreateEventSection = () => {
     }
   };
 
-  const maxCharacters = 1200; // Set your max character limit
+  //maximum characters define for event description text area
+  const maxCharacters = 1200;
 
-  //payment selection state
-  const [selectedPayment, setSelectedPayment] = useState<string>("free");
+  //date picker selection calendar open handling(to close time picker clocks if open)
+  const handleSetDatePickerOpen = (isOpen: boolean) => {
+    setDatePickerOpen(isOpen);
+    if (isOpen) {
+      setIsStartTimePickerOpen(false);
+      setIsEndTimePickerOpen(false);
+    }
+  };
+
+  //time picker selection clocks handling
+  const handleSetStartTimePickerOpen = (isOpen: boolean) => {
+    setIsStartTimePickerOpen(isOpen);
+    if (isOpen) {
+      setDatePickerOpen(false);
+      setIsEndTimePickerOpen(false);
+    }
+  };
+  //time picker selection clocks handling
+  const handleSetEndTimePickerOpen = (isOpen: boolean) => {
+    setIsEndTimePickerOpen(isOpen);
+    if (isOpen) {
+      setDatePickerOpen(false);
+      setIsStartTimePickerOpen(false);
+    }
+  };
 
   //Handlers for form inputs and interactions
   const handleDescriptionChange = (
@@ -250,12 +289,6 @@ const CreateEventSection = () => {
 
   const handleTouchEnd = () => {
     setIsDragging(false);
-  };
-
-  // Handlers for date and time pickers
-  const handleDateClick = () => {
-    console.log("Date display clicked! Open calendar here.");
-    // In a real app, you'd set state to show a calendar modal/popup
   };
 
   const handleUserAvailability = (guests: number) => {
@@ -529,7 +562,7 @@ const CreateEventSection = () => {
         <DatePicker
           label="Date"
           isOpen={isDatePickerOpen}
-          setIsOpen={setDatePickerOpen}
+          setIsOpen={handleSetDatePickerOpen}
           //currentDateDisplay="Tuesday, 25th June, 2024"
           //onClick={handleDateClick}
         />
@@ -541,14 +574,14 @@ const CreateEventSection = () => {
           currentTimeDisplay={selectedStartTime}
           onChange={handleStartTimeChange}
           isOpen={isStartTimePickerOpen}
-          setIsOpen={setIsStartTimePickerOpen}
+          setIsOpen={handleSetStartTimePickerOpen}
         />
         <TimePickerWithModal
           label="Event End time"
           currentTimeDisplay={selectedEndTime}
           onChange={handleEndTimeChange}
           isOpen={isEndTimePickerOpen}
-          setIsOpen={setIsEndTimePickerOpen}
+          setIsOpen={handleSetEndTimePickerOpen}
         />
       </div>
       <div className="space-y-3 mt-8">
@@ -614,6 +647,10 @@ const CreateEventSection = () => {
         />
 
         <UsersAroundModal isOpen={isModalOpen} onClose={closeModal} />
+        {/* <UserStatusModal 
+              isOpen={isModalOpen} 
+              onClose={closeModal} 
+            /> */}
       </div>
 
       <div className="mt-8">
