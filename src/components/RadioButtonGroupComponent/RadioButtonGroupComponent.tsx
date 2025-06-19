@@ -39,7 +39,7 @@ const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
             <div
               className={`w-5 h-5 rounded-full border-2 ${
                 gender.value !== value
-                  ? "border-app-button-primary"
+                  ? "border-app-button-radio"
                   : "border-app-button-blue"
               } flex items-center justify-center`}
             >

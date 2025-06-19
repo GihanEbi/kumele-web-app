@@ -7,7 +7,7 @@ import {
   MasterCardIcon,
   OkayRedIcon,
   VisaCardIcon,
-} from "../../../../../public/svg-icons/icons";
+} from "../../../../public/svg-icons/icons";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import RadioButtonComponent from "@/components/RadioButtonComponent/RadioButtonComponent";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -20,25 +20,25 @@ import SubscriptionCard from "@/components/SubscriptionCard/SubscriptionCard";
 const cardDetails = [
   {
     cardNumber: "**** **** **** 1234",
-    expiryDate: "12/25",
+    expiryDate: "12-08-23",
     cardHolderName: "John Doe",
     cardType: "Visa", // visa or master card
   },
   {
     cardNumber: "**** **** **** 5678",
-    expiryDate: "11/24",
+    expiryDate: "12-08-23",
     cardHolderName: "Jane Smith",
     cardType: "MasterCard", // visa or master card
   },
   {
     cardNumber: "**** **** **** 9012",
-    expiryDate: "10/23",
+    expiryDate: "12-08-23",
     cardHolderName: "Alice Johnson",
     cardType: "Visa", // visa or master card
   },
   {
     cardNumber: "**** **** **** 5678",
-    expiryDate: "11/24",
+    expiryDate: "12-08-23",
     cardHolderName: "Jane Smith",
     cardType: "MasterCard", // visa or master card
   },
@@ -95,18 +95,18 @@ const Payment = () => {
           <LoadingComponent />
         </div>
       )}
-      <div className="min-h-screen bg-app-background-primary flex flex-col pt-6 font-sans">
+      <div className=" min-h-screen bg-app-background-primary flex flex-col pt-6 font-sans">
         <div className="w-full max-w-md px-4">
           {/* Header */}
           <header className="fixed p-4 top-0 left-0 right-0 bg-app-background-primary flex items-center mb-10">
             <button
               aria-label="Go back"
               onClick={() => window.history.back()} // Simple back navigation
-              className="p-2 -ml-2 mr-2" // Added padding for easier click and negative margin to align
+              className="p-2 -ml-2 mr-2 mt-4" // Added padding for easier click and negative margin to align
             >
               <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="text-2xl font-bold text-app-text-primary font-plusJakartaSans">
+            <h1 className="mt-4 text-xl font-bold text-app-text-primary font-plusJakartaSans">
               Remove card
             </h1>
           </header>
@@ -116,23 +116,23 @@ const Payment = () => {
           <div className="items-center">
             <RadioGroup name="card-selection">
               {cardDetails.map((option, index) => (
-                <div className="flex ml-5 mb-5 items-center justify-between gap-4">
+                <div className="flex ml-5 items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <RadioGroupItem
                       value={option.cardNumber}
                       id={option.cardNumber}
                     />
                     <div className="">
-                      <div className="flex items-center gap-2">
-                        <p className="text-xs text-app-text-primary font-plusJakartaSans">
+                      <div className="flex items-center gap-1">
+                        <p className="text-xs text-app-text-profile-tabs font-plusJakartaSans">
                           •••• •••• •••• {option.cardNumber.slice(-4)}
                         </p>
                         <MasterCardIcon />
-                        <p className="text-xs text-app-text-primary font-plusJakartaSans">
+                        <p className="text-[10px] text-app-text-profile-tabs font-plusJakartaSans">
                           Master card
                         </p>
                       </div>
-                      <p className="text-xs text-app-text-primary font-plusJakartaSans">
+                      <p className="text-[10px] text-app-text-profile-tabs font-plusJakartaSans">
                         Expires {option.expiryDate}
                       </p>
                     </div>
@@ -145,13 +145,13 @@ const Payment = () => {
             </RadioGroup>
           </div>
 
-          <div className="mx-4 mb-8">
+          <div className="mx-4 my-8">
             <Separator className="bg-app-text-secondary p-0.4" />
           </div>
 
           {/* Escrow Account Section */}
           <div className="space-y-4 flex flex-col items-center mb-8">
-            <h2 className="text-lg font-bold text-app-text-primary font-plusJakartaSans">
+            <h2 className="text-md font-bold text-app-text-primary font-plusJakartaSans mb-8">
               Connect your Escrow Account
             </h2>
             <div className="flex items-center gap-3">
@@ -159,14 +159,14 @@ const Payment = () => {
                 <Image
                   src="/images/paypal.png"
                   alt="PayPal"
-                  width={24}
-                  height={24}
+                  width={20}
+                  height={20}
                 />
-                <span className="ml-2 text-app-text-tertiary font-plusJakartaSans">
+                <span className="ml-2 text-sm text-app-text-tertiary font-plusJakartaSans">
                   PayPal
                 </span>
               </button>
-              <button className="bg-app-okay-icon-background rounded-lg p-3 h-auto ">
+              <button className="bg-app-okay-icon-background rounded-lg p-2 h-auto ">
                 {/* <Check className="h-5 w-5 text-green-500" /> */}
                 <OkayRedIcon />
               </button>
@@ -179,7 +179,7 @@ const Payment = () => {
 
           {/* Subscriptions Section */}
           <div className="space-y-6 flex flex-col items-center mb-8">
-            <h2 className="text-xl text-app-text-primary font-plusJakartaSans font-bold">
+            <h2 className="text-md mb-8 text-app-text-primary font-plusJakartaSans font-bold">
               Subscriptions
             </h2>
             <div className="space-y-4 w-5/6">

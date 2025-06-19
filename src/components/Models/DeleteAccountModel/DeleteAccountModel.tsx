@@ -2,6 +2,7 @@ import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import React, { useState } from "react";
 import Image from "next/image";
 import InputComponent from "@/components/InputComponent/InputComponent";
+import ErrorGif from "@/components/GifComponents/ErrorGif/ErrorGif";
 // props types
 type DeleteAccountModelProps = {
   isOpen: boolean;
@@ -38,12 +39,13 @@ const DeleteAccountModel: React.FC<DeleteAccountModelProps> = ({
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <Image
+                {/* <Image
                   src="/common-gifs/verification-wrong.gif"
                   alt="Success"
                   width={100}
                   height={100}
-                />
+                /> */}
+                <ErrorGif  className="text-app-icon"/>
               </div>
               <p className="text-app-text-primary font-plusJakartaSans text-md font-bold mb-6 text-center">
                 Are you sure? This action cannot be undone. Please retype
@@ -57,18 +59,18 @@ const DeleteAccountModel: React.FC<DeleteAccountModelProps> = ({
                     placeholder="Enter password to delete account"
                   />
                 </div>
-                <div className="flex space-x-3">
+                <div className="flex space-x-3 mb-4">
                   <button
                     type="button"
                     onClick={() => {
                       onClose();
                     }}
-                    className="flex-1 py-1 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
+                    className="text-sm flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                   >
-                    No
+                    Cancel
                   </button>
                   <button
-                    className="flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
+                    className="text-sm flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                     onClick={() => {
                     }}
                   >

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import {
   BackArrow,
   RightArrowIcon,
-} from "../../../../../public/svg-icons/icons";
+} from "../../../../public/svg-icons/icons";
 import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
 import { sound_Notifications } from "@/routes/profile";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
@@ -81,22 +81,22 @@ const Notification = (
       <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
         <div className="w-full max-w-md px-4">
           {/* Header */}
-          <header className="flex items-center mb-10">
+          <header className="flex items-center">
             <button
               aria-label="Go back"
               onClick={() => window.history.back()} // Simple back navigation
-              className="p-2 -ml-2 mr-2" // Added padding for easier click and negative margin to align
+              className="p-2 -ml-2 mr-4" // Added padding for easier click and negative margin to align
             >
               <BackArrow className="text-app-icon"/>
             </button>
-            <h1 className="text-3xl font-bold text-app-text-primary font-plusJakartaSans">Notifications</h1>
+            <h1 className="text-xl font-semibold text-app-text-primary font-plusJakartaSans">Notifications</h1>
           </header>
           {/* Notification Settings List */}
-          <div className="space-y-1">
-            <div className="flex justify-between items-center py-4">
+          <div className="">
+            <div className="flex justify-between items-center mt-4">
               <span
                 id="email-notifications-label"
-                className="text-md text-app-text-primary font-plusJakartaSans"
+                className="text-sm text-app-text-primary font-plusJakartaSans"
               >
                 Turn on Sound notifications
               </span>
@@ -110,10 +110,10 @@ const Notification = (
               />
             </div>
 
-            <div className="flex justify-between items-center py-4">
+            <div className="flex justify-between items-center mt-4">
               <span
                 id="email-notifications-label"
-                className="text-md  text-app-text-primary font-plusJakartaSans"
+                className="text-sm  text-app-text-primary font-plusJakartaSans"
               >
                 E-Mail notifications
               </span>

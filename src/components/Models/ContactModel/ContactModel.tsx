@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { CloseIcon } from "../../../../public/svg-icons/icons";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
+import Image from "next/image";
 // props types
 type ContactModelProps = {
   isOpen: boolean;
@@ -45,7 +46,8 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
           >
             {/* Top section: Icon, Title, Close Button */}
             <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold text-app-text-primary font-plusJakartaSans">
+              <div></div>
+              <h1 className="text-md font-semibold text-app-text-primary font-plusJakartaSans">
                 Contact
               </h1>
               <button
@@ -61,7 +63,7 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
 
             {/* body */}
             <div className="flex flex-col">
-              <p className="text-sm font-plusJakartaSans text-app-text-primary mb-5">
+              <p className="text-sm font-plusJakartaSans text-app-text-profile-tabs mb-3">
                 Choose a reason
               </p>
               <div>
@@ -84,7 +86,7 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
                     <div
                       className={`w-5 h-5 rounded-full border-2 ${
                         item.value !== value
-                          ? "border-app-button-primary"
+                          ? "border-app-button-radio"
                           : "border-app-button-blue"
                       } flex items-center justify-center`}
                     >
@@ -94,25 +96,32 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
                         } transition-all`}
                       />
                     </div>
-                    <p className="text-sm text-app-text-primary font-plusJakartaSans">
+                    <p className="text-sm text-app-text-profile-tabs font-plusJakartaSans">
                       {item.label}
                     </p>
                   </label>
                 ))}
               </div>
-              <p className="text-sm font-plusJakartaSans text-app-text-primary mb-5">
+              <p className="text-sm font-plusJakartaSans text-app-text-profile-tabs mb-2 mt-2">
                 Comment
               </p>
               <div>
                 <TextAreaComponent placeholder="Add your comment" />
               </div>
-              <div className="pt-4">
+              <div className="pt-4 mt-2">
                 <button
-                  className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-md"
+                  className="w-full mb-2 bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
                   onClick={() => () => {}}
                 >
                   Send
                 </button>
+                <Image
+                  src="/bg-imgs/auth/robot-img.png"
+                  alt="robot icon"
+                  width={38}
+                  height={38}
+                  className="ml-2"
+                />
               </div>
             </div>
           </div>

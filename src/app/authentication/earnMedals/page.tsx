@@ -5,6 +5,7 @@ import Head from "next/head";
 import { useRouter } from "next/navigation";
 import Image from "next/image"; // Using next/image for optimized images, though for GIFs, <img> is also fine.
 import { BackArrow } from "../../../../public/svg-icons/icons";
+import MedalGif from "@/components/GifComponents/MedalGif/MedalGif";
 
 // Mock data for the medal icon GIF
 const MOCK_MEDAL_ICON_SRC = "/common-gifs/badge.gif";
@@ -52,9 +53,9 @@ const EarnMedals = () => {
         <title>Earn Medals</title>
       </Head>
       <div className="min-h-screen bg-app-background-primary ">
-        <div className="max-w-md mx-auto p-4 sm:p-6">
+        <div className="max-w-md mx-auto p-4 sm:p-6 mt-4">
           {/* Header */}
-          <header className="flex items-center mb-8">
+          <header className="flex fixed top-0 left-0 right-0 pt-4 pl-6 pb-4 items-center w-full bg-app-background-primary z-10">
             <button
               onClick={() => router.back()} // Simple back navigation
               className="text-gray-700 hover:text-gray-900 mr-3"
@@ -62,24 +63,24 @@ const EarnMedals = () => {
             >
               <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="text-2xl font-bold font-plusJakartaSans text-app-text-primary">
+            <h1 className="text-xl ml-2 font-bold font-plusJakartaSans text-app-text-primary">
               Earn Medals
             </h1>
           </header>
 
           {/* Medal List */}
-          <main className="space-y-8">
+          <main className="space-y-8 mt-10">
             {medalData.map((medal) => (
               <MedalCard key={medal.id} medal={medal} />
             ))}
           </main>
-          <div className="space-y-3">
+          <div className="space-y-3 px-4 mt-18">
             <button
               onClick={() => {
                 // navigate to home page or next step
-                router.push("/user"); // Adjust the path as needed
+                router.push("/user/home"); // Adjust the path as needed
               }}
-              className="w-full mt-5 bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-sm mt-5 bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             >
               Continue
             </button>
@@ -95,20 +96,21 @@ const MedalCard: React.FC<MedalCardProps> = ({ medal }) => {
     <div className="ml-5 items-start space-x-4">
       <div className="flex-shrink-0 mt-1">
         {/* If using next/image for GIF. May need unoptimized={true} for some GIFs */}
-        <Image
+        {/* <Image
           src={medal.iconSrc}
           alt={`${medal.title} icon`}
           width={40} // Adjust size as needed
           height={40} // Adjust size as needed
           className="rounded-full object-contain" // object-contain if your GIF isn't perfectly square
           unoptimized={true} // GIFs are often better unoptimized with next/image
-        />
+        /> */}
+        <MedalGif width={25} height={25} />
       </div>
-      <div className="mt-5">
-        <h2 className="text-xl font-semibold font-plusJakartaSans text-app-text-primary">
+      <div className="mt-2">
+        <h2 className="text-md font-bold font-plusJakartaSans text-app-text-primary">
           {medal.title}
         </h2>
-        <p className="text-xs font-plusJakartaSans text-app-text-secondary mt-1 leading-relaxed">
+        <p className="text-sm font-plusJakartaSans text-app-text-secondary mt-1 leading-relaxed">
           {medal.description}
         </p>
       </div>

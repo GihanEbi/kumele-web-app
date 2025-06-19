@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { use, useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
@@ -30,12 +30,12 @@ const settingsGroup1 = [
   {
     icon: <SoundIcon className="text-app-icon" />,
     text: "Notifications",
-    link: "/user/profile/notifications",
+    link: "/profile-other-pages/notifications",
   },
   {
     icon: <PaymentIcon className="text-app-icon" />,
     text: "Payments & Subscriptions",
-    link: "/user/profile/payment",
+    link: "/profile-other-pages/payment",
   },
   {
     icon: <SecurityIcon className="text-app-icon" />,
@@ -120,6 +120,9 @@ const Profile = () => {
     setLoading(true);
     try {
       const data = await fetch_profile();
+      const tempData = {
+        picture_url: "/avatar-img/profile-pic.png",
+      };
       if (data.success) {
         setUserData(data.data);
       } else {
@@ -144,37 +147,44 @@ const Profile = () => {
         <title>Profile Page</title>
       </Head>
       <div
-        className={`min-h-screen ${
+        className={`min-h-screen mt-2 ${
           showContactModel ||
           showReferralModel ||
           showDeleteAccountModel ||
           showSignOutModel
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
-        } p-4 sm:p-6`}
+        } p-4 sm:p-6 mb-30`}
       >
-        <header className="mb-6">
-          <h1 className="text-3xl font-bold text-app-text-primary font-plusJakartaSans">
+        <header className="mb-4">
+          <h1 className="text-xl font-bold text-app-text-primary font-plusJakartaSans">
             Profile
           </h1>
         </header>
 
         {/* Profile Card */}
-        <div className="bg-app-background-card p-5 rounded-xl mb-8 relative">
+        <div className="bg-app-background-card p-5 rounded-xl mb-4 relative">
           <button
             aria-label="Edit profile"
-            className="absolute top-0 right-0 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            className="absolute top-[-5px] right-[-5px]"
             onClick={() => {
               router.push("/user/profile/edit-profile");
             }}
           >
-            <EditIcon className="text-app-icon" />
+            <EditIcon className="text-app-icon " width={20} height={20} />
           </button>
-          <div className="flex items-start space-x-4 mb-5">
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24">
-              {userData?.picture_url ? (
+          <div className="flex items-start space-x-6 mb-5">
+            <div className="relative w-16 h-16 sm:w-24 sm:h-24">
+              <Image
+                src={"/avatar-img/profile-pic.png"}
+                alt="Alkesh Kumar"
+                width={96}
+                height={96}
+                className="rounded-full object-cover"
+              />
+              {/* {userData?.picture_url ? (
                 <Image
-                  src={userData.picture_url}
+                  src={"/avatar-img/profile-pic.png"}
                   alt={userData.display_name}
                   width={96}
                   height={96}
@@ -186,16 +196,16 @@ const Profile = () => {
                     {userData?.display_name[0] ? userData.display_name[0] : "A"}
                   </span>
                 </div>
-              )}
+              )} */}
             </div>
-            <div className="flex-1 mt-1">
-              <h2 className="text-xl sm:text-2xl font-bold font-plusJakartaSans text-app-text-primary">
+            <div className="mt-1">
+              <h2 className="text-lg font-semibold font-plusJakartaSans text-app-text-primary">
                 {userData?.display_name
                   ? userData.display_name
-                  : "Anonymous User"}
+                  : "Alkesh Kumar"}
               </h2>
               <button
-                className="mt-1 text-xs font-plusJakartaSans bg-app-text-blue text-app-text-primary font-semibold py-1 px-3 rounded-md transition duration-150"
+                className="text-[8px] font-plusJakartaSans bg-app-text-blue text-app-text-white py-1 px-3 rounded-r-sm"
                 onClick={() => {
                   router.push("/user/profile/edit-interest");
                 }}
@@ -203,7 +213,7 @@ const Profile = () => {
                 Edit hobbies
               </button>
             </div>
-            <div className="w-16 h-16 sm:w-20 sm:h-20">
+            <div className="w-12 h-12 sm:w-20 sm:h-20">
               <Image
                 src={userData?.qr_code_url || "/images/QR-code.png"}
                 alt="QR Code"
@@ -214,30 +224,40 @@ const Profile = () => {
             </div>
           </div>
 
-          <p className="text-sm text-app-text-primary font-plusJakartaSans mb-2">
-            {userData?.bio || "No bio available."}
+          <p className="text-[11px] text-app-text-profile-text font-plusJakartaSans mb-2">
+            I am a software engineer by day, and a vanlife enthusiast by heart.{" "}
+            <br />
+            <br />
+            With a passion for both technology and the great outdoors, Monika
+            thrives on the open road, where she merges her love for coding with
+            her deep connection to nature.
           </p>
-          <div className="flex justify-around border-t border-white pt-4 text-center">
-            <div>
-              <p className="text-xs text-app-text-primary">Following</p>
+            <div className="-mx-6 my-4">
+              <div className="border-b border-app-border-profile"></div>
+            </div>
+          <div className="flex justify-around pt-2 text-center">
+            <div className="">
+              <p className="text-[10px] text-app-text-primary font-plusJakartaSans">
+                Following
+              </p>
               <p className="text-lg font-bold text-app-text-blue font-plusJakartaSans">
-                {userData?.following_count || 0}
+                {userData?.following_count || 8}
               </p>
             </div>
             <div>
-              <p className="text-xs text-app-text-primary font-plusJakartaSans">
+              <p className="text-[10px] text-app-text-primary font-plusJakartaSans">
                 Followers
               </p>
               <p className="text-lg font-bold text-app-text-blue font-plusJakartaSans">
-                {userData?.followers_count || 0}
+                {userData?.followers_count || 23}
               </p>
             </div>
             <div>
-              <p className="text-xs text-app-text-primary font-plusJakartaSans">
+              <p className="text-[10px] text-app-text-primary font-plusJakartaSans">
                 Gold status
               </p>
               <p className="text-lg font-bold text-app-text-blue font-plusJakartaSans">
-                {userData?.gold_status || 0}
+                {userData?.gold_status || 23}
               </p>
             </div>
           </div>
@@ -245,7 +265,7 @@ const Profile = () => {
 
         {/* Settings */}
         <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-3 text-app-text-primary font-plusJakartaSans">
+          <h3 className="text-md font-semibold mb-3 text-app-text-primary font-plusJakartaSans">
             Settings
           </h3>{" "}
           {/* Settings Group 1 */}
@@ -253,9 +273,9 @@ const Profile = () => {
             {settingsGroup1.map((item, index) => (
               <button
                 key={item.text}
-                className={`w-full flex items-center justify-between p-4 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors duration-150 ${
+                className={`w-full flex items-center justify-between p-4 ${
                   index !== settingsGroup1.length - 1
-                    ? "border-b border-white"
+                    ? "border-b border-app-border-profile"
                     : ""
                 }`}
                 onClick={() => {
@@ -266,11 +286,15 @@ const Profile = () => {
               >
                 <div className="flex items-center space-x-3">
                   {item.icon}
-                  <span className="text-md font-medium text-app-text-primary font-plusJakartaSans">
+                  <span className="text-sm text-app-text-profile-tabs font-plusJakartaSans">
                     {item.text}
                   </span>
                 </div>
-                <RightArrowIcon className="text-app-icon" />
+                <RightArrowIcon
+                  className="text-app-icon"
+                  width={18}
+                  height={18}
+                />
               </button>
             ))}
           </div>
@@ -279,9 +303,9 @@ const Profile = () => {
             {settingsGroup2.map((item, index) => (
               <button
                 key={item.text}
-                className={`w-full flex items-center justify-between p-4 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors duration-150 ${
+                className={`w-full flex items-center justify-between p-4 ${
                   index !== settingsGroup2.length - 1
-                    ? "border-b border-white"
+                    ? "border-b border-app-border-profile"
                     : ""
                 }`}
                 onClick={() => {
@@ -300,18 +324,22 @@ const Profile = () => {
                   } else if (item.text === "Guidelines") {
                     router.push("/user/profile/guidelines");
                   } else if (item.text === "Terms and Conditions") {
-                    router.push("/user/profile/terms-conditions");
+                    router.push("/profile-other-pages/terms-conditions");
                   }
                 }}
               >
                 <div className="flex items-center space-x-3">
                   {item.icon}
-                  <span className="text-md font-medium text-app-text-primary font-plusJakartaSans">
+                  <span className="text-sm text-app-text-profile-tabs font-plusJakartaSans">
                     {item.text}
                   </span>
                 </div>
                 {item.text !== "Night Mode" ? (
-                  <RightArrowIcon className="text-app-icon" />
+                  <RightArrowIcon
+                    className="text-app-icon"
+                    width={18}
+                    height={18}
+                  />
                 ) : (
                   <SwitchComponent
                     required

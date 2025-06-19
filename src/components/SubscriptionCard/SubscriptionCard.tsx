@@ -34,17 +34,17 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ plan }) => {
             )}
           </div>
 
-          <div className="flex-1 space-y-2">
+          <div className="flex-1">
             <div className="flex justify-between items-start">
               <h3
-                className={`text-lg font-bold ${
+                className={`text-md font-semibold ${
                   isActive ? "text-app-text-black" : "text-app-text-primary"
                 } font-plusJakartaSans`}
               >
                 {title}
               </h3>
               <p
-                className={`text-lg font-bold ${
+                className={`text-md font-semibold ${
                   isActive ? "text-app-text-blue" : "text-app-text-yellow"
                 } font-plusJakartaSans`}
               >
@@ -65,7 +65,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ plan }) => {
               )}
             >
               {description.map((line, index) => (
-                <p key={index}>{line}</p>
+                <p className="text-sm" key={index}>{line}</p>
               ))}
             </div>
 

@@ -36,27 +36,27 @@ const SignoutModel: React.FC<SignoutModelProps> = ({ isOpen, onClose }) => {
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
-            <div className="flex flex-col items-center">
-              <SignOutIcon className="text-app-icon w-18 h-18" />
+            <div className="flex flex-col items-center mb-5">
+              <SignOutIcon className="text-app-icon" width={90} height={90} />
               <div className="mb-4"></div>
-              <p className="text-app-text-primary font-plusJakartaSans text-md font-semibold mb-6 text-center">
+              <p className="px-10 text-app-text-primary font-plusJakartaSans text-md font-bold mb-6 text-center">
                 Are you sure you want to signout?
               </p>
             </div>
 
-            <div className="w-full">
+            <div className="w-full mb-12">
               <div className="flex space-x-3">
                 <button
                   type="button"
                   onClick={() => {
                     onClose();
                   }}
-                  className="flex-1 py-1 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
+                  className="text-sm flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                 >
                   Cancel
                 </button>
                 <button
-                  className="flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
+                  className="text-sm flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                   onClick={() => {
                     router.push("/authentication/signin");
                   }}

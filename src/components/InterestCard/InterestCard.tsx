@@ -28,10 +28,10 @@ const InterestCard: React.FC<InterestCardProps> = ({
       className={`
         p-3 sm:p-4 rounded-xl flex flex-col items-center justify-center aspect-square
         transition-all duration-200 ease-in-out
-        focus:outline-none focus:ring-2 focus:ring-offset-2
+      
         ${
           isSelected
-            ? "bg-app-input-yellow text-app-text-black shadow-md" // Selected style from image
+            ? "bg-app-input-yellow text-app-text-black" // Selected style from image
             : "bg-app-input-primary text-app-text-secondary" // Unselected style from image
         }
       `}
@@ -44,7 +44,11 @@ const InterestCard: React.FC<InterestCardProps> = ({
         height={40}
       /> */}
       {icon}
-      <span className="text-xs sm:text-sm font-plusJakartaSans text-app-text-secondary text-center">{name}</span>
+      <span className={`text-[10px] sm:text-sm font-plusJakartaSans text-app-text-primary text-center ${
+          isSelected
+            ? "font-semibold" // Selected style from image
+            : "" // Unselected style from image
+        }`}>{name}</span>
     </button>
   );
 };
