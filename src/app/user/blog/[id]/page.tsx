@@ -8,6 +8,7 @@ import CommentForm from "@/components/CommentForm/CommentForm";
 import CommentList from "@/components/CommentList/CommentList";
 import { useState } from "react";
 import { useTheme } from "next-themes";
+import { useParams } from "next/navigation";
 
 // Mock data - replace with your actual data fetching
 const blogPosts: (BlogCardProps & {
@@ -169,8 +170,10 @@ const comments: Comment[] = [
 //   },
 // ];
 
-export default function BlogDetailPage({ params }: { params: { id: string } }) {
-  const post = blogPosts.find((b) => b.id === params.id);
+export default function BlogDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
+  const post = blogPosts.find((b) => b.id === id);
   const [isReplyOpen, setIsReplyOpen] = useState(false);
 
   const { resolvedTheme } = useTheme();
