@@ -35,10 +35,10 @@ const SigninPasskeyFaceId: React.FC<passkeyModelProps> = ({
           >
             {/* Top section: Icon, Title, Close Button */}
             <div className="grid grid-cols-3 items-center mb-4">
-              <h1 className="text-lg text-center text-app-text-primary font-plusJakartaSans">
+              <h1 className="text-md text-center text-app-text-primary font-plusJakartaSans">
                 Sign-in
               </h1>
-              <h1 className="text-lg text-center font-bold text-app-text-primary font-plusJakartaSans">
+              <h1 className="text-md text-center font-bold text-app-text-primary font-plusJakartaSans">
                 Passkey
               </h1>
               <button

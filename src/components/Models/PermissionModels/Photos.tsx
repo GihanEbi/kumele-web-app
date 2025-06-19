@@ -58,15 +58,15 @@ const Photos: React.FC<PhotosProps> = ({ isOpen, onClose }) => {
             </button>
           </div>
 
-          <p className="text-sm text-app-text-primary font-plusJakartaSans text-center mb-6 px-2">
+          <p className="text-sm text-app-text-primary font-plusJakartaSans text-center mb-8 px-2">
             Allow "Kumele" to access your photos to send images or videos
           </p>
-          <div className="space-y-3">
+          <div className="space-y-3 mb-4">
             <button
               onClick={() => {
                 onClose("selected");
               }}
-              className="w-full bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             >
               Select Photos...
             </button>
@@ -74,12 +74,12 @@ const Photos: React.FC<PhotosProps> = ({ isOpen, onClose }) => {
               onClick={() => {
                 onClose("all");
               }}
-              className="w-full bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             >
               Allow Access to All Photos
             </button>
             <button
-              className="w-full bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
               onClick={() => {
                 onClose("none");
               }}

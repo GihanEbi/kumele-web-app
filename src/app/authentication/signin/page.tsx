@@ -100,7 +100,7 @@ const Signin = () => {
 
   // -------- handleSubmit for form submission ---------
   const handleSubmit = async () => {
-        router.push("/user");
+        router.push("/user/home");
     // -------- check full form validation
     // -------- prevent multiple submission
     // if (loading) return;
@@ -260,7 +260,7 @@ const Signin = () => {
           signinOption
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
-        } px-6 py-6 relative z-10`}
+        } px-8 py-6 relative z-10`}
       >
         <div className="mb-6">
           <p className="text-xs font-plusJakartaSans text-app-text-primary mb-5">
@@ -269,7 +269,7 @@ const Signin = () => {
           <div className="mb-6 sm:mb-8 relative w-full">
             <div
               ref={tabsContainerRef}
-              className="flex gap-5 space-x-3 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-0 sm:px-0 no-scrollbar"
+              className="flex gap-5 space-x-2 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-0 sm:px-0 no-scrollbar"
               onMouseDown={handleMouseDown}
               onMouseLeave={handleMouseLeave}
               onMouseUp={handleMouseUp}
@@ -292,8 +292,8 @@ const Signin = () => {
                   className={`py-2 px-5 rounded-md text-sm font-medium whitespace-nowrap flex-shrink-0 transition-colors duration-150
                   ${
                     activeTab === tab.id
-                      ? "bg-yellow-400 text-gray-900"
-                      : "bg-gray-800 text-white hover:bg-gray-700"
+                      ? "bg-app-button-yellow text-app-text-primary font-medium"
+                      : "bg-app-input-primary text-app-text-secondary"
                   }`}
                 >
                   {tab.label}
@@ -347,7 +347,7 @@ const Signin = () => {
               value={rememberMe}
             />
           </div>
-          <p className="font-plusJakartaSans text-app-text-blue">
+          <p className="text-xs font-semibold font-plusJakartaSans text-app-text-blue">
             Forgot password?
           </p>
         </div>
@@ -367,7 +367,7 @@ const Signin = () => {
         </div>
         <div className="pt-4">
           <button
-            className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-md"
+            className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
             onClick={() => handleSubmit()}
             disabled={loading} // Disable button if loading
           >
@@ -409,7 +409,7 @@ const Signin = () => {
           />
         </div>{" "}
         {/* Recommendation Text */}
-        <p className="text-xs text-app-text-blue font-plusJakartaSans text-center">
+        <p className="text-[10px] text-app-text-blue font-plusJakartaSans text-center">
           We recommend Passkey if your device supports it for better security
           and a pleasant user experience.
         </p>
@@ -486,7 +486,7 @@ const Signin = () => {
           setSigninOption(false);
         }}
         onContinue={() => {
-          router.push("/user");
+          router.push("/user/home");
           setSigninOption(false);
         }}
       />

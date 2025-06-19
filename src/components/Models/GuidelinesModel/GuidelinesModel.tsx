@@ -24,7 +24,7 @@ const GuidelinesModel: React.FC<AboutUsModelProps> = ({ isOpen, onClose }) => {
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold text-app-text-primary font-plusJakartaSans">
+              <h1 className="text-xl font-bold text-app-text-primary font-plusJakartaSans">
                 Community Guidelines
               </h1>
               <button
@@ -38,31 +38,37 @@ const GuidelinesModel: React.FC<AboutUsModelProps> = ({ isOpen, onClose }) => {
               </button>
             </div>
             <div className="mt-5">
-              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-3">
+              <p className="text-app-text-primary font-plusJakartaSans text-xs mb-3">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id
                 ipsa, corporis amet explicabo reiciendis totam iure fugiat
                 consequuntur repellat saepe! Ut facilis magnam voluptatum
                 molestiae. Dicta quis reprehenderit necessitatibus veniam.
               </p>
-              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-3">
+              <p className="text-app-text-primary font-plusJakartaSans text-xs mb-3">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id
                 ipsa, corporis amet explicabo reiciendis totam iure fugiat
                 consequuntur repellat saepe! Ut facilis magnam voluptatum
                 molestiae. Dicta quis reprehenderit necessitatibus veniam.
               </p>
-              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-3">
+              <p className="text-app-text-primary font-plusJakartaSans text-xs mb-3">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id
                 ipsa, corporis amet explicabo reiciendis totam iure fugiat
                 consequuntur repellat saepe! Ut facilis magnam voluptatum
                 molestiae. Dicta quis reprehenderit necessitatibus veniam.
               </p>
-              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-3">
+              <p className="text-app-text-primary font-plusJakartaSans text-xs mb-3">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id
                 ipsa, corporis amet explicabo reiciendis totam iure fugiat
                 consequuntur repellat saepe! Ut facilis magnam voluptatum
                 molestiae. Dicta quis reprehenderit necessitatibus veniam.
               </p>
-              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-3">
+              <p className="text-app-text-primary font-plusJakartaSans text-xs mb-3">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id
+                ipsa, corporis amet explicabo reiciendis totam iure fugiat
+                consequuntur repellat saepe! Ut facilis magnam voluptatum
+                molestiae. Dicta quis reprehenderit necessitatibus veniam.
+              </p>
+              <p className="text-app-text-primary font-plusJakartaSans text-xs mb-3">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id
                 ipsa, corporis amet explicabo reiciendis totam iure fugiat
                 consequuntur repellat saepe! Ut facilis magnam voluptatum

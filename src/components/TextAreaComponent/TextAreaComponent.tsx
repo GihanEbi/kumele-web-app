@@ -37,7 +37,7 @@ const TextAreaComponent: React.FC<TextAreaComponentProps> = ({
         required={required}
         disabled={disabled}
         defaultValue={defaultValue}
-        className={`w-full placeholder:font-plusJakartaSans placeholder:text-app-text-secondary ${
+        className={`h-22 w-full placeholder:font-plusJakartaSans placeholder:text-app-text-secondary ${
           icon ? "pl-12" : "pl-3"
         } pr-3 py-3 text-app-text-primary rounded-lg text-sm focus:ring-1`}
       />

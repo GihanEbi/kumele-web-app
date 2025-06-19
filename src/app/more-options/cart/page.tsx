@@ -18,6 +18,7 @@ import {
   TwoTicketsIcon,
 } from "../../../../public/svg-icons/icons";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
+import InputComponent from "@/components/InputComponent/InputComponent";
 
 // --- Inlined PlusIcon from your original component ---
 const PlusIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -74,7 +75,7 @@ const PaymentPage = () => {
             <button onClick={() => router.push("/user/home")} className="">
               <BackToPageIcon className="w-6 h-6" />
             </button>
-            <h2 className="font-plusJakartaSans font-bold text-[23px] text-app-blog-card-heading">
+            <h2 className="font-plusJakartaSans font-bold text-xl text-app-blog-card-heading">
               Payment
             </h2>
           </div>
@@ -90,12 +91,17 @@ const PaymentPage = () => {
           </div>
 
           {/* Discount Code */}
-          <div className="mt-6 flex flex-row sm:flex-row gap-3">
-            <input
+          <div className="mt-6 flex flex-row justify-between sm:flex-row gap-3">
+            <InputComponent
+              placeholder="Enter Discount code"
+              onChange={(e) => {
+              }}
+            />
+            {/* <input
               type="text"
               placeholder="Enter Discount code"
               className="flex-grow bg-app-search-bar-background rounded-lg px-4 py-3 text-white placeholder-app-search-bar-text placeholder:font-plusJakartaSans placeholder:font-normal placeholder:text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            /> */}
             <button className="bg-app-background-card-secondary text-app-button-text-color font-plusJakartaSans font-normal text-[15px] px-8 py-2 rounded-lg">
               Apply
             </button>
@@ -171,7 +177,7 @@ const PaymentPage = () => {
           <div className="mt-6">
             <button
               onClick={() => setAddCardModalOpen(true)}
-              className="w-full bg-app-background-card-secondary text-app-button-text-color font-plusJakartaSans font-normal text-[16px] py-3 rounded-lg flex items-center justify-center gap-2"
+              className="w-full bg-app-background-card-secondary text-app-button-text-color font-plusJakartaSans font-normal text-sm py-3 rounded-lg flex items-center justify-center gap-2"
             >
               <PlusIcon className="w-5 h-5" />
               Add new card
@@ -181,7 +187,7 @@ const PaymentPage = () => {
           <div className="mt-6">
             <button
               onClick={handlePaymentSuccess}
-              className="w-full bg-app-background-card-secondary text-app-button-text-color font-plusJakartaSans font-normal text-[16px] py-3 rounded-lg flex items-center justify-center gap-2"
+              className="w-full bg-app-background-card-secondary text-app-button-text-color font-plusJakartaSans font-normal text-sm py-3 rounded-lg flex items-center justify-center gap-2"
             >
               Pay Now
             </button>

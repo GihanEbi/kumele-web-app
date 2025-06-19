@@ -47,7 +47,8 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
           >
             {/* Top section: Icon, Title, Close Button */}
             <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold text-app-text-primary font-plusJakartaSans">
+              <div></div>
+              <h1 className="text-lg text-center font-bold text-app-text-primary font-plusJakartaSans">
                 Authenticator App Setup
               </h1>
               <button
@@ -68,11 +69,11 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                 <p className="text-sm font-plusJakartaSans text-app-text-primary">
                   1. Open an authenticator app on your mobile device
                 </p>
-                <p className="text-sm font-plusJakartaSans text-app-text-primary">
+                <p className="text-xs font-plusJakartaSans text-app-text-primary">
                   If you don't have one, download and install one of the
                   recommended apps:
                 </p>
-                <div className="flex pt-2 justify-between">
+                <div className="flex justify-between">
                   <div className="flex flex-col items-center">
                     <Image
                       src="/images/google-auth.png"
@@ -121,14 +122,14 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                   </div>
                 </div>
                 {/* Step 2 */}
-                <div className="space-y-3 text-center">
+                <div className=" text-center">
                   <p className="text-left text-sm font-plusJakartaSans text-app-text-primary ">
                     2. Scan this barcode with your{" "}
                     <strong className="font-bold text-sm font-plusJakartaSans text-app-text-primary ">
                       authenticator app
                     </strong>
                   </p>
-                  <div className="inline-block bg-white p-2 rounded-lg">
+                  <div className="inline-block bg-white pt-2 rounded-lg">
                     <Image
                       src="/images/QR-code.png"
                       alt="Authenticator QR code"
@@ -139,7 +140,7 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                   <div>
                     <Button
                       variant="link"
-                      className="h-auto p-0 text-sm font-plusJakartaSans text-app-text-primary "
+                      className="text-xs font-plusJakartaSans text-app-text-primary "
                     >
                       Can't scan? Use text code instead
                     </Button>
@@ -167,7 +168,7 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                 </div>
                 <div>
                   <button
-                    className="w-full py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
+                    className="text-sm w-full py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                     onClick={() => {
                         onClose();
                     }}

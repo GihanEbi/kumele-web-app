@@ -22,10 +22,11 @@ const SelectComponent: React.FC<SelectComponentProps> = ({
     <div className="flex items-center w-full bg-app-input-primary rounded-lg py-3 px-3">
       <select
         onChange={(e) => {
+          console.log("SelectComponent rendered with value:");
           handleChange(e);
         }}
         value={value}
-        className="font-plusJakartaSans text-sm text-app-text-button appearance-none"
+        className="font-plusJakartaSans text-sm text-app-text-button appearance-none overflow-y-scroll hide-scrollbar rounded-2xl border-none"
       >
         <option value="" disabled hidden>
           {placeholder}

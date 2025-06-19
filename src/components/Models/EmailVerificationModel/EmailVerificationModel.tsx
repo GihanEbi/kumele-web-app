@@ -175,10 +175,10 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex flex-col items-center">
-              <div className="mb-4">
-                <VerifyEmailIcon className="text-app-icon" />
+              <div className="mb-2">
+                <VerifyEmailIcon className="text-app-icon" width={80} height={80} />
               </div>
-              <h2 className="text-2xl font-plusJakartaSans text-app-text-primary mb-2 text-center">
+              <h2 className="text-md font-bold font-plusJakartaSans text-app-text-primary mb-4 text-center">
                 Verify E-mail
               </h2>
               {/* <p className="text-gray-600 text-sm mb-6 text-center">
@@ -193,19 +193,19 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
                     onChange={(e) => setVerificationCode(e.target.value)}
                   />
                 </div>
-                <div className="flex space-x-3">
+                <div className="flex space-x-3 mb-8">
                   <button
                     type="button"
                     onClick={() => {
                       // onClose();
                       closeHandler();
                     }}
-                    className="flex-1 py-1 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
+                    className="flex-1 py-3 text-sm px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                   >
                     Cancel
                   </button>
                   <button
-                    className="flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
+                    className="flex-1 py-3 text-sm px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                     onClick={() => {
                       handleVerify();
                     }}

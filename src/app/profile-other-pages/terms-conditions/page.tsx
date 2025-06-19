@@ -2,7 +2,7 @@
 
 import React from "react";
 import Head from "next/head";
-import { BackArrow } from "../../../../../public/svg-icons/icons";
+import { BackArrow } from "../../../../public/svg-icons/icons";
 
 const loremIpsumParagraph1 =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu fermentum augue, sit amet convallis augue. Integer eu iaculis sem, sed euismod eros. Nulla facilisi. Proin luctus odio nunc, sed laoreet est bibendum vitae. Sed a eleifend ex. Integer varius rhoncus euismod. Aliquam ac ultricies turpis, vitae eleifend ligula. Aliquam faucibus erat ut tincidunt cursus. Cras et ullamcorper velit. In hac habitasse platea dictumst. Nunc vitae dui quis risus elementum auctor.";
@@ -22,26 +22,26 @@ const TermsAndConditions = () => {
             onClick={() =>
               typeof window !== "undefined" && window.history.back()
             }
-            className="p-2 -ml-2 text-gray-700 hover:text-gray-900"
+            className="p-2 text-gray-700 hover:text-gray-900"
             aria-label="Go back"
           >
             <BackArrow className="text-app-icon" />
           </button>
 
-          <h1 className="text-2xl font-bold text-app-text-primary font-p flex-grow text-center font-plusJakartaSans">
+          <h1 className="text-xl ml-4 font-bold text-app-text-primary flex-grow font-plusJakartaSans">
             Terms & Conditions
           </h1>
 
           {/* Invisible spacer to help center title when back button is present */}
-          <div className="w-6 h-6 p-2" aria-hidden="true"></div>
+          {/* <div className="w-6 h-6 p-2" aria-hidden="true"></div> */}
         </header>
         {/* Main Content */}
-        <main className="flex-grow p-5 md:p-8">
-          <h2 className="text-lg text-app-text-primary mb-5 font-plusJakartaSans">
+        <main className="flex-grow p-4 ml-4">
+          <h2 className="text-sm text-app-text-primary mb-2 font-plusJakartaSans font-medium">
             Kumele Terms of use
           </h2>
 
-          <div className="space-y-6 text-sm text-app-text-primary font-plusJakartaSans leading-relaxed">
+          <div className="space-y-6 text-xs text-app-text-primary font-plusJakartaSans leading-relaxed">
             <p>{loremIpsumParagraph1}</p>
             <p>{loremIpsumParagraph2}</p>
             <p>{loremIpsumParagraph3}</p>

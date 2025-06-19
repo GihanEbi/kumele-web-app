@@ -62,12 +62,12 @@ const Location: React.FC<PhotosProps> = ({ isOpen, onClose }) => {
           <p className="text-sm text-app-text-primary font-plusJakartaSans text-center mb-6 px-2">
             Allow "Kumele" to access your location
           </p>
-          <div className="space-y-3">
+          <div className="space-y-3 mb-4">
             <button
               onClick={() => {
                 onClose("while_using");
               }}
-              className="w-full bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             >
               Allow While Using App
             </button>
@@ -75,12 +75,12 @@ const Location: React.FC<PhotosProps> = ({ isOpen, onClose }) => {
               onClick={() => {
                 onClose("once");
               }}
-              className="w-full bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             >
               Allow Once
             </button>
             <button
-              className="w-full bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
               onClick={() => {
                 onClose("none");
               }}

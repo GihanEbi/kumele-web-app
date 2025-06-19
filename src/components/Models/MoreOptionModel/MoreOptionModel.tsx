@@ -86,14 +86,7 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                   onClose();
                 }}
               >
-                <div className="">
-                  {/* <Image
-                    src="/images/create-event-img.png"
-                    alt="Copy"
-                    width={36}
-                    height={36}
-                    className="cursor-pointer"
-                  /> */}
+                <div className="mt-4">
                   <CreateHobbyIcon />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">

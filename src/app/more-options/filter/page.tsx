@@ -36,7 +36,7 @@ const page = () => {
             >
               <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="text-2xl font-bold text-app-text-primary font-plusJakartaSans">
+            <h1 className="text-xl font-bold text-app-text-primary font-plusJakartaSans">
               Filter
             </h1>
           </header>
@@ -44,10 +44,10 @@ const page = () => {
           {/* body section */}
           <div className="w-full px-4 ">
             <div className="flex justify-between item-center">
-              <h2 className="text-md text-app-text-primary font-plusJakartaSans">
+              <h2 className="text-sm text-app-text-primary font-plusJakartaSans">
                 Current Location
               </h2>
-              <h2 className="text-sm text-app-text-yellow font-plusJakartaSans">
+              <h2 className="text-xs text-app-text-yellow font-plusJakartaSans">
                 CHANGE
               </h2>
             </div>
@@ -63,7 +63,7 @@ const page = () => {
             <div className="flex gap-4 mt-4 justify-between">
               <div className="flex gap-2">
                 <LocationIcon className="text-app-icon" />
-                <p className="text-md text-app-text-primary font-plusJakartaSans">
+                <p className="text-sm text-app-text-secondary font-plusJakartaSans">
                   United Kingdom, <br /> 39495, <br />
                   Kentucky
                 </p>
@@ -87,7 +87,7 @@ const page = () => {
               </div>
             </div>
             <div className="mt-8">
-              <label className="block text-body mb-15">
+              <label className="block text-xs mb-15">
                 Distance range (in kilometers)
               </label>
               {/* Age Range Slider Section using Radix UI */}
@@ -101,7 +101,7 @@ const page = () => {
               />
             </div>
             <div className="mt-8">
-              <label className="block text-body mb-15">Age Range</label>
+              <label className="block text-xs mb-15">Age Range</label>
               {/* Age Range Slider Section using Radix UI */}
               <RadixAgeRangeSlider
                 //label="Age range"
@@ -114,14 +114,14 @@ const page = () => {
             </div>
             {/* footer */}
             <div className="flex justify-between items-center mt-8">
-              <p className="text-sm text-app-text-primary font-plusJakartaSans">
+              <p className="text-xs text-app-text-primary font-plusJakartaSans">
                 Paid Events
               </p>
               <SwitchComponent onclick={() => {}} />
             </div>
-            <div className="pt-4">
+            <div className="pt-4 mt-8 mb-8">
               <button
-                className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-md"
+                className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
                 onClick={() => {}}
               >
                 Apply
