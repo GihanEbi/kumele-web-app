@@ -143,7 +143,7 @@ const LandingPge = () => {
   React.useEffect(() => {
     const interval = setInterval(() => {
       setCarouselIndex((prevIndex) => (prevIndex + 1) % totalSlides);
-    }, 5000);
+    }, 10000);
     return () => clearInterval(interval); // cleanup on unmount
   }, []);
 
@@ -190,11 +190,11 @@ const LandingPge = () => {
       <div className="absolute inset-0 bg-black/50 z-0 "></div>
 
       {/* Main Content - make it scrollable if content exceeds screen height */}
-      <main className="relative z-10 flex-grow flex flex-col items-center pt-6 overflow-y-auto">
+      <main className="relative z-10 flex-grow flex flex-col items-center pt-2 overflow-y-auto">
         {/* Header Section */}
-        <header className="w-full px-4 pt-4">
+        <header className="w-full px-4 pt-2">
           {/* Top Row: Logo & Header Text */}
-          <div className="relative flex items-center justify-between mb-4">
+          <div className="relative flex justify-between mb-4">
             <div className="flex-1/4">
               <Image
                 className="w 10 h-auto"
@@ -205,7 +205,7 @@ const LandingPge = () => {
               />
             </div>
             {carouselIndex !== 0 && (
-              <h1 className="flex-3/4 text-white font-bold text-3xl font-fredoka">
+              <h1 className="flex-3/4 text-white font-bold text-2xl font-fredoka">
                 {backgroundImageData[carouselIndex].name}
               </h1>
             )}
@@ -259,7 +259,7 @@ const LandingPge = () => {
         {/* Quote Section */}
 
         {carouselIndex !== 0 && (
-          <section className="max-w-md mt-4 flex flex-col items-center text-center">
+          <section className="max-w-md mt-2 flex flex-col items-center text-center">
             <p className="font-bold font-fredoka text-lg">
               “Let your <MultiColorText text="Hobbies" colors={hobbyColors} />{" "}
               define your
@@ -283,16 +283,16 @@ const LandingPge = () => {
         {/* Auth Buttons Section */}
 
         {carouselIndex !== 0 && (
-          <section className="w-3/4 max-w-sm">
+          <section className="w-4/6 max-w-sm">
             <div className="flex rounded-full overflow-hidden">
               <button
-                className="flex-1 bg-k-secondary-color text-black py-3 text-center font-fredoka"
+                className="flex-1 bg-k-secondary-color text-black py-2 text-center font-fredoka text-xs"
                 onClick={() => router.push("/authentication/signin")}
               >
                 Sign in
               </button>
               <button
-                className="flex-1 bg-k-blue text-black py-3 text-center font-fredoka"
+                className="flex-1 bg-k-blue text-black py-2 text-center font-fredoka text-xs"
                 onClick={() => router.push("/authentication/signup")}
               >
                 Signup
@@ -303,11 +303,11 @@ const LandingPge = () => {
 
         <div className={`${carouselIndex === 0 ? "fixed bottom-0" : ""}`}>
           {/* Carousel Dots */}
-          <div className="flex justify-center space-x-14 mt-14 mb-5 ">
+          <div className="flex justify-center space-x-10 mt-10 mb-5 ">
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className={`w-2.5 h-2.5 rounded-full ${
+                className={`w-2 h-2 rounded-full ${
                   i === carouselIndex
                     ? "bg-k-secondary-color scale-110"
                     : "bg-white"
@@ -319,7 +319,7 @@ const LandingPge = () => {
           </div>
           {/* Footer Navigation Section (sticky or at bottom) */}
           <div className="w-full mt-3 p-2">
-            <div className="grid grid-cols-7 sm:grid-cols-7 text-center text-xs font-fredoka ">
+            <div className="grid grid-cols-7 sm:grid-cols-7 text-center text-[10px] font-fredoka ">
               {footerNavItems.map((item) => (
                 <a
                   key={item.label}
@@ -336,7 +336,7 @@ const LandingPge = () => {
                   }}
                 >
                   <div className="">{item.icon}</div>
-                  <span className="text-xs">{item.label}</span>
+                  <span className="text-[10px">{item.label}</span>
                 </a>
               ))}
             </div>

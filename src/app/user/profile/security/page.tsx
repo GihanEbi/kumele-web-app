@@ -48,7 +48,7 @@ const Security = () => {
               <div className="border-b-2 border-app-border-primary pb-4">
                 <div
                   onClick={() => {
-                    router.push("/user/profile/security/changePassword");
+                    router.push("/profile-other-pages/changePassword");
                   }}
                   className="flex justify-between items-center"
                 >

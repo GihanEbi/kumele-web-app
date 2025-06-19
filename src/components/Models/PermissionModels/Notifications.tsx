@@ -38,10 +38,10 @@ const Notifications: React.FC<NotificationsProps> = ({ isOpen, onClose }) => {
           <div className="flex items-start justify-between mb-4">
             <div className="pt-1">
               {" "}
-              <NotificationIcon className="text-app-icon"/>
+              <NotificationIcon className="text-app-icon" width={24} height={24}/>
               {/* To align bell better with multi-line title */}
             </div>
-            <h2 className="font-plusJakartaSans text-app-text-primary font-bold text-center flex-grow px-3 leading-tight">
+            <h2 className="text-md font-plusJakartaSans text-app-text-primary font-bold text-center flex-grow px-3 leading-tight">
               "Kumele" Would Like to
               <br />
               Send You Push Notifications
@@ -57,14 +57,14 @@ const Notifications: React.FC<NotificationsProps> = ({ isOpen, onClose }) => {
             </button>
           </div>
 
-          <p className="text-sm text-app-text-primary font-plusJakartaSans text-center mb-6 px-2">
+          <p className="text-sm text-app-text-primary font-plusJakartaSans text-center mb-18 px-2">
             Notifications may include alerts, sounds and icon badges. These can
             be configured in Settings.
           </p>
-          <div className="space-y-3">
+          <div className="space-y-3 mb-4">
             <button
               //   onClick={handleDontAllow}
-              className="w-full bg-app-button-primary text-app-text-tertiary font-plusJakartaSans py-3 px-4 rounded-lg"
+              className="w-full text-sm bg-app-button-primary text-app-text-tertiary font-plusJakartaSans py-3 px-4 rounded-lg"
               onClick={() => {
                 onClose(false);
               }}
@@ -75,7 +75,7 @@ const Notifications: React.FC<NotificationsProps> = ({ isOpen, onClose }) => {
               onClick={() => {
                 onClose(true), console.log("Notification permission: true");
               }}
-              className="w-full bg-app-button-primary text-app-text-tertiary font-plusJakartaSans py-3 px-4 rounded-lg"
+              className="w-full text-sm bg-app-button-primary text-app-text-tertiary font-plusJakartaSans py-3 px-4 rounded-lg"
             >
               Allow
             </button>

@@ -82,7 +82,7 @@ const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
           onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
         >
           {/* Top section: Icon, Title, Close Button */}
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between mb-6">
             <div className="pt-1">
               {" "}
               <UserIcon className="text-app-icon"/>
@@ -116,9 +116,9 @@ const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
                 onChange={(e) => setUsernameInput(e.target.value)}
               />
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3 mb-4">
               <button
-              className="w-full bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
                 onClick={() => {
                   setUserNameForm((prev) => ({ ...prev, action: "skip" }));
                   handleSubmitUserName("skip");
@@ -131,7 +131,7 @@ const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
                   setUserNameForm((prev) => ({ ...prev, action: "save" }));
                   handleSubmitUserName("save");
                 }}
-              className="w-full bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
               >
                 Save
               </button>

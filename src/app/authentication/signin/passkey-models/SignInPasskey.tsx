@@ -34,11 +34,11 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({ isOpen, onClose, onContinu
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             {/* Top section: Icon, Title, Close Button */}
-            <div className="grid grid-cols-3 items-center mb-4">
-              <h1 className="text-lg text-center text-app-text-primary font-plusJakartaSans">
+            <div className="grid grid-cols-3 items-center mb-6">
+              <h1 className="text-md text-center text-app-text-primary font-plusJakartaSans">
                 Sign-in
               </h1>
-              <h1 className="text-lg text-center font-bold text-app-text-primary font-plusJakartaSans">
+              <h1 className="text-md text-center font-bold text-app-text-primary font-plusJakartaSans">
                 Passkey
               </h1>
               <button
@@ -56,7 +56,7 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({ isOpen, onClose, onContinu
               Do you want to sign-in to "Kumele.com" with your saved passkey?
             </p>
 
-            <div className="flex gap-12 item-center justify-center mt-8">
+            <div className="flex gap-24 item-center justify-center mt-8">
               <div className="flex flex-col items-center ">
                 <FaceIdIcon className="text-app-icon" />
                 <p className="text-sm text-center text-app-text-primary font-plusJakartaSans">
@@ -70,9 +70,9 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({ isOpen, onClose, onContinu
                 </p>
               </div>
             </div>
-            <div className="mt-6">
+            <div className="mt-6 px-2">
               <button
-                className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-md"
+                className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
                 onClick={() => {onContinue()}}
               >
                 Continue

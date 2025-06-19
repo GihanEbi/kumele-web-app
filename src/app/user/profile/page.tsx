@@ -154,7 +154,7 @@ const Profile = () => {
           showSignOutModel
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
-        } p-4 sm:p-6`}
+        } p-4 sm:p-6 mb-30`}
       >
         <header className="mb-4">
           <h1 className="text-xl font-bold text-app-text-primary font-plusJakartaSans">
@@ -205,7 +205,7 @@ const Profile = () => {
                   : "Alkesh Kumar"}
               </h2>
               <button
-                className="text-[8px] font-plusJakartaSans bg-app-text-blue text-app-text-primary py-1 px-3 rounded-r-sm"
+                className="text-[8px] font-plusJakartaSans bg-app-text-blue text-app-text-white py-1 px-3 rounded-r-sm"
                 onClick={() => {
                   router.push("/user/profile/edit-interest");
                 }}
@@ -232,9 +232,14 @@ const Profile = () => {
             thrives on the open road, where she merges her love for coding with
             her deep connection to nature.
           </p>
-          <div className="flex justify-around border-t border-app-border-profile pt-2 text-center">
+            <div className="-mx-6 my-4">
+              <div className="border-b border-app-border-profile"></div>
+            </div>
+          <div className="flex justify-around pt-2 text-center">
             <div className="">
-              <p className="text-[10px] text-app-text-primary font-plusJakartaSans">Following</p>
+              <p className="text-[10px] text-app-text-primary font-plusJakartaSans">
+                Following
+              </p>
               <p className="text-lg font-bold text-app-text-blue font-plusJakartaSans">
                 {userData?.following_count || 8}
               </p>
@@ -319,7 +324,7 @@ const Profile = () => {
                   } else if (item.text === "Guidelines") {
                     router.push("/user/profile/guidelines");
                   } else if (item.text === "Terms and Conditions") {
-                    router.push("/user/profile/terms-conditions");
+                    router.push("/profile-other-pages/terms-conditions");
                   }
                 }}
               >
@@ -330,11 +335,11 @@ const Profile = () => {
                   </span>
                 </div>
                 {item.text !== "Night Mode" ? (
-                <RightArrowIcon
-                  className="text-app-icon"
-                  width={18}
-                  height={18}
-                />
+                  <RightArrowIcon
+                    className="text-app-icon"
+                    width={18}
+                    height={18}
+                  />
                 ) : (
                   <SwitchComponent
                     required

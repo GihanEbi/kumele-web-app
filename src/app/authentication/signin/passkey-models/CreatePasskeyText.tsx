@@ -36,7 +36,7 @@ const CreatePasskeyText: React.FC<passkeyModelProps> = ({
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             {/* Top section: Icon, Title, Close Button */}
-            <div className="flex justify-between mb-4">
+            <div className="flex justify-between mb-6">
                 <div></div>
               <h1 className="text-lg text-center font-bold text-app-text-primary font-plusJakartaSans">
                 Create a passkey for your <br />
@@ -55,14 +55,14 @@ const CreatePasskeyText: React.FC<passkeyModelProps> = ({
 
             <p className="text-sm px-12 text-center text-app-text-primary font-plusJakartaSans">
               Passkeys are easy to set up and let you securely sign in to your
-              Kumele Account using the security capabilities of your devices
+              <span className="font-semibold"> Kumele Account</span> using the security capabilities of your devices
               like Touch ID and Face ID. Passkeys are way more secure and are
               easier to use than all current 2-factor authentication methods.
             </p>
 
-            <div className="mt-6">
+            <div className="mt-8 px-2">
               <button
-                className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-md"
+                className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
                 onClick={() => {
                   onContinue();
                 }}

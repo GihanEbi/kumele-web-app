@@ -30,7 +30,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
 }) => {
   return (
     <div>
-      <div className="flex items-start space-x-4 pt-4 pb-4 rounded-lg shadow-sm">
+      <div className="flex items-start space-x-4 pt-4 pb-4 rounded-lg">
         <img
           src={userImage}
           alt={`${userName}'s profile`}

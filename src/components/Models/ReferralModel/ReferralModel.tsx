@@ -42,7 +42,7 @@ const ReferralModel: React.FC<ReferralModelProps> = ({ isOpen, onClose }) => {
                   onClose();
                 }}
                 aria-label="Close notification prompt"
-                className="p-1 -m-1 text-gray-500 hover:text-gray-700 transition-colors justify-end"
+                className=" text-gray-500 hover:text-gray-700 transition-colors justify-end"
               >
                 <CloseIcon className="text-app-icon" />
               </button>
@@ -69,9 +69,10 @@ const ReferralModel: React.FC<ReferralModelProps> = ({ isOpen, onClose }) => {
                   />
                 </div>
               </div>
-
-              <div className="border-t-1 border-app-text-secondary mt-4"></div>
-              <div className="grid grid-cols-4 gap-y-4 p-6 pt-2 mt-4">
+              <div className="-mx-6 my-4">
+                <div className="h-px bg-app-border-referral w-full"></div>
+              </div>
+              <div className="grid grid-cols-4 gap-y-4 pt-2 mt-4 mb-8">
                 {/* Share Item: Copy to clipboard */}
                 <button className="flex flex-col items-center gap-2 group">
                   <div className="">
@@ -120,17 +121,15 @@ const ReferralModel: React.FC<ReferralModelProps> = ({ isOpen, onClose }) => {
                 <button className="flex flex-col items-center gap-2 group">
                   <div className="">
                     <Image
-                      src="/images/whatsapp-img.png"
+                      src="/images/logos_whatsapp.png"
                       alt="Copy"
-                      width={32}
-                      height={32}
+                      width={34}
+                      height={34}
                       className="cursor-pointer"
                     />
                   </div>
                   <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
-                    Copy to
-                    <br />
-                    clipboard
+                    WhatsApp
                   </span>
                 </button>
               </div>

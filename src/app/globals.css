@@ -63,6 +63,7 @@
   --color-app-background-chat-card: var(--app-background-chat-card);
   --color-app-border: var(--app-border);
   --color-app-border-profile: var(--app-border-profile);
+  --color-app-border-referral: var(--app-border-referral);
   --color-app-input-primary: var(--app-input-primary);
   --color-app-input-secondary: var(--app-input-secondary);
   --color-app-input-yellow: var(--app-input-yellow);
@@ -72,6 +73,7 @@
   --color-app-text-black: var(--app-text-black);
   --color-app-text-blue: var(--app-text-blue);
   --color-app-text-yellow: var(--app-text-yellow);
+  --color-app-text-white: var(--app-text-white);
   --color-app-text-host: var(--app-text-host);
   --color-app-text-profile-text: var(--app-text-profile-text);
   --color-app-text-profile-tabs: var(--app-text-profile-tabs);
@@ -81,6 +83,7 @@
   --color-app-button-yellow: var(--app-button-yellow);
   --color-app-button-blue: var(--app-button-blue);
   --color-app-button-white: var(--app-button-white);
+  --color-app-button-radio: var(--app-button-radio);
   --color-app-icon: var(--app-icon);
   --color-app-button-text-color: var(--app-button-text-color);
   --color-app-range-slider-primary: var(--app-range-slider-primary);
@@ -189,6 +192,7 @@
   /* BORDERS */
   --app-border: oklch(0.8853 0 89.88);
   --app-border-profile: oklch(1 0 89.88);
+  --app-border-referral: oklch(0.9448 0.0027 15.94);
 
   /* ICON */
   --app-icon: oklch(0 0 0);
@@ -225,6 +229,8 @@
     0.5275 0.28234714827626795 260.80097608857864
   ); /* #645EFF */
   --app-button-white: oklch(1 0 89.88);
+  --app-button-radio: oklch(0.7952 0 0); /* #BCBCBC */
+
 
   /*BUTTON TEXT COLOR*/
   --app-button-text-color: oklch(1 0 0); /* #FFFFFF color (white color) */
@@ -332,6 +338,7 @@
   /* BORDERS */
   --app-border: oklch(0.5278 0 89.88);
   --app-border-profile: oklch(0.1591 0 89.88);
+  --app-border-referral: oklch(0.5278 0 89.88);
 
   /* ICON */
   --app-icon: oklch(1 0 89.88);
@@ -364,6 +371,7 @@
   --app-button-gray: oklch(0.2393 0 89.88);
   --app-button-yellow: oklch(0.8564 0.1871 83.38);
   --app-button-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
+  --app-button-radio: oklch(0.7952 0 0); /* #BCBCBC */
 
   /*BUTTON TEXT COLOR*/
   --app-button-text-color: oklch(0 0 0); /* #000000 color (black color) */
@@ -411,6 +419,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide scrollbar but allow scrolling */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
 /* HEADING */
 .text-heading {
   font-family: var(

@@ -86,7 +86,7 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
                     <div
                       className={`w-5 h-5 rounded-full border-2 ${
                         item.value !== value
-                          ? "border-app-button-primary"
+                          ? "border-app-button-radio"
                           : "border-app-button-blue"
                       } flex items-center justify-center`}
                     >

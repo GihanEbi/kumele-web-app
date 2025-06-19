@@ -8,7 +8,7 @@ import {
   BackArrow,
   PasswordIcon,
   RightArrowIcon,
-} from "../../../../../../public/svg-icons/icons";
+} from "../../../../public/svg-icons/icons";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import InputComponent from "@/components/InputComponent/InputComponent";
 

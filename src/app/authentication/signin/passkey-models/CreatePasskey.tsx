@@ -37,9 +37,9 @@ const CreatePasskey: React.FC<passkeyModelProps> = ({
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             {/* Top section: Icon, Title, Close Button */}
-            <div className="flex justify-between mb-4">
+            <div className="flex justify-between mb-8">
               <div></div>
-              <h1 className="text-lg text-center font-bold text-app-text-primary font-plusJakartaSans">
+              <h1 className="text-md text-center font-bold text-app-text-primary font-plusJakartaSans">
                 Passkey
               </h1>
               <button
@@ -63,9 +63,9 @@ const CreatePasskey: React.FC<passkeyModelProps> = ({
             <div className="mt-5">
               <InputComponent placeholder="Enter Password" />
             </div>
-            <div className="mt-6">
+            <div className="mt-6 px-2">
               <button
-                className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-md"
+                className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
                 onClick={() => {
                   onContinue();
                 }}
