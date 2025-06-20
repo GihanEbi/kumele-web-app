@@ -224,15 +224,15 @@ const Signin = () => {
         to match your logo.png and how it should appear on background.png.
         The initial 'top-4 left-6' attempts to replicate the padding from the previous CSS logo.
     */}
-        <div className="absolute top-4 left-6 z-10">
+        <div className="absolute top-4 left-3 z-10">
           {" "}
           {/* z-10 ensures logo is above the background image */}
           <Image
             className="p-2"
             alt="logo"
             src="/images/logo.png"
-            width={63}
-            height={50}
+            width={100}
+            height={100}
           />
         </div>
         {/* Sign up Text & Google Icon */}

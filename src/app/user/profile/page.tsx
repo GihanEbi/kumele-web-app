@@ -28,17 +28,17 @@ import DeleteAccountModel from "@/components/Models/DeleteAccountModel/DeleteAcc
 import SignoutModel from "@/components/Models/SignoutModel/SignoutModel";
 const settingsGroup1 = [
   {
-    icon: <SoundIcon className="text-app-icon" />,
+    icon: <SoundIcon className="text-app-icon" width={24} height={24} />,
     text: "Notifications",
     link: "/profile-other-pages/notifications",
   },
   {
-    icon: <PaymentIcon className="text-app-icon" />,
+    icon: <PaymentIcon className="text-app-icon" width={24} height={24} />,
     text: "Payments & Subscriptions",
     link: "/profile-other-pages/payment",
   },
   {
-    icon: <SecurityIcon className="text-app-icon" />,
+    icon: <SecurityIcon className="text-app-icon" width={24} height={24} />,
     text: "Security",
     link: "/user/profile/security",
   },
@@ -46,33 +46,33 @@ const settingsGroup1 = [
 
 const settingsGroup2 = [
   {
-    icon: <ContactIcon className="text-app-icon" />,
+    icon: <ContactIcon className="text-app-icon" width={24} height={24} />,
     type: "model",
     text: "Contact",
   },
   {
-    icon: <GuidelinesIcon className="text-app-icon" />,
+    icon: <GuidelinesIcon className="text-app-icon" width={24} height={24} />,
     text: "Guidelines",
     link: "/user/profile/guidelines",
   },
-  { icon: <ReferIcon className="text-app-icon" />, text: "Refer a Friend" },
+  { icon: <ReferIcon className="text-app-icon" width={24} height={24} />, text: "Refer a Friend" },
   {
-    icon: <TermsAndConditionsIcon className="text-app-icon" />,
+    icon: <TermsAndConditionsIcon className="text-app-icon" width={24} height={24} />,
     text: "Terms and Conditions",
     link: "/user/profile/terms-conditions",
   },
   {
-    icon: <NightModeIcon className="text-app-icon" />,
+    icon: <NightModeIcon className="text-app-icon" width={24} height={24} />,
     text: "Night Mode",
     type: "model",
   },
   {
-    icon: <DeleteAccountIcon className="text-app-icon" />,
+    icon: <DeleteAccountIcon className="text-app-icon" width={24} height={24} />,
     text: "Delete Account",
     type: "model",
   },
   {
-    icon: <SignOutIcon className="text-app-icon" />,
+    icon: <SignOutIcon className="text-app-icon" width={24} height={24} />,
     text: "Sign Out",
     type: "model",
   },
@@ -147,17 +147,17 @@ const Profile = () => {
         <title>Profile Page</title>
       </Head>
       <div
-        className={`min-h-screen mt-2 ${
+        className={`min-h-screen ${
           showContactModel ||
           showReferralModel ||
           showDeleteAccountModel ||
           showSignOutModel
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
-        } p-4 sm:p-6 mb-30`}
+        } p-[16px] sm:p-6 mb-30`}
       >
-        <header className="mb-4">
-          <h1 className="text-xl font-bold text-app-text-primary font-plusJakartaSans">
+        <header className="mb-4 mt-[64px]">
+          <h1 className="text-[23px] font-bold text-app-text-primary font-plusJakartaSans-700">
             Profile
           </h1>
         </header>
@@ -171,41 +171,26 @@ const Profile = () => {
               router.push("/user/profile/edit-profile");
             }}
           >
-            <EditIcon className="text-app-icon " width={20} height={20} />
+            <EditIcon className="text-app-icon " width={24} height={24} />
           </button>
-          <div className="flex items-start space-x-6 mb-5">
-            <div className="relative w-16 h-16 sm:w-24 sm:h-24">
+          <div className="flex items-start space-x-10 mb-[6px]">
+            <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
               <Image
                 src={"/avatar-img/profile-pic.png"}
                 alt="Alkesh Kumar"
-                width={96}
-                height={96}
+                width={76}
+                height={76}
                 className="rounded-full object-cover"
               />
-              {/* {userData?.picture_url ? (
-                <Image
-                  src={"/avatar-img/profile-pic.png"}
-                  alt={userData.display_name}
-                  width={96}
-                  height={96}
-                  className="rounded-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-app-input-primary font-plusJakartaSans rounded-full flex items-center justify-center">
-                  <span className="text-app-text-primary font-plusJakartaSans text-3xl">
-                    {userData?.display_name[0] ? userData.display_name[0] : "A"}
-                  </span>
-                </div>
-              )} */}
             </div>
             <div className="mt-1">
-              <h2 className="text-lg font-semibold font-plusJakartaSans text-app-text-primary">
+              <h2 className="text-[19px] font-semibold font-plusJakartaSans-700 text-app-text-primary">
                 {userData?.display_name
                   ? userData.display_name
                   : "Alkesh Kumar"}
               </h2>
               <button
-                className="text-[8px] font-plusJakartaSans bg-app-text-blue text-app-text-white py-1 px-3 rounded-r-sm"
+                className="text-[9.95px] font-plusJakartaSans-700 bg-app-text-blue text-app-text-white py-1 px-3 rounded-r-sm mt-[6px]"
                 onClick={() => {
                   router.push("/user/profile/edit-interest");
                 }}
@@ -213,18 +198,18 @@ const Profile = () => {
                 Edit hobbies
               </button>
             </div>
-            <div className="w-12 h-12 sm:w-20 sm:h-20">
+            <div className="w-[50px] h-[50px] sm:w-20 sm:h-20">
               <Image
                 src={userData?.qr_code_url || "/images/QR-code.png"}
                 alt="QR Code"
-                width={80}
-                height={80}
+                width={50}
+                height={50}
                 className="object-contain"
               />
             </div>
           </div>
 
-          <p className="text-[11px] text-app-text-profile-text font-plusJakartaSans mb-2">
+          <p className="text-[14px] text-app-text-profile-text font-plusJakartaSans-400 mb-2">
             I am a software engineer by day, and a vanlife enthusiast by heart.{" "}
             <br />
             <br />
@@ -237,26 +222,26 @@ const Profile = () => {
             </div>
           <div className="flex justify-around pt-2 text-center">
             <div className="">
-              <p className="text-[10px] text-app-text-primary font-plusJakartaSans">
+              <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
                 Following
               </p>
-              <p className="text-lg font-bold text-app-text-blue font-plusJakartaSans">
+              <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
                 {userData?.following_count || 8}
               </p>
             </div>
             <div>
-              <p className="text-[10px] text-app-text-primary font-plusJakartaSans">
+              <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
                 Followers
               </p>
-              <p className="text-lg font-bold text-app-text-blue font-plusJakartaSans">
+              <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
                 {userData?.followers_count || 23}
               </p>
             </div>
             <div>
-              <p className="text-[10px] text-app-text-primary font-plusJakartaSans">
+              <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
                 Gold status
               </p>
-              <p className="text-lg font-bold text-app-text-blue font-plusJakartaSans">
+              <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
                 {userData?.gold_status || 23}
               </p>
             </div>
@@ -264,8 +249,8 @@ const Profile = () => {
         </div>
 
         {/* Settings */}
-        <div className="mb-6">
-          <h3 className="text-md font-semibold mb-3 text-app-text-primary font-plusJakartaSans">
+        <div className="mb-[22px]">
+          <h3 className="text-[19px] font-semibold mb-[22px] text-app-text-primary font-plusJakartaSans-700">
             Settings
           </h3>{" "}
           {/* Settings Group 1 */}
@@ -286,14 +271,14 @@ const Profile = () => {
               >
                 <div className="flex items-center space-x-3">
                   {item.icon}
-                  <span className="text-sm text-app-text-profile-tabs font-plusJakartaSans">
+                  <span className="text-[16px] text-app-text-profile-tabs font-plusJakartaSans-400">
                     {item.text}
                   </span>
                 </div>
                 <RightArrowIcon
                   className="text-app-icon"
-                  width={18}
-                  height={18}
+                  width={20}
+                  height={20}
                 />
               </button>
             ))}
@@ -330,15 +315,15 @@ const Profile = () => {
               >
                 <div className="flex items-center space-x-3">
                   {item.icon}
-                  <span className="text-sm text-app-text-profile-tabs font-plusJakartaSans">
+                  <span className="text-[16px] text-app-text-profile-tabs font-plusJakartaSans-400">
                     {item.text}
                   </span>
                 </div>
                 {item.text !== "Night Mode" ? (
                   <RightArrowIcon
                     className="text-app-icon"
-                    width={18}
-                    height={18}
+                    width={20}
+                    height={20}
                   />
                 ) : (
                   <SwitchComponent
