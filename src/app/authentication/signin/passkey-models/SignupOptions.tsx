@@ -65,15 +65,15 @@ const SignupOptions: React.FC<passkeyModelProps> = ({
               onClick={onClose}
             >
               <div
-                className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+                className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
                   isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
                 }`}
                 onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
               >
                 {/* Top section: Icon, Title, Close Button */}
-                <div className="flex justify-between mb-6">
+                <div className="flex justify-between mb-[40px]">
                   <div></div>
-                  <h1 className="text-md text-center font-bold text-app-text-primary font-plusJakartaSans">
+                  <h1 className="text-[19px] text-center font-bold text-app-text-primary font-plusJakartaSans-700">
                     Passkey
                   </h1>
                   <button
@@ -81,44 +81,60 @@ const SignupOptions: React.FC<passkeyModelProps> = ({
                       onClose();
                     }}
                     aria-label="Close notification prompt"
-                    className="p-1 -m-1 text-gray-500 hover:text-gray-700 transition-colors justify-self-end"
+                    className="p-1 -m-1 text-gray-500"
                   >
-                    <CloseIcon className="text-app-icon" />
+                    <CloseIcon
+                      className="text-app-icon"
+                      width={24}
+                      height={24}
+                    />
                   </button>
                 </div>
 
-                <p className="text-sm px-12 text-center text-app-text-primary font-plusJakartaSans">
+                <p className="text-[16px] text-app-text-notifications-body font-plusJakartaSans-400 text-center">
                   Sign-up using either Face ID or Touch ID
                 </p>
 
                 {thumbId ? (
-                  <div className="flex item-center justify-center mt-8">
+                  <div className="flex item-center justify-center mt-[38px]">
                     <div className="flex flex-col items-center ">
-                      <FaceIdIcon className="text-app-icon w-18 h-18" />
-                      <p className="text-sm text-center text-app-text-primary font-plusJakartaSans">
+                      <FaceIdIcon
+                        className="text-app-icon"
+                        width={80}
+                        height={80}
+                      />
+                      <p className="text-[16px] text-center text-app-text-primary font-plusJakartaSans-400">
                         Face ID
                       </p>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex gap-18 item-center justify-center mt-8">
+                  <div className="flex gap-18 item-center justify-center mt-[55px]">
                     <div className="flex flex-col items-center ">
-                      <FaceIdIcon className="text-app-icon" />
-                      <p className="text-sm text-center text-app-text-primary font-plusJakartaSans">
+                      <FaceIdIcon
+                        className="text-app-icon"
+                        width={35}
+                        height={35}
+                      />
+                      <p className="text-[16px] text-center text-app-text-primary font-plusJakartaSans-400">
                         Face ID
                       </p>
                     </div>
                     <div className="flex flex-col items-center ">
-                      <ThumbIcon className="text-app-icon" />
-                      <p className="text-sm text-center text-app-text-primary font-plusJakartaSans">
+                      <ThumbIcon
+                        className="text-app-icon"
+                        width={35}
+                        height={35}
+                      />
+                      <p className="text-[16px] text-center text-app-text-primary font-plusJakartaSans-400">
                         Thumb ID
                       </p>
                     </div>
                   </div>
                 )}
-                <div className="mt-18 px-2">
+                <div className="mt-[67.5px] px-2 mb-[35px]">
                   <button
-                    className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
+                    className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                     onClick={() => {
                       if (thumbId) {
                         setVerifyPasskey(true);

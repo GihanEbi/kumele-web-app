@@ -13,10 +13,13 @@ type passkeyModelProps = {
   isOpen: boolean;
   onClose: () => void;
   onContinue: () => void;
-
 };
 
-const SignInPasskey: React.FC<passkeyModelProps> = ({ isOpen, onClose, onContinue }) => {
+const SignInPasskey: React.FC<passkeyModelProps> = ({
+  isOpen,
+  onClose,
+  onContinue,
+}) => {
   if (!isOpen) {
     return null; // Don't render anything if the modal is not open
   }
@@ -28,17 +31,17 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({ isOpen, onClose, onContinu
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             {/* Top section: Icon, Title, Close Button */}
-            <div className="grid grid-cols-3 items-center mb-6">
-              <h1 className="text-md text-center text-app-text-primary font-plusJakartaSans">
+            <div className="flex justify-between items-center mb-6 px-2">
+              <h1 className="text-[19.76px] text-center text-app-text-primary font-plusJakartaSans-500">
                 Sign-in
               </h1>
-              <h1 className="text-md text-center font-bold text-app-text-primary font-plusJakartaSans">
+              <h1 className="text-[19px] text-center font-bold text-app-text-primary font-plusJakartaSans-700">
                 Passkey
               </h1>
               <button
@@ -48,32 +51,34 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({ isOpen, onClose, onContinu
                 aria-label="Close notification prompt"
                 className="p-1 -m-1 text-gray-500 hover:text-gray-700 transition-colors justify-self-end"
               >
-                <CloseIcon className="text-app-icon" />
+                <CloseIcon className="text-app-icon" width={24} height={24} />
               </button>
             </div>
 
-            <p className="text-sm px-12 text-center text-app-text-primary font-plusJakartaSans">
+            <p className="text-[16px] px-15 text-app-text-notifications-body font-plusJakartaSans-400 text-center">
               Do you want to sign-in to "Kumele.com" with your saved passkey?
             </p>
 
-            <div className="flex gap-24 item-center justify-center mt-8">
+            <div className="flex gap-24 item-center justify-center mt-[51px]">
               <div className="flex flex-col items-center ">
-                <FaceIdIcon className="text-app-icon" />
-                <p className="text-sm text-center text-app-text-primary font-plusJakartaSans">
+                <FaceIdIcon className="text-app-icon" width={35} height={35} />
+                <p className="text-[16px] text-center text-app-text-primary font-plusJakartaSans-400">
                   Face ID
                 </p>
               </div>
               <div className="flex flex-col items-center ">
-                <ThumbIcon className="text-app-icon" />
-                <p className="text-sm text-center text-app-text-primary font-plusJakartaSans">
+                <ThumbIcon className="text-app-icon" width={35} height={35} />
+                <p className="text-[16px] text-center text-app-text-primary font-plusJakartaSans-400">
                   Thumb ID
                 </p>
               </div>
             </div>
-            <div className="mt-6 px-2">
+            <div className="mt-[51px] mb-[48px] px-2">
               <button
-                className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
-                onClick={() => {onContinue()}}
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                onClick={() => {
+                  onContinue();
+                }}
               >
                 Continue
               </button>
