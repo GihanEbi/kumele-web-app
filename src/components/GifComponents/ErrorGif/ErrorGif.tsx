@@ -2,6 +2,7 @@ import React from "react";
 
 import Lottie from "lottie-react";
 import animationData from "../../../../public/json_files/icons8-error.json";
+import { customizeLottieColors } from "../CustomizedLottieColors/CustomizedLottieColors";
 
 interface animationProps {
   width?: number | string;
@@ -17,10 +18,14 @@ const ErrorGif: React.FC<animationProps> = ({
   autoplay = true,
   className,
 }) => {
+  const colored = customizeLottieColors(
+    animationData,
+    "#FFD966" // default to yellow
+  );
   return (
     <div>
       <Lottie
-        animationData={animationData}
+        animationData={colored}
         loop={loop}
         autoplay={autoplay}
         style={{ width, height }}

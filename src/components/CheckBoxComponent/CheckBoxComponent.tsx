@@ -1,5 +1,9 @@
 import React from "react";
-import { UnCheckedIcon } from "../../../public/svg-icons/icons";
+import {
+  CheckBoxSquareCheckedIcon,
+  CheckBoxSquareUncheckedIcon,
+  UnCheckedIcon,
+} from "../../../public/svg-icons/icons";
 
 type CheckBoxComponentProps = {
   label: string;
@@ -18,11 +22,12 @@ const CheckBoxComponent: React.FC<CheckBoxComponentProps> = ({
   error,
   value,
 }) => {
-  
   return (
     <div className="">
       <label className="flex items-center space-x-2.5 cursor-pointer">
         {/* <UnCheckedIcon /> */}
+        <CheckBoxSquareUncheckedIcon className="text-app-icon" />
+        <CheckBoxSquareCheckedIcon className="text-app-icon" />
         <input
           type="checkbox"
           id={label}
@@ -33,7 +38,9 @@ const CheckBoxComponent: React.FC<CheckBoxComponentProps> = ({
           className="form-checkbox h-4 w-4 text-app-text-blue border-gray-300 rounded"
         />{" "}
         {/* Requires @tailwindcss/forms or use accent-blue-600 */}
-        <span className="text-sm font-plusJakartaSans text-app-text-primary">{label}</span>
+        <span className="text-sm font-plusJakartaSans text-app-text-primary">
+          {label}
+        </span>
       </label>
     </div>
   );

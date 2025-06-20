@@ -32,23 +32,20 @@ const InterestCard: React.FC<InterestCardProps> = ({
         ${
           isSelected
             ? "bg-app-input-yellow text-app-text-black" // Selected style from image
-            : "bg-app-input-primary text-app-text-secondary" // Unselected style from image
+            : "bg-app-input-primary" // Unselected style from image
         }
       `}
     >
-      {/* <Image
-        src={icon}
-        alt={name}
-        className="w-8 h-8 sm:w-10 sm:h-10 mb-1 sm:mb-2"
-        width={40}
-        height={40}
-      /> */}
       {icon}
-      <span className={`text-[10px] sm:text-sm font-plusJakartaSans text-app-text-primary text-center ${
+      <span
+        className={`text-center ${
           isSelected
-            ? "font-semibold" // Selected style from image
-            : "" // Unselected style from image
-        }`}>{name}</span>
+            ? "text-app-text-interest-card-selected font-plusJakartaSans-700 font-bold text-[11.49px]" // Selected style from image
+            : "text-app-text-interest-card-unselected font-plusJakartaSans-400 text-[11.49px]" // Unselected style from image
+        }`}
+      >
+        {name}
+      </span>
     </button>
   );
 };

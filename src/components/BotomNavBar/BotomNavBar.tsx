@@ -19,31 +19,31 @@ import MoreOptionModel from "@/components/Models/MoreOptionModel/MoreOptionModel
 const navItems = [
   {
     label: "Home",
-    icon: <HomeIcon className="text-app-icon" />,
+    icon: <HomeIcon className="text-app-icon" width={40} height={40} />,
     page: <Home />,
     url: "/user/home",
   },
   {
     label: "Blog",
-    icon: <BlogHomeIcon className="text-app-icon" />,
+    icon: <BlogHomeIcon className="text-app-icon" width={40} height={40} />,
     page: <Blog />,
     url: "/user/blog",
   },
   {
     label: "Shop",
-    icon: <ShopIcon className="text-app-icon" />,
+    icon: <ShopIcon className="text-app-icon" width={40} height={40} />,
     page: <Shop />,
     url: "/user/shop",
   },
   {
     label: "More",
-    icon: <MoreIcon className="text-app-icon" />,
+    icon: <MoreIcon className="text-app-icon" width={40} height={40} />,
     page: <More />,
     url: "",
   },
   {
     label: "Profile",
-    icon: <ProfileIcon className="text-app-icon" />,
+    icon: <ProfileIcon className="text-app-icon" width={40} height={40} />,
     page: <Profile />,
     url: "/user/profile",
   },
@@ -58,7 +58,7 @@ const BottomNavBar = () => {
   return (
     <div className="">
       <div
-        className={`h-tab-bar px-4 py-2 bg-app-background-bottom-navbar flex justify-around items-center shadow-tab-bar pb-safe-bottom z-[1000]`}
+        className={`h-tab-bar pb-6 pt-2 px-4 bg-app-background-bottom-navbar flex justify-around items-center shadow-tab-bar pb-safe-bottom z-[1000]`}
       >
         {navItems.map((item, index) => (
           <div
@@ -75,13 +75,13 @@ const BottomNavBar = () => {
           >
             <div className={`flex flex-col items-center text-app-text-primary`}>
               <div
-                className={`rounded-4xl p-2 text-app-text-primary ${
+                className={`rounded-4xl p-3 text-app-text-primary ${
                   activePageIndex === index ? "bg-app-button-blue" : ""
                 }`}
               >
                 {item.icon}
               </div>
-              <div className="text-app-text-primary text-xs">{item.label}</div>
+              <div className="text-app-text-primary text-[14px] font-plusJakartaSans-700">{item.label}</div>
             </div>
           </div>
         ))}

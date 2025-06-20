@@ -77,6 +77,13 @@
   --color-app-text-host: var(--app-text-host);
   --color-app-text-profile-text: var(--app-text-profile-text);
   --color-app-text-profile-tabs: var(--app-text-profile-tabs);
+  --color-app-text-notifications-body: var(--app-text-notifications-body);
+  --color-app-text-interest-card-unselected: var(
+    --app-text-interest-card-unselected
+  );
+  --color-app-text-interest-card-selected: var(
+    --app-text-interest-card-selected
+  );
   --color-app-button-primary: var(--app-button-primary);
   --color-app-button-secondary: var(--app-button-secondary);
   --color-app-button-gray: var(--app-button-gray);
@@ -218,7 +225,9 @@
   --app-text-host: oklch(0.5275 0.28234714827626795 260.80097608857864);
   --app-text-profile-text: oklch(0.2686 0 0);
   --app-text-profile-tabs: oklch(0.2686 0 0);
-
+  --app-text-notifications-body: oklch(0.2686 0 0);
+  --app-text-interest-card-unselected: oklch(0.2686 0 0); /* #262626 */
+  --app-text-interest-card-selected: oklch(0 0 0); /* #000000 */
 
   /* BUTTON */
   --app-button-primary: oklch(0 0 0); /* #000000 */
@@ -230,7 +239,6 @@
   ); /* #645EFF */
   --app-button-white: oklch(1 0 89.88);
   --app-button-radio: oklch(0.7952 0 0); /* #BCBCBC */
-
 
   /*BUTTON TEXT COLOR*/
   --app-button-text-color: oklch(1 0 0); /* #FFFFFF color (white color) */
@@ -364,6 +372,9 @@
   --app-text-host: oklch(0.8564 0.1871 83.38);
   --app-text-profile-text: oklch(0.9672 0 89.88);
   --app-text-profile-tabs: oklch(0.7952 0 0);
+  --app-text-notifications-body: oklch(0.8853 0 89.88);
+  --app-text-interest-card-unselected: oklch(oklch(0.8853 0 89.88));
+  --app-text-interest-card-selected: oklch(0 0 0);
 
   /* BUTTON */
   --app-button-primary: oklch(1 0 89.88);
@@ -425,8 +436,8 @@
   display: none;
 }
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* HEADING */

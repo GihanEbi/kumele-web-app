@@ -429,7 +429,7 @@ const ChooseInterests = () => {
   };
 
   return (
-    <div>
+    <div className="overflow-y-auto max-h-screen no-scrollbar">
       <div
         className={`min-h-screen ${
           notificationPermission ||
@@ -442,7 +442,7 @@ const ChooseInterests = () => {
       >
         {/* Loading Spinner */}
         {loading && <LoadingComponent />}
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md ">
           {/* Header */}
           <div
             className={`flex fixed top-0 left-0 right-0 pt-4 pl-2 pb-4 items-center w-full ${
@@ -452,25 +452,26 @@ const ChooseInterests = () => {
               userNamePermission
                 ? "bg-app-background-secondary"
                 : "bg-app-background-primary"
-            }`}
+            } pt-[64px]`}
           >
             <button
               onClick={() => router.back()}
               aria-label="Go back"
               className="rounded-full transition-colors"
             >
-              <BackArrow className="text-app-icon" />
+              <BackArrow className="text-app-icon" width={24} height={24} />
             </button>
-            <h1 className="text-xl font-bold font-plusJakartaSans text-app-text-primary ml-4">
+            <h1 className="text-[23px] font-bold font-plusJakartaSans-700 text-app-text-primary ml-[24px]">
               Choose interests
             </h1>
           </div>
-          <p className="font-plusJakartaSans text-app-text-primary text-xs mb-4 mt-10 ml-5">
+          <div className="mt-[90px]"></div>
+          <p className="font-plusJakartaSans-400 text-app-text-primary text-[13px] mb-4 ml-5">
             Choose up to {MAX_SELECTIONS} interests:
           </p>
 
           {/* Interests Grid */}
-          <div className="grid grid-cols-3 gap-3 px-3">
+          <div className="grid grid-cols-3 gap-[14px] px-3">
             {mockInterestData.map((interest) => (
               <InterestCard
                 key={interest.id}
@@ -478,7 +479,6 @@ const ChooseInterests = () => {
                 isSelected={selectedInterestsIds.includes(interest.id)}
                 onToggle={(id) => {
                   // Handle interest selection logic here
-                  console.log("Toggled interest:", id);
                   // push or remove interest from selectedInterestsIds
                   const interestId = parseInt(id, 10);
                   if (selectedInterestsIds.includes(interestId)) {
@@ -496,12 +496,12 @@ const ChooseInterests = () => {
               />
             ))}
           </div>
-          <div className="space-y-3 mt-50 px-3">
+          <div className="space-y-3 mt-50 px-3 mb-10">
             <button
               onClick={() => {
                 handleSubmitInterests();
               }}
-              className="w-full text-sm mt-5 bg-app-button-primary text-app-text-tertiary font-plusJakartaSans py-3 px-4 rounded-lg "
+                className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
             >
               Continue
             </button>
