@@ -17,6 +17,7 @@ import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent"
 import { register } from "@/routes/signup_and_signin";
 import EmailVerificationModel from "@/components/Models/EmailVerificationModel/EmailVerificationModel";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
+import DropDown from "@/components/DropDown/DropDown";
 
 const languages = [
   {
@@ -86,6 +87,13 @@ const Signup = () => {
   const handleInputChange = (value: string | Boolean, name: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+
+  // states for year dropdown
+  const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
+  // state from month dropdown
+  const [isMonthDropdownOpen, setIsMonthDropdownOpen] = useState(false);
+  // state from day dropdown
+  const [isDayDropdownOpen, setIsDayDropdownOpen] = useState(false);
 
   // -------- handleSubmit for form submission ---------
   const handleSubmit = async () => {
@@ -244,7 +252,10 @@ const Signup = () => {
       {/* form area */}
       <div
         className={`${
-          showEmailVerificationModel
+          showEmailVerificationModel ||
+          isYearDropdownOpen ||
+          isMonthDropdownOpen ||
+          isDayDropdownOpen
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
         } px-8 py-6 relative z-10`}
@@ -279,7 +290,7 @@ const Signup = () => {
                   className={`py-2 px-5 rounded-md text-sm  whitespace-nowrap flex-shrink-0 transition-colors duration-150
                   ${
                     activeTab === tab.id
-                      ? "bg-app-button-yellow text-app-text-primary font-medium"
+                      ? "bg-app-button-yellow text-app-text-black font-medium"
                       : "bg-app-input-primary text-app-text-secondary"
                   }`}
                 >
@@ -329,27 +340,27 @@ const Signup = () => {
           <p className="text-sm font-plusJakartaSans text-app-text-primary mb-2">
             Date of Birth
           </p>
-          <div className="flex space-x-2">
-            <SelectComponent
-              handleChange={(e) => {
-                // setBirthday((prev) => ({ ...prev, DD: e.target.value }));
+          <div className="flex space-x-2 w-full justify-between">
+            <DropDown
+              dataArray={authConstants.dayList}
+              isOpen={(value: boolean) => {
+                setIsDayDropdownOpen(value);
               }}
-              items={authConstants.dayList}
-              placeholder="DD"
+              placeHolder="DD"
             />
-            <SelectComponent
-              handleChange={(e) => {
-                setBirthday((prev) => ({ ...prev, MM: e.target.value }));
+            <DropDown
+              dataArray={authConstants.monthList}
+              isOpen={(value: boolean) => {
+                setIsMonthDropdownOpen(value);
               }}
-              items={authConstants.monthList}
-              placeholder="MM"
+              placeHolder="MM"
             />
-            <SelectComponent
-              handleChange={(e) => {
-                setBirthday((prev) => ({ ...prev, YYYY: e.target.value }));
+            <DropDown
+              dataArray={authConstants.yearList}
+              isOpen={(value: boolean) => {
+                setIsYearDropdownOpen(value);
               }}
-              items={authConstants.yearList}
-              placeholder="YYYY"
+              placeHolder="YYYY"
             />
           </div>
         </div>
