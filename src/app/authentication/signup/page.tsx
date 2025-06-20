@@ -223,7 +223,7 @@ const Signup = () => {
       to match your logo.png and how it should appear on background.png.
       The initial 'top-4 left-6' attempts to replicate the padding from the previous CSS logo.
   */}
-        <div className="absolute top-4 left-18 z-10">
+        <div className="absolute top-4 left-3 z-10">
           {" "}
           {/* z-10 ensures logo is above the background image */}
           <Image
