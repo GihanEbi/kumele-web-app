@@ -21,7 +21,7 @@ const Home = () => {
     <div className="h-screen bg-app-background-secondary flex flex-col items-center justify-center text-center">
       {" "}
       {/* 40px approx for main padding */}
-      <div className="absolute top-5 left-5 bg-app-background-model rounded-full w-12 h-12 flex items-center justify-center shadow-search-icon">
+      <div className="absolute mt-[52px] top-5 left-5 bg-app-background-model rounded-full w-12 h-12 flex items-center justify-center shadow-search-icon">
         <SearchIcon className="text-app-icon" />
       </div>
       <div className="">

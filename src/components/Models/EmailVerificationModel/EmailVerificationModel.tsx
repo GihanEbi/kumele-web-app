@@ -9,6 +9,7 @@ import { verification_email } from "@/routes/signup_and_signin";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { saveToken } from "@/utils/authUtils";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
+import ErrorGif from "@/components/GifComponents/ErrorGif/ErrorGif";
 
 // props types
 type EmailVerificationModelProps = {
@@ -110,19 +111,13 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-3xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                {/* <Image
-                  src="/common-gifs/email-verification-succsess.gif"
-                  alt="Success"
-                  width={100}
-                  height={100}
-                /> */}
                 <CheckMarkGif/>
               </div>
               <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
@@ -140,19 +135,20 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-primary  w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-primary  w-full max-w-md p-6 sm:p-8 rounded-t-3xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <Image
+                {/* <Image
                   src="/common-gifs/verification-wrong.gif"
                   alt="Success"
                   width={100}
                   height={100}
-                />
+                /> */}
+                <ErrorGif/>
               </div>
               <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
                 Verification code is wrong
@@ -169,7 +165,7 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-3xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it

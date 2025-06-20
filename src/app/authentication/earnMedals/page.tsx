@@ -55,21 +55,21 @@ const EarnMedals = () => {
       <div className="min-h-screen bg-app-background-primary ">
         <div className="max-w-md mx-auto p-4 sm:p-6 mt-4">
           {/* Header */}
-          <header className="flex fixed top-0 left-0 right-0 pt-4 pl-6 pb-4 items-center w-full bg-app-background-primary z-10">
+          <header className="pt-[64px] flex fixed top-0 left-0 right-0 pl-6 pb-4 items-center w-full bg-app-background-primary z-10">
             <button
               onClick={() => router.back()} // Simple back navigation
               className="text-gray-700 hover:text-gray-900 mr-3"
               aria-label="Go back"
             >
-              <BackArrow className="text-app-icon" />
+              <BackArrow className="text-app-icon" width={24} height={24} />
             </button>
-            <h1 className="text-xl ml-2 font-bold font-plusJakartaSans text-app-text-primary">
+            <h1 className="text-[23px] font-bold font-plusJakartaSans-700 text-app-text-primary ml-[24px]">
               Earn Medals
             </h1>
           </header>
 
           {/* Medal List */}
-          <main className="space-y-8 mt-10">
+          <main className="space-y-8 mt-[90px]">
             {medalData.map((medal) => (
               <MedalCard key={medal.id} medal={medal} />
             ))}
@@ -93,24 +93,15 @@ const EarnMedals = () => {
 
 const MedalCard: React.FC<MedalCardProps> = ({ medal }) => {
   return (
-    <div className="ml-5 items-start space-x-4">
+    <div className="ml-5 items-start space-x-4 mb-[47px]">
       <div className="flex-shrink-0 mt-1">
-        {/* If using next/image for GIF. May need unoptimized={true} for some GIFs */}
-        {/* <Image
-          src={medal.iconSrc}
-          alt={`${medal.title} icon`}
-          width={40} // Adjust size as needed
-          height={40} // Adjust size as needed
-          className="rounded-full object-contain" // object-contain if your GIF isn't perfectly square
-          unoptimized={true} // GIFs are often better unoptimized with next/image
-        /> */}
-        <MedalGif width={25} height={25} />
+        <MedalGif width={28.52} height={28.52} />
       </div>
       <div className="mt-2">
-        <h2 className="text-md font-bold font-plusJakartaSans text-app-text-primary">
+        <h2 className="text-[19px] font-bold font-plusJakartaSans-700 text-app-text-primary">
           {medal.title}
         </h2>
-        <p className="text-sm font-plusJakartaSans text-app-text-secondary mt-1 leading-relaxed">
+        <p className="text-[15px] font-plusJakartaSans-400 text-app-text-secondary mt-1 leading-relaxed">
           {medal.description}
         </p>
       </div>

@@ -31,7 +31,7 @@ const Location: React.FC<PhotosProps> = ({ isOpen, onClose }) => {
         //   onClick={onClose}
       >
         <div
-          className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+          className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
             isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
           }`}
           onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
@@ -40,10 +40,10 @@ const Location: React.FC<PhotosProps> = ({ isOpen, onClose }) => {
           <div className="flex items-start justify-between mb-4">
             <div className="pt-1">
               {" "}
-              <AdventureIcon className="text-app-icon" />
+              <AdventureIcon className="text-app-icon" width={28} height={28} />
               {/* To align bell better with multi-line title */}
             </div>
-            <h2 className="font-plusJakartaSans text-app-text-primary text-center font-bold flex-grow px-3 leading-tight">
+            <h2 className="text-[19px] font-plusJakartaSans-700 text-app-text-primary text-center flex-grow px-3 leading-tight">
               "Kumele" Would to Access
               <br />
               Your Location
@@ -55,11 +55,11 @@ const Location: React.FC<PhotosProps> = ({ isOpen, onClose }) => {
               aria-label="Close notification prompt"
               className="p-1 -m-1 text-gray-500 hover:text-gray-700 transition-colors"
             >
-              <CloseIcon className="text-app-icon" />
+              <CloseIcon className="text-app-icon" width={24} height={24} />
             </button>
           </div>
 
-          <p className="text-sm text-app-text-primary font-plusJakartaSans text-center mb-6 px-2">
+          <p className="text-[16px] text-app-text-notifications-body font-plusJakartaSans-400 text-center mb-[46px] px-2">
             Allow "Kumele" to access your location
           </p>
           <div className="space-y-3 mb-4">
@@ -67,7 +67,7 @@ const Location: React.FC<PhotosProps> = ({ isOpen, onClose }) => {
               onClick={() => {
                 onClose("while_using");
               }}
-              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg mb-[16px]"
             >
               Allow While Using App
             </button>
@@ -75,12 +75,12 @@ const Location: React.FC<PhotosProps> = ({ isOpen, onClose }) => {
               onClick={() => {
                 onClose("once");
               }}
-              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg mb-[16px]"
             >
               Allow Once
             </button>
             <button
-              className="w-full text-sm bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
               onClick={() => {
                 onClose("none");
               }}
