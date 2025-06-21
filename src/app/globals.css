@@ -84,6 +84,7 @@
   --color-app-text-interest-card-selected: var(
     --app-text-interest-card-selected
   );
+  --color-app-text-medal-model: var(--app-text-medal-model);
   --color-app-button-primary: var(--app-button-primary);
   --color-app-button-secondary: var(--app-button-secondary);
   --color-app-button-gray: var(--app-button-gray);
@@ -228,6 +229,7 @@
   --app-text-notifications-body: oklch(0.2686 0 0);
   --app-text-interest-card-unselected: oklch(0.2686 0 0); /* #262626 */
   --app-text-interest-card-selected: oklch(0 0 0); /* #000000 */
+  --app-text-medal-model: oklch(0.2686 0 0);
 
   /* BUTTON */
   --app-button-primary: oklch(0 0 0); /* #000000 */
@@ -375,6 +377,7 @@
   --app-text-notifications-body: oklch(0.8853 0 89.88);
   --app-text-interest-card-unselected: oklch(oklch(0.8853 0 89.88));
   --app-text-interest-card-selected: oklch(0 0 0);
+  --app-text-medal-model: oklch(0.8853 0 0);
 
   /* BUTTON */
   --app-button-primary: oklch(1 0 89.88);

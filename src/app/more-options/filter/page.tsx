@@ -13,11 +13,14 @@ import InputComponent from "@/components/InputComponent/InputComponent";
 import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
 import SliderComponent from "@/components/SliderComponent/SliderComponent";
 import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
+import { paddings } from "@/constants/layout-constants";
+import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
 
 const page = () => {
   //   loading state
   const [loading, setLoading] = useState(false);
   const [editLocation, setEditLocation] = useState(false);
+  const [editEvents, setEditEvents] = useState(false);
   return (
     <div>
       {loading && (
@@ -26,7 +29,7 @@ const page = () => {
         </div>
       )}
       <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
-        <div className="w-full max-w-md px-4">
+        <div className={`w-full max-w-md px-6 ${paddings.topMargin}`}>
           {/* Header */}
           <header className="flex items-center mb-10">
             <button
@@ -36,23 +39,23 @@ const page = () => {
             >
               <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="text-xl font-bold text-app-text-primary font-plusJakartaSans">
+            <h1 className="ml-5 text-[23px] font-semibold text-app-text-primary font-plusJakartaSans-700">
               Filter
             </h1>
           </header>
 
           {/* body section */}
           <div className="w-full px-4 ">
-            <div className="flex justify-between item-center">
-              <h2 className="text-sm text-app-text-primary font-plusJakartaSans">
+            <div className="flex justify-between item-center mb-[20px]">
+              <h2 className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
                 Current Location
               </h2>
-              <h2 className="text-xs text-app-text-yellow font-plusJakartaSans">
+              <h2 className="text-[13px] text-app-text-yellow font-plusJakartaSans-700">
                 CHANGE
               </h2>
             </div>
             {/* inputs */}
-            <div className="mt-2 flex justify-between item-center gap-2">
+            <div className="flex justify-between item-center gap-2">
               <InputComponent placeholder="Country" />
               <InputComponent placeholder="Postal/Zip code" />
             </div>
@@ -60,34 +63,35 @@ const page = () => {
               <InputComponent placeholder="State" />
             </div>
             {/* location */}
-            <div className="flex gap-4 mt-4 justify-between">
+            <div className="flex gap-4 mt-[23px] justify-between">
               <div className="flex gap-2">
                 <LocationIcon className="text-app-icon" />
-                <p className="text-sm text-app-text-secondary font-plusJakartaSans">
+                <p className="text-[16px] text-app-text-secondary font-plusJakartaSans-600">
                   United Kingdom, <br /> 39495, <br />
                   Kentucky
                 </p>
               </div>
-              <div className="flex gap-2 item-center">
-                <button className="bg-app-okay-icon-filter rounded-lg p-2 h-1/2 w-1/2">
+              <div className="flex gap-2 items-center">
+                <div className="bg-app-okay-icon-filter rounded-lg p-2 h-1/2 w-1/2">
                   {editLocation ? (
                     <OkayIcon className="text-app-icon " />
                   ) : (
                     <OkayGreenIcon />
                   )}
-                </button>
+                </div>
 
                 <div>
-                  <SwitchComponent
-                    onclick={() => {
-                      setEditLocation(!editLocation);
-                    }}
+                  <CustomToggle
+                    checked={editLocation}
+                    onCheckedChange={() => setEditLocation(!editLocation)}
+                    aria-label="Enable or disable notifications"
+                    singleChecked={false}
                   />
                 </div>
               </div>
             </div>
-            <div className="mt-8">
-              <label className="block text-xs mb-15">
+            <div className="mt-[76px]">
+              <label className="block text-[13.45px] font-plusJakartaSans-400 mb-[54px]">
                 Distance range (in kilometers)
               </label>
               {/* Age Range Slider Section using Radix UI */}
@@ -100,8 +104,10 @@ const page = () => {
                 onValueChange={() => {}}
               />
             </div>
-            <div className="mt-8">
-              <label className="block text-xs mb-15">Age Range</label>
+            <div className="mt-[34px]">
+              <label className="block text-[13.45px] font-plusJakartaSans-400 mb-[54px]">
+                Age Range
+              </label>
               {/* Age Range Slider Section using Radix UI */}
               <RadixAgeRangeSlider
                 //label="Age range"
@@ -113,15 +119,20 @@ const page = () => {
               />
             </div>
             {/* footer */}
-            <div className="flex justify-between items-center mt-8">
-              <p className="text-xs text-app-text-primary font-plusJakartaSans">
+            <div className="flex justify-between items-center mt-[37px]">
+              <p className="text-[13.45px] font-plusJakartaSans-400 text-app-text-primary">
                 Paid Events
               </p>
-              <SwitchComponent onclick={() => {}} />
+              <CustomToggle
+                checked={editEvents}
+                onCheckedChange={() => setEditEvents(!editEvents)}
+                aria-label="Enable or disable notifications"
+                singleChecked={false}
+              />
             </div>
-            <div className="pt-4 mt-8 mb-8">
+            <div className="pt-4 mt-[64px] mb-[34px]">
               <button
-                className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                 onClick={() => {}}
               >
                 Apply

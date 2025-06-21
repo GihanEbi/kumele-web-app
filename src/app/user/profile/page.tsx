@@ -26,6 +26,8 @@ import ContactModel from "@/components/Models/ContactModel/ContactModel";
 import ReferralModel from "@/components/Models/ReferralModel/ReferralModel";
 import DeleteAccountModel from "@/components/Models/DeleteAccountModel/DeleteAccountModel";
 import SignoutModel from "@/components/Models/SignoutModel/SignoutModel";
+import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
+import { paddings } from "@/constants/layout-constants";
 const settingsGroup1 = [
   {
     icon: <SoundIcon className="text-app-icon" width={24} height={24} />,
@@ -40,7 +42,7 @@ const settingsGroup1 = [
   {
     icon: <SecurityIcon className="text-app-icon" width={24} height={24} />,
     text: "Security",
-    link: "/user/profile/security",
+    link: "/profile-other-pages/security",
   },
 ];
 
@@ -53,11 +55,20 @@ const settingsGroup2 = [
   {
     icon: <GuidelinesIcon className="text-app-icon" width={24} height={24} />,
     text: "Guidelines",
-    link: "/user/profile/guidelines",
+    link: "/profile-other-pages/guidelines",
   },
-  { icon: <ReferIcon className="text-app-icon" width={24} height={24} />, text: "Refer a Friend" },
   {
-    icon: <TermsAndConditionsIcon className="text-app-icon" width={24} height={24} />,
+    icon: <ReferIcon className="text-app-icon" width={24} height={24} />,
+    text: "Refer a Friend",
+  },
+  {
+    icon: (
+      <TermsAndConditionsIcon
+        className="text-app-icon"
+        width={24}
+        height={24}
+      />
+    ),
     text: "Terms and Conditions",
     link: "/user/profile/terms-conditions",
   },
@@ -67,7 +78,9 @@ const settingsGroup2 = [
     type: "model",
   },
   {
-    icon: <DeleteAccountIcon className="text-app-icon" width={24} height={24} />,
+    icon: (
+      <DeleteAccountIcon className="text-app-icon" width={24} height={24} />
+    ),
     text: "Delete Account",
     type: "model",
   },
@@ -156,7 +169,7 @@ const Profile = () => {
             : "bg-k-background-primary"
         } p-[16px] sm:p-6 mb-30`}
       >
-        <header className="mb-4 mt-[64px]">
+        <header className={`mb-4 ${paddings.topMargin}`}>
           <h1 className="text-[23px] font-bold text-app-text-primary font-plusJakartaSans-700">
             Profile
           </h1>
@@ -168,12 +181,12 @@ const Profile = () => {
             aria-label="Edit profile"
             className="absolute top-[-5px] right-[-5px]"
             onClick={() => {
-              router.push("/user/profile/edit-profile");
+              router.push("/profile-other-pages/edit-profile");
             }}
           >
             <EditIcon className="text-app-icon " width={24} height={24} />
           </button>
-          <div className="flex items-start space-x-10 mb-[6px]">
+          <div className="flex items-start space-x-6 mb-[6px]">
             <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
               <Image
                 src={"/avatar-img/profile-pic.png"}
@@ -192,7 +205,7 @@ const Profile = () => {
               <button
                 className="text-[9.95px] font-plusJakartaSans-700 bg-app-text-blue text-app-text-white py-1 px-3 rounded-r-sm mt-[6px]"
                 onClick={() => {
-                  router.push("/user/profile/edit-interest");
+                  router.push("/profile-other-pages/edit-interest");
                 }}
               >
                 Edit hobbies
@@ -209,19 +222,32 @@ const Profile = () => {
             </div>
           </div>
 
-          <p className="text-[14px] text-app-text-profile-text font-plusJakartaSans-400 mb-2">
-            I am a software engineer by day, and a vanlife enthusiast by heart.{" "}
-            <br />
-            <br />
-            With a passion for both technology and the great outdoors, Monika
-            thrives on the open road, where she merges her love for coding with
-            her deep connection to nature.
-          </p>
-            <div className="-mx-6 my-4">
-              <div className="border-b border-app-border-profile"></div>
-            </div>
-          <div className="flex justify-around pt-2 text-center">
-            <div className="">
+          <div className="mt-6 overflow-y-auto max-h-32 pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <p className="text-[14px] text-app-text-profile-text font-plusJakartaSans-400 mb-2">
+              I am a software engineer by day, and a vanlife enthusiast by
+              heart. <br />
+              <br />
+              With a passion for both technology and the great outdoors, Monika
+              thrives on the open road, where she merges her love for coding
+              with her deep connection to nature. <br />
+              <br />
+              With a passion for both technology and the great outdoors, Monika
+              thrives on the open road, where she merges her love for coding
+              with her deep connection to nature.
+            </p>
+          </div>
+          <div className="-mx-6 my-4">
+            <div className="border-b border-app-border-profile"></div>
+          </div>
+          <div className="flex justify-around pt-2 text-center divide-x divide-app-border-profile">
+            <div
+              className=""
+              onClick={() =>
+                router.push(
+                  `/profile-other-pages/following?source=${true}`
+                )
+              }
+            >
               <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
                 Following
               </p>
@@ -229,7 +255,13 @@ const Profile = () => {
                 {userData?.following_count || 8}
               </p>
             </div>
-            <div>
+            <div
+              onClick={() =>
+                router.push(
+                  `/profile-other-pages/following?isFollowing=${false}`
+                )
+              }
+            >
               <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
                 Followers
               </p>
@@ -307,7 +339,7 @@ const Profile = () => {
                     // Handle night mode logic here
                     console.log("Night Mode clicked");
                   } else if (item.text === "Guidelines") {
-                    router.push("/user/profile/guidelines");
+                    router.push("/profile-other-pages/guidelines");
                   } else if (item.text === "Terms and Conditions") {
                     router.push("/profile-other-pages/terms-conditions");
                   }
@@ -326,17 +358,26 @@ const Profile = () => {
                     height={20}
                   />
                 ) : (
-                  <SwitchComponent
-                    required
-                    disabled={false}
-                    value={
-                      theme === "dark" || systemTheme === "dark" ? true : false
-                    }
-                    // onChange={handleSoundNotificationChange}
-                    onclick={() => {
+                  <CustomToggle
+                    checked={theme === "dark" ? true : false}
+                    onCheckedChange={() => {
                       setTheme(theme === "dark" ? "light" : "dark");
                     }}
+                    aria-label="Enable or disable email notifications"
+                    singleChecked={true}
                   />
+
+                  // <SwitchComponent
+                  //   required
+                  //   disabled={false}
+                  //   value={
+                  //     theme === "dark" || systemTheme === "dark" ? true : false
+                  //   }
+                  //   // onChange={handleSoundNotificationChange}
+                  //   onclick={() => {
+                  //     setTheme(theme === "dark" ? "light" : "dark");
+                  //   }}
+                  // />
                 )}
               </button>
             ))}

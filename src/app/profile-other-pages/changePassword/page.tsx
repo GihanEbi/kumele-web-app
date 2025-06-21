@@ -11,6 +11,7 @@ import {
 } from "../../../../public/svg-icons/icons";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import InputComponent from "@/components/InputComponent/InputComponent";
+import { paddings } from "@/constants/layout-constants";
 
 const ChangePasswordPage = () => {
   //   loading state
@@ -24,8 +25,8 @@ const ChangePasswordPage = () => {
           <LoadingComponent />
         </div>
       )}
-      <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
-        <div className="w-full max-w-md px-4">
+      <div className="min-h-screen bg-app-background-primary flex flex-col items-center">
+        <div className={`w-full max-w-md px-6 ${paddings.topMargin}`}>
           {/* Header */}
           <header className="flex items-center mb-5">
             <button
@@ -35,13 +36,13 @@ const ChangePasswordPage = () => {
             >
               <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="mt-5 ml-5 text-xl font-bold text-app-text-primary font-plusJakartaSans">
+            <h1 className="mt-5 ml-5 text-[23px] font-semibold text-app-text-primary font-plusJakartaSans-700">
               Change passwords
             </h1>
           </header>
           <div>
-            <div className="mb-5">
-              <p className="text-sm font-plusJakartaSans text-app-text-primary mb-2">
+            <div className="mb-[25px]">
+              <p className="text-[16px] font-plusJakartaSans-400 text-app-text-primary mb-2">
                 Current password
               </p>
               <div className="relative">
@@ -51,8 +52,8 @@ const ChangePasswordPage = () => {
                 />
               </div>
             </div>
-            <div className="space-y-4 mb-5">
-              <p className="text-sm font-plusJakartaSans text-app-text-primary mb-2">
+            <div className="mb-[25px]">
+              <p className="text-[16px] font-plusJakartaSans-400 text-app-text-primary mb-2">
                 New password
               </p>
               <div className="relative">
@@ -62,8 +63,8 @@ const ChangePasswordPage = () => {
                 />
               </div>
             </div>
-            <div className="space-y-4 mb-5">
-              <p className="text-sm font-plusJakartaSans text-app-text-primary mb-2">
+            <div className="mb-[25px]">
+              <p className="text-[16px] font-plusJakartaSans-400 text-app-text-primary mb-2">
                 Confirm new password
               </p>
               <div className="relative">
@@ -75,9 +76,9 @@ const ChangePasswordPage = () => {
             </div>
           </div>
           {/* footer signup button */}
-          <div className="pt-50">
+          <div className="fixed bottom-[40px] left-1/2 transform -translate-x-1/2 w-full px-6">
             <button
-              className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
               onClick={() => {}}
             >
               Update password

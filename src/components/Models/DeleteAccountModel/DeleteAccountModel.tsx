@@ -32,7 +32,7 @@ const DeleteAccountModel: React.FC<DeleteAccountModelProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
@@ -47,7 +47,7 @@ const DeleteAccountModel: React.FC<DeleteAccountModelProps> = ({
                 /> */}
                 <ErrorGif  className="text-app-icon"/>
               </div>
-              <p className="text-app-text-primary font-plusJakartaSans text-md font-bold mb-6 text-center">
+              <p className="text-app-text-primary font-plusJakartaSans-700 text-[19px] font-semibold mb-6 text-center">
                 Are you sure? This action cannot be undone. Please retype
                 password.
               </p>
@@ -59,18 +59,18 @@ const DeleteAccountModel: React.FC<DeleteAccountModelProps> = ({
                     placeholder="Enter password to delete account"
                   />
                 </div>
-                <div className="flex space-x-3 mb-4">
+                <div className="flex space-x-3 mb-6">
                   <button
                     type="button"
                     onClick={() => {
                       onClose();
                     }}
-                    className="text-sm flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
+                    className="text-[16px] flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans-400"
                   >
                     Cancel
                   </button>
                   <button
-                    className="text-sm flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
+                    className="text-[16px] flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans-400"
                     onClick={() => {
                     }}
                   >

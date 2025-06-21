@@ -39,15 +39,15 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             {/* Top section: Icon, Title, Close Button */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-[25px]">
               <div></div>
-              <h1 className="text-md font-semibold text-app-text-primary font-plusJakartaSans">
+              <h1 className="text-[19px] font-semibold text-app-text-primary font-plusJakartaSans-700">
                 Contact
               </h1>
               <button
@@ -63,7 +63,7 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
 
             {/* body */}
             <div className="flex flex-col">
-              <p className="text-sm font-plusJakartaSans text-app-text-profile-tabs mb-3">
+              <p className="text-[16px] font-plusJakartaSans-400 text-app-text-profile-tabs mb-[16px]">
                 Choose a reason
               </p>
               <div>
@@ -102,15 +102,15 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
                   </label>
                 ))}
               </div>
-              <p className="text-sm font-plusJakartaSans text-app-text-profile-tabs mb-2 mt-2">
+              <p className="text-[16px] font-plusJakartaSans-400 text-app-text-profile-tabs mt-[15px] mb-[8px]">
                 Comment
               </p>
               <div>
                 <TextAreaComponent placeholder="Add your comment" />
               </div>
-              <div className="pt-4 mt-2">
+              <div className="pt-4 mt-[24px]">
                 <button
-                  className="w-full mb-2 bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
+              className="w-full text-[16px] mb-[12px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                   onClick={() => () => {}}
                 >
                   Send

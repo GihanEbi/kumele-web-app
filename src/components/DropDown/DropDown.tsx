@@ -8,15 +8,21 @@ type DropDownProps = {
   dataArray: Array<{ label: string; value: string }>;
   isOpen: Function;
   placeHolder: string;
+  itemSelected?: string | null;
+  bgColor?: string;
 };
 
 const DropDown: React.FC<DropDownProps> = ({
   isOpen,
   placeHolder,
   dataArray,
+  itemSelected,
+  bgColor,
 }) => {
   const [isListOpen, setIsListOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(
+    itemSelected || null
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleList = () => setIsListOpen((prev) => !prev);
@@ -25,6 +31,7 @@ const DropDown: React.FC<DropDownProps> = ({
     setSelectedItem(item);
     setIsListOpen(false);
     isOpen(false);
+    itemSelected = item; // Update the itemSelected prop
   };
 
   // Effect for closing dropdown on click outside
@@ -54,7 +61,7 @@ const DropDown: React.FC<DropDownProps> = ({
     <div className="w-full">
       {/* Custom Month Dropdown Area */}
       <div
-        className="relative bg-app-input-primary rounded-lg py-3 px-5"
+        className={`relative ${bgColor || "bg-app-input-primary"} rounded-sm py-2 px-4`}
         ref={dropdownRef}
       >
         <div
@@ -70,6 +77,7 @@ const DropDown: React.FC<DropDownProps> = ({
           aria-controls="dropdown"
         >
           <span>{selectedItem ? selectedItem : placeHolder}</span>
+
           <DownArrow className="text-app-icon w-4 h-4 ml-3" />
         </div>
 
