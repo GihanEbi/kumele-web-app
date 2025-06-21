@@ -29,7 +29,7 @@ const ReferralModel: React.FC<ReferralModelProps> = ({ isOpen, onClose }) => {
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
@@ -48,15 +48,15 @@ const ReferralModel: React.FC<ReferralModelProps> = ({ isOpen, onClose }) => {
               </button>
             </div>
             <div>
-              <h1 className="text-lg font-bold text-app-text-primary text-center font-plusJakartaSans">
+              <h1 className="text-[19px] font-bold text-app-text-primary-700 text-center font-plusJakartaSans">
                 {" "}
                 Invite your friends to Kumele
               </h1>
               <div className="flex flex-col items-center justify-center">
-                <p className="text-sm text-app-text-primary font-plusJakartaSans mt-2">
+                <p className="text-[16px] text-app-text-primary font-plusJakartaSans-400 mt-2">
                   Referral code
                 </p>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-2 mt-[9px]">
                   <span className="text-app-text-blue font-plusJakartaSans text-md font-bold tracking-widest">
                     {"SXF2RS4"}
                   </span>
@@ -69,18 +69,18 @@ const ReferralModel: React.FC<ReferralModelProps> = ({ isOpen, onClose }) => {
                   />
                 </div>
               </div>
-              <div className="-mx-6 my-4">
+              <div className="-mx-6 my-5">
                 <div className="h-px bg-app-border-referral w-full"></div>
               </div>
-              <div className="grid grid-cols-4 gap-y-4 pt-2 mt-4 mb-8">
+              <div className="grid grid-cols-4 gap-y-4 pt-2 mt-4 mb-12">
                 {/* Share Item: Copy to clipboard */}
                 <button className="flex flex-col items-center gap-2 group">
                   <div className="">
                     <Image
                       src="/images/copy-img.png"
                       alt="Copy"
-                      width={24}
-                      height={24}
+                      width={40}
+                      height={40}
                       className="cursor-pointer"
                     />
                   </div>
@@ -95,8 +95,8 @@ const ReferralModel: React.FC<ReferralModelProps> = ({ isOpen, onClose }) => {
                     <Image
                       src="/images/blutooth-img.png"
                       alt="Copy"
-                      width={24}
-                      height={24}
+                      width={40}
+                      height={40}
                       className="cursor-pointer"
                     />
                   </div>
@@ -109,8 +109,8 @@ const ReferralModel: React.FC<ReferralModelProps> = ({ isOpen, onClose }) => {
                     <Image
                       src="/images/drive-img.png"
                       alt="Copy"
-                      width={32}
-                      height={32}
+                      width={58}
+                      height={58}
                       className="cursor-pointer"
                     />
                   </div>
@@ -123,8 +123,8 @@ const ReferralModel: React.FC<ReferralModelProps> = ({ isOpen, onClose }) => {
                     <Image
                       src="/images/logos_whatsapp.png"
                       alt="Copy"
-                      width={34}
-                      height={34}
+                      width={56}
+                      height={56}
                       className="cursor-pointer"
                     />
                   </div>

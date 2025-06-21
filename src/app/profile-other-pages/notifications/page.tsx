@@ -2,26 +2,32 @@
 
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import {
-  BackArrow,
-  RightArrowIcon,
-} from "../../../../public/svg-icons/icons";
+import { BackArrow, RightArrowIcon } from "../../../../public/svg-icons/icons";
 import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
 import { sound_Notifications } from "@/routes/profile";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
+import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
 
-const Notification = (
-) => {
+const Notification = () => {
   // State to manage sound and email notifications
   const [soundNotifications, setSoundNotifications] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(false);
 
   //   loading state
   const [loading, setLoading] = useState(false);
+  const [isToggled, setIsToggled] = useState(false);
+
+  const handleToggle = () => {
+    setIsToggled(!isToggled);
+  };
 
   useEffect(() => {
-    const sound = new URLSearchParams(window.location.search).get("sound_notifications");
-    const email = new URLSearchParams(window.location.search).get("email_notifications");
+    const sound = new URLSearchParams(window.location.search).get(
+      "sound_notifications"
+    );
+    const email = new URLSearchParams(window.location.search).get(
+      "email_notifications"
+    );
     setSoundNotifications(sound === "true");
     setEmailNotifications(email === "true");
   }, []);
@@ -34,7 +40,6 @@ const Notification = (
       // const dataObj = { enabled: value };
       // const data = await sound_Notifications(dataObj);
       // console.log("Sound notifications data:", data);
-
       // if (data.success) {
       //   console.log("Sound notifications updated successfully");
       // } else {
@@ -55,7 +60,6 @@ const Notification = (
       // const dataObj = { enabled: value };
       // const data = await sound_Notifications(dataObj);
       // console.log("Email notifications data:", data);
-
       // if (data.success) {
       //   console.log("Email notifications updated successfully");
       // } else {
@@ -79,7 +83,7 @@ const Notification = (
         <title>Notifications Settings</title>
       </Head>
       <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
-        <div className="w-full max-w-md px-4">
+        <div className="w-full max-w-md px-4 mt-[64px]">
           {/* Header */}
           <header className="flex items-center">
             <button
@@ -87,42 +91,43 @@ const Notification = (
               onClick={() => window.history.back()} // Simple back navigation
               className="p-2 -ml-2 mr-4" // Added padding for easier click and negative margin to align
             >
-              <BackArrow className="text-app-icon"/>
+              <BackArrow className="text-app-icon" width={24} height={24} />
             </button>
-            <h1 className="text-xl font-semibold text-app-text-primary font-plusJakartaSans">Notifications</h1>
+            <h1 className="text-[23px] font-semibold text-app-text-primary font-plusJakartaSans-700">
+              Notifications
+            </h1>
           </header>
           {/* Notification Settings List */}
-          <div className="">
-            <div className="flex justify-between items-center mt-4">
+          <div className="mt-[32px]">
+            <div className="flex justify-between items-center">
               <span
                 id="email-notifications-label"
-                className="text-sm text-app-text-primary font-plusJakartaSans"
+                className="text-[16px] text-app-text-primary font-plusJakartaSans-400"
               >
                 Turn on Sound notifications
               </span>
 
-              <SwitchComponent
-                required
-                disabled={false}
-                value={soundNotifications}
-                // onChange={handleSoundNotificationChange}
-                onclick={handleSoundNotificationChange}
+              <CustomToggle
+                checked={isToggled}
+                onCheckedChange={handleToggle}
+                aria-label="Enable or disable notifications"
+                singleChecked={false}
               />
             </div>
 
-            <div className="flex justify-between items-center mt-4">
+            <div className="flex justify-between items-center mt-[21px]">
               <span
                 id="email-notifications-label"
-                className="text-sm  text-app-text-primary font-plusJakartaSans"
+                className="text-[16px] text-app-text-primary font-plusJakartaSans-400"
               >
                 E-Mail notifications
               </span>
-              <SwitchComponent
-                required
-                disabled={false}
-                value={emailNotifications}
-                onChange={setEmailNotifications}
-                onclick={handleSoundNotificationChange}
+
+              <CustomToggle
+                checked={emailNotifications}
+                onCheckedChange={handleEmailNotificationChange}
+                aria-label="Enable or disable email notifications"
+                singleChecked={false}
               />
             </div>
           </div>
