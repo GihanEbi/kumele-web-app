@@ -40,7 +40,7 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
@@ -48,7 +48,7 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
             {/* Top section: Icon, Title, Close Button */}
             <div className="flex items-center justify-between mb-4">
               <div></div>
-              <h1 className="text-lg text-center font-bold text-app-text-primary font-plusJakartaSans">
+              <h1 className="text-[19px] font-plusJakartaSans-700 text-center font-bold text-app-text-primary">
                 Authenticator App Setup
               </h1>
               <button
@@ -63,23 +63,23 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
             </div>
 
             {/* body */}
-            <div className="flex flex-col">
+            <div className="flex flex-col px-2">
               {/* Step 1 */}
-              <div className="space-y-3">
-                <p className="text-sm font-plusJakartaSans text-app-text-primary">
+              <div className="">
+                <p className="text-[16px] font-plusJakartaSans-400 text-app-text-primary">
                   1. Open an authenticator app on your mobile device
                 </p>
-                <p className="text-xs font-plusJakartaSans text-app-text-primary">
+                <p className="text-[13px] font-plusJakartaSans-400 text-app-text-primary mt-[12px]">
                   If you don't have one, download and install one of the
                   recommended apps:
                 </p>
-                <div className="flex justify-between">
+                <div className="flex justify-between mt-[2px]">
                   <div className="flex flex-col items-center">
                     <Image
                       src="/images/google-auth.png"
                       alt="Google Authenticator"
-                      width={40}
-                      height={40}
+                      width={69}
+                      height={69}
                     />
                     <span className="text-xs font-plusJakartaSans text-app-text-primary text-center">
                       Google
@@ -90,8 +90,8 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                     <Image
                       src="/images/authenticator.png"
                       alt="Authy"
-                      width={40}
-                      height={40}
+                      width={69}
+                      height={69}
                     />
                     <span className="text-xs font-plusJakartaSans text-app-text-primary text-center">
                       Authy
@@ -99,10 +99,10 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                   </div>
                   <div className="flex flex-col items-center">
                     <Image
-                      src="/images/duo.png"
+                      src="/images/newDue1.png"
                       alt="Duo"
-                      width={80}
-                      height={80}
+                      width={69}
+                      height={69}
                     />
                     <span className="text-xs font-plusJakartaSans text-app-text-primary text-center">
                       Duo
@@ -112,8 +112,8 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                     <Image
                       src="/images/microsoft-auth.png"
                       alt="Microsoft Authenticator"
-                      width={40}
-                      height={40}
+                      width={69}
+                      height={69}
                     />
                     <span className="text-xs font-plusJakartaSans text-app-text-primary text-center">
                       Microsoft
@@ -122,43 +122,45 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                   </div>
                 </div>
                 {/* Step 2 */}
-                <div className=" text-center">
-                  <p className="text-left text-sm font-plusJakartaSans text-app-text-primary ">
+                <div className=" text-center mt-[12px]">
+                  <p className="text-left text-[16px] font-plusJakartaSans-400 text-app-text-primary ">
                     2. Scan this barcode with your{" "}
                     <strong className="font-bold text-sm font-plusJakartaSans text-app-text-primary ">
                       authenticator app
                     </strong>
                   </p>
-                  <div className="inline-block bg-white pt-2 rounded-lg">
+                  <div className="inline-block mt-[8px] bg-white pt-2 rounded-lg">
                     <Image
-                      src="/images/QR-code.png"
+                      src="/images/image-7.png"
                       alt="Authenticator QR code"
-                      width={80}
-                      height={80}
+                      width={109}
+                      height={109}
                     />
                   </div>
                   <div>
                     <Button
                       variant="link"
-                      className="text-xs font-plusJakartaSans text-app-text-primary "
+                      className="text-[13px] font-plusJakartaSans-400 text-app-text-primary "
                     >
                       Can't scan? Use text code instead
                     </Button>
                   </div>
                 </div>{" "}
                 {/* Step 3 */}
-                <div className="space-y-4">
-                  <p className="text-sm font-plusJakartaSans text-app-text-primary">
+                <div className="">
+                  <p className="text-[16px] mt-[12px] font-plusJakartaSans-400 text-app-text-primary">
                     3. Enter the six-digit code from the{" "}
                     <strong className="font-bold text-sm font-plusJakartaSans text-app-text-primary">
                       authenticator app
                     </strong>
                   </p>
-                  <InputComponent
-                    placeholder="Enter Verification Code Here"
-                    className="text-base"
-                  />
-                  <div className="flex items-center space-x-2">
+                  <div className="mt-[12px]">
+                    <InputComponent
+                      placeholder="Enter Verification Code Here"
+                      className="text-base "
+                    />
+                  </div>
+                  <div className="flex items-center mt-[14px] space-x-2">
                     <CheckBoxComponent
                       label="Trust this device"
                       onChange={() => {}}
@@ -168,9 +170,9 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                 </div>
                 <div>
                   <button
-                    className="text-sm w-full py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
+                    className="w-full mt-[15px] mb-[10px] text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                     onClick={() => {
-                        onClose();
+                      onClose();
                     }}
                   >
                     Submit
