@@ -292,7 +292,7 @@ const Signin = () => {
                   className={`py-2 px-5 rounded-md text-sm font-medium whitespace-nowrap flex-shrink-0 transition-colors duration-150
                   ${
                     activeTab === tab.id
-                      ? "bg-app-button-yellow text-app-text-primary font-medium"
+                      ? "bg-app-button-yellow text-app-text-black font-medium"
                       : "bg-app-input-primary text-app-text-secondary"
                   }`}
                 >
