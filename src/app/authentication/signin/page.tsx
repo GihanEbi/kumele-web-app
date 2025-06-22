@@ -453,6 +453,7 @@ const Signin = () => {
         isOpen={faceIdModel}
         onClose={() => {
           setFaceIdModel(false);
+          router.push("/user/home");
         }}
       />
       {/* Create Passkey Model */}

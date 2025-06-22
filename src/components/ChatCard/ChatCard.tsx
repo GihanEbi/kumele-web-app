@@ -1,6 +1,11 @@
+"use client";
+
 import React from "react";
 import NotificationBadge from "../NotificationCard/NotificationBadge";
 import { DeleteIcon, MoreOptionIcon } from "../../../public/svg-icons/icons";
+import MoreOptionModel from "./Models/MoreOptionsModel";
+import DropDownIconMenuComponent from "../DropDownIconMenuComponent/DropDownIconMenuComponent";
+import { useRouter } from "next/navigation";
 
 type ChatCardProps = {
   // Define any props you need here
@@ -28,6 +33,8 @@ const ChatCard: React.FC<ChatCardProps> = ({
   eventStatus,
   isActive,
 }) => {
+  const [showMoreOptions, setShowMoreOptions] = React.useState(false);
+  const router = useRouter();
   return (
     <div
       className={`bg-app-background-chat-card px-3 py-4 rounded-xl ${
@@ -44,7 +51,15 @@ const ChatCard: React.FC<ChatCardProps> = ({
           {icon}
           <div>{category}</div>
         </div>
-        <MoreOptionIcon className="text-app-text-primary cursor-pointer" />
+        <div
+          onClick={() => {
+            setShowMoreOptions(true);
+          }}
+        >
+          <div className="">
+            <DropDownIconMenuComponent />
+          </div>
+        </div>
       </div>
       {/* body */}
       <div className="flex mt-1 justify-between items-center">
@@ -71,10 +86,16 @@ const ChatCard: React.FC<ChatCardProps> = ({
           </p>
         </div>
       </div>
-
       {/* footer */}
       <div className="flex justify-between items-center mt-2">
-        <div className="text-sm text-app-text-tertiary font-plusJakartaSans bg-app-button-primary px-6 py-1 rounded-md">
+        <div
+          className="text-sm text-app-text-tertiary font-plusJakartaSans bg-app-button-primary px-6 py-1 rounded-md"
+          onClick={() => {
+            router.push("/more-options/chat-pages/chat");
+            console.log("Chat card clicked");
+            
+          }}
+        >
           {eventStatus}
         </div>
         {!isActive && (
@@ -82,7 +103,7 @@ const ChatCard: React.FC<ChatCardProps> = ({
             <DeleteIcon width={20} height={20} />
           </div>
         )}
-      </div>
+      </div>{" "}
     </div>
   );
 };

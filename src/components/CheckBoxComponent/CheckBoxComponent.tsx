@@ -26,8 +26,8 @@ const CheckBoxComponent: React.FC<CheckBoxComponentProps> = ({
     <div className="">
       <label className="flex items-center space-x-2.5 cursor-pointer">
         {/* <UnCheckedIcon /> */}
-        <CheckBoxSquareUncheckedIcon className="text-app-icon" />
-        <CheckBoxSquareCheckedIcon className="text-app-icon" />
+        {/* <CheckBoxSquareUncheckedIcon className="text-app-icon" />
+        <CheckBoxSquareCheckedIcon className="text-app-icon" /> */}
         <input
           type="checkbox"
           id={label}
