@@ -42,7 +42,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
         />
         <div className="flex-1">
           <h3
-            className={`text-xs font-semibold text-app-text-primary font-plusJakartaSans ${
+            className={`text-[14px] font-semibold text-app-text-primary font-plusJakartaSans-600 ${
               isShowCancelled &&
               isCancelled &&
               "pointer-events-none opacity-50 select-none"
@@ -76,14 +76,14 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
               "pointer-events-none opacity-50 select-none"
             }`}
           >
-            <span className="text-[10px] text-app-text-blue font-plusJakartaSans">
+            <span className="text-[11.33px] text-app-text-blue font-plusJakartaSans">
               {userName}{" "}
             </span>
             {description}
           </p>
         </div>
         <div>
-          <p className="flex flex-col items-end text-[10px] font-plusJakartaSans">
+          <p className="flex flex-col items-end text-[11.33px] font-plusJakartaSans-600">
             <div className="flex-end text-app-text-blue">{time}</div>
             {isShowCancelled && (
               <>

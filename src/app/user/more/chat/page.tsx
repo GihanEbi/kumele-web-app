@@ -54,26 +54,50 @@ const chatData = [
     eventStatus: "Event Cancelled",
     isActive: false,
   },
+  {
+    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    category: "House party",
+    title: "Group Meditation",
+    leftDays: "4",
+    hostBy: "Akesh Kumar",
+    date: "8th Oct, 2022",
+    review: "60%",
+    scannedList: "13",
+    eventStatus: "Event Cancelled",
+    isActive: false,
+  },
+  {
+    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    category: "House party",
+    title: "Group Meditation",
+    leftDays: "4",
+    hostBy: "Akesh Kumar",
+    date: "8th Oct, 2022",
+    review: "60%",
+    scannedList: "13",
+    eventStatus: "Event Cancelled",
+    isActive: false,
+  },
 ];
 
 const page = () => {
   //   loading state
   const [loading, setLoading] = useState(false);
   return (
-    <div>
+    <div className="overflow-y-auto max-h-screen no-scrollbar">
       {loading && (
         <div className="flex items-center justify-center min-h-screen">
           <LoadingComponent />
         </div>
       )}
-      <div className="min-h-screen px-2 bg-app-background-primary flex flex-col items-center pt-6 font-sans">
-        <div className="w-full max-w-md px-4">
-          <header className="flex items-center">
+      <div className="min-h-screen bg-app-background-primary flex flex-col">
+        <div className="w-full max-w-md px-4 top-0 left-0 right-0 ">
+          <header className="fixed w-full pt-[64px] pb-5 bg-app-background-primary flex items-center mb-10">
             <h1 className="text-xl font-bold text-app-text-primary font-plusJakartaSans">
               Chats
             </h1>
           </header>
-          <div>
+          <div className="mt-[130px]">
             {chatData.map((item, index) => (
               <div key={index} className="mt-5">
                 <ChatCard

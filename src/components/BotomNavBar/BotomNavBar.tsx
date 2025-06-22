@@ -27,8 +27,6 @@ const BottomNavBar = () => {
   const [showMoreOptionModel, setShowMoreOptionModel] = useState(false);
 
   useEffect(() => {
-    console.log(theme);
-    console.log(activePageIndex);
 
     if (theme === "light") {
       setSelectedColor("text-black");
