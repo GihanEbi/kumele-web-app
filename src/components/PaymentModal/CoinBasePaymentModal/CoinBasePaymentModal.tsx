@@ -50,7 +50,7 @@ export const CoinbasePaymentModal: React.FC<CoinbasePaymentModalProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-[2000] flex flex-col font-sans bg-app-background-primary">
+    <div className="fixed inset-0 z-[2000] flex flex-col font-sans bg-app-background-primary pt-[64px]">
       <div className="flex-grow w-full max-w-sm mx-auto p-6 flex flex-col">
         {/* Added a functional Back button --- */}
         <div className="flex items-center justify-between mb-8">

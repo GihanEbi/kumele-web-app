@@ -315,7 +315,7 @@ const CreateEventSection = () => {
 
   return (
     <div
-      className={`max-w-full mx-auto p-6 ${
+      className={`max-w-full mx-auto p-6 no-scrollbar ${
         isDatePickerOpen && isDark
           ? "bg-neutral-900"
           : isDatePickerOpen && !isDark
@@ -354,7 +354,7 @@ const CreateEventSection = () => {
       }`}
       onClick={closeModal}
     >
-      <div className="flex flex-row gap-5">
+      <div className="flex flex-row gap-5 pt-[64px]">
         <div className="mt-2">
           <Link href="/user/home">
             <BackToPageIcon />
