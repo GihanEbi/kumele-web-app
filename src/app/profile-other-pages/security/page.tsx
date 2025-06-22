@@ -8,11 +8,12 @@ import {
   BackArrow,
   PasswordIcon,
   RightArrowIcon,
-} from "../../../../../public/svg-icons/icons";
+} from "../../../../public/svg-icons/icons";
 import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
 import { sound_Notifications } from "@/routes/profile";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import AuthenticatorModel from "@/components/Models/AuthenticatorModel/AuthenticatorModel";
+import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
 
 const Security = () => {
   //   loading state
@@ -28,8 +29,8 @@ const Security = () => {
           <LoadingComponent />
         </div>
       )}
-      <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
-        <div className="w-full max-w-md px-4">
+      <div className="min-h-screen bg-app-background-primary flex flex-col items-center">
+        <div className="w-full max-w-md px-4 mt-[64px]">
           {/* Header */}
           <header className="flex items-center mb-5">
             <button
@@ -39,13 +40,13 @@ const Security = () => {
             >
               <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="mt-5 ml-5 text-xl font-bold text-app-text-primary font-plusJakartaSans">
+            <h1 className="mt-5 ml-5 text-[23px] font-semibold text-app-text-primary font-plusJakartaSans-700">
               Security
             </h1>
           </header>
           <div className="">
-            <div className="space-y-1 p-4 border-2 border-app-border-primary rounded-lg">
-              <div className="border-b-2 border-app-border-primary pb-4">
+            <div className="space-y-1 py-4 border-2 border-app-border-primary rounded-lg">
+              <div className="border-b-[2px] px-4 border-app-border-primary pb-4">
                 <div
                   onClick={() => {
                     router.push("/profile-other-pages/changePassword");
@@ -54,37 +55,41 @@ const Security = () => {
                 >
                   <div className="flex items-center space-x-3">
                     <PasswordIcon className="text-app-icon" />
-                    <span className="text-sm text-app-text-profile-tabs font-plusJakartaSans">
+                    <span className="text-[16px] text-app-text-profile-tabs font-plusJakartaSans-400">
                       Change Password
                     </span>
                   </div>
                   <div>
-                    <RightArrowIcon className="text-app-icon" />
+                    <RightArrowIcon
+                      className="text-app-icon"
+                      width={20}
+                      height={20}
+                    />
                   </div>
                 </div>
               </div>
               <div
-                className="flex justify-between items-center pb-2 pt-2"
+                className="flex justify-between px-4 items-center pb-2 pt-2"
                 onClick={() => {
                   setShowAuthenticatorModel(true);
-                  
                 }}
               >
                 <div className="flex items-center space-x-3">
                   <PasswordIcon className="text-app-icon" />
                   <span
                     id="email-notifications-label"
-                    className="text-sm text-app-text-profile-tabs font-plusJakartaSans"
+                    className="text-[16px] text-app-text-profile-tabs font-plusJakartaSans-400"
                   >
                     Two factor authentication
                   </span>
                 </div>
 
-                <SwitchComponent
-                  required
-                  disabled={false}
-                  // onChange={handleSoundNotificationChange}
-                  onclick={() => {}}
+                <CustomToggle
+                  id="two-factor-authentication"
+                  aria-label="Enable Two Factor Authentication"
+                  checked={false}
+                  onCheckedChange={() => {}}
+                  singleChecked={false}
                 />
               </div>
             </div>

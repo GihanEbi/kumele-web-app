@@ -3,6 +3,7 @@
 import React from "react";
 import Head from "next/head";
 import { BackArrow } from "../../../../public/svg-icons/icons";
+import { paddings } from "@/constants/layout-constants";
 
 const loremIpsumParagraph1 =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu fermentum augue, sit amet convallis augue. Integer eu iaculis sem, sed euismod eros. Nulla facilisi. Proin luctus odio nunc, sed laoreet est bibendum vitae. Sed a eleifend ex. Integer varius rhoncus euismod. Aliquam ac ultricies turpis, vitae eleifend ligula. Aliquam faucibus erat ut tincidunt cursus. Cras et ullamcorper velit. In hac habitasse platea dictumst. Nunc vitae dui quis risus elementum auctor.";
@@ -16,7 +17,7 @@ const TermsAndConditions = () => {
     <div>
       <div className="min-h-screen bg-app-background-primary flex flex-col">
         {/* Header */}
-        <header className="sticky top-0 bg-app-background-primary z-10 flex items-center justify-between p-4 ">
+        <header className={`${paddings.topMargin} sticky top-0 bg-app-background-primary z-10 flex items-center justify-between p-4`}>
           {/* Back Button - for actual navigation, you'd use <Link> or router.back() */}
           <button
             onClick={() =>
@@ -28,7 +29,7 @@ const TermsAndConditions = () => {
             <BackArrow className="text-app-icon" />
           </button>
 
-          <h1 className="text-xl ml-4 font-bold text-app-text-primary flex-grow font-plusJakartaSans">
+          <h1 className="text-[23px] ml-4 font-bold text-app-text-primary flex-grow font-plusJakartaSans-700">
             Terms & Conditions
           </h1>
 
@@ -37,11 +38,11 @@ const TermsAndConditions = () => {
         </header>
         {/* Main Content */}
         <main className="flex-grow p-4 ml-4">
-          <h2 className="text-sm text-app-text-primary mb-2 font-plusJakartaSans font-medium">
+          <h2 className="text-[16px] text-app-text-primary mb-2 font-plusJakartaSans-400 font-medium">
             Kumele Terms of use
           </h2>
 
-          <div className="space-y-6 text-xs text-app-text-primary font-plusJakartaSans leading-relaxed">
+          <div className="text-[13px] text-app-text-notifications-body font-plusJakartaSans-400 leading-relaxed">
             <p>{loremIpsumParagraph1}</p>
             <p>{loremIpsumParagraph2}</p>
             <p>{loremIpsumParagraph3}</p>

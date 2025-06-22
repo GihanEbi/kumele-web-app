@@ -37,30 +37,30 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ plan }) => {
           <div className="flex-1">
             <div className="flex justify-between items-start">
               <h3
-                className={`text-md font-semibold ${
+                className={`text-[19px] font-semibold ${
                   isActive ? "text-app-text-black" : "text-app-text-primary"
-                } font-plusJakartaSans`}
+                } font-plusJakartaSans-700`}
               >
                 {title}
               </h3>
               <p
-                className={`text-md font-semibold ${
+                className={`text-[19px] font-semibold ${
                   isActive ? "text-app-text-blue" : "text-app-text-yellow"
-                } font-plusJakartaSans`}
+                } font-plusJakartaSans-700`}
               >
                 {price}
               </p>
             </div>
 
             {isActive && (
-              <p className="text-sm font-bold text-app-text-blue font-plusJakartaSans">
+              <p className="text-[15px] font-bold text-app-text-blue font-plusJakartaSans-700">
                 Active
               </p>
             )}
 
             <div
               className={cn(
-                "text-sm",
+                "text-sm mt-[5px] font-plusJakartaSans-400",
                 isActive ? "text-app-text-black" : "text-app-text-secondary"
               )}
             >
@@ -69,7 +69,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ plan }) => {
               ))}
             </div>
 
-            <Button className={`w-3/4 mt-4 rounded-lg font-plusJakartaSans ${isActive ? "bg-app-button-white text-app-text-black" : "bg-app-button-primary text-app-text-tertiary"}`}>
+            <Button className={`w-3/4 mt-[12px] rounded-lg text-[16px] font-plusJakartaSans-400 ${isActive ? "bg-app-button-white text-app-text-black" : "bg-app-button-primary text-app-text-tertiary"}`}>
               {isActive ? "Deactivate" : "Activate"}
             </Button>
           </div>

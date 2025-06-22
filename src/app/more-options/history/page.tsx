@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import {
   BackArrow,
@@ -10,6 +10,11 @@ import Image from "next/image";
 import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import { authConstants } from "@/constants/auth-constants";
 import BarChart from "@/components/BarChart/BarChart";
+import DropDown from "@/components/DropDown/DropDown";
+import { paddings } from "@/constants/layout-constants";
+import GoldModel from "./models/GoldModel";
+import SilverModel from "./models/SilverModel";
+import BronzeModel from "./models/BronzeModel";
 // Mock data for the medal icon GIF
 const MOCK_MEDAL_ICON_SRC = "/common-gifs/badge.gif";
 
@@ -59,23 +64,6 @@ const yearlyData = {
     },
   },
 };
-// Define the shape of our data
-interface ChartDataItem {
-  month: string;
-  value: number; // Value from 0 to 100
-}
-
-// Sample data that mimics the image
-const chartData: ChartDataItem[] = [
-  { month: 'Mar', value: 85 },
-  { month: 'Apr', value: 50 },
-  { month: 'May', value: 95 },
-  { month: 'Jun', value: 75 },
-  { month: 'Jul', value: 30 },
-  { month: 'Aug', value: 100 },
-  { month: 'Sep', value: 50 },
-  { month: 'Oct', value: 98 },
-];
 
 const PieChart = () => {
   const goldColorPie = "#eab308";
@@ -100,8 +88,173 @@ const PieChart = () => {
     ></div>
   );
 };
+
+interface MonthStatDetail {
+  title: string;
+  amount: number;
+  description: string;
+  iconSymbol?: string;
+}
+
+interface BarDataPoint {
+  month: string;
+  value: number;
+  stats?: MonthStatDetail[];
+}
+
+interface YearData {
+  totalEarned: number;
+  data: BarDataPoint[];
+}
+
+const yearlyMockData: {
+  "2022": YearData;
+} = {
+  "2022": {
+    totalEarned: 905,
+    data: [
+      {
+        month: "Mar",
+        value: 80,
+        stats: [
+          {
+            title: "Spring Promo",
+            amount: 200,
+            description: "Campaign A",
+            iconSymbol: "🌸",
+          },
+        ],
+      },
+      {
+        month: "Apr",
+        value: 50,
+        stats: [
+          {
+            title: "Workshop Fees",
+            amount: 450,
+            description: "Spirituality",
+            iconSymbol: "🛠️",
+          },
+        ],
+      }, // No specific stats for April
+      {
+        month: "May",
+        value: 90,
+        stats: [
+          {
+            title: "Workshop Fees",
+            amount: 350,
+            description: "Advanced",
+            iconSymbol: "🛠️",
+          },
+        ],
+      },
+      {
+        month: "Jun",
+        value: 70,
+        stats: [
+          {
+            title: "Group meditation",
+            amount: 305,
+            description: "Spirituality",
+            iconSymbol: "☯️",
+          },
+          {
+            title: "90's Hip-Hop",
+            amount: 100,
+            description: "HouseF",
+            iconSymbol: "🏠",
+          },
+        ],
+      },
+      {
+        month: "Jul",
+        value: 30,
+        stats: [
+          {
+            title: "Workshop Fees",
+            amount: 350,
+            description: "Advanced",
+            iconSymbol: "🛠️",
+          },
+        ],
+      },
+      {
+        month: "Aug",
+        value: 100,
+        stats: [
+          {
+            title: "Summer Special",
+            amount: 400,
+            description: "Limited Time",
+            iconSymbol: "☀️",
+          },
+        ],
+      },
+      {
+        month: "Sep",
+        value: 55,
+        stats: [
+          {
+            title: "Group meditation",
+            amount: 305,
+            description: "Spirituality",
+            iconSymbol: "☯️",
+          },
+          {
+            title: "90's Hip-Hop",
+            amount: 100,
+            description: "HouseF",
+            iconSymbol: "🏠",
+          },
+        ],
+      },
+      {
+        month: "Oct",
+        value: 85,
+        stats: [
+          {
+            title: "Workshop Fees",
+            amount: 350,
+            description: "Advanced",
+            iconSymbol: "🛠️",
+          },
+        ],
+      },
+      {
+        month: "Nov",
+        value: 65,
+        stats: [
+          {
+            title: "Group meditation",
+            amount: 305,
+            description: "Spirituality",
+            iconSymbol: "☯️",
+          },
+          {
+            title: "90's Hip-Hop",
+            amount: 100,
+            description: "HouseF",
+            iconSymbol: "🏠",
+          },
+        ],
+      },
+    ],
+  },
+};
+type YearKey = keyof typeof yearlyMockData;
 const page = () => {
   const [year, setYear] = useState("2022");
+  const [selectedYear, setSelectedYear] = useState<YearKey>("2022");
+  // Initial month is "Jun" for 2022 to match the image, otherwise null (overview)
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(
+    selectedYear === "2022" ? "Jun" : null
+  );
+  const currentYearData: YearData = yearlyMockData[selectedYear] || {
+    totalEarned: 0,
+    data: [],
+  };
+  const [isDropdownSelected, setIsDropdownSelected] = useState<boolean>(false);
   //   loading state
   const [loading, setLoading] = useState(false);
 
@@ -110,6 +263,19 @@ const page = () => {
     (sum, item) => sum + item.value,
     0
   );
+
+  const [isGoldOpen, setIsGoldOpen] = useState(false);
+  const [isSilverOpen, setIsSilverOpen] = useState(false);
+  const [isBronzeOpen, setIsBronzeOpen] = useState(false);
+
+  //lock background when modal opening
+  useEffect(() => {
+    if (isGoldOpen || isSilverOpen || isBronzeOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isGoldOpen, isSilverOpen, isBronzeOpen]);
   return (
     <div>
       {loading && (
@@ -118,7 +284,7 @@ const page = () => {
         </div>
       )}
       <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
-        <div className="w-full max-w-md px-4">
+        <div className={`w-full max-w-md px-6 ${paddings.topMargin}`}>
           {/* Header */}
           <header className="flex items-center mb-10">
             <button
@@ -128,7 +294,7 @@ const page = () => {
             >
               <BackArrow className="text-app-icon" />
             </button>
-            <h1 className="text-3xl font-bold text-app-text-primary font-plusJakartaSans">
+            <h1 className="ml-5 text-[23px] font-semibold text-app-text-primary font-plusJakartaSans-700">
               History
             </h1>
           </header>
@@ -137,7 +303,7 @@ const page = () => {
             {/* title and pie chart */}
             <div>
               <div className="flex justify-between items-center">
-                <h2 className="text-md text-app-text-primary font-plusJakartaSans">
+                <h2 className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
                   Reward Rings
                 </h2>
                 <div className="ml-2">
@@ -157,23 +323,28 @@ const page = () => {
             </div>
             {/* drop down and medals */}
             <div className="flex flex-col items-center ml-8">
-              <div className="w-1/2">
-                <SelectComponent
-                  handleChange={(e) => {}}
-                  items={authConstants.yearList}
-                  placeholder=""
+              <div className="">
+                <DropDown
+                  dataArray={authConstants.yearList}
+                  isOpen={(value: boolean) => {
+                    setIsDropdownSelected(value);
+                  }}
+                  placeHolder="2022"
+                  bgColor="bg-app-border"
                 />
               </div>
               <div className="mt-4 flex">
                 <div className="w-6 h-6 bg-yellow-500 rounded-full" />
                 <div className="flex flex-col ml-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-md text-app-text-primary font-plusJakartaSans">
+                    <span className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
                       Gold
                     </span>
-                    <TermsAndConditionsIcon className="text-app-icon w-4 h-4" />
+                    <div onClick={() => setIsGoldOpen(true)}>
+                      <TermsAndConditionsIcon className="text-app-icon w-4 h-4" />
+                    </div>
                   </div>
-                  <p className="text-xs text-app-text-secondary font-plusJakartaSans">
+                  <p className="text-[13px] text-app-text-secondary font-plusJakartaSans-400">
                     Achieved 22 medals
                   </p>
                 </div>
@@ -182,12 +353,14 @@ const page = () => {
                 <div className="w-6 h-6 bg-gray-500 rounded-full" />
                 <div className="flex flex-col ml-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-md text-app-text-primary font-plusJakartaSans">
+                    <span className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
                       Silver
                     </span>
-                    <TermsAndConditionsIcon className="text-app-icon w-4 h-4" />
+                    <div onClick={() => setIsSilverOpen(true)}>
+                      <TermsAndConditionsIcon className="text-app-icon w-4 h-4" />
+                    </div>
                   </div>
-                  <p className="text-xs text-app-text-secondary font-plusJakartaSans">
+                  <p className="text-[13px] text-app-text-secondary font-plusJakartaSans-400">
                     Achieved 1 medals
                   </p>
                 </div>
@@ -196,12 +369,15 @@ const page = () => {
                 <div className="w-6 h-6 bg-orange-500 rounded-full" />
                 <div className="flex flex-col ml-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-md text-app-text-primary font-plusJakartaSans">
+                    <span className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
                       Bronze
                     </span>
-                    <TermsAndConditionsIcon className="text-app-icon w-4 h-4" />
+
+                    <div onClick={() => setIsBronzeOpen(true)}>
+                      <TermsAndConditionsIcon className="text-app-icon w-4 h-4" />
+                    </div>
                   </div>
-                  <p className="text-xs text-app-text-secondary font-plusJakartaSans">
+                  <p className="text-[13px] text-app-text-secondary font-plusJakartaSans-400">
                     Achieved 1 medals
                   </p>
                 </div>
@@ -209,14 +385,27 @@ const page = () => {
             </div>
           </div>
 
-          <div className="text-md text-app-text-primary font-plusJakartaSans mt-5">
+          <div className="text-[16px] text-app-text-primary-400 font-plusJakartaSans mt-5 mb-[16px]">
             Money Earned USD $905
           </div>
           <div>
-            <BarChart chartData={chartData} />
+            <BarChart
+              data={currentYearData.data}
+              selectedMonth={selectedMonth}
+            />
           </div>
         </div>
       </div>
+      {/* Medal Details Modals */}
+      <GoldModel isOpen={isGoldOpen} onClose={() => setIsGoldOpen(false)} />
+      <SilverModel
+        isOpen={isSilverOpen}
+        onClose={() => setIsSilverOpen(false)}
+      />
+      <BronzeModel
+        isOpen={isBronzeOpen}
+        onClose={() => setIsBronzeOpen(false)}
+      />
     </div>
   );
 };

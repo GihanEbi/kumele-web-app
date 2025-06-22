@@ -1370,7 +1370,7 @@ export function PasswordIcon(props: passwordProps) {
   return (
     <svg
       width="24"
-      height="25"
+      height="24"
       viewBox="0 0 24 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -2495,8 +2495,8 @@ export function RightArrowIcon(props: commonProps) {
 export function MasterCardIcon() {
   return (
     <svg
-      width="30"
-      height="30"
+      width="36"
+      height="21"
       viewBox="0 0 44 26"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
