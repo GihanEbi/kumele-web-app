@@ -60,10 +60,10 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
           : isSuccess && !isDark
           ? "bg-gray-200"
           : "bg-app-background-primary"
-      }  font-sans`}
+      }  pt-[64px]`}
     >
       {/* Header */}
-      <div className="p-4  border-gray-200">
+      <div className="p-4  border-gray-200 ">
         <div className="flex items-center gap-4 max-w-md mx-auto">
           <button onClick={onClose} className="p-2 -ml-2">
             <BackToPageIcon className="w-6 h-6" />

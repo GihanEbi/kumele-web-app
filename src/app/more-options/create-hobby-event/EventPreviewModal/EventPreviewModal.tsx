@@ -41,22 +41,8 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
   const [isInviteModalOpen, setInviteModalOpen] = useState<boolean>(false);
   if (!isOpen) return null;
 
-
-  // useEffect(() => {
-  //     if (isOpen) {
-  //       document.body.style.overflow = "hidden";
-  //     } else {
-  //       document.body.style.overflow = "unset";
-  //     }
-  //     return () => {
-  //       // Cleanup
-  //       document.body.style.overflow = "unset";
-  //     };
-  //   }, [isOpen]);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
-
-
 
   const { eventData, hostData, otherEvents } = {
     eventData: mockEventData,
@@ -141,7 +127,7 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
                 {eventData.title}
               </h1>
               <button
-              onClick={()=>setInviteModalOpen(true)}
+                onClick={() => setInviteModalOpen(true)}
                 className={`${
                   isDark ? "bg-white" : "bg-black"
                 }  p-2 rounded-lg`}
