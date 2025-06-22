@@ -45,7 +45,7 @@ const DeleteAccountModel: React.FC<DeleteAccountModelProps> = ({
                   width={100}
                   height={100}
                 /> */}
-                <ErrorGif  className="text-app-icon"/>
+                <ErrorGif />
               </div>
               <p className="text-app-text-primary font-plusJakartaSans-700 text-[19px] font-semibold mb-6 text-center">
                 Are you sure? This action cannot be undone. Please retype

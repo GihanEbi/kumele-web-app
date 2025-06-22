@@ -40,7 +40,7 @@ const UsersAroundModal: React.FC<UsersAroundModalProps> = ({
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         <div className="mb-6">
-          <HotChocolateGif className="bg-white" />
+          <HotChocolateGif/>
         </div>
 
         <div className="min-h-[160px]">

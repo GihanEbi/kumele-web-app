@@ -15,6 +15,7 @@ import { paddings } from "@/constants/layout-constants";
 import GoldModel from "./models/GoldModel";
 import SilverModel from "./models/SilverModel";
 import BronzeModel from "./models/BronzeModel";
+import MedalGif from "@/components/GifComponents/MedalGif/MedalGif";
 // Mock data for the medal icon GIF
 const MOCK_MEDAL_ICON_SRC = "/common-gifs/badge.gif";
 
@@ -285,7 +286,7 @@ const page = () => {
       )}
       <div
         className={`min-h-screen flex flex-col items-center pt-6 ${
-          isGoldOpen || isSilverOpen || isBronzeOpen
+          isGoldOpen || isSilverOpen || isBronzeOpen || isDropdownSelected
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
         } font-sans`}
@@ -313,14 +314,15 @@ const page = () => {
                   Reward Rings
                 </h2>
                 <div className="ml-2">
-                  <Image
+                  <MedalGif width={24} height={24} />
+                  {/* <Image
                     src={MOCK_MEDAL_ICON_SRC}
                     alt={`Medal icon`}
                     width={24} // Adjust size as needed
                     height={24} // Adjust size as needed
                     className="object-contain" // object-contain if your GIF isn't perfectly square
                     unoptimized={true} // GIFs are often better unoptimized with next/image
-                  />
+                  /> */}
                 </div>
               </div>
               <div className="mt-5">
