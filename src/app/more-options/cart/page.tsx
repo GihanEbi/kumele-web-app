@@ -68,7 +68,7 @@ const PaymentPage = () => {
           : isPaymentSuccess && !isDark
           ? "bg-gray-200"
           : "bg-app-background-primary"
-      } `}>
+      } pt-[64px]` }>
         <div className="flex-grow p-6 overflow-y-auto">
           {/* Header */}
           <div className="flex items-center gap-4">

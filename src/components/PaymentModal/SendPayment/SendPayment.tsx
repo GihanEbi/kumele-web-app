@@ -34,7 +34,7 @@ export const SendPaymentModal: React.FC<SendPaymentModalProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-[2000] flex flex-col font-sans bg-app-background-primary">
+    <div className="fixed inset-0 z-[2000] flex flex-col font-sans bg-app-background-primary pt-[64px]">
       {/* Main content container with padding and max-width */}
       <div className="flex-grow w-full max-w-sm mx-auto p-6 flex flex-col">
         {/* Header */}

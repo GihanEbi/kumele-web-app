@@ -25,19 +25,27 @@ export default function CommentItem({
   const repliesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (repliesOpen && hasReplies && lineRef.current && repliesContainerRef.current) {
+    if (
+      repliesOpen &&
+      hasReplies &&
+      lineRef.current &&
+      repliesContainerRef.current
+    ) {
       const lastReply = repliesContainerRef.current.lastElementChild;
       if (lastReply) {
-        const lastAvatar = lastReply.querySelector('img, [class*="rounded-full"]');
+        const lastAvatar = lastReply.querySelector(
+          'img, [class*="rounded-full"]'
+        );
         if (lastAvatar) {
           const lineRect = lineRef.current.getBoundingClientRect();
           const lastAvatarRect = lastAvatar.getBoundingClientRect();
-          const height = lastAvatarRect.top - lineRect.top + lastAvatar.clientHeight / 2;
+          const height =
+            lastAvatarRect.top - lineRect.top + lastAvatar.clientHeight / 2;
           lineRef.current.style.height = `${height}px`;
         }
       }
     } else if (lineRef.current) {
-      lineRef.current.style.height = '0px';
+      lineRef.current.style.height = "0px";
     }
   }, [repliesOpen, hasReplies]);
 
@@ -54,15 +62,14 @@ export default function CommentItem({
 
   return (
     <div className="relative">
-      {/* horizontal dotted lines */}
       {isReply && (
         <div
-          className="absolute top-7 -left-11 h-px w-11 border-t border-dotted border-black dark:border-white"
+          className="absolute top-7 -left-11 h-px w-11 bg-[repeating-linear-gradient(to_right,black_0_2px,transparent_2px_8px)] dark:bg-[repeating-linear-gradient(to_right,white_0_2px,transparent_2px_8px)]"
           aria-hidden="true"
         />
       )}
+
       <div className="flex gap-4">
-       
         <div className="relative z-10 flex-shrink-0">
           {comment.avatarUrl ? (
             <Image
@@ -85,9 +92,9 @@ export default function CommentItem({
           {hasReplies && (
             <div
               ref={lineRef}
-              className="absolute -left-11 top-7 w-px border-l border-dotted border-black dark:border-white transition-all duration-300"
+              className="absolute -left-11 top-7 w-px bg-[repeating-linear-gradient(to_bottom,black_0_2px,transparent_2px_8px)] dark:bg-[repeating-linear-gradient(to_bottom,white_0_2px,transparent_2px_8px)] transition-all duration-300"
               aria-hidden="true"
-              style={{ height: 0 }}
+              style={{ height: 100 }} // Change height dynamically as needed
             />
           )}
 
