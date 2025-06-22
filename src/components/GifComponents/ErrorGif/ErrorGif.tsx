@@ -18,14 +18,10 @@ const ErrorGif: React.FC<animationProps> = ({
   autoplay = true,
   className,
 }) => {
-  const colored = customizeLottieColors(
-    animationData,
-    "#FFD966" // default to yellow
-  );
   return (
     <div>
       <Lottie
-        animationData={colored}
+        animationData={animationData}
         loop={loop}
         autoplay={autoplay}
         style={{ width, height }}

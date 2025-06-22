@@ -6,6 +6,8 @@ import {
   BackArrow,
   HousePartyNotificationIcon,
   LiveMusicNotificationIcon,
+  NewSpiritualityNotificationIcon,
+  SpiritualityNotificationIcon,
   TermsAndConditionsIcon,
 } from "../../../../public/svg-icons/icons";
 import { useRouter } from "next/navigation";
@@ -16,7 +18,7 @@ const matchedHobbies = [
   {
     userImg: "/images/notification img3.jpg",
     title: "Group meditation",
-    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
     time: "12.33 PM",
     category: "Spirituality",
     userName: "Akesh kumar",
@@ -28,7 +30,7 @@ const matchedHobbies = [
   {
     userImg: "/images/notification img1.jpg",
     title: "Psychedelic jazz",
-    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
     time: "12.33 PM",
     category: "House party",
     userName: "Riya Sharma",
@@ -43,7 +45,7 @@ const createdHobbies = [
   {
     userImg: "/images/notification img3.jpg",
     title: "Group meditation",
-    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
     time: "12.33 PM",
     category: "Spirituality",
     userName: "Akesh kumar",
@@ -55,7 +57,7 @@ const createdHobbies = [
   {
     userImg: "/images/notification img1.jpg",
     title: "Psychedelic jazz",
-    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
     time: "12.33 PM",
     category: "House party",
     userName: "Riya Sharma",
@@ -70,7 +72,7 @@ const otherNotifications = [
   {
     userImg: "/images/notification img1.jpg",
     title: "Psychedelic jazz",
-    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
     time: "12.33 PM",
     category: "House party",
     userName: "Riya Sharma",

@@ -90,11 +90,11 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         </div>
 
         {/* Discount Code */}
-        <div className="mt-6 flex flex-row sm:flex-row gap-3">
+        <div className="mt-6 flex sm:flex-row gap-1">
           <input
             type="text"
             placeholder="Enter Discount code"
-            className="flex-grow bg-app-search-bar-background  rounded-lg px-4 py-3 text-white placeholder-app-search-bar-text placeholder:font-plusJakartaSans placeholder:font-normal placeholder:text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-grow bg-app-search-bar-background  rounded-lg px-2 py-3 text-white placeholder-app-search-bar-text placeholder:font-plusJakartaSans placeholder:font-normal placeholder:text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button className="bg-app-background-card-secondary text-app-button-text-color font-plusJakartaSans font-normal text-[15px] px-8 py-2 rounded-lg">
             Apply

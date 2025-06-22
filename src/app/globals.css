@@ -97,6 +97,7 @@
   --color-app-button-radio: var(--app-button-radio);
   --color-app-icon: var(--app-icon);
   --color-app-icon-muted: var(--app-icon-muted);
+  --color-app-badge-background: var(--app-badge-background);
   --color-app-button-text-color: var(--app-button-text-color);
   --color-app-range-slider-primary: var(--app-range-slider-primary);
   --color-app-range-slider-secondary: var(--app-range-slider-secondary);
@@ -213,6 +214,7 @@
   --app-okay-icon-background: oklch(0.9581 0 0);
   --app-okay-icon-filter: oklch(0.9581 0 0);
   --app-icon-muted: oklch(0.5278 0 89.88);
+  --app-badge-background: oklch(0.2393 0 89.88); 
 
   /* INPUT */
   --app-input-primary: oklch(0.9551 0 89.88); /* #F4F4F4 */
@@ -365,6 +367,7 @@
   --app-okay-icon-background: oklch(0.9581 0 0);
   --app-okay-icon-filter: oklch(0.2393 0 89.88);
   --app-icon-muted: oklch(0.5278 0 89.88);
+  --app-badge-background: oklch(0.9551 0 89.88); 
 
   /* INPUT */
   --app-input-primary: oklch(0.2393 0 89.88);

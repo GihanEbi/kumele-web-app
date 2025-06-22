@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,17 +19,19 @@ type SubscriptionCardProps = {
 
 const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ plan }) => {
   const { title, price, priceColor, description, isActive } = plan;
+
+  const [activeCard, setActiveCard] = React.useState<boolean>(isActive);
   return (
     <Card
       className={cn(
         "rounded-2xl border-none p-1",
-        isActive ? "bg-app-input-yellow" : "bg-app-input-primary"
+        activeCard ? "bg-app-input-yellow" : "bg-app-input-primary"
       )}
     >
       <CardContent className="p-2">
         <div className="flex gap-6">
           <div className="flex-shrink-0">
-            {isActive ? (
+            {activeCard ? (
               <CrownNormalIcon />
             ) : (
               <CrownIcon className="text-app-icon" />
@@ -38,21 +42,21 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ plan }) => {
             <div className="flex justify-between items-start">
               <h3
                 className={`text-[19px] font-semibold ${
-                  isActive ? "text-app-text-black" : "text-app-text-primary"
+                  activeCard ? "text-app-text-black" : "text-app-text-primary"
                 } font-plusJakartaSans-700`}
               >
                 {title}
               </h3>
               <p
                 className={`text-[19px] font-semibold ${
-                  isActive ? "text-app-text-blue" : "text-app-text-yellow"
+                  activeCard ? "text-app-text-blue" : "text-app-text-yellow"
                 } font-plusJakartaSans-700`}
               >
                 {price}
               </p>
             </div>
 
-            {isActive && (
+            {activeCard && (
               <p className="text-[15px] font-bold text-app-text-blue font-plusJakartaSans-700">
                 Active
               </p>
@@ -61,16 +65,25 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ plan }) => {
             <div
               className={cn(
                 "text-sm mt-[5px] font-plusJakartaSans-400",
-                isActive ? "text-app-text-black" : "text-app-text-secondary"
+                activeCard ? "text-app-text-black" : "text-app-text-secondary"
               )}
             >
               {description.map((line, index) => (
-                <p className="text-sm" key={index}>{line}</p>
+                <p className="text-sm" key={index}>
+                  {line}
+                </p>
               ))}
             </div>
 
-            <Button className={`w-3/4 mt-[12px] rounded-lg text-[16px] font-plusJakartaSans-400 ${isActive ? "bg-app-button-white text-app-text-black" : "bg-app-button-primary text-app-text-tertiary"}`}>
-              {isActive ? "Deactivate" : "Activate"}
+            <Button
+              className={`w-3/4 mt-[12px] rounded-lg text-[16px] font-plusJakartaSans-400 ${
+                activeCard
+                  ? "bg-app-button-white text-app-text-black"
+                  : "bg-app-button-primary text-app-text-tertiary"
+              }`}
+              onClick={() => setActiveCard(!activeCard)}
+            >
+              {activeCard ? "Deactivate" : "Activate"}
             </Button>
           </div>
         </div>
