@@ -192,10 +192,10 @@ export default function BlogDetailPage() {
     <div
       className={`w-full mx-auto p-6 font-sans mb-12 ${
         isReplyOpen && !isDark ? "bg-gray-100" : ""
-      }`}
+      } pb-80`}
     >
       {/* Blog Image */}
-      <div className="mb-6">
+      <div className="mb-6 pt-[64px]">
         <Image
           src={post.imageUrl}
           alt={post.title}

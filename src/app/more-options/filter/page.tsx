@@ -15,9 +15,12 @@ import SliderComponent from "@/components/SliderComponent/SliderComponent";
 import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
 import { paddings } from "@/constants/layout-constants";
 import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   //   loading state
+  // routing
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [editLocation, setEditLocation] = useState(false);
   const [editEvents, setEditEvents] = useState(false);
@@ -50,7 +53,9 @@ const page = () => {
               <h2 className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
                 Current Location
               </h2>
-              <h2 className="text-[13px] text-app-text-yellow font-plusJakartaSans-700">
+              <h2 className="text-[13px] text-app-text-yellow font-plusJakartaSans-700" onClick={()=>{
+                router.push("/user/shop");
+              }}>
                 CHANGE
               </h2>
             </div>
@@ -130,9 +135,9 @@ const page = () => {
                 singleChecked={false}
               />
             </div>
-            <div className="pt-4 mt-[64px] mb-[34px]">
+            <div className="pt-4 mb-[34px]">
               <button
-              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                 onClick={() => {}}
               >
                 Apply

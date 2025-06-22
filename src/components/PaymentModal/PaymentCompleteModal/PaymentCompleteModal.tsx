@@ -25,7 +25,7 @@ export const PaymentCompleteModal: React.FC<PaymentCompleteModalProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-[2000] flex flex-col font-sans bg-app-background-primary">
+    <div className="fixed inset-0 z-[2000] flex flex-col font-sans bg-app-background-primary pt-[64px]">
       <div className="w-full max-w-sm mx-auto p-6 flex flex-col flex-grow">
         {/* Header */}
         <div className="flex items-center justify-center gap-2 mb-8">
