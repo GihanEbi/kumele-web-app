@@ -42,6 +42,7 @@ import {
   SvgIcon8,
   SvgIcon9,
 } from "../../../../public/svg-icons/newInterestIcons";
+import MedalGif from "@/components/GifComponents/MedalGif/MedalGif";
 
 interface MedalInfo {
   id: string;
@@ -453,14 +454,15 @@ const MedalCard: React.FC<MedalCardProps> = ({ medal }) => {
     <div className="ml-5 items-start space-x-4">
       <div className="flex-shrink-0 mt-1">
         {/* If using next/image for GIF. May need unoptimized={true} for some GIFs */}
-        <Image
+        {/* <Image
           src={medal.iconSrc}
           alt={`${medal.title} icon`}
           width={40} // Adjust size as needed
           height={40} // Adjust size as needed
           className="rounded-full object-contain" // object-contain if your GIF isn't perfectly square
           unoptimized={true} // GIFs are often better unoptimized with next/image
-        />
+        /> */}
+        <MedalGif width={40} height={40} />
       </div>
       <div className="mt-5">
         <h2 className="text-[19px] font-semibold font-plusJakartaSans-700 text-app-text-primary">

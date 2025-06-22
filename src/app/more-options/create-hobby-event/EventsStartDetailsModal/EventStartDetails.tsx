@@ -55,7 +55,7 @@ const EventsTimeDetailsModal: React.FC<EventsTimeDetailsModalProps> = ({
         </button>
 
         <div className="flex justify-center">
-          <HotChocolateGif width={75} height={75} className="dark:bg-white" />
+          <HotChocolateGif width={75} height={75}/>
         </div>
 
         <h2 className="mt-4 text-center text-app-button-model-text-color font-plusJakartaSans font-bold text-[19px]">

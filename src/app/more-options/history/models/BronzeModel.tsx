@@ -26,21 +26,19 @@ const BronzeModel: React.FC<ModelProps> = ({ isOpen, onClose }) => {
         <div className="flex justify-end" onClick={onClose}>
           <CloseIcon className="text-app-icon" width={24} height={24} />
         </div>
-        <MedalGif
-          width={75}
-          height={75}
-          className="mx-auto h-14 w-14 dark:bg-white"
-        />
+        <div className="flex flex-col items-center">
+          <MedalGif width={75} height={75} />
 
-        <h2 className="mt-6 text-app-button-model-text-color font-plusJakartaSans font-bold text-[19px]">
-          Bronze Status
-        </h2>
+          <h2 className="mt-6 text-app-button-model-text-color font-plusJakartaSans font-bold text-[19px]">
+            Bronze Status
+          </h2>
 
-        <p className="mt-3 leading-relaxed text-app-text-medal-model font-plusJakartaSans-400 font-normal text-[16px]">
-          User created a minimum of 3 events or user attended a minimum of 3
-          events without fail in the last 30 days. The user gets 4% discount of
-          one in-app purchase of choice.
-        </p>
+          <p className="mt-3 leading-relaxed text-app-text-medal-model font-plusJakartaSans-400 font-normal text-[16px]">
+            User created a minimum of 3 events or user attended a minimum of 3
+            events without fail in the last 30 days. The user gets 4% discount
+            of one in-app purchase of choice.
+          </p>
+        </div>
       </div>
     </div>
   );

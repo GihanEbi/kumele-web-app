@@ -138,7 +138,6 @@ const HomeEventCard = ({
                     <ClockGif
                       width={19}
                       height={19}
-                      className={`${isDark ? "bg-white" : ""}`}
                     />
                     <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
                       {event.startsIn}

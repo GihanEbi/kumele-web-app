@@ -71,7 +71,7 @@ const GuestPricesModal: React.FC<GuestPricesModalProps> = ({
         {/* Top Icon */}
         <div className="flex justify-center">
           {/* <MugIcon className="h-12 w-12 text-black dark:text-white" /> */}
-          <HotChocolateGif width={76} height={76} className="dark:bg-white" />
+          <HotChocolateGif width={76} height={76}/>
         </div>
 
         {/* Title */}
