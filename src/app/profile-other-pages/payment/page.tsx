@@ -88,6 +88,7 @@ const subscriptionPlans = [
 const Payment = () => {
   //   loading state
   const [loading, setLoading] = useState(false);
+  const [checkedCard, setCheckedCard] = useState<number | null>(null);
   return (
     <div className="overflow-y-auto max-h-screen no-scrollbar">
       {loading && (
@@ -117,11 +118,33 @@ const Payment = () => {
             <RadioGroup name="card-selection">
               {cardDetails.map((option, index) => (
                 <div className="flex ml-5 items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <RadioGroupItem
-                      value={option.cardNumber}
-                      id={option.cardNumber}
+                  <div
+                    className="flex items-center gap-3"
+                    onClick={(e) => {
+                      setCheckedCard(index);
+                    }}
+                  >
+                    <input
+                      key={index}
+                      type="checkbox"
+                      name={""}
+                      checked={checkedCard === index}
+                      className="peer hidden"
                     />
+
+                    <div
+                      className={`w-4.5 h-4.5 rounded-full border-2 ${
+                        checkedCard !== index
+                          ? "border-app-button-radio"
+                          : "border-app-button-blue"
+                      } flex items-center justify-center`}
+                    >
+                      <div
+                        className={`w-2.5 h-2.5 rounded-2xl ${
+                          checkedCard !== index ? "" : "bg-app-button-blue"
+                        } transition-all`}
+                      />
+                    </div>
                     <div className="">
                       <div className="flex items-center gap-1">
                         <p className="text-[13.09px] text-app-text-profile-tabs font-plusJakartaSans-400">
