@@ -1,5 +1,7 @@
 import React from "react";
 import {
+  CheckboxDarkIcon,
+  CheckboxLightIcon,
   CheckBoxSquareCheckedIcon,
   CheckBoxSquareUncheckedIcon,
   UnCheckedIcon,
@@ -24,23 +26,31 @@ const CheckBoxComponent: React.FC<CheckBoxComponentProps> = ({
 }) => {
   return (
     <div className="">
-      <label className="flex items-center space-x-2.5 cursor-pointer">
-        {/* <UnCheckedIcon /> */}
-        {/* <CheckBoxSquareUncheckedIcon className="text-app-icon" />
-        <CheckBoxSquareCheckedIcon className="text-app-icon" /> */}
+      <label className="flex space-x-3 cursor-pointer">
         <input
           type="checkbox"
-          id={label}
+          name={""}
           onChange={(e) => {
-            onChange(e);
+            onChange(e)
           }}
           checked={value}
-          className="form-checkbox h-4 w-4 text-app-text-blue border-gray-300 rounded"
-        />{" "}
-        {/* Requires @tailwindcss/forms or use accent-blue-600 */}
-        <span className="text-sm font-plusJakartaSans text-app-text-primary">
+          className="peer hidden"
+        />
+
+        <div
+          className={`w-4.5 h-4.5 rounded border-2 ${
+            !value ? "border-app-button-radio" : "border-app-button-blue"
+          } flex items-center justify-center`}
+        >
+          <div
+            className={`w-2.5 h-2.5 ${
+              !value ? "" : "bg-app-button-blue"
+            } transition-all`}
+          />
+        </div>
+        <p className="text-sm text-app-text-primary font-plusJakartaSans">
           {label}
-        </span>
+        </p>
       </label>
     </div>
   );
