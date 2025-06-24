@@ -1,11 +1,4 @@
 import React from "react";
-import {
-  CheckboxDarkIcon,
-  CheckboxLightIcon,
-  CheckBoxSquareCheckedIcon,
-  CheckBoxSquareUncheckedIcon,
-  UnCheckedIcon,
-} from "../../../public/svg-icons/icons";
 
 type CheckBoxComponentProps = {
   label: string;
