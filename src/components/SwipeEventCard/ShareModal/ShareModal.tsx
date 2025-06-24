@@ -60,7 +60,7 @@ const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
       <div className="fixed inset-0 z-40 " onClick={onClose} />
 
       {/* Modal Content (The Bottom Sheet) */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-black rounded-t-2xl shadow-2xl max-w-md mx-auto z-[1200]">
+      <div className="fixed bottom-0 left-0 right-0  bg-white dark:bg-black rounded-t-2xl shadow-2xl max-w-md mx-auto z-50">
         <div className="p-4 max-h-[85vh] overflow-y-auto">
           {/* Header */}
           <div className="flex justify-between items-center mb-4">

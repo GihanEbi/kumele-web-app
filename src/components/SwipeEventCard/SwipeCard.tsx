@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import EventCard from "./EventCard";
 import InviteModal from "./ShareModal/ShareModal";
+import ModalPortal from "../ModalPortal/ModalPortal";
 //import TestEventCard from "./EventCard";
 
 type Event = {
@@ -131,7 +132,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
 
   return (
     <>
-      <div className="min-h-screen   grid place-items-center">
+      <div className="min-h-screen grid place-items-center z-[1200]">
         {events.map((item) => {
           return (
             <EventCard
@@ -145,10 +146,14 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
           );
         })}
       </div>
-       <InviteModal
-        isOpen={isInviteModalOpen}
-        onClose={() => setInviteModalOpen(false)}
-      />
+      <div className="z-13">
+         <ModalPortal>
+        <InviteModal
+          isOpen={isInviteModalOpen}
+          onClose={() => setInviteModalOpen(false)}
+        />
+      </ModalPortal>
+      </div>
     </>
   );
 }
