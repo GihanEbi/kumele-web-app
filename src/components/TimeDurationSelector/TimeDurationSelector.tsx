@@ -1,22 +1,33 @@
 "use client";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { BuyIcon } from "../../../public/svg-icons/icons";
 import CheckMarkGif from "../GifComponents/CheckMarkGif/CheckMarkGif";
+import { useScrollLock } from "@/utils/useScrollHook";
 
 // Define the possible time options
 const TIME_OPTIONS = ["24 Hrs", "48 Hrs", "7 Days"] as const; // Use 'as const' for stricter typing
 type TimeOption = (typeof TIME_OPTIONS)[number];
 
 interface TimeDurationSelectorProps {
-  handleModalOpen: () => void;
+  handleModalOpen?: () => void;
+  handleCloseModal?: () => void;
+  isItemAdded: boolean;
+  setIsitemAdded: Dispatch<SetStateAction<boolean>>;
 }
 
-const TimeDurationSelector: React.FC = ({}) => {
+const TimeDurationSelector: React.FC<TimeDurationSelectorProps> = ({
+  setIsitemAdded,
+  isItemAdded,
+  handleCloseModal,
+  handleModalOpen,
+}) => {
   const [currentTimeIndex, setCurrentTimeIndex] = useState<number>(0); // Start with "24 Hrs"
   const [isItemAddedSuccess, setIsItemAddedSuccess] = useState<boolean>(false);
 
   const currentTime: TimeOption = TIME_OPTIONS[currentTimeIndex];
   const isBlueSectionVisible = currentTime !== "24 Hrs";
+
+  //useScrollLock(isItemAddedSuccess)
 
   const handleIncrement = () => {
     if (currentTimeIndex < TIME_OPTIONS.length - 1) {
@@ -28,10 +39,6 @@ const TimeDurationSelector: React.FC = ({}) => {
     if (currentTimeIndex > 0) {
       setCurrentTimeIndex((prevIndex) => prevIndex - 1);
     }
-  };
-
-  const handleModalOpen = () => {
-    setIsItemAddedSuccess(true);
   };
 
   return (
@@ -74,10 +81,10 @@ const TimeDurationSelector: React.FC = ({}) => {
           +
         </button>
       </div>
-      {isItemAddedSuccess && (
+      {isItemAdded && (
         <div
           className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50 transition-opacity duration-300 ease-in-out"
-          //onClick={handleCloseModal} // Close modal if overlay is clicked
+          onClick={handleCloseModal} // Close modal if overlay is clicked
         >
           <div
             className="bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out"

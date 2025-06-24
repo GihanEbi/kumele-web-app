@@ -165,8 +165,14 @@ const CreateEventSection = () => {
   //payment selection state
   const [selectedPayment, setSelectedPayment] = useState<string>("free");
 
+  //time duration modal state
+  const [isTimeDurationModalOpen, setIsTimeDurationModalOpen] =
+    useState<boolean>(false);
+
   //custom hook for scrolling locking when preview open custom hook calling
   useScrollLock(isPreviewOpen);
+  useScrollLock(isTimeDurationModalOpen);
+  //useScrollLock()
 
   //function for handle event start time
   const handleStartTimeChange = (newTime: string) => {
@@ -340,6 +346,16 @@ const CreateEventSection = () => {
     setIsGuestPriceModalOpen(!isGuestPriceModalOpen);
   };
 
+  const handleTimeDurationInnerModalOpen = () => {
+    setIsTimeDurationModalOpen(true);
+    setIsStartTimePickerOpen(false);
+    setIsEndTimePickerOpen(false);
+  };
+
+  const handleTimeDurationInnerModalClose = () => {
+    setIsTimeDurationModalOpen(false);
+  };
+
   return (
     <div
       className={`max-w-full mx-auto p-6 no-scrollbar ${
@@ -376,6 +392,12 @@ const CreateEventSection = () => {
         isPreviewOpen && isDark
           ? "bg-neutral-900"
           : isPreviewOpen && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
+      }  ${
+        isTimeDurationModalOpen && isDark
+          ? "bg-neutral-900"
+          : isTimeDurationModalOpen && !isDark
           ? "bg-gray-200"
           : "bg-app-background-primary"
       }`}
@@ -579,7 +601,12 @@ const CreateEventSection = () => {
             <InformationIcon />
           </div>
         </div>
-        <TimeDurationSelector />
+        <TimeDurationSelector
+          isItemAdded={isTimeDurationModalOpen}
+          setIsitemAdded={setIsTimeDurationModalOpen}
+          handleModalOpen={handleTimeDurationInnerModalOpen}
+          handleCloseModal={handleTimeDurationInnerModalClose}
+        />
       </div>
 
       <div className="mt-8 ">
@@ -696,10 +723,7 @@ const CreateEventSection = () => {
           <label className="font-plusJakartaSans font-normal text-[13.89px]">
             Number of Guests
           </label>
-          <div
-            onClick={handleGuestPriceModalOpen}
-            className="mt-[-6px]"
-          >
+          <div onClick={handleGuestPriceModalOpen} className="mt-[-6px]">
             <InformationIcon />
           </div>
         </div>
