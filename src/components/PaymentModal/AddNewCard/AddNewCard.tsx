@@ -156,14 +156,14 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <CheckMarkGif className="bg-white" />
+                <CheckMarkGif/>
               </div>
               <p className="text-app-text-primary font-plusJakartaSans font-normal text-[16px] mb-6 text-center">
                 Card added successfully

@@ -209,7 +209,7 @@ export default function SubscriptionsPage() {
 
   return (
     <>
-      <div className="font-sans">
+      <div className="font-sans pt-[64px] pb-20">
         <div className="mx-auto p-4">
           {/* Segmented Control Header */}
           <div className="bg-app-range-slider-track-active p-1 rounded-lg flex items-center mt-2">

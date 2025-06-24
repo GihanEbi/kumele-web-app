@@ -9,12 +9,11 @@ import React, {
   useEffect,
 } from "react";
 //import { InfoIcon, TicketIcon, ShoppingCartIconSolid } from './icons'; // Adjust path if needed
-import {
-  TwoTicketsIcon,
-  BuyIcon,
-} from "../../../../../public/svg-icons/icons";
+import { TwoTicketsIcon, BuyIcon } from "../../../../../public/svg-icons/icons";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 import GuestInviteModal from "./GuestInviteModal/GuestInviteModal";
+import { PayPalPayModal } from "@/components/PaymentModal/PayPalModal/PayPalPayModal";
+import { AddCardModal } from "@/components/PaymentModal/AddNewCard/AddNewCard";
 
 interface GuestCounterProps {
   label?: string;
@@ -22,8 +21,8 @@ interface GuestCounterProps {
   onAddToCart?: (guests: number) => void;
   isSuccess: boolean;
   setIsSuccess: (value: boolean) => void;
-  isInviteModalOpen:boolean;
-  setIsInviteModalOpen:(value: boolean) => void;
+  isInviteModalOpen: boolean;
+  setIsInviteModalOpen: (value: boolean) => void;
 }
 
 const GuestCounter: React.FC<GuestCounterProps> = ({
@@ -32,7 +31,7 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
   isSuccess,
   setIsSuccess,
   isInviteModalOpen,
-  setIsInviteModalOpen
+  setIsInviteModalOpen,
 }) => {
   const [digit1, setDigit1] = useState<string>(
     initialGuests >= 10
@@ -55,6 +54,8 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
   //const [isSuccess, setIsSuccess] = useState(false);
   //const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [guestCount, setGuestCount] = useState(initialGuests);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isCardAddModalOpen, setIsCardAddModalOpen] = useState(false);
   // Effect to automatically close the success modal after 3 seconds
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -114,7 +115,7 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
       onAddToCart(guests);
     }
     // Set isSuccess to true to show the modal
-    setIsSuccess(true);
+    setIsPaymentModalOpen(true);
     console.log("Adding to cart, guests:", guests);
   };
 
@@ -134,7 +135,10 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
       {/* Adjust max-w as needed */}
       <div className="flex items-stretch">
         {/* Left section with icon and input */}
-        <button onClick={()=>setIsInviteModalOpen(true)} className="flex items-center bg-app-input-primary pl-3 pr-2 py-2 rounded-l-lg border border-r-0  gap-3">
+        <button
+          onClick={() => setIsInviteModalOpen(true)}
+          className="flex items-center bg-app-input-primary pl-3 pr-2 py-2 rounded-l-lg border border-r-0  gap-3"
+        >
           <TwoTicketsIcon />
           <div className="flex items-center border gap-3 rounded-lg">
             <input
@@ -188,13 +192,13 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
         maxGuests={150}
       />
       {/* POP UP SUCCESS SHOWING MODEL */}
-      {isSuccess && (
+      {/* {isSuccess && (
         <div
           className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50 transition-opacity duration-300 ease-in-out"
           onClick={handleCloseModal} // Close modal if overlay is clicked
         >
           <div
-            className="bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out"
+            className="bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out"
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex flex-col items-center">
@@ -207,7 +211,16 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
             </div>
           </div>
         </div>
-      )}
+      )} */}
+      <PayPalPayModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        onAddNewCardClick={() => setIsCardAddModalOpen(true)}
+      />
+      <AddCardModal
+        isOpen={isCardAddModalOpen}
+        onClose={() => setIsCardAddModalOpen(false)}
+      />
     </div>
   );
 };

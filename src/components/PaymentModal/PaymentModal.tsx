@@ -60,7 +60,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
   return (
     <div
-      className={`mx-auto fixed inset-0 z-2000 flex flex-col ${
+      className={`pt-[64px] mx-auto fixed inset-0 z-2000 flex flex-col ${
         isPaymentSuccess && isDark
           ? "bg-neutral-900"
           : isPaymentSuccess && !isDark
@@ -68,7 +68,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           : "bg-app-background-primary"
       }   font-sans`}
     >
-      <div className="flex-grow p-6 overflow-y-auto">
+      <div className="flex-grow p-6 overflow-y-auto ">
         {/* Header */}
         <div className="flex items-center gap-4">
           <button onClick={onClose} className="">
@@ -200,14 +200,14 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <CheckMarkGif className="bg-white" />
+                <CheckMarkGif />
               </div>
               <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
                 Payment Successful

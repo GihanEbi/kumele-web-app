@@ -115,9 +115,9 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
                 height={250}
                 className="w-full h-65 object-cover rounded-t-2xl"
               />
-              <div className="absolute top-5 right-6 bg-black/60 text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1.5">
+              <div className="absolute top-5 right-6 bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1.5">
                 <YingyangIcon />
-                <span className="font-plusJakartaSans text-app-button-text-color font-normal text-[13px]">
+                <span className="font-plusJakartaSans text-white font-normal text-[13px]">
                   {eventData.category}
                 </span>
               </div>

@@ -1,13 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import { BuyIcon } from "../../../public/svg-icons/icons";
+import CheckMarkGif from "../GifComponents/CheckMarkGif/CheckMarkGif";
 
 // Define the possible time options
 const TIME_OPTIONS = ["24 Hrs", "48 Hrs", "7 Days"] as const; // Use 'as const' for stricter typing
 type TimeOption = (typeof TIME_OPTIONS)[number];
 
-const TimeDurationSelector: React.FC = () => {
+interface TimeDurationSelectorProps {
+  handleModalOpen: () => void;
+}
+
+const TimeDurationSelector: React.FC = ({}) => {
   const [currentTimeIndex, setCurrentTimeIndex] = useState<number>(0); // Start with "24 Hrs"
+  const [isItemAddedSuccess, setIsItemAddedSuccess] = useState<boolean>(false);
 
   const currentTime: TimeOption = TIME_OPTIONS[currentTimeIndex];
   const isBlueSectionVisible = currentTime !== "24 Hrs";
@@ -24,6 +30,10 @@ const TimeDurationSelector: React.FC = () => {
     }
   };
 
+  const handleModalOpen = () => {
+    setIsItemAddedSuccess(true);
+  };
+
   return (
     <div className="flex items-center p-1  max-w-xs">
       {/* Time Display Section */}
@@ -37,7 +47,10 @@ const TimeDurationSelector: React.FC = () => {
 
       {/* Blue Cart Section (Conditional) */}
       {isBlueSectionVisible && (
-        <div className="bg-blue-600 py-[10px] rounded-r-lg px-6">
+        <div
+          onClick={handleModalOpen}
+          className="bg-blue-600 py-[10px] rounded-r-lg px-6"
+        >
           <BuyIcon />
         </div>
       )}
@@ -61,6 +74,26 @@ const TimeDurationSelector: React.FC = () => {
           +
         </button>
       </div>
+      {isItemAddedSuccess && (
+        <div
+          className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50 transition-opacity duration-300 ease-in-out"
+          //onClick={handleCloseModal} // Close modal if overlay is clicked
+        >
+          <div
+            className="bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out"
+            onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
+          >
+            <div className="flex flex-col items-center">
+              <div className="mb-4">
+                <CheckMarkGif />
+              </div>
+              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
+                This item has been added to your cart
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -132,6 +132,7 @@
   --color-app-card-highlight-button: var(--app-card-highlight-button);
   --color-app-radio-button-color: var(--app-radio-button-color);
   --color-app-bg-color-modal: var(--app-bg-color-modal);
+  --color-app-bg-preview-category-tag-bg: var(--app-bg-preview-category-tag-bg);
 }
 
 :root {
@@ -214,7 +215,7 @@
   --app-okay-icon-background: oklch(0.9581 0 0);
   --app-okay-icon-filter: oklch(0.9581 0 0);
   --app-icon-muted: oklch(0.5278 0 89.88);
-  --app-badge-background: oklch(0.2393 0 89.88); 
+  --app-badge-background: oklch(0.2393 0 89.88);
 
   /* INPUT */
   --app-input-primary: oklch(0.9551 0 89.88); /* #F4F4F4 */
@@ -291,6 +292,7 @@
 
   /*EVENT PREVIEW*/
   --app-bg-color-modal: oklch(0.9446 0.0022 17.2);
+  --app-bg-preview-category-tag-bg: oklch(0.2393 0 0);
 }
 
 .dark {
@@ -367,7 +369,7 @@
   --app-okay-icon-background: oklch(0.9581 0 0);
   --app-okay-icon-filter: oklch(0.2393 0 89.88);
   --app-icon-muted: oklch(0.5278 0 89.88);
-  --app-badge-background: oklch(0.9551 0 89.88); 
+  --app-badge-background: oklch(0.9551 0 89.88);
 
   /* INPUT */
   --app-input-primary: oklch(0.2393 0 89.88);
@@ -438,6 +440,7 @@
 
   /*EVENT PREVIEW*/
   --app-bg-color-modal: oklch(0.2134 0 0);
+  --app-bg-preview-category-tag-bg: oklch(0.2393 0 0);
 }
 
 @layer base {
