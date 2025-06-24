@@ -313,6 +313,33 @@ const CreateEventSection = () => {
     // Update your form state or perform actions based on the selection
   };
 
+  const handleEventTimePriceModalOpen = () => {
+    if (isDatePickerOpen) {
+      setDatePickerOpen(false);
+    }
+    if (isEndTimePickerOpen) {
+      setIsEndTimePickerOpen(false);
+    }
+    if (isStartTimePickerOpen) {
+      setIsStartTimePickerOpen(false);
+    }
+
+    setIsEventTimePriceModalOpen(true);
+  };
+
+  const handleGuestPriceModalOpen = () => {
+    if (isDatePickerOpen) {
+      setDatePickerOpen(false);
+    }
+    if (isEndTimePickerOpen) {
+      setIsEndTimePickerOpen(false);
+    }
+    if (isStartTimePickerOpen) {
+      setIsStartTimePickerOpen(false);
+    }
+    setIsGuestPriceModalOpen(!isGuestPriceModalOpen);
+  };
+
   return (
     <div
       className={`max-w-full mx-auto p-6 no-scrollbar ${
@@ -548,10 +575,7 @@ const CreateEventSection = () => {
           <label className="block font-plusJakartaSans font-normal text-[13.89px] -mb-1">
             Event starts in
           </label>
-          <div
-            onClick={() => setIsEventTimePriceModalOpen(true)}
-            className="mt-[-6px]"
-          >
+          <div onClick={handleEventTimePriceModalOpen} className="mt-[-6px]">
             <InformationIcon />
           </div>
         </div>
@@ -673,7 +697,7 @@ const CreateEventSection = () => {
             Number of Guests
           </label>
           <div
-            onClick={() => setIsGuestPriceModalOpen(true)}
+            onClick={handleGuestPriceModalOpen}
             className="mt-[-6px]"
           >
             <InformationIcon />
