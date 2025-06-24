@@ -1,5 +1,5 @@
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BinocularsIcon,
   CartIcon,
