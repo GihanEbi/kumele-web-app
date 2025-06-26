@@ -2,12 +2,15 @@ import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import React, { useEffect, useState } from "react";
 import {
   BinocularsIcon,
+  BlogCommentNotificationIcon,
   CartIcon,
   ChatIcon,
   CloseIcon,
   CopyIcon,
   CreateHobbyIcon,
   HistoryAndStatisticsIcon,
+  NewChatIcon,
+  NotificationIcon,
   NotificationNewIcon,
   YellowCircleIcon,
   YellowIcon,
@@ -32,8 +35,8 @@ export function ChatNotificationIcon() {
 export function CartnewIcon() {
   return (
     <div className="relative inline-block">
-      <CartIcon className="" />
-      <YellowIcon className="absolute -top-2 -right-2" />
+      <CartIcon className="" width={40} height={40} />
+      {/* <YellowIcon className="absolute -top-2 -right-2" /> */}
     </div>
   );
 }
@@ -60,7 +63,7 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-more-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-more-model w-full max-w-md sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
@@ -73,24 +76,25 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                   onClose();
                 }}
                 aria-label="Close notification prompt"
-                className="p-1 -m-1 text-gray-500 hover:text-gray-700 transition-colors justify-end"
+                className="pr-5 mt-5 text-gray-500 hover:text-gray-700 transition-colors justify-end"
               >
                 <CloseIcon className="text-app-icon" />
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-y-4 p-6 pt-2 mt-4">
+            <div className="grid grid-cols-3 pt-2 ">
               <button
-                className="flex flex-col items-center gap-2 group"
+                className="flex flex-col items-center gap-2"
                 onClick={() => {
                   router.push("/more-options/create-hobby-event");
                   onClose();
                 }}
               >
-                <div className="mt-4">
-                  <CreateHobbyIcon />
+                <div className="">
+                  <CreateHobbyIcon width={40} height={40} />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
-                  Create Hobby Events
+                  Create Hobby
+                  <br /> Events
                 </span>
               </button>
               <button
@@ -100,7 +104,7 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                   onClose();
                 }}
               >
-                <div className="mt-4">
+                <div className="mt-1">
                   {/* <Image
                     src="/images/find-event-img.png"
                     alt="Copy"
@@ -108,10 +112,11 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                     height={36}
                     className="cursor-pointer text-gray-600"
                   /> */}
-                  <BinocularsIcon />
+                  <BinocularsIcon width={35} height={35} />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
-                  Find Hobby Events
+                  Find Hobby <br />
+                  Events
                 </span>
               </button>
               <button
@@ -121,7 +126,7 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                   onClose();
                 }}
               >
-                <div className="mt-2">
+                <div className="">
                   {/* <Image
                     src="/images/history-img.png"
                     alt="Copy"
@@ -129,14 +134,14 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                     height={36}
                     className="cursor-pointer "
                   /> */}
-                  <HistoryAndStatisticsIcon />
+                  <HistoryAndStatisticsIcon width={50} height={50} />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
-                  History & Statistics
+                  History & <br /> Statistics
                 </span>
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-y-4 p-6 pt-2 mt-4">
+            <div className="grid grid-cols-3 pt-2 mt-4 mb-4">
               <button
                 className="flex flex-col items-center gap-2 group"
                 onClick={() => {
@@ -145,35 +150,21 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                 }}
               >
                 <div className="">
-                  {/* <Image
-                    src="/images/notification-img.png"
-                    alt="Copy"
-                    width={42}
-                    height={42}
-                    className="cursor-pointer"
-                  /> */}
-                  <NotificationNewIcon />
+                  <NotificationIcon width={40} height={40} />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
                   Notifications
                 </span>
               </button>
               <button
-                className="flex flex-col items-center gap-0 group"
+                className="flex flex-col items-center gap-2 group"
                 onClick={() => {
                   router.push("/user/more/chat");
                   onClose();
                 }}
               >
                 <div className="">
-                  {/* <Image
-                    src="/images/chat-img.png"
-                    alt="Copy"
-                    width={36}
-                    height={36}
-                    className="cursor-pointer"
-                  /> */}
-                  <ChatNotificationIcon />
+                  <NewChatIcon width={40} height={40} />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans ">
                   Chat
@@ -186,15 +177,9 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                 }}
                 className="flex flex-col items-center gap-2 group"
               >
-                <div className="mt-2">
-                  {/* <Image
-                    src="/images/cart-img.png"
-                    alt="Copy"
-                    width={36}
-                    height={36}
-                    className="cursor-pointer"
-                  /> */}
-                  <CartnewIcon />
+                <div className="">
+
+                  <CartIcon className="" width={40} height={40} />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
                   Cart
