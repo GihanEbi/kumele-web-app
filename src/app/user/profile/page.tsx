@@ -30,17 +30,17 @@ import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
 import { paddings } from "@/constants/layout-constants";
 const settingsGroup1 = [
   {
-    icon: <SoundIcon className="text-app-icon" width={24} height={24} />,
+    icon: <SoundIcon className="text-app-icon" width={28} height={28} />,
     text: "Notifications",
     link: "/profile-other-pages/notifications",
   },
   {
-    icon: <PaymentIcon className="text-app-icon" width={24} height={24} />,
+    icon: <PaymentIcon className="text-app-icon" width={28} height={28} />,
     text: "Payments & Subscriptions",
     link: "/profile-other-pages/payment",
   },
   {
-    icon: <SecurityIcon className="text-app-icon" width={24} height={24} />,
+    icon: <SecurityIcon className="text-app-icon" width={28} height={28} />,
     text: "Security",
     link: "/profile-other-pages/security",
   },
@@ -48,44 +48,44 @@ const settingsGroup1 = [
 
 const settingsGroup2 = [
   {
-    icon: <ContactIcon className="text-app-icon" width={24} height={24} />,
+    icon: <ContactIcon className="text-app-icon" width={28} height={28} />,
     type: "model",
     text: "Contact",
   },
   {
-    icon: <GuidelinesIcon className="text-app-icon" width={24} height={24} />,
+    icon: <GuidelinesIcon className="text-app-icon" width={28} height={28} />,
     text: "Guidelines",
     link: "/profile-other-pages/guidelines",
   },
   {
-    icon: <ReferIcon className="text-app-icon" width={24} height={24} />,
+    icon: <ReferIcon className="text-app-icon" width={28} height={28} />,
     text: "Refer a Friend",
   },
   {
     icon: (
       <TermsAndConditionsIcon
         className="text-app-icon"
-        width={24}
-        height={24}
+        width={28}
+        height={28}
       />
     ),
     text: "Terms and Conditions",
     link: "/user/profile/terms-conditions",
   },
   {
-    icon: <NightModeIcon className="text-app-icon" width={24} height={24} />,
+    icon: <NightModeIcon className="text-app-icon" width={28} height={28} />,
     text: "Night Mode",
     type: "model",
   },
   {
     icon: (
-      <DeleteAccountIcon className="text-app-icon" width={24} height={24} />
+      <DeleteAccountIcon className="text-app-icon" width={28} height={28} />
     ),
     text: "Delete Account",
     type: "model",
   },
   {
-    icon: <SignOutIcon className="text-app-icon" width={24} height={24} />,
+    icon: <SignOutIcon className="text-app-icon" width={28} height={28} />,
     text: "Sign Out",
     type: "model",
   },
