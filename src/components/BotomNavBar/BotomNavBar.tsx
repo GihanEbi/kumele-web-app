@@ -27,7 +27,6 @@ const BottomNavBar = () => {
   const [showMoreOptionModel, setShowMoreOptionModel] = useState(false);
 
   useEffect(() => {
-
     if (theme === "light") {
       setSelectedColor("text-black");
     } else if (theme === "dark") {
@@ -38,7 +37,7 @@ const BottomNavBar = () => {
   return (
     <div className="">
       <div
-        className={`h-tab-bar pb-6 pt-2 px-4 bg-app-background-bottom-navbar flex justify-around items-center shadow-tab-bar pb-safe-bottom z-[1000]`}
+        className={`h-tab-bar pb-3 pt-2 px-4 bg-app-background-bottom-navbar flex justify-around items-center shadow-tab-bar pb-safe-bottom z-[1000]`}
       >
         <div
           onClick={() => {
@@ -48,18 +47,18 @@ const BottomNavBar = () => {
           className={`flex flex-col items-center text-app-text-primary`}
         >
           <div
-            className={`rounded-4xl p-3 text-app-text-primary ${
+            className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 0 ? "bg-app-button-blue" : ""
             }`}
           >
             {activePageIndex === 0 ? (
               <HomeIcon
                 className={`${theme === "light" ? "text-white" : "text-black"}`}
-                width={40}
-                height={40}
+                width={30}
+                height={30}
               />
             ) : (
-              <HomeIcon width={40} height={40} />
+              <HomeIcon width={30} height={30} />
             )}
           </div>
           <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
@@ -74,18 +73,18 @@ const BottomNavBar = () => {
           className={`flex flex-col items-center text-app-text-primary`}
         >
           <div
-            className={`rounded-4xl p-3 text-app-text-primary ${
+            className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 1 ? "bg-app-button-blue" : ""
             }`}
           >
             {activePageIndex === 1 ? (
               <BlogHomeIcon
                 className={`${theme === "light" ? "text-white" : "text-black"}`}
-                width={40}
-                height={40}
+                width={30}
+                height={30}
               />
             ) : (
-              <BlogHomeIcon width={40} height={40} />
+              <BlogHomeIcon width={30} height={30} />
             )}
           </div>
           <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
@@ -100,18 +99,18 @@ const BottomNavBar = () => {
           className={`flex flex-col items-center text-app-text-primary`}
         >
           <div
-            className={`rounded-4xl p-3 text-app-text-primary ${
+            className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 2 ? "bg-app-button-blue" : ""
             }`}
           >
             {activePageIndex === 2 ? (
               <ShopIcon
                 className={`${theme === "light" ? "text-white" : "text-black"}`}
-                width={40}
-                height={40}
+                width={30}
+                height={30}
               />
             ) : (
-              <ShopIcon width={40} height={40} />
+              <ShopIcon width={30} height={30} />
             )}
           </div>
           <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
@@ -126,18 +125,18 @@ const BottomNavBar = () => {
           className={`flex flex-col items-center text-app-text-primary`}
         >
           <div
-            className={`rounded-4xl p-3 text-app-text-primary ${
+            className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 3 ? "bg-app-button-blue" : ""
             }`}
           >
             {activePageIndex === 3 ? (
               <MoreIcon
                 className={`${theme === "light" ? "text-white" : "text-black"}`}
-                width={40}
-                height={40}
+                width={30}
+                height={30}
               />
             ) : (
-              <MoreIcon width={40} height={40} />
+              <MoreIcon width={30} height={30} />
             )}
           </div>
           <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
@@ -152,18 +151,18 @@ const BottomNavBar = () => {
           className={`flex flex-col items-center text-app-text-primary`}
         >
           <div
-            className={`rounded-4xl p-3 text-app-text-primary ${
+            className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 4 ? "bg-app-button-blue" : ""
             }`}
           >
             {activePageIndex === 4 ? (
               <ProfileIcon
                 className={`${theme === "light" ? "text-white" : "text-black"}`}
-                width={40}
-                height={40}
+                width={30}
+                height={30}
               />
             ) : (
-              <ProfileIcon width={40} height={40} />
+              <ProfileIcon width={30} height={30} />
             )}
           </div>
           <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">

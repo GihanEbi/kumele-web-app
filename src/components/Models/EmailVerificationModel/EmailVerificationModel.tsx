@@ -165,7 +165,7 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-3xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
