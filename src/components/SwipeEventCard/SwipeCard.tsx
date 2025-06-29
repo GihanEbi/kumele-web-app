@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import EventCard from "./EventCard";
 import InviteModal from "./ShareModal/ShareModal";
 import ModalPortal from "../ModalPortal/ModalPortal";
+import { useScrollLock } from "@/utils/useScrollHook";
 //import TestEventCard from "./EventCard";
 
 type Event = {
@@ -112,7 +113,7 @@ const eventsData: Event[] = [
     description:
       "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
   },
-   {
+  {
     id: 7,
     category: "party",
     imageSrc: "/bg-imgs/preview-event.jpg",
@@ -127,7 +128,7 @@ const eventsData: Event[] = [
     description:
       "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
   },
-   {
+  {
     id: 8,
     category: "Spirituality",
     imageSrc: "/bg-imgs/test-event-3.jpg",
@@ -151,12 +152,12 @@ interface SwipeCardProps {
 export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
   const [events, setEvents] = useState<Event[]>(eventsData);
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
-
-  //test bug fix step 1
-  const [isStackExtended, setIsStackExtended] = useState(false);
-  
+  const [isStackExtended, setIsStackExtended] = useState(false); //test bug fix step 1
 
   console.log("events length is", events.length);
+
+  //lock parent component when a modal is open
+  useScrollLock(isInviteModalOpen);
 
   useEffect(() => {
     if (events.length === 0) {

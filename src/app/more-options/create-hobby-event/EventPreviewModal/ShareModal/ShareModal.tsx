@@ -43,19 +43,6 @@ const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
   const [isCopied, setIsCopied] = useState(false);
   const event = mockEvent;
 
-  // Effect to lock body scroll when the modal is open
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     document.body.style.overflow = "hidden";
-  //   } else {
-  //     document.body.style.overflow = "unset";
-  //   }
-  //   return () => {
-  //     // Cleanup
-  //     document.body.style.overflow = "unset";
-  //   };
-  // }, [isOpen]);
-
   const handleCopy = () => {
     navigator.clipboard.writeText(event.eventId);
     setIsCopied(true);
@@ -73,7 +60,7 @@ const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
       <div className="fixed inset-0 z-40 bg-black/60" onClick={onClose} />
 
       {/* Modal Content (The Bottom Sheet) */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-zinc-900 rounded-t-2xl shadow-2xl max-w-md mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-zinc-900 rounded-t-4xl shadow-2xl max-w-md mx-auto">
         <div className="p-4 max-h-[85vh] overflow-y-auto">
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
@@ -107,26 +94,26 @@ const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Event Details Box */}
-          <div className="p-4 bg-zinc-100 dark:bg-zinc-800 rounded-xs mb-2 space-y-2">
+          <div className="text-left p-4 bg-app-section-bg rounded-xs mb-2 space-y-2">
             <h3 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[16px]">
               {event.title}
             </h3>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1">
                 <DollarIcon className="h-[20px] w-[20px]" />
-                <p className="font-plusJakartaSans text-blue-800 font-normal text-[14px]">
+                <p className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow dark:text-app-text-yellow font-normal text-[14px]">
                   {event.price}
                 </p>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1">
                 <ClockIcon className="h-[20px] w-[20px]" />
-                <p className="font-plusJakartaSans text-blue-800 font-normal text-[14px]">
+                <p className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow dark:text-app-text-yellow font-normal text-[14px]">
                   {event.time}
                 </p>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1">
                 <UsersIcon className="h-[20px] w-[20px]" />
-                <p className="font-plusJakartaSans text-blue-800 font-normal text-[14px]">
+                <p className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow dark:text-app-text-yellow font-normal text-[14px]">
                   {event.guests} guests
                 </p>
               </div>
@@ -135,7 +122,7 @@ const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
               <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[14px]">
                 Event ID:{" "}
               </span>
-              <span className="font-plusJakartaSans text-blue-800 font-normal text-[14px]">
+              <span className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow font-normal text-[14px]">
                 {event.eventId}
               </span>
             </div>
@@ -143,24 +130,24 @@ const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
               <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[14px]">
                 Location:{" "}
               </span>
-              <span className="font-plusJakartaSans text-blue-800 font-normal text-[14px]">
+              <span className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow font-normal text-[14px]">
                 {event.location}
               </span>
             </div>
           </div>
 
           {/* How it Works Box */}
-          <div className="p-4 bg-zinc-100 dark:bg-zinc-800 rounded-xs mb-6">
+          <div className="text-left p-4 bg-app-section-bg rounded-xs mb-6">
             <h4 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[16px] mb-2 ">
               How it works:
             </h4>
             <ol className="list-decimal list-inside text-sm text-zinc-600 dark:text-zinc-300 space-y-1">
               <li>
-                <span className="font-plusJakartaSans text-blue-800 font-bold text-[14px]">
+                <span className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow font-bold text-[14px]">
                   Login
                 </span>{" "}
                 or{" "}
-                <span className="font-plusJakartaSans text-blue-800 font-bold text-[14px]">
+                <span className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow font-bold text-[14px]">
                   Signup
                 </span>
                 .

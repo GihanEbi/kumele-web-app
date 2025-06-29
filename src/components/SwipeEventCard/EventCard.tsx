@@ -161,7 +161,7 @@ export default function EventCard({
           className={`bg-app-background-tertiary rounded-4xl w-full h-full flex flex-col ${
             isStackExtended && isFront
               ? "overflow-y-auto no-scrollbar"
-              : "overflow-hidden" //change
+              : "overflow-hidden" //I have change this:will change if need
           }pb-6  `}
         >
           {isFront && (
