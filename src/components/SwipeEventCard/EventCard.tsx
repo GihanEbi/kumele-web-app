@@ -12,7 +12,6 @@ import {
   LocationIcon,
   ShareIcon,
   TwoTicketsIcon,
-  UserIcon,
   UsersIcon,
   YingyangIcon,
 } from "../../../public/svg-icons/icons";
@@ -39,12 +38,14 @@ type Event = {
 
 // types for card
 interface EventCardProps {
+  index: number;
   event: Event;
   events: Event[];
   setEvents: Dispatch<SetStateAction<Event[]>>;
-  onOpenShareModal: ()=>void;
+  onOpenShareModal: () => void;
 }
 
+//destructing data for hostcard and other events components
 const { hostData, otherEvents } = {
   hostData: mockHostData,
   otherEvents: mockOtherEvents,
@@ -54,180 +55,225 @@ export default function EventCard({
   event,
   events,
   setEvents,
-  onOpenShareModal
+  onOpenShareModal,
+  index,
 }: EventCardProps) {
+  //state for extend the card
   const [isExtendedPreviewOpen, setIsExtentedPreviewOpen] =
     useState<boolean>(false);
+
+  //identifying the them
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
+  //variables for dragging animations and styles
   const x = useMotionValue(0);
-  const zIndex = events.findIndex((e) => e.id === event.id);
+  console.log("index isss", index);
+  const depth = events.length - 1 - index;
+  console.log("depth is:", depth);
+  const isFront = depth === 0;
+  const isHidden = depth > 2;
+
+  const width =
+    depth === 0
+      ? "clamp(16rem, 80vw, 20rem)" // front card
+      : depth === 1
+      ? "clamp(14rem, 70vw, 17rem)" // 1st under-card
+      : "clamp(12rem, 60vw, 15rem)"; // 2nd under-card
 
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
-  const rotateRaw = useTransform(x, [-150, 150], [-18, 18]);
+  const rotate = useTransform(x, [-150, 150], [-18, 18]);
+  const placeholderBg =
+    depth === 1
+      ? "bg-app-bg-placeholder-firstcard"
+      : depth === 2
+      ? "bg-app-bg-placeholder-secondcard"
+      : "";
 
-  const isFront = event.id === events[events.length - 1].id;
-
-  const rotate = useTransform(() => {
-    const offset = isFront ? 0 : event.id % 2 ? 6 : -6;
-    return `${rotateRaw.get()}deg`;
-  });
-
+  //card dragging handle function
   const handleDragEnd = () => {
     if (Math.abs(x.get()) > 50) {
-      // TODO: Get rid on frontcard
       setEvents((pv) => pv.filter((v) => v.id !== event.id));
     }
   };
 
+  //debugging
   useEffect(() => {
     console.log(x);
   }, [x]);
 
+  //debugging
   useMotionValueEvent(x, "change", (latest) => console.log(latest));
+
+  // right after you compute `y`
+  const yOffset =
+    isExtendedPreviewOpen && depth > 0 ? depth * 140 /* px */ : depth * 12;
+
+  const yWhenPreview =
+    isExtendedPreviewOpen && depth > 0 ? depth * 180 /* adjust */ : depth * 12;
+
   return (
     <motion.div
       style={{
         gridRow: 1,
         gridColumn: 1,
         x,
-        zIndex,
+        width,
         opacity,
         rotate,
         transition: "0.125s transform",
-        // boxShadow: isFront
-        //   ? "0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5)"
-        //   : undefined,
-        scale: isFront ? 1 : 0.98,
+        scale: isExtendedPreviewOpen ? 1 : 1 - depth * 0.02,
+        y: depth * 12,
+
+        zIndex: events.length - depth,
+        height: isExtendedPreviewOpen
+          ? "92vh"
+          : events.length === 1
+          ? "auto"
+          : "26rem",
       }}
       animate={{
         scale: isFront ? 1 : 0.98,
       }}
-      className={`flex justify-center items-center z-50 h-origin-bottom hover:cursor-grab active:cursor-grabbing max-w-sm  p-4 ${
-        isExtendedPreviewOpen ? "fixed inset-0 " : ""
-      }`}
-      drag="x"
+      className={` ${placeholderBg} ${isHidden ? "hidden" : ""} ${
+        isExtendedPreviewOpen ? "origin-top" : "origin-bottom"
+      } rounded-4xl
+            overflow-hidden  ${
+              isExtendedPreviewOpen
+                ? ""
+                : "hover:cursor-grab active:cursor-grabbing"
+            }`}
+      drag={isExtendedPreviewOpen ? false : isFront ? "x" : false}
       dragConstraints={{
         left: 0,
         right: 0,
       }}
       onDragEnd={handleDragEnd}
     >
-      <div
-        className={`bg-app-background-tertiary rounded-4xl w-full max-w-sm max-h-[70vh] shadow-lg flex flex-col ${
-          isExtendedPreviewOpen ? "overflow-y-auto no-scrollbar" : ""
-        }pb-6  `}
-      >
+      {depth === 0 && (
         <div
-          className={`flex-1 ${
+          className={`bg-app-background-tertiary rounded-4xl w-full max-h-[72vh] flex flex-col ${
             isExtendedPreviewOpen ? "overflow-y-auto no-scrollbar" : ""
-          } `}
+          }pb-6  `}
         >
-          <div className="relative">
-            <img
-              src={event.imageSrc}
-              alt={event.title}
-              draggable={false} // 👈 prevents browser default drag
-              className="w-full h-75 object-cover pointer-events-none rounded-t-4xl"
-            />
-            <div className="absolute top-5 right-6 bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1.5">
-              <YingyangIcon />
-              <span className="font-plusJakartaSans text-white font-normal text-[13px]">
-                {event.category}
-              </span>
-            </div>
-          </div>
-          <div className="flex justify-between items-start mb-4 mt-3 px-3">
-            <h1 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[25px]">
-              {event.title}
-            </h1>
-            <button
-              onClick={onOpenShareModal}
-              className={`${isDark ? "bg-white" : "bg-black"}  p-2 rounded-lg`}
-            >
-              <ShareIcon
-                className={`${isDark ? "text-black" : "text-white"} `}
+          <div
+            className={`flex-1 ${
+              isExtendedPreviewOpen ? "overflow-y-auto no-scrollbar" : ""
+            } `}
+          >
+            <div className="relative">
+              <img
+                src={event.imageSrc}
+                alt={event.title}
+                draggable={false} //prevents browser default drag
+                className="w-full h-64 object-cover pointer-events-none rounded-t-4xl"
               />
-            </button>
-          </div>
-          <div className="space-y-3 px-3">
-            <div className="flex items-center justify-between text-sm ">
-              <div className="flex items-center space-x-2">
-                <TwoTicketsIcon className="h-[20px] w-[20px]" />{" "}
-                <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                  {event.price}
-                </span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <ClockIcon className="h-[20px] w-[20px]" />{" "}
-                <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                  {event.time}
-                </span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <UsersIcon className="h-[20px] w-[20px]" />{" "}
-                <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                  {event.guests} guests
+              <div className="absolute top-5 right-6 bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1 rounded-full flex items-center space-x-1.5">
+                <YingyangIcon />
+                <span className="font-plusJakartaSans text-white font-normal text-[11px]">
+                  {event.category}
                 </span>
               </div>
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <div>
-                <div className="flex items-center space-x-2">
-                  <ClockGif width={19} height={19} />
-                  <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                    {event.startsIn}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-2 mt-1">
-                  <LocationIcon className="h-[20px] w-[20px]" />{" "}
-                  <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                    {event.location}
-                  </span>
-                </div>
-              </div>
+            <div className="flex justify-between items-start mb-4 mt-3 px-3">
+              <h1 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[22px]">
+                {event.title}
+              </h1>
               <button
-                onClick={() => setIsExtentedPreviewOpen(!isExtendedPreviewOpen)}
+                onClick={onOpenShareModal}
                 className={`${
-                  isDark ? "bg-gray-500" : "bg-app-range-slider-track-active"
-                } dark:bg-zinc-700 rounded-full p-1 self-end`}
+                  isDark ? "bg-white" : "bg-black"
+                }  p-1 rounded-lg`}
               >
-                <DownArrowIcon
-                  className={`${
-                    !isExtendedPreviewOpen ? "rotate-180" : ""
-                  } w-6 h-6`}
+                <ShareIcon
+                  className={`${isDark ? "text-black" : "text-white"} h-5 w-5`}
                 />
               </button>
             </div>
-          </div>
 
-          {/* scrollable area:for further reference styles */}
-          {isExtendedPreviewOpen && (
-            <>
-              <div className="mt-6 overflow-y-auto max-h-24 px-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                <div className="flex items-start space-x-2">
-                  <p className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[13px]">
-                    {event.subtitle}
-                  </p>
+            {/* DETAILS SECTION */}
+            <div className="space-y-3 px-3">
+              <div className="flex items-center gap-2 text-sm ">
+                <div className="flex items-center space-x-0">
+                  <TwoTicketsIcon className="h-[20px] w-[20px]" />{" "}
+                  <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[14px]">
+                    {event.price}
+                  </span>
                 </div>
-                <p className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px] mt-1">
-                  {event.description}
-                </p>
+                <div className="flex items-center space-x-0">
+                  <ClockIcon className="h-[20px] w-[20px]" />{" "}
+                  <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[14px]">
+                    {event.time}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-0">
+                  <UsersIcon className="h-[20px] w-[20px]" />{" "}
+                  <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[14px]">
+                    {event.guests} guests
+                  </span>
+                </div>
               </div>
+              <div className="flex items-center justify-between text-sm">
+                <div>
+                  <div className="flex items-center space-x-0">
+                    <ClockGif width={19} height={19} />
+                    <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[14px]">
+                      {event.startsIn}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-0 mt-2">
+                    <LocationIcon className="h-[20px] w-[20px]" />{" "}
+                    <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[14px]">
+                      {event.location}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() =>
+                    setIsExtentedPreviewOpen(!isExtendedPreviewOpen)
+                  }
+                  className={`${
+                    isDark ? "bg-gray-500" : "bg-app-range-slider-track-active"
+                  } dark:bg-zinc-700 rounded-full p-1 self-end`}
+                >
+                  <DownArrowIcon
+                    className={`${
+                      isExtendedPreviewOpen ? "rotate-180" : ""
+                    } w-6 h-6`}
+                  />
+                </button>
+              </div>
+            </div>
 
-              {/* Event details section end */}
+            {/* scrollable area:for further reference styles */}
+            {isExtendedPreviewOpen && (
+              <>
+                {/* Outer container for scrolling and height */}
+                <div className="mt-6 overflow-y-auto max-h-24 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                  {/* Inner container for padding AND explicit left alignment */}
+                  <div className="px-4 text-left">
+                    <p className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[13px]">
+                      {event.subtitle}
+                    </p>
+                    <p className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px] mt-1">
+                      {event.description}
+                    </p>
+                  </div>
+                </div>
 
-              <div className="mt-6 px-3">
-                <HostInfo host={hostData} />
-              </div>
-              <div className="px-3">
-                <OtherEvents events={otherEvents} hostName={hostData.name} />
-              </div>
-            </>
-          )}
+                {/* Event details section end */}
+
+                <div className="mt-15 px-3">
+                  <HostInfo host={hostData} />
+                </div>
+                <div className="px-3 pb-4">
+                  <OtherEvents events={otherEvents} hostName={hostData.name} />
+                </div>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </motion.div>
   );
 }

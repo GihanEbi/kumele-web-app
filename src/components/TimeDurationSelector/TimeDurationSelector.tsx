@@ -22,7 +22,7 @@ const TimeDurationSelector: React.FC<TimeDurationSelectorProps> = ({
   handleModalOpen,
 }) => {
   const [currentTimeIndex, setCurrentTimeIndex] = useState<number>(0); // Start with "24 Hrs"
-  const [isItemAddedSuccess, setIsItemAddedSuccess] = useState<boolean>(false);
+  ;
 
   const currentTime: TimeOption = TIME_OPTIONS[currentTimeIndex];
   const isBlueSectionVisible = currentTime !== "24 Hrs";
@@ -63,11 +63,11 @@ const TimeDurationSelector: React.FC<TimeDurationSelectorProps> = ({
       )}
 
       {/* Increment/Decrement Section */}
-      <div className="bg-app-background-primary px-3 gap-6 py-2 border rounded-lg flex items-center justify-between min-w-[60px] ml-4">
+      <div className="bg-app-background-primary px-3 gap-8 py-3 border rounded-lg flex items-center justify-between min-w-[60px] ml-4">
         <button
           onClick={handleDecrement}
           //disabled={currentTimeIndex === 0}
-          className="text-neutral-500 dark:text-gray-300 disabled:opacity-40 disabled:cursor-not-allowed text-xl font-semibold"
+          className="text-neutral-500 dark:text-gray-300 disabled:opacity-40 disabled:cursor-not-allowed font-plusJakartaSans font-normal text-[13.89px]"
           aria-label="Decrease time"
         >
           -
@@ -75,7 +75,7 @@ const TimeDurationSelector: React.FC<TimeDurationSelectorProps> = ({
         <button
           onClick={handleIncrement}
           //disabled={currentTimeIndex === TIME_OPTIONS.length - 1}
-          className="text-neutral-500 dark:text-gray-300  disabled:opacity-40 disabled:cursor-not-allowed text-xl font-semibold"
+          className="text-neutral-500 dark:text-gray-300  disabled:opacity-40 disabled:cursor-not-allowed font-plusJakartaSans font-normal text-[13.89px]"
           aria-label="Increase time"
         >
           +
@@ -94,7 +94,7 @@ const TimeDurationSelector: React.FC<TimeDurationSelectorProps> = ({
               <div className="mb-4">
                 <CheckMarkGif />
               </div>
-              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
+              <p className="text-app-text-primary font-plusJakartaSans font-normal text-[19px] mb-6 text-center px-8">
                 This item has been added to your cart
               </p>
             </div>

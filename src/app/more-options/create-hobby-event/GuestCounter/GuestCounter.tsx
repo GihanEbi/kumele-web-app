@@ -137,7 +137,7 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
         {/* Left section with icon and input */}
         <button
           onClick={() => setIsInviteModalOpen(true)}
-          className="flex items-center bg-app-input-primary pl-3 pr-2 py-2 rounded-l-lg border border-r-0  gap-3"
+          className="flex items-center bg-app-input-primary pl-3 pr-2 py-2 rounded-l-lg border-app-input-primary border-r-0  gap-3"
         >
           <TwoTicketsIcon />
           <div className="flex items-center border gap-3 rounded-lg">
@@ -151,7 +151,7 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
               className="w-5 h-7 text-center text-app-text-secondary bg-transparent focus:outline-none appearance-none pl-2"
               aria-label="First digit of guest count"
             />
-            <span className="text-gray-400 select-none">|</span>
+            <span className="text-app-text-secondary select-none">|</span>
             <input
               ref={input2Ref}
               type="text"
@@ -179,7 +179,7 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
         {/* Right blue button */}
         <button
           onClick={handleAddToCartClick}
-          className="bg-blue-600  text-white px-4 py-2 rounded-r-lg flex items-center justify-center"
+          className="bg-app-button-blue  text-white px-4 py-2 rounded-r-lg flex items-center justify-center"
           aria-label="Add to cart"
         >
           <BuyIcon />

@@ -358,7 +358,7 @@ const CreateEventSection = () => {
 
   return (
     <div
-      className={`max-w-full mx-auto p-6 no-scrollbar ${
+      className={`max-w-full mx-auto p-6 px-8 no-scrollbar ${
         isDatePickerOpen && isDark
           ? "bg-neutral-900"
           : isDatePickerOpen && !isDark
@@ -403,7 +403,7 @@ const CreateEventSection = () => {
       }`}
       onClick={closeModal}
     >
-      <div className="flex flex-row gap-5 pt-[64px]">
+      <div className="flex flex-row gap-5 pt-[64px] -ml-3">
         <div className="mt-2">
           <Link href="/user/home">
             <BackToPageIcon />
@@ -711,7 +711,7 @@ const CreateEventSection = () => {
         {/* Age Range Slider Section using Radix UI */}
         <RadixAgeRangeSlider
           //label="Age range"
-          min={0}
+          min={18}
           max={100}
           initialValues={[18, 28]} // As shown in your image
           step={1}
@@ -757,7 +757,7 @@ const CreateEventSection = () => {
       {/* Create Event Button */}
       <button
         onClick={() => setIsPreviewOpen(true)}
-        className="w-full mt-10 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-50"
+        className="w-full mt-12 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-50 "
       >
         Preview Event
       </button>
