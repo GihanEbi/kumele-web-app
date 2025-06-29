@@ -25,7 +25,7 @@ export const mockEventData = {
 
 export const mockHostData = {
   name: "Alkesh",
-  avatarSrc: "/avatar-img/commentor3.png",
+ avatarSrc: "/avatar-img/user-preview.png",
   followers: 50,
   rating: 4.5,
   level: "Gold",

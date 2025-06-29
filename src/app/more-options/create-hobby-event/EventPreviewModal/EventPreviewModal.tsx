@@ -130,29 +130,29 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
                 onClick={() => setInviteModalOpen(true)}
                 className={`${
                   isDark ? "bg-white" : "bg-black"
-                }  p-2 rounded-lg`}
+                }  p-1 rounded-md`}
               >
                 <ShareIcon
-                  className={`${isDark ? "text-black" : "text-white"} `}
+                  className={`w-[18.07px] h-[18.07px] ${isDark ? "text-black" : "text-white"} `}
                 />
               </button>
             </div>
 
             <div className="space-y-3">
-              <div className="flex items-center justify-between text-sm ">
-                <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2  text-sm ">
+                <div className="flex items-center space-x-1">
                   <TwoTicketsIcon className="h-[20px] w-[20px]" />{" "}
                   <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
                     {eventData.price}
                   </span>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
                   <ClockIcon className="h-[20px] w-[20px]" />{" "}
                   <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
                     {eventData.time}
                   </span>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
                   <UsersIcon className="h-[20px] w-[20px]" />{" "}
                   <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
                     {eventData.guests} guests
@@ -161,7 +161,7 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
               </div>
               <div className="flex items-center justify-between text-sm">
                 <div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1">
                     <ClockGif
                       width={19}
                       height={19}
@@ -170,7 +170,7 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
                       {eventData.startsIn}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-2 mt-1">
+                  <div className="flex items-center space-x-1 mt-1">
                     <LocationIcon className="h-[20px] w-[20px]" />{" "}
                     <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
                       {eventData.location}
@@ -195,7 +195,7 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
             </div>
             {/* scrollable area:for further reference styles */}
             <div className="mt-6 overflow-y-auto max-h-24 pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <div className="flex items-start space-x-2">
+              <div className="flex items-start space-x-2 mb-4">
                 <p className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[13px]">
                   {eventData.subtitle}
                 </p>
@@ -206,7 +206,7 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
             </div>
             {/* Event details section end */}
 
-            <div className="mt-6">
+            <div className="mt-16">
               <HostInfo host={hostData} />
             </div>
 

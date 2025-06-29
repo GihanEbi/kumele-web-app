@@ -64,7 +64,7 @@ const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
 
   return (
     <div className="mt-6">
-      <h3 className="text-lg font-bold mb-4 text-zinc-800 dark:text-zinc-200">
+      <h3 className="text-lg font-semibold mb-4 text-zinc-800 dark:text-zinc-200">
         Other Events from {hostName}
       </h3>
       <div className="relative group">
@@ -110,21 +110,21 @@ const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
                   {event.title}
                 </h4>
                 <div className="mt-1 space-y-1">
-                  <div className="flex items-center space-x-1.5">
-                    <UsersIcon className="w-3.5 h-3.5" />
+                  <div className="flex items-center space-x-0.5">
+                    <UsersIcon className="w-[13px] h-[13px]"  />
                     <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[10px]">
                       {event.guests} guests
                     </span>
                   </div>
-                  <div className="flex flex-row gap-3">
-                    <div className="flex items-center space-x-1.5">
-                      <DollarIcon className="w-3.5 h-3.5" />
+                  <div className="flex flex-row gap-1">
+                    <div className="flex items-center space-x-0.5">
+                      <DollarIcon className="w-[13px] h-[13px]"  />
                       <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[10px]">
                         {event.price}
                       </span>
                     </div>
-                    <div className="flex items-center space-x-1.5">
-                      <ClockIcon className="w-3.5 h-3.5" />
+                    <div className="flex items-center space-x-0.5">
+                      <ClockIcon className="w-[13px] h-[13px]" />
                       <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[10px]">
                         {event.time}
                       </span>

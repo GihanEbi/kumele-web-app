@@ -152,6 +152,10 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
   const [events, setEvents] = useState<Event[]>(eventsData);
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
 
+  //test bug fix step 1
+  const [isStackExtended, setIsStackExtended] = useState(false);
+  
+
   console.log("events length is", events.length);
 
   useEffect(() => {
@@ -162,7 +166,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
 
   return (
     <>
-      <div className="min-h-screen grid place-items-center">
+      <div className="min-h-screen grid place-items-center pb-20">
         {events.map((item, idx) => {
           return (
             <EventCard
@@ -172,7 +176,10 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
               event={item}
               events={events}
               setEvents={setEvents}
-              {...item}
+              //bug fix-best practise
+              //{...item}
+              isStackExtended={isStackExtended}
+              setIsStackExtended={setIsStackExtended}
             />
           );
         })}

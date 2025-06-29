@@ -44,7 +44,7 @@ const UserAvailabilityCheck: React.FC<UserAvailabilityCheckProps> = ({
           type="text" 
           value={guestCount}
           onChange={handleGuestCountChange}
-          className="w-20 sm:w-24 bg-app-input-primary text-app-text-primary text-sm sm:text-base font-medium text-center px-3 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-red-500 placeholder-white-500"
+          className="w-20 sm:w-24 bg-app-input-primary text-app-text-primary text-sm sm:text-base font-medium text-center px-3 py-3 border-2 rounded-xl focus:outline-none placeholder-white-500"
           placeholder="No."
           aria-label="Number of guests"
         />

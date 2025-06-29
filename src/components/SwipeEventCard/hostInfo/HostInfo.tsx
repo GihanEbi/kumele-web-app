@@ -34,7 +34,7 @@ const HostInfo = ({ host }: HostInfoProps) => {
             </p>
             <div className="flex items-center space-x-1 mt-0.5">
               <RatingIcon />
-              <span className="font-plusJakartaSans text-black font-medium text-[11px]">
+              <span style={{ color: "#464646" }} className="font-plusJakartaSans font-medium text-[11px]">
                 {host.rating} Overall Ratings
               </span>
             </div>
@@ -43,7 +43,7 @@ const HostInfo = ({ host }: HostInfoProps) => {
       </div>
 
       <div className="flex-grow mt-2">
-        <div className="flex items-center mb-3">
+        <div className="flex items-center mb-1">
           <h3 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[19px]">
             Host
           </h3>
@@ -68,7 +68,7 @@ const HostInfo = ({ host }: HostInfoProps) => {
             About {host.name}: <span className="font-plusJakartaSans text-left text-app-button-model-text-color font-normal text-[13px]">{host.aboutTitle} </span> 
           </p>
           <p></p>
-          <p className="text-left font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px]  leading-relaxed">
+          <p className="mt-4  text-left font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px]  leading-relaxed">
             {host.aboutBio}
           </p>
         </div>

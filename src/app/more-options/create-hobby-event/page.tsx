@@ -172,13 +172,18 @@ const CreateEventSection = () => {
   //custom hook for scrolling locking when preview open custom hook calling
   useScrollLock(isPreviewOpen);
   useScrollLock(isTimeDurationModalOpen);
-  //useScrollLock()
+  useScrollLock(isInviteModalOpen);
+  useScrollLock(isEndTimePickerOpen);
+  useScrollLock(isStartTimePickerOpen);
+  useScrollLock(isModalOpen);
 
   //function for handle event start time
   const handleStartTimeChange = (newTime: string) => {
     console.log("Selected Time:", newTime);
     setSelectedStartTime(newTime);
   };
+
+  console.log("gpm invide open",isInviteModalOpen)
 
   //function for handle event end time
   const handleEndTimeChange = (newTime: string) => {
