@@ -90,12 +90,12 @@ export default function EventCard({
 
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
-   const placeholderBg = isFront
+  const placeholderBg = isFront
     ? "" // Front card gets its background from the inner div
     : depth === 1
-    ? "bg-app-bg-placeholder-firstcard"
+    ? "bg-app-bg-placeholder-firstcard w-full h-full pb-6 "
     : depth === 2
-    ? "bg-app-bg-placeholder-secondcard"
+    ? "bg-app-bg-placeholder-secondcard w-full h-full pb-6"
     : "";
 
   //card dragging handle function
@@ -126,7 +126,12 @@ export default function EventCard({
         rotate,
         transition: "0.125s transform",
         scale: isStackExtended ? 1 : 1 - depth * 0.02,
-        y: depth * 12,
+        y:
+          isStackExtended && depth === 1
+            ? depth * 24
+            : isStackExtended && depth === 2
+            ? depth * 16
+            : depth * 12,
 
         zIndex: events.length - depth,
         height: isStackExtended
@@ -236,9 +241,7 @@ export default function EventCard({
                       </div>
                     </div>
                     <button
-                      onClick={() =>
-                        setIsStackExtended(!isStackExtended)
-                      }
+                      onClick={() => setIsStackExtended(!isStackExtended)}
                       className={`${
                         isDark
                           ? "bg-gray-500"
@@ -247,7 +250,7 @@ export default function EventCard({
                     >
                       <DownArrowIcon
                         className={`${
-                          isStackExtended  ? "rotate-180" : ""
+                          isStackExtended ? "rotate-180" : ""
                         } w-6 h-6`}
                       />
                     </button>
