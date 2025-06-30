@@ -133,6 +133,11 @@
   --color-app-radio-button-color: var(--app-radio-button-color);
   --color-app-bg-color-modal: var(--app-bg-color-modal);
   --color-app-bg-preview-category-tag-bg: var(--app-bg-preview-category-tag-bg);
+  --color-app-arrow-bg: var(--app-arrow-bg);
+
+  --color-app-bg-placeholder-firstcard: var(--app-bg-placeholder-firstcard);
+  --color-app-bg-placeholder-secondcard: var(--app-bg-placeholder-secondcard);
+  --color-app-section-bg:var(--app-section-bg);
 }
 
 :root {
@@ -293,6 +298,14 @@
   /*EVENT PREVIEW*/
   --app-bg-color-modal: oklch(0.9446 0.0022 17.2);
   --app-bg-preview-category-tag-bg: oklch(0.2393 0 0);
+  --app-arrow-bg: oklch(0.9446 0.0022 17.2);
+
+  /*EVENT CARD PLACEHOLDER BGS*/
+  --app-bg-placeholder-firstcard: oklch(0.8715 0.0022 17.2);
+  --app-bg-placeholder-secondcard: oklch(0.7348 0 0);
+
+  /*EVENT SHARE MODAL COLORS*/
+  --app-section-bg:oklch(0.9446 0.0022 17.2);
 }
 
 .dark {
@@ -441,6 +454,14 @@
   /*EVENT PREVIEW*/
   --app-bg-color-modal: oklch(0.2134 0 0);
   --app-bg-preview-category-tag-bg: oklch(0.2393 0 0);
+  --app-arrow-bg: oklch(0.5278 0 0);
+
+  /*EVENT CARD PLACEHOLDER BGS*/
+  --app-bg-placeholder-firstcard: oklch(0.5999 0 0);
+  --app-bg-placeholder-secondcard: oklch(0.412 0.004 17.32);
+
+   /*EVENT SHARE MODAL COLORS*/
+  --app-section-bg:oklch(0.1591 0 0);
 }
 
 @layer base {

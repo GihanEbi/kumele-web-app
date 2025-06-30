@@ -60,13 +60,13 @@ const PaymentSelection: React.FC<PaymentSelectionProps> = ({
           <div
             className={`w-5 h-5 rounded-full border-2 transition-all duration-150 ease-in-out
                         ${checked
-                          ? 'border-blue-600 bg-blue-600'
+                          ? 'border-app-button-blue bg-app-button-blue'
                           : 'border-gray-400 border-3 bg-app-background-primary hover:border-gray-500'
                         }`}
           >
             {checked && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[1rem] h-[1rem] bg-blue-600 border-3 border-app-background-primary rounded-full transform scale-100 transition-transform duration-100 ease-out"></div>
+                <div className="w-[1rem] h-[1rem] bg-app-button-blue border-2 border-app-background-primary rounded-full transform scale-100 transition-transform duration-100 ease-out"></div>
               </div>
             )}
           </div>

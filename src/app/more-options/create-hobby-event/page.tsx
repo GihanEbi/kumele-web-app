@@ -165,14 +165,25 @@ const CreateEventSection = () => {
   //payment selection state
   const [selectedPayment, setSelectedPayment] = useState<string>("free");
 
+  //time duration modal state
+  const [isTimeDurationModalOpen, setIsTimeDurationModalOpen] =
+    useState<boolean>(false);
+
   //custom hook for scrolling locking when preview open custom hook calling
   useScrollLock(isPreviewOpen);
+  useScrollLock(isTimeDurationModalOpen);
+  useScrollLock(isInviteModalOpen);
+  useScrollLock(isEndTimePickerOpen);
+  useScrollLock(isStartTimePickerOpen);
+  useScrollLock(isModalOpen);
 
   //function for handle event start time
   const handleStartTimeChange = (newTime: string) => {
     console.log("Selected Time:", newTime);
     setSelectedStartTime(newTime);
   };
+
+  console.log("gpm invide open",isInviteModalOpen)
 
   //function for handle event end time
   const handleEndTimeChange = (newTime: string) => {
@@ -340,9 +351,19 @@ const CreateEventSection = () => {
     setIsGuestPriceModalOpen(!isGuestPriceModalOpen);
   };
 
+  const handleTimeDurationInnerModalOpen = () => {
+    setIsTimeDurationModalOpen(true);
+    setIsStartTimePickerOpen(false);
+    setIsEndTimePickerOpen(false);
+  };
+
+  const handleTimeDurationInnerModalClose = () => {
+    setIsTimeDurationModalOpen(false);
+  };
+
   return (
     <div
-      className={`max-w-full mx-auto p-6 no-scrollbar ${
+      className={`max-w-full mx-auto p-6 px-8 no-scrollbar ${
         isDatePickerOpen && isDark
           ? "bg-neutral-900"
           : isDatePickerOpen && !isDark
@@ -378,10 +399,16 @@ const CreateEventSection = () => {
           : isPreviewOpen && !isDark
           ? "bg-gray-200"
           : "bg-app-background-primary"
+      }  ${
+        isTimeDurationModalOpen && isDark
+          ? "bg-neutral-900"
+          : isTimeDurationModalOpen && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
       }`}
       onClick={closeModal}
     >
-      <div className="flex flex-row gap-5 pt-[64px]">
+      <div className="flex flex-row gap-5 pt-[64px] -ml-3">
         <div className="mt-2">
           <Link href="/user/home">
             <BackToPageIcon />
@@ -579,7 +606,12 @@ const CreateEventSection = () => {
             <InformationIcon />
           </div>
         </div>
-        <TimeDurationSelector />
+        <TimeDurationSelector
+          isItemAdded={isTimeDurationModalOpen}
+          setIsitemAdded={setIsTimeDurationModalOpen}
+          handleModalOpen={handleTimeDurationInnerModalOpen}
+          handleCloseModal={handleTimeDurationInnerModalClose}
+        />
       </div>
 
       <div className="mt-8 ">
@@ -684,7 +716,7 @@ const CreateEventSection = () => {
         {/* Age Range Slider Section using Radix UI */}
         <RadixAgeRangeSlider
           //label="Age range"
-          min={0}
+          min={18}
           max={100}
           initialValues={[18, 28]} // As shown in your image
           step={1}
@@ -696,10 +728,7 @@ const CreateEventSection = () => {
           <label className="font-plusJakartaSans font-normal text-[13.89px]">
             Number of Guests
           </label>
-          <div
-            onClick={handleGuestPriceModalOpen}
-            className="mt-[-6px]"
-          >
+          <div onClick={handleGuestPriceModalOpen} className="mt-[-6px]">
             <InformationIcon />
           </div>
         </div>
@@ -733,7 +762,7 @@ const CreateEventSection = () => {
       {/* Create Event Button */}
       <button
         onClick={() => setIsPreviewOpen(true)}
-        className="w-full mt-10 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-50"
+        className="w-full mt-12 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-50 "
       >
         Preview Event
       </button>

@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import Image from "next/image";
-import { Event } from "../data"
+import { Event } from "../data";
 
 import {
   UsersIcon,
@@ -64,14 +64,14 @@ const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
 
   return (
     <div className="mt-6">
-      <h3 className="text-lg font-bold mb-4 text-zinc-800 dark:text-zinc-200">
+      <h3 className="font-plusJakartaSans text-app-button-model-text-color font-semibold text-[19px] mb-4 text-left ml-1">
         Other Events from {hostName}
       </h3>
       <div className="relative group">
         <div className="absolute inset-y-0 left-0 flex items-center z-10">
           <button
             onClick={() => handleScroll("left")}
-            className="bg-gray-100 dark:bg-gray-500 border-none rounded-xl p-1 shadow-md -ml-3"
+            className="bg-app-arrow-bg border-none rounded-xl p-1 shadow-md left-10"
             aria-label="Scroll left"
           >
             <RightArrowIcon className="w-5 h-5  rotate-180" />
@@ -88,7 +88,7 @@ const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
           {events.map((event) => (
             <div
               key={event.id}
-              className="flex-shrink-0 w-[142px] h-[160px] flex flex-col bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg overflow-hidden select-none"
+              className="flex-shrink-0 w-[142px] h-[160px] flex flex-col bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-[14px] overflow-hidden select-none"
             >
               <div className="relative h-[88px] pointer-events-none">
                 <Image
@@ -98,7 +98,7 @@ const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
                   objectFit="cover"
                 />
                 <div className="absolute top-2 right-2 bg-gray-900 px-2 py-1 rounded-full flex items-center space-x-1">
-                  <Confetti2Icon className="w-3 h-3 text-white" />
+                  <Confetti2Icon className="w-[14px] h-[14px] text-white" />
                   <span className="font-plusJakartaSans text-white font-normal text-[11.11px]">
                     {event.category}
                   </span>
@@ -106,25 +106,25 @@ const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
               </div>
 
               <div className="p-2 pointer-events-none flex-1 flex flex-col justify-center">
-                <h4 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[12px] truncate">
+                <h4 className="font-plusJakartaSans text-left text-app-button-model-text-color font-bold text-[12px] truncate">
                   {event.title}
                 </h4>
                 <div className="mt-1 space-y-1">
-                  <div className="flex items-center space-x-1.5">
-                    <UsersIcon className="w-3.5 h-3.5" />
+                  <div className="flex items-center space-x-0.5">
+                    <UsersIcon className="w-[13px] h-[13px]" />
                     <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[10px]">
                       {event.guests} guests
                     </span>
                   </div>
-                  <div className="flex flex-row gap-3">
-                    <div className="flex items-center space-x-1.5">
-                      <DollarIcon className="w-3.5 h-3.5" />
+                  <div className="flex flex-row gap-2">
+                    <div className="flex items-center space-x-0.5">
+                      <DollarIcon className="w-[13px] h-[13px]" />
                       <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[10px]">
                         {event.price}
                       </span>
                     </div>
-                    <div className="flex items-center space-x-1.5">
-                      <ClockIcon className="w-3.5 h-3.5" />
+                    <div className="flex items-center space-x-0.5">
+                      <ClockIcon className="w-[13px] h-[13px]" />
                       <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[10px]">
                         {event.time}
                       </span>
@@ -138,7 +138,7 @@ const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
         <div className="absolute inset-y-0 right-0 flex items-center z-10">
           <button
             onClick={() => handleScroll("right")}
-            className="bg-gray-100 dark:bg-gray-500 rounded-full p-1 shadow-md -mr-3"
+            className="bg-app-arrow-bg rounded-full p-1 shadow-md right-8"
             aria-label="Scroll right"
           >
             <RightArrowIcon className="w-5 h-5" />
