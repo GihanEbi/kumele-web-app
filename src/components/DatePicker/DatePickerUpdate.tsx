@@ -104,10 +104,11 @@ interface DatePickerProps {
   label?: string;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ label = "Date", isOpen,         // Use the prop
-  setIsOpen   }) => {
-  // --- CHANGE #3: Add state for managing visibility and selected date ---
-  //const [isOpen, setIsOpen] = useState(false);
+const DatePicker: React.FC<DatePickerProps> = ({
+  label = "Date",
+  isOpen,
+  setIsOpen,
+}) => {
   const [selectedDate, setSelectedDate] = useState(new Date("2022-04-13"));
   const [calendarDate, setCalendarDate] = useState(new Date("2022-12-01"));
 
@@ -126,21 +127,40 @@ const DatePicker: React.FC<DatePickerProps> = ({ label = "Date", isOpen,        
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setIsOpen]);
 
-  const formattedDate = selectedDate
-    .toLocaleDateString("en-US", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    })
-    .replace(/, /g, ", ");
+  const formatDateWithOrdinal = (date: Date) => {
+    const day = date.getDate();
+    const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+    const month = date.toLocaleDateString("en-US", { month: "long" });
+    const year = date.getFullYear();
 
+    const getOrdinalSuffix = (d: number) => {
+      if (d > 3 && d < 21) return "th"; // for 4-20
+      switch (d % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+
+    return `${weekday}, ${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
+  };
+
+  const formattedDate = formatDateWithOrdinal(selectedDate);
   const commonInputClasses =
     "w-full flex items-center justify-between px-3 py-2.5 bg-k-primary-color hover:bg-k-primary-color rounded-lg";
 
   return (
     <div className="max-w-full w-full relative" ref={datePickerRef}>
-      {label && <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-2">{label}</label>}
+      {label && (
+        <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-2">
+          {label}
+        </label>
+      )}
       <button
         type="button"
         className={commonInputClasses}
@@ -152,7 +172,9 @@ const DatePicker: React.FC<DatePickerProps> = ({ label = "Date", isOpen,        
         <div className="flex items-center space-x-2.5 py-[-2px]">
           <CalenderIcon />
 
-          <span className="font-plusJakartaSans font-normal text-[13.89px]">{formattedDate}</span>
+          <span className="font-plusJakartaSans font-normal text-[13.89px]">
+            {formattedDate}
+          </span>
         </div>
         <div className="flex flex-col gap-1">
           <UpArrowIcon />

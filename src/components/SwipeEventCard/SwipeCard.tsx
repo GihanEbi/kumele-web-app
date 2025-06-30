@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import EventCard from "./EventCard";
 import InviteModal from "./ShareModal/ShareModal";
 import ModalPortal from "../ModalPortal/ModalPortal";
+import { useScrollLock } from "@/utils/useScrollHook";
 //import TestEventCard from "./EventCard";
 
 type Event = {
@@ -93,20 +94,50 @@ const eventsData: Event[] = [
     startsIn: "Starts in 0000 hrs",
     location: "22414 Indore",
     subtitle:
-      "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
+      "🌟Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
     description:
       "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
   },
   {
     id: 6,
-    category: "test 323",
+    category: "first event",
     imageSrc: "/bg-imgs/test-event-1.jpg",
-    title: "Group meditation",
+    title: "First event",
     price: "Free",
     time: "7:45-9:30",
     guests: "12",
     startsIn: "Starts in 5 hrs",
     location: "New York",
+    subtitle:
+      "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
+    description:
+      "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
+  },
+  {
+    id: 7,
+    category: "party",
+    imageSrc: "/bg-imgs/preview-event.jpg",
+    title: "Friends Gathering",
+    price: "Free",
+    time: "7:45-9:30",
+    guests: "12",
+    startsIn: "Starts in 7 hrs",
+    location: "22414 Indore",
+    subtitle:
+      "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
+    description:
+      "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
+  },
+  {
+    id: 8,
+    category: "Spirituality",
+    imageSrc: "/bg-imgs/test-event-3.jpg",
+    title: "Birthday Celebration",
+    price: "Free",
+    time: "7:45-9:30",
+    guests: "15",
+    startsIn: "Starts in 09 hrs",
+    location: "45960 India",
     subtitle:
       "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
     description:
@@ -121,8 +152,12 @@ interface SwipeCardProps {
 export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
   const [events, setEvents] = useState<Event[]>(eventsData);
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
+  const [isStackExtended, setIsStackExtended] = useState(false); //test bug fix step 1
 
   console.log("events length is", events.length);
+
+  //lock parent component when a modal is open
+  useScrollLock(isInviteModalOpen);
 
   useEffect(() => {
     if (events.length === 0) {
@@ -132,27 +167,31 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
 
   return (
     <>
-      <div className="min-h-screen grid place-items-center z-[1200]">
-        {events.map((item) => {
+      <div className="min-h-screen grid place-items-center pb-20">
+        {events.map((item, idx) => {
           return (
             <EventCard
+              index={idx}
               onOpenShareModal={() => setInviteModalOpen(true)}
               key={item.id}
               event={item}
               events={events}
               setEvents={setEvents}
-              {...item}
+              //bug fix-best practise
+              //{...item}
+              isStackExtended={isStackExtended}
+              setIsStackExtended={setIsStackExtended}
             />
           );
         })}
       </div>
       <div className="z-13">
-         <ModalPortal>
-        <InviteModal
-          isOpen={isInviteModalOpen}
-          onClose={() => setInviteModalOpen(false)}
-        />
-      </ModalPortal>
+        <ModalPortal>
+          <InviteModal
+            isOpen={isInviteModalOpen}
+            onClose={() => setInviteModalOpen(false)}
+          />
+        </ModalPortal>
       </div>
     </>
   );

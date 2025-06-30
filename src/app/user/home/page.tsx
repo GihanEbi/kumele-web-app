@@ -10,14 +10,13 @@ import {
 import HomePageGif from "@/components/GifComponents/HomePageGif/HomePageGif";
 import { useRouter } from "next/navigation";
 import ReferralModel from "@/components/Models/ReferralModel/ReferralModel";
-import EventSwipeDeck from "@/components/HomeEventCard/EventSwipeDeck";
+
 import SwipeEventCards from "@/components/SwipeEventCard/SwipeCard";
 
 const Home = () => {
   const router = useRouter();
   const [showReferralModel, setShowReferralModel] = useState(false);
 
-  const [isEventAvailable, setIsEventAvailable] = useState(true);
   const [allEventsCompleted, setAllEventsCompleted] = useState(false);
   //const [isRatePopOpen, setIsRatePopOpen] = useState(true);
 
@@ -30,9 +29,9 @@ const Home = () => {
     <>
       <div className="min-h-screen bg-app-background-secondary text-center">
         <div className="flex flex-col items-center justify-center h-full pt-12 relative">
-          <div className="fixed top-15 left-5 z-50 bg-app-background-model rounded-full w-12 h-12 flex items-center justify-center shadow-search-icon">
-          <SearchIcon className="text-app-icon" />
-        </div>
+          {/* <div className="fixed top-15 left-5 z-50 bg-app-background-model rounded-full w-12 h-12 flex items-center justify-center shadow-search-icon">
+            <SearchIcon className="text-app-icon" />
+          </div> */}
 
           {allEventsCompleted ? (
             <div className="flex flex-col items-center justify-center h-full pt-12 relative">
@@ -65,17 +64,19 @@ const Home = () => {
               </div>
             </div>
           ) : (
-           <div className="-translate-y-16"> {/* Adjust the number as needed */}
+            <div className="-translate-y-16">
+              {" "}
+              {/* Adjust the number as needed */}
               <SwipeEventCards onStackFinished={handleStackFinished} />
             </div>
           )}
         </div>
         <ReferralModel
-           isOpen={showReferralModel}
-           onClose={() => {
-             setShowReferralModel(false);
-           }}
-         />
+          isOpen={showReferralModel}
+          onClose={() => {
+            setShowReferralModel(false);
+          }}
+        />
       </div>
     </>
   );

@@ -72,7 +72,7 @@ const GuestInviteModal: React.FC<GuestInviteModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0   bg-opacity-50 flex items-end justify-center z-50"
+      className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50"
       onClick={handleClose}
     >
       <div
@@ -97,14 +97,13 @@ const GuestInviteModal: React.FC<GuestInviteModalProps> = ({
           </p>
 
           {/* --- Scroller Container Using Your Component --- */}
-          {/* <div className="relative flex justify-around items-center h-[150px]"> */}
+
           <div className="relative flex justify-around items-center">
-            {/* The "window" or highlight bar that sits ON TOP of the scrollers */}
             <div className="absolute top-1/2 -translate-y-1/2 w-48 h-14 border border-app-search-bar-text rounded-xl pointer-events-none" />
 
             {/* The vertical dividers */}
-            <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-[2.75rem] h-8 w-px bg-app-search-bar-text" />
-            <div className="absolute top-1/2 -translate-y-1/2 left-1/2 translate-x-[2.75rem] h-8 w-px bg-app-search-bar-text" />
+            <div className="absolute ml-2 top-1/2 -translate-y-1/2 left-1/2 -translate-x-[2.75rem] h-8 w-px bg-app-search-bar-text" />
+            <div className="absolute -ml-3 top-1/2 -translate-y-1/2 left-1/2 translate-x-[2.75rem] h-8 w-px bg-app-search-bar-text" />
 
             {/* Using your exact scroller component three times */}
             <div className=" flex flex-row gap-15">
@@ -124,9 +123,11 @@ const GuestInviteModal: React.FC<GuestInviteModalProps> = ({
               </p>
             </div>
             <div className="flex flex-row gap-2">
-              <p className="font-plusJakartaSans text-red-500 font-normal text-[10px]">*</p>
+              <p className="font-plusJakartaSans text-red-500 font-normal text-[10px]">
+                *
+              </p>
               <p className="font-plusJakartaSans text-gray-400 font-normal text-[10px]">
-                 Max {maxGuests} Guests. Disclaimer: we cannot guarantee 100%
+                Max {maxGuests} Guests. Disclaimer: we cannot guarantee 100%
                 matches due to certain factors beyond our control.
               </p>
             </div>

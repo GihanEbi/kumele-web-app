@@ -60,7 +60,7 @@ const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
       <div className="fixed inset-0 z-40 " onClick={onClose} />
 
       {/* Modal Content (The Bottom Sheet) */}
-      <div className="fixed bottom-0 left-0 right-0  bg-white dark:bg-black rounded-t-2xl shadow-2xl max-w-md mx-auto z-50">
+      <div className="fixed bottom-0 left-0 right-0  bg-white dark:bg-black rounded-t-4xl shadow-2xl max-w-md mx-auto z-50">
         <div className="p-4 max-h-[85vh] overflow-y-auto">
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
@@ -94,60 +94,60 @@ const InviteModal: React.FC<InviteModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Event Details Box */}
-          <div className="text-left p-4 bg-zinc-100 dark:bg-app-blog-selected-tabs-text rounded-xs mb-2 space-y-0">
+          <div className="text-left p-4 bg-app-section-bg rounded-xs mb-2 space-y-0">
             <h3 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[16px]">
               {event.title}
             </h3>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1">
                 <DollarIcon className="h-[20px] w-[20px]" />
                 <p className="font-plusJakartaSans text-blue-700 dark:text-app-text-yellow font-normal text-[14px]">
                   {event.price}
                 </p>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1">
                 <ClockIcon className="h-[20px] w-[20px]" />
                 <p className="font-plusJakartaSans text-blue-700 dark:text-app-text-yellow font-normal text-[14px]">
                   {event.time}
                 </p>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1">
                 <UsersIcon className="h-[20px] w-[20px]" />
-                <p className="font-plusJakartaSans text-blue-700 dark:text-app-text-yellow font-normal text-[14px]">
+                <p className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow font-normal text-[14px]">
                   {event.guests} guests
                 </p>
               </div>
             </div>
-            <div className=" pt-1">
+            <div className=" pt-1 flex flex-row gap-1">
               <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[14px]">
-                Event ID:{" "}
+                Event ID:
               </span>
-              <span className="font-plusJakartaSans text-blue-700 dark:text-app-text-yellow font-normal text-[14px]">
+              <span className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow font-normal text-[14px]">
                 {event.eventId}
               </span>
             </div>
-            <div className="">
+            <div className="flex flex-row gap-1">
               <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[14px]">
                 Location:{" "}
               </span>
-              <span className="font-plusJakartaSans text-blue-700 dark:text-app-text-yellow font-normal text-[14px]">
+              <span className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow font-normal text-[14px]">
                 {event.location}
               </span>
             </div>
           </div>
 
           {/* How it Works Box */}
-          <div className="text-left p-4 bg-zinc-100 dark:bg-app-blog-selected-tabs-text rounded-xs mb-6">
+          <div className="text-left p-4 bg-app-section-bg rounded-xs mb-6">
             <h4 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[16px] mb-2 ">
               How it works:
             </h4>
             <ol className="list-decimal list-inside text-sm text-zinc-600 dark:text-zinc-300 space-y-0">
               <li>
-                <span className="font-plusJakartaSans text-blue-700 dark:text-app-text-yellow font-bold text-[14px]">
+                <span className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow font-bold text-[14px]">
                   Login
                 </span>{" "}
                 or{" "}
-                <span className="font-plusJakartaSans text-blue-700 dark:text-app-text-yellow font-bold text-[14px]">
+                <span className="font-plusJakartaSans text-app-text-host dark:text-app-text-yellow font-bold text-[14px]">
                   Signup
                 </span>
                 .
