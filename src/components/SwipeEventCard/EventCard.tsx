@@ -43,8 +43,6 @@ interface EventCardProps {
   events: Event[];
   setEvents: Dispatch<SetStateAction<Event[]>>;
   onOpenShareModal: () => void;
-
-  // +++ ADD THESE NEW PROP TYPES +++
   isStackExtended: boolean;
   setIsStackExtended: Dispatch<SetStateAction<boolean>>;
 }
@@ -61,15 +59,14 @@ export default function EventCard({
   setEvents,
   onOpenShareModal,
   index,
-  // +++ DESTRUCTURE THE NEW PROPS +++
+
   isStackExtended,
   setIsStackExtended,
 }: EventCardProps) {
-  //state for extend the card
   const [isExtendedPreviewOpen, setIsExtentedPreviewOpen] =
     useState<boolean>(false);
 
-  //identifying the them
+  //identifying the theme
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
@@ -83,10 +80,10 @@ export default function EventCard({
 
   const width =
     depth === 0
-      ? "clamp(16rem, 80vw, 20rem)" // front card
+      ? "clamp(18rem, 87vw, 30rem)" 
       : depth === 1
-      ? "clamp(14rem, 70vw, 17rem)" // 1st under-card
-      : "clamp(12rem, 60vw, 15rem)"; // 2nd under-card
+      ? "clamp(14rem, 77vw, 27rem)" 
+      : "clamp(12rem, 67vw, 25rem)";
 
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
@@ -137,13 +134,13 @@ export default function EventCard({
         height: isStackExtended
           ? "92vh"
           : events.length === 1
-          ? "26rem"
-          : "26rem",
+          ? "29rem"
+          : "29rem",
       }}
       animate={{
         scale: isFront ? 1 : 0.98,
       }}
-      className={` ${placeholderBg} ${isHidden ? "hidden" : ""} ${
+      className={`${placeholderBg} ${isHidden ? "hidden" : ""} ${
         isStackExtended ? "origin-top" : "origin-bottom"
       } rounded-4xl
             overflow-hidden  ${
@@ -162,13 +159,13 @@ export default function EventCard({
             isStackExtended && isFront
               ? "overflow-y-auto no-scrollbar"
               : "overflow-hidden" //I have change this:will change if need
-          }pb-6  `}
+          }`}
         >
           {isFront && (
             <>
               <div
                 className={`flex-1 ${
-                  isStackExtended ? "overflow-y-auto no-scrollbar" : ""
+                  isStackExtended ? "overflow-y-auto no-scrollbar pb-0" : ""
                 } rounded-4xl`}
               >
                 <div className="relative">
@@ -176,7 +173,7 @@ export default function EventCard({
                     src={event.imageSrc}
                     alt={event.title}
                     draggable={false} //prevents browser default drag
-                    className="w-full h-64 object-cover pointer-events-none rounded-t-4xl"
+                    className="w-full h-70 object-cover pointer-events-none rounded-t-4xl"
                   />
                   <div className="absolute top-5 right-6 bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1 rounded-full flex items-center space-x-1.5">
                     <YingyangIcon />
@@ -204,7 +201,7 @@ export default function EventCard({
                 </div>
 
                 {/* DETAILS SECTION */}
-                <div className="space-y-3 px-3">
+                <div className="space-y-3 px-3 mt-8">
                   <div className="flex items-center gap-2 text-sm ">
                     <div className="flex items-center space-x-0.5">
                       <TwoTicketsIcon className="h-[20px] w-[20px]" />{" "}
@@ -287,6 +284,7 @@ export default function EventCard({
                   </>
                 )}
               </div>
+              <div className="h-8 flex-shrink-0" />
             </>
           )}
           {!isFront && <div className="w-full h-full bg-transparent"></div>}

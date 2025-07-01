@@ -118,30 +118,33 @@ const FollowingComponent = () => {
         </div>
         <main className="mt-[12px]">
           {/* <TabComponent tabs={tabsData} /> */}
-          <div className="bg-app-range-slider-track-active p-1 rounded-lg flex items-center mt-2">
+          <div className="bg-app-range-slider-track-active p-1 gap-1 rounded-lg flex justify-between items-center mt-2">
             {/* Subscriptions Button */}
             <div
-              className={` text-center flex-1 py-3 px-4 rounded-lg font-plusJakartaSans-500 font-medium text-[14px] transition-all duration-300 ${
+              className={`text-center relative py-3 px-5 w-full rounded-lg font-plusJakartaSans-500 font-medium text-[14px] transition-all duration-300 ${
                 activeTab === "Followers" ? activeTabStyles : inactiveTabStyles
               }`}
             >
               <button onClick={() => setActiveTab("Followers")}>
                 Followers
               </button>
-              {/* <div className="mr-10 rounded-2xl bg-app-input-yellow text-app-text-black py-1 px-2">
+              <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
                 <p className="text-[7.52px]">8</p>
-              </div> */}
+              </div>
             </div>
 
-            {/* Guest Tickets Button */}
-            <button
-              onClick={() => setActiveTab("Following")}
-              className={`flex-1 py-3 px-4 rounded-lg font-plusJakartaSans-500 font-medium text-[14px] transition-all duration-300 ${
+            <div
+              className={` text-center flex w-full relative gap-2 py-3 px-4 rounded-lg font-plusJakartaSans-500 font-medium text-[14px] transition-all duration-300 ${
                 activeTab === "Following" ? activeTabStyles : inactiveTabStyles
               }`}
             >
-              Following
-            </button>
+              <button onClick={() => setActiveTab("Following")}>
+                Following
+              </button>
+              <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
+                <p className="text-[7.52px]">8</p>
+              </div>
+            </div>
           </div>
           {activeTab === "Followers" && (
             <div className="mt-[25px]">

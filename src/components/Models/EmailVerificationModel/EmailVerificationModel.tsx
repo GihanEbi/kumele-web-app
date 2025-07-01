@@ -142,12 +142,6 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                {/* <Image
-                  src="/common-gifs/verification-wrong.gif"
-                  alt="Success"
-                  width={100}
-                  height={100}
-                /> */}
                 <ErrorGif/>
               </div>
               <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">

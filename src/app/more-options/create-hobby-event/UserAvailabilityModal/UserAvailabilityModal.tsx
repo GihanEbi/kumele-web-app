@@ -32,18 +32,18 @@ const UsersAroundModal: React.FC<UsersAroundModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-8"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm rounded-2xl bg-white dark:bg-black p-8 shadow-xl aspect-square flex flex-col"
+        className="w-full max-w-sm rounded-4xl bg-white dark:bg-black p-10 flex flex-col"
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
         <div className="mb-6">
           <HotChocolateGif/>
         </div>
 
-        <div className="min-h-[160px]">
+        <div className="min-h-[140px]">
           <h2 className="mb-3 font-plusJakartaSans font-bold text-[19px] text-black dark:text-white">
             {showAlternateText ? "Users around" : "No users around"}
           </h2>
