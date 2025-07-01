@@ -62,13 +62,15 @@ const PaymentPage = () => {
   return (
     // Main page container. This is NOT a modal.
     <div className="min-h-screen bg-app-background-primary font-sans">
-      <div className={`mx-auto max-w-2xl ${
-        isPaymentSuccess && isDark
-          ? "bg-neutral-900"
-          : isPaymentSuccess && !isDark
-          ? "bg-gray-200"
-          : "bg-app-background-primary"
-      } pt-[64px]` }>
+      <div
+        className={`mx-auto max-w-2xl ${
+          isPaymentSuccess && isDark
+            ? "bg-neutral-900"
+            : isPaymentSuccess && !isDark
+            ? "bg-gray-200"
+            : "bg-app-background-primary"
+        } pt-[64px]`}
+      >
         <div className="flex-grow p-6 overflow-y-auto">
           {/* Header */}
           <div className="flex items-center gap-4">
@@ -94,8 +96,7 @@ const PaymentPage = () => {
           <div className="mt-6 flex flex-row justify-between sm:flex-row gap-3">
             <InputComponent
               placeholder="Enter Discount code"
-              onChange={(e) => {
-              }}
+              onChange={(e) => {}}
             />
             {/* <input
               type="text"
@@ -230,17 +231,17 @@ const PaymentPage = () => {
       {isPaymentSuccess && (
         <div className="fixed inset-0 z-[50] bg-opacity-70 flex items-end justify-center">
           <div
-            className={`bg-app-background-primary p-8 pt-6 rounded-t-2xl shadow-xl flex flex-col items-center w-full max-w-md transform transition-transform duration-300 ease-out ${
+            className={`bg-app-background-primary p-10 rounded-t-4xl shadow-xl flex flex-col items-center w-full max-w-md transform transition-transform duration-300 ease-out ${
               isPaymentSuccess ? "translate-y-0" : "translate-y-full"
             }`}
           >
-             <div className="flex flex-col items-center">
-            <div className="mb-4">
-              <CheckMarkGif className="bg-white" />
-            </div>
-            <p className="text-app-text-primary font-plusJakartaSans text-base text-center">
-              Payment Successful
-            </p>
+            <div className="flex flex-col items-center">
+              <div className="mb-4">
+                <CheckMarkGif className="" />
+              </div>
+              <p className="text-app-text-primary font-plusJakartaSans text-base text-center">
+                Payment Successful
+              </p>
             </div>
           </div>
         </div>
