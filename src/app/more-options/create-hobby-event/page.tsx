@@ -183,7 +183,7 @@ const CreateEventSection = () => {
     setSelectedStartTime(newTime);
   };
 
-  console.log("gpm invide open",isInviteModalOpen)
+  console.log("gpm invide open", isInviteModalOpen);
 
   //function for handle event end time
   const handleEndTimeChange = (newTime: string) => {
@@ -405,6 +405,18 @@ const CreateEventSection = () => {
           : isTimeDurationModalOpen && !isDark
           ? "bg-gray-200"
           : "bg-app-background-primary"
+      } ${
+        isGuestPriceModalOpen && isDark
+          ? "bg-neutral-900"
+          : isGuestPriceModalOpen && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
+      } ${
+        isEventTimePriceModalOpen && isDark
+          ? "bg-neutral-900"
+          : isEventTimePriceModalOpen && !isDark
+          ? "bg-gray-200"
+          : "bg-app-background-primary"
       }`}
       onClick={closeModal}
     >
@@ -503,7 +515,7 @@ const CreateEventSection = () => {
 
         <div
           onClick={triggerFileInput}
-          className="border-2 border-dashed border-gray-300 rounded-lg p-5 text-center cursor-pointer transition-colors"
+          className="border-2 border-dashed border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
         >
           {imagePreview ? (
             <div className="relative w-full h-40 rounded-md overflow-hidden">
