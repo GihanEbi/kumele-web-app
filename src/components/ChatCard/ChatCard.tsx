@@ -6,6 +6,7 @@ import { DeleteIcon, MoreOptionIcon } from "../../../public/svg-icons/icons";
 import MoreOptionModel from "./Models/MoreOptionsModel";
 import DropDownIconMenuComponent from "../DropDownIconMenuComponent/DropDownIconMenuComponent";
 import { useRouter } from "next/navigation";
+import ProgressBarComponent from "../ProgressBarComponent/ProgressBarComponent";
 
 type ChatCardProps = {
   // Define any props you need here
@@ -78,8 +79,8 @@ const ChatCard: React.FC<ChatCardProps> = ({
           <p className="text-[8px] text-app-text-primary font-plusJakartaSans text-right">
             {leftDays} days left to rate & <br /> review
           </p>
-          <div className="mt-1 w-full bg-app-text-primary p-1 rounded-full">
-            <div className={`bg-app-text-yellow w-2/3`}></div>
+          <div className="mt-1 w-full">
+          <ProgressBarComponent />
           </div>
           <p className="text-[8px] mt-2 text-app-text-primary font-plusJakartaSans text-right">
             Scanned list: {scannedList} <br />
@@ -92,7 +93,6 @@ const ChatCard: React.FC<ChatCardProps> = ({
           className="text-sm text-app-text-tertiary font-plusJakartaSans bg-app-button-primary px-6 py-1 rounded-md"
           onClick={() => {
             router.push("/more-options/chat-pages/chat");
-            console.log("Chat card clicked");
             
           }}
         >

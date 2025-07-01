@@ -63,6 +63,7 @@
   --color-app-background-chat-card: var(--app-background-chat-card);
   --color-app-background-add: var(--app-background-add);
   --color-app-background-chat-sent: var(--app-background-chat-sent);
+  --color-app-background-chat-progress: var(--app-background-chat-progress);
   --color-app-border: var(--app-border);
   --color-app-border-profile: var(--app-border-profile);
   --color-app-border-referral: var(--app-border-referral);
@@ -98,6 +99,7 @@
   --color-app-icon: var(--app-icon);
   --color-app-icon-muted: var(--app-icon-muted);
   --color-app-badge-background: var(--app-badge-background);
+  --color-app-badge-background-qr: var(--app-badge-background-qr);
   --color-app-button-text-color: var(--app-button-text-color);
   --color-app-range-slider-primary: var(--app-range-slider-primary);
   --color-app-range-slider-secondary: var(--app-range-slider-secondary);
@@ -209,6 +211,7 @@
   --app-background-chat-card: oklch(0.9551 0 89.88); /* #f0f0f0ff */
   --app-background-add: oklch(0.9551 0 89.88);
   --app-background-chat-sent: oklch(0.6066 0 89.88); /* #9B9B9B */
+  --app-background-chat-progress: oklch(0.2686 0 0); /* #9B9B9B */
 
   /* BORDERS */
   --app-border: oklch(0.8853 0 89.88);
@@ -221,6 +224,7 @@
   --app-okay-icon-filter: oklch(0.9581 0 0);
   --app-icon-muted: oklch(0.5278 0 89.88);
   --app-badge-background: oklch(0.2393 0 89.88);
+  --app-badge-background-qr: oklch(0.2393 0 180);
 
   /* INPUT */
   --app-input-primary: oklch(0.9551 0 89.88); /* #F4F4F4 */
@@ -371,6 +375,7 @@
   --app-background-chat-card: oklch(0.2931 0 89.88); /* #2c2c2cff */
   --app-background-add: oklch(0.3995 0.0184 313.28);
   --app-background-chat-sent: oklch(0.6066 0 89.88);
+  --app-background-chat-progress: oklch(0.8853 0 206.57); /* #9B9B9B */
 
   /* BORDERS */
   --app-border: oklch(0.5278 0 89.88);
@@ -383,6 +388,7 @@
   --app-okay-icon-filter: oklch(0.2393 0 89.88);
   --app-icon-muted: oklch(0.5278 0 89.88);
   --app-badge-background: oklch(0.9551 0 89.88);
+  --app-badge-background-qr: oklch(0.2393 0 180);
 
   /* INPUT */
   --app-input-primary: oklch(0.2393 0 89.88);
