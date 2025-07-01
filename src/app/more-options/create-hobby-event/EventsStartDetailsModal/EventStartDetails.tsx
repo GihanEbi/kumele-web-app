@@ -43,7 +43,7 @@ const EventsTimeDetailsModal: React.FC<EventsTimeDetailsModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-sm rounded-3xl bg-white dark:bg-zinc-800 p-6 shadow-xl"
+        className="relative w-full max-w-sm rounded-3xl bg-white dark:bg-black p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
