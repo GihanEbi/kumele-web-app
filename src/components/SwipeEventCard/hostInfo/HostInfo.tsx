@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { RatingIcon } from "../../../../public/svg-icons/icons";
+import MedalGif from "@/components/GifComponents/MedalGif/MedalGif";
 
 type HostInfoProps = {
   host: {
@@ -49,8 +50,8 @@ const HostInfo = ({ host }: HostInfoProps) => {
           </h3>
 
           <div className="ml-3 relative flex items-center">
-            <Image alt="medal" src="/images/medal.png" width={19.96} height={19.96} />
-            {/* <SealIcon /> */}
+            {/* <Image alt="medal" src="/images/medal.png" width={19.96} height={19.96} /> */}
+            <MedalGif width={19.96} height={19.96}/>
             <div className="absolute -top-4 -right-4 bg-app-blog-selected-tabs-background text-black text-[10.98px] font-extrabold w-[21.95px] h-[21.95px] rounded-full flex items-center justify-center  dark:border-zinc-800">
               {host.levelIcon}
             </div>

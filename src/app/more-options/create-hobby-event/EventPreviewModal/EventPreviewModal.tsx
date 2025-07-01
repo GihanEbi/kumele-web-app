@@ -210,10 +210,10 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
               <HostInfo host={hostData} />
             </div>
 
-            {isExtendedPreviewOpen ? (
+            {/* {isExtendedPreviewOpen ? (
               <OtherEvents events={otherEvents} hostName={hostData.name} />
-            ) : (
-              <div className="flex flex-row gap-3 mt-6">
+            ) : ( */}
+              <div className="flex flex-row gap-3 mt-6 mb-10">
                 <button
                   onClick={handleOpenPayment}
                   className="w-full bg-app-button-primary text-app-button-text-color py-3 px-4 rounded-lg transition-colors"
@@ -224,7 +224,11 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
                   Create Event
                 </button>
               </div>
-            )}
+              {isExtendedPreviewOpen &&(
+                 <OtherEvents events={otherEvents} hostName={hostData.name} />
+              )}
+
+            {/* )} */}
           </div>
         </div>
       </div>
