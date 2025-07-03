@@ -51,14 +51,14 @@ const page = () => {
         </div>
       )}
       <div className=" min-h-screen bg-app-background-primary flex flex-col">
-        <div className="w-full max-w-md px-4 top-0 left-0 right-0 ">
+        <div className="w-full max-w-md top-0 left-0 right-0 ">
           {/* Header */}
-          <header className="z-100 fixed w-full pt-[64px] bg-app-background-primary flex justify-between items-center mb-10">
-            <div className="flex items-center">
+          <header className="z-100 px-4 fixed w-full pt-[64px] bg-app-background-primary flex justify-between items-center mb-10">
+            <div className="flex items-center w-full">
               <button
                 aria-label="Go back"
                 onClick={() => window.history.back()} // Simple back navigation
-                className="p-2 -ml-2 mr-2 mt-4" // Added padding for easier click and negative margin to align
+                className="mr-2 mt-4" // Added padding for easier click and negative margin to align
               >
                 <BackArrow className="text-app-icon" />
               </button>
@@ -70,7 +70,7 @@ const page = () => {
               className="mr-10"
               onClick={() => {
                 router.push("/more-options/chat-pages/scan-qr");
-                  console.log("Scan QR clicked");
+                console.log("Scan QR clicked");
               }}
             >
               <GestScanIcon className="text-app-icon mt-4" />
@@ -126,7 +126,7 @@ const page = () => {
         </div>
 
         {/* chat section */}
-        <div className="space-y-1 mt-[10px] px-6">
+        <div className="space-y-1 mt-[10px] px-6 mb-25">
           <p className="text-[13px] text-center text-app-text-profile-tabs font-plusJakartaSans-400">
             Today
           </p>
@@ -164,11 +164,11 @@ const page = () => {
               receiver="Alkesh Kumar"
             />
           </div>
+        </div>
 
-          <div className="w-full max-w-md px-5 fixed bottom-0 left-0  ">
-            <div className="z-200 w-full">
-              <ChatInput />
-            </div>
+        <div className="w-full max-w-md px-5 fixed bottom-0 left-0 pb-10 bg-app-background-primary">
+          <div className="z-200 w-full">
+            <ChatInput />
           </div>
         </div>
       </div>

@@ -116,7 +116,7 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center mb-6">
               <div className="mb-4">
                 <CheckMarkGif/>
               </div>
@@ -140,17 +140,11 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center mb-6">
               <div className="mb-4">
-                {/* <Image
-                  src="/common-gifs/verification-wrong.gif"
-                  alt="Success"
-                  width={100}
-                  height={100}
-                /> */}
                 <ErrorGif/>
               </div>
-              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
+              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-10 text-center">
                 Verification code is wrong
               </p>
             </div>
