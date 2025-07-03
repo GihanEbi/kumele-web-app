@@ -78,14 +78,14 @@ const comments: Comment[] = [
     content:
       "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
     isOwner: true,
-    avatarUrl: "/avatar-img/commentor3.png",
+    avatarUrl: "/avatar-img/joshdurrant.png",
     replies: [
       {
         id: 101,
         author: "Alkesh Sharma",
         date: "23 August 2022",
         content: "What a display dsn cdn zxnc",
-        avatarUrl: "/avatar-img/commentor5.png", // Use different avatar for clarity
+        avatarUrl: "/avatar-img/user-preview.png", 
       },
       {
         id: 102,
@@ -93,14 +93,14 @@ const comments: Comment[] = [
         date: "23 August 2022",
         content: "Replying to Alkesh, great point!",
         isOwner: true,
-        avatarUrl: "/avatar-img/commentor3.png",
+        avatarUrl: "/avatar-img/joshdurrant.png",
       },
       {
         id: 103,
         author: "Simon Pears",
         date: "23 August 2022",
         content: "I also agree with this assessment.",
-        avatarUrl: "/avatar-img/commentor5.png",
+        avatarUrl: "/avatar-img/simon.png",
       },
     ],
   },
@@ -110,14 +110,14 @@ const comments: Comment[] = [
     date: "23 August 2022",
     content:
       "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
-    avatarUrl: "/avatar-img/commentor5.png",
+    avatarUrl: "/avatar-img/jakob.png",
     replies: [
       {
         id: 101,
         author: "Alkesh Sharma",
         date: "23 August 2022",
         content: "What a display dsn cdn zxnc",
-        avatarUrl: "/avatar-img/commentor5.png", // Use different avatar for clarity
+        avatarUrl: "/avatar-img/user-preview.png", // Use different avatar for clarity
       },
     ],
   },
