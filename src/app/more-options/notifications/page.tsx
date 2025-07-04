@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import {
   BackArrow,
@@ -30,7 +30,7 @@ const matchedHobbies = [
   {
     userImg: "/images/notification img1.jpg",
     title: "Psychedelic jazz",
-    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
+    icon: <HousePartyNotificationIcon className="text-app-icon" />,
     time: "12.33 PM",
     category: "House party",
     userName: "Riya Sharma",
@@ -45,7 +45,7 @@ const createdHobbies = [
   {
     userImg: "/images/notification img3.jpg",
     title: "Group meditation",
-    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
+    icon: <LiveMusicNotificationIcon className="text-app-icon" />,
     time: "12.33 PM",
     category: "Spirituality",
     userName: "Akesh kumar",
@@ -57,7 +57,7 @@ const createdHobbies = [
   {
     userImg: "/images/notification img1.jpg",
     title: "Psychedelic jazz",
-    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
+    icon: <LiveMusicNotificationIcon className="text-app-icon" />,
     time: "12.33 PM",
     category: "House party",
     userName: "Riya Sharma",
@@ -72,7 +72,7 @@ const otherNotifications = [
   {
     userImg: "/images/notification img1.jpg",
     title: "Psychedelic jazz",
-    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
+    icon: <HousePartyNotificationIcon className="text-app-icon" />,
     time: "12.33 PM",
     category: "House party",
     userName: "Riya Sharma",
@@ -92,6 +92,18 @@ const otherNotifications = [
     isJoinNow: false,
   },
   {
+    userImg: "/images/notification img1.jpg",
+    title: "Blog Comments",
+    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    time: "12.33 PM",
+    category: "House party",
+    description: "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    isCancelled: false,
+    isShowCancelled: false,
+    isJoinNow: false,
+    isBlogComment: true,
+  },
+  {
     userImg: "/images/cancel-img.png",
     title: "Event Cancelled",
     time: "12.33 PM",
@@ -101,9 +113,69 @@ const otherNotifications = [
     isCancelled: false,
     isJoinNow: false,
   },
+  {
+    userImg: "/images/cancel-img.png",
+    title: "Hobby Event Reminder",
+    time: "12.33 PM",
+    description: "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    isShowCancelled: false,
+    isCancelled: false,
+    isJoinNow: false,
+    isEventCancelled: true,
+  },
+];
+
+const imageList = [
+  "/images/notification img1.jpg",
+  "/images/notification img2.jpg",
+  "/images/notification img3.jpg",
 ];
 
 const page = () => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handleScroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = direction === "left" ? -158 : 158;
+      scrollContainerRef.current.scrollBy({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+    scrollContainerRef.current.style.cursor = "grabbing";
+  };
+
+  const onMouseLeave = () => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(false);
+    scrollContainerRef.current.style.cursor = "grab";
+  };
+
+  const onMouseUp = () => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(false);
+    scrollContainerRef.current.style.cursor = "grab";
+  };
+
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
   //   loading state
   const [loading, setLoading] = useState(false);
   // routing
@@ -118,7 +190,7 @@ const page = () => {
       <div className="min-h-screen bg-app-background-primary flex flex-col">
         <div className="w-full max-w-md px-4 top-0 left-0 right-0">
           {/* Header */}
-          <header className="fixed w-full pt-[64px] bg-app-background-primary flex items-center mb-10">
+          <header className="fixed w-full pt-[64px] bg-app-background-primary flex items-center mb-10 z-200">
             <button
               aria-label="Go back"
               onClick={() => window.history.back()} // Simple back navigation
@@ -134,7 +206,7 @@ const page = () => {
             {/* Notification items go here */}
           </div>
           <div className="mt-[12px]">
-            <h1 className="text-[16px] font-thin text-app-text-primary font-plusJakartaSans-400">
+            <h1 className="text-[16px] font-semibold text-app-text-primary font-plusJakartaSans-400">
               Matched Hobby(ies)
             </h1>
             <div>
@@ -162,7 +234,7 @@ const page = () => {
             </div>
           </div>
           <div className="mt-3">
-            <h1 className="text-sm font-thin text-app-text-primary font-plusJakartaSans">
+            <h1 className="text-sm font-semibold text-app-text-primary font-plusJakartaSans">
               Created Hobby(ies)
             </h1>
             <div>
@@ -185,18 +257,30 @@ const page = () => {
             </div>
           </div>
           <div className="flex items-center justify-center">
-            <div className="mt-[12px] mb-[12px] rounded-xl bg-app-background-add w-[343px] h-[298.3px] flex items-center justify-center">
-              <Image
-                src="/images/add-1.png"
-                alt="Notification Placeholder"
-                width={320}
-                height={270}
-                className="rp-5"
-              />
+            <div className="mt-[12px] mb-[12px] rounded-xl bg-app-background-add w-full h-[240px] flex items-center justify-center">
+              <div
+                ref={scrollContainerRef}
+                onMouseDown={onMouseDown}
+                onMouseLeave={onMouseLeave}
+                onMouseUp={onMouseUp}
+                onMouseMove={onMouseMove}
+                className="flex space-x-4 overflow-x-auto pb-2 -mx-0 px-2 no-scrollbar cursor-grab"
+              >
+                {imageList.map((image, index) => (
+                  <Image
+                    key={index}
+                    src={image}
+                    alt={`Notification Image ${index + 1}`}
+                    width={144}
+                    height={120}
+                    className="rp-5"
+                  />
+                ))}
+              </div>
             </div>
           </div>
           <div className="mt-3">
-            <h1 className="text-sm font-thin text-app-text-primary font-plusJakartaSans">
+            <h1 className="text-sm font-semibold text-app-text-primary font-plusJakartaSans">
               Other Notifications
             </h1>
             <div>
@@ -213,6 +297,8 @@ const page = () => {
                     isCancelled={item.isCancelled}
                     isShowCancelled={item.isShowCancelled}
                     isJoinNow={item.isJoinNow}
+                    isBlogComment={item.isBlogComment}
+                    isEventCancelled={item.isEventCancelled}
                   />
                 </div>
               ))}

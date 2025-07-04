@@ -16,6 +16,7 @@ import Shop from "@/app/user/shop/page";
 import More from "@/app/user/more/page";
 import Profile from "@/app/user/profile/page";
 import MoreOptionModel from "@/components/Models/MoreOptionModel/MoreOptionModel";
+import { useAppContext } from "@/context/AppContext";
 
 const BottomNavBar = () => {
   const router = useRouter();
@@ -25,6 +26,9 @@ const BottomNavBar = () => {
   const [activePageIndex, setActivePageIndex] = React.useState(0);
   // --------- show more option model ----------
   const [showMoreOptionModel, setShowMoreOptionModel] = useState(false);
+
+  // use the appContext to get the more option state
+  const { moreOption, setMoreOption } = useAppContext();
 
   useEffect(() => {
     if (theme === "light") {
@@ -121,6 +125,7 @@ const BottomNavBar = () => {
           onClick={() => {
             setActivePageIndex(3);
             setShowMoreOptionModel(true);
+            setMoreOption(true);
           }}
           className={`flex flex-col items-center text-app-text-primary`}
         >
@@ -176,6 +181,7 @@ const BottomNavBar = () => {
         isOpen={showMoreOptionModel}
         onClose={() => {
           setShowMoreOptionModel(false);
+          setMoreOption(false);
         }}
       />
     </div>

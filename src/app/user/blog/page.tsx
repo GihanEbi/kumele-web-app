@@ -5,6 +5,7 @@ import Image from "next/image";
 import BlogCard from "@/components/BlogCard/BlogCard";
 import { FiSearch } from "react-icons/fi";
 import { SearchIcon } from "../../../../public/svg-icons/icons";
+import { useAppContext } from "@/context/AppContext";
 
 interface BlogCardProps {
   id: string;
@@ -101,6 +102,9 @@ const Blog: React.FC = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
+  // use the appContext to get the more option state
+  const { moreOption } = useAppContext();
+
   const filteredPosts = ALL_BLOG_POSTS.filter((post) => {
     const matchesTab = activeTab === "all" || post.tags.includes(activeTab);
     const matchesSearch =
@@ -174,7 +178,11 @@ const Blog: React.FC = () => {
   };
 
   return (
-    <div className="max-w-full mx-auto rounded-lg bg-app-background-primary pt-[64px] pb-50">
+    <div
+      className={`max-w-full mx-auto rounded-lg pt-[64px] pb-50 ${
+        moreOption ? "bg-k-background-secondary" : "bg-k-background-primary"
+      }`}
+    >
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 ">
         <h2 className="font-plusJakartaSans  font-bold text-[23px] mb-6">
           Blog

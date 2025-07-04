@@ -19,7 +19,7 @@ const InboxMessageCard: React.FC<props> = ({ img, name, date, message }) => {
             className={`w-12 h-12 rounded-full bg-app-text-blue `}
           />
           <div>
-            <h2 className="text-[13px] font-semibold text-app-text-black font-plusJakartaSans-700">
+            <h2 className="text-[13px] font-bold text-app-text-black font-plusJakartaSans-700">
               {name}
             </h2>
             <p className="text-[13px] text-app-text-inbox-chat-date font-plusJakartaSans-400">
