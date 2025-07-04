@@ -6,7 +6,7 @@ import EventCard from "./EventCard";
 import InviteModal from "./ShareModal/ShareModal";
 import ModalPortal from "../ModalPortal/ModalPortal";
 import { useScrollLock } from "@/utils/useScrollHook";
-//import TestEventCard from "./EventCard";
+
 
 type Event = {
   id: number;
@@ -41,7 +41,7 @@ const eventsData: Event[] = [
   {
     id: 2,
     category: "Spirituality",
-    imageSrc: "/bg-imgs/test-event-3.jpg",
+    imageSrc: "/bg-imgs/preview-event.jpg",
     title: "Birthday Celebration",
     price: "Free",
     time: "7:45-9:30",
@@ -56,7 +56,7 @@ const eventsData: Event[] = [
   {
     id: 3,
     category: "family party",
-    imageSrc: "/bg-imgs/test-event-1.jpg",
+    imageSrc: "/bg-imgs/preview-event.jpg",
     title: "Group meditation",
     price: "Free",
     time: "7:45-9:30",
@@ -101,7 +101,7 @@ const eventsData: Event[] = [
   {
     id: 6,
     category: "first event",
-    imageSrc: "/bg-imgs/test-event-1.jpg",
+    imageSrc: "/bg-imgs/preview-event.jpg",
     title: "First event",
     price: "Free",
     time: "7:45-9:30",
@@ -131,7 +131,7 @@ const eventsData: Event[] = [
   {
     id: 8,
     category: "Spirituality",
-    imageSrc: "/bg-imgs/test-event-3.jpg",
+    imageSrc: "/bg-imgs/preview-event.jpg",
     title: "Birthday Celebration",
     price: "Free",
     time: "7:45-9:30",
@@ -165,17 +165,36 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
     }
   }, [events, onStackFinished]);
 
+  const extraCount = events.length >= 4 || events.length === 1 ? 0 : 1;
+
+  const placeholders: Event[] = Array.from({ length: extraCount }, (_, i) => ({
+    id: -(i + 1),
+    imageSrc: "",
+    title: "",
+    category: "",
+    price: "",
+    time: "",
+    guests: "",
+    startsIn: "",
+    location: "",
+    subtitle: "",
+    description: "",
+    isPlaceholder: true,
+  }));
+
+  const displayEvents = [...placeholders, ...events];
+
   return (
     <>
       <div className="min-h-screen grid place-items-center pb-20">
-        {events.map((item, idx) => {
+        {displayEvents.map((item, idx) => {
           return (
             <EventCard
               index={idx}
               onOpenShareModal={() => setInviteModalOpen(true)}
               key={item.id}
               event={item}
-              events={events}
+              events={displayEvents}
               setEvents={setEvents}
               //bug fix-best practise
               //{...item}

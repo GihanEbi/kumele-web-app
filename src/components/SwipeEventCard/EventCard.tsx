@@ -34,6 +34,8 @@ type Event = {
   location: string;
   subtitle: string;
   description: string;
+  isPlaceholder?: boolean;
+  
 };
 
 // types for card
@@ -59,12 +61,9 @@ export default function EventCard({
   setEvents,
   onOpenShareModal,
   index,
-
   isStackExtended,
   setIsStackExtended,
 }: EventCardProps) {
-  const [isExtendedPreviewOpen, setIsExtentedPreviewOpen] =
-    useState<boolean>(false);
 
   //identifying the theme
   const { resolvedTheme } = useTheme();
@@ -76,29 +75,36 @@ export default function EventCard({
   const depth = events.length - 1 - index;
   console.log("depth is:", depth);
   const isFront = depth === 0;
-  const isHidden = depth > 2;
+  const isHidden = depth > 3;
 
+  //width calculation based on depth
   const width =
     depth === 0
-      ? "clamp(18rem, 87vw, 30rem)" 
+      ? "clamp(18rem, 87vw, 30rem)"
       : depth === 1
-      ? "clamp(14rem, 77vw, 27rem)" 
+      ? "clamp(17rem, 85vw, 29rem)"
+      : depth === 2
+      ? "clamp(14rem, 80vw, 27rem)"
+      : depth === 3
+      ? "clamp(13rem, 70vw, 26rem)"
       : "clamp(12rem, 67vw, 25rem)";
 
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
+
+  //declaring placeholder background styles based on depth and isFront
   const placeholderBg = isFront
-    ? "" // Front card gets its background from the inner div
-    : depth === 1
-    ? "bg-app-bg-placeholder-firstcard w-full h-full pb-6 "
+    ? ""
     : depth === 2
+    ? "bg-app-bg-placeholder-firstcard w-full h-full pb-6 "
+    : depth === 3
     ? "bg-app-bg-placeholder-secondcard w-full h-full pb-6"
     : "";
 
   //card dragging handle function
   const handleDragEnd = () => {
+    if (event.isPlaceholder) return;
     if (Math.abs(x.get()) > 50) {
-      // +++ ADD THIS LINE TO COLLAPSE THE STACK ON SWIPE +++
       setIsStackExtended(false);
       setEvents((pv) => pv.filter((v) => v.id !== event.id));
     }
@@ -124,10 +130,14 @@ export default function EventCard({
         transition: "0.125s transform",
         scale: isStackExtended ? 1 : 1 - depth * 0.02,
         y:
-          isStackExtended && depth === 1
-            ? depth * 24
-            : isStackExtended && depth === 2
-            ? depth * 16
+          isStackExtended && depth === 2
+            ? depth * 18
+            : isStackExtended && depth === 3
+            ? depth * 18
+            : depth === 1
+            ? depth * 0
+            : depth === 2
+            ? depth * 9
             : depth * 12,
 
         zIndex: events.length - depth,
@@ -138,7 +148,7 @@ export default function EventCard({
           : "29rem",
       }}
       animate={{
-        scale: isFront ? 1 : 0.98,
+        scale: isFront ? 1 : isStackExtended ? 0.98 : 0.92,
       }}
       className={`${placeholderBg} ${isHidden ? "hidden" : ""} ${
         isStackExtended ? "origin-top" : "origin-bottom"
@@ -153,15 +163,15 @@ export default function EventCard({
       }}
       onDragEnd={handleDragEnd}
     >
-      {depth === 0 && (
+      {(depth === 0 || depth === 1) && (
         <div
           className={`bg-app-background-tertiary rounded-4xl w-full h-full flex flex-col ${
             isStackExtended && isFront
               ? "overflow-y-auto no-scrollbar"
-              : "overflow-hidden" //I have change this:will change if need
+              : "overflow-hidden" 
           }`}
         >
-          {isFront && (
+          {(depth === 0 || depth === 1) && (
             <>
               <div
                 className={`flex-1 ${
