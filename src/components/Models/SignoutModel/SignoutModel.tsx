@@ -58,7 +58,7 @@ const SignoutModel: React.FC<SignoutModelProps> = ({ isOpen, onClose }) => {
                 <button
                   className="text-[16px] flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans-400"
                   onClick={() => {
-                    router.push("/authentication/signin");
+                    router.push("/");
                   }}
                 >
                   Signout

@@ -29,6 +29,7 @@ import SignoutModel from "@/components/Models/SignoutModel/SignoutModel";
 import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
 import { paddings } from "@/constants/layout-constants";
 import { Separator } from "@/components/ui/separator";
+import { useAppContext } from "@/context/AppContext";
 const settingsGroup1 = [
   {
     icon: <SoundIcon className="text-app-icon" width={28} height={28} />,
@@ -125,6 +126,9 @@ const Profile = () => {
 
   const { theme, setTheme, systemTheme } = useTheme();
 
+  // use the appContext to get the more option state
+  const { moreOption } = useAppContext();
+
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -165,12 +169,13 @@ const Profile = () => {
           showContactModel ||
           showReferralModel ||
           showDeleteAccountModel ||
+          moreOption ||
           showSignOutModel
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
         } p-[16px] sm:p-6 mb-30`}
       >
-        <header className={`mb-4 ${paddings.topMargin}`}>
+        <header className={`mb-4 pt-[36px]`}>
           <h1 className="text-[23px] font-bold text-app-text-primary font-plusJakartaSans-700">
             Profile
           </h1>

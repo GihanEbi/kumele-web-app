@@ -10,7 +10,7 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="">
-      <main className="overflow-y-scroll hide-scrollbar h-screen">
+      <main className="overflow-y-scroll hide-scrollbar h-screen bg-k-background-secondary">
         {children}
       </main>
       {/* <footer className="fixed z-11 bottom-0 left-0 right-0">

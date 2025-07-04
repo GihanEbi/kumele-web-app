@@ -9,7 +9,7 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({
   name,
 }) => {
   return (
-    <div className=" mt-2 inline-flex text-[10px] bg-app-badge-background rounded-full p-1 items-center space-x-2 text-app-text-secondary font-plusJakartaSans w-auto">
+    <div className=" mt-2 inline-flex text-[10px] bg-app-badge-background-qr rounded-full py-1 px-2 items-center space-x-2 text-app-text-secondary font-plusJakartaSans w-auto">
       {icon}
       <div>{name}</div>
     </div>

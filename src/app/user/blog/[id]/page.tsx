@@ -180,7 +180,6 @@ export default function BlogDetailPage() {
 
   const isDark = resolvedTheme === "dark";
 
-  console.log(isReplyOpen, "ddddddddddd");
   // Callback function to update the state
   const handleReplyOpen = (isOpen: boolean) => {
     setIsReplyOpen(isOpen);
@@ -207,7 +206,7 @@ export default function BlogDetailPage() {
       </div>
       {/* Blog Header */}
       <div className="mb-6">
-        <h2 className="font-plusJakartaSans font-bold text-[19px] text-app-blog-card-heading text-[19px] font-medium">
+        <h2 className="font-plusJakartaSans font-bold text-[19px] text-app-blog-card-heading">
           {post.title}
         </h2>
         <p className="font-plusJakartaSans font-normal text-[13px]text-app-blog-card-author-text mt-1">
