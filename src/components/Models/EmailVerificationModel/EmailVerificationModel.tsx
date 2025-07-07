@@ -10,6 +10,11 @@ import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { saveToken } from "@/utils/authUtils";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 import ErrorGif from "@/components/GifComponents/ErrorGif/ErrorGif";
+import {
+  getPartnershipToken,
+  removeNewPartnershipUser,
+  saveNewPartnershipUser,
+} from "@/utils/partnershipUtils";
 
 // props types
 type EmailVerificationModelProps = {
@@ -33,12 +38,14 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
   const [loading, setLoading] = useState(false);
   // state for open
   const [modelOpen, setModelOpen] = useState<boolean>(isOpen);
+  const isPartnerShipAccount = getPartnershipToken();
 
   useEffect(() => {
     if (isOpen) {
       // Reset the verification code when the modal opens
       setVerificationCode("");
     }
+    removeNewPartnershipUser(); // Clear the new partnership user token when the modal opens
   }, [isOpen]);
 
   const closeHandler = () => {
@@ -72,9 +79,15 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
       //   setShowVerificationFailed(false);
       //   console.log(data.data.user_token);
       //   saveToken(data.data.user_token);
-    setTimeout(() => {
-        router.push("/authentication/chooseInterests");
-    }, 1000);
+      setTimeout(() => {
+        if (isPartnerShipAccount === "yes") {
+          saveNewPartnershipUser("yes");
+          // Redirect to partnership home page
+          router.push("/user/partnership-home");
+        } else {
+          router.push("/authentication/chooseInterests");
+        }
+      }, 1000);
       // } else {
       //   setIsVerified(false);
       //   setShowVerificationFailed(true);
@@ -118,7 +131,7 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           >
             <div className="flex flex-col items-center mb-6">
               <div className="mb-4">
-                <CheckMarkGif/>
+                <CheckMarkGif />
               </div>
               <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
                 Verification successful
@@ -142,7 +155,7 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           >
             <div className="flex flex-col items-center mb-6">
               <div className="mb-4">
-                <ErrorGif/>
+                <ErrorGif />
               </div>
               <p className="text-app-text-primary font-plusJakartaSans text-sm mb-10 text-center">
                 Verification code is wrong
@@ -166,7 +179,11 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           >
             <div className="flex flex-col items-center">
               <div className="mb-2">
-                <VerifyEmailIcon className="text-app-icon" width={80} height={80} />
+                <VerifyEmailIcon
+                  className="text-app-icon"
+                  width={80}
+                  height={80}
+                />
               </div>
               <h2 className="text-md font-bold font-plusJakartaSans text-app-text-primary mb-4 text-center">
                 Verify E-mail

@@ -22,6 +22,7 @@ import GifCarousel from "@/components/GifCarousel/GifCarousel";
 import AboutUsModel from "@/components/Models/AboutUsModel/AboutUsModel";
 import ContactModel from "@/components/Models/ContactModel/ContactModel";
 import GuidelinesModel from "@/components/Models/GuidelinesModel/GuidelinesModel";
+import { savePartnershipToken } from "@/utils/partnershipUtils";
 
 // Helper component for the multi-colored "Hobbies" text
 const MultiColorText = ({
@@ -144,6 +145,7 @@ const LandingPge = () => {
     const interval = setInterval(() => {
       setCarouselIndex((prevIndex) => (prevIndex + 1) % totalSlides);
     }, 10000);
+    savePartnershipToken("no"); // Reset partnership token on landing page load
     return () => clearInterval(interval); // cleanup on unmount
   }, []);
 
@@ -321,9 +323,8 @@ const LandingPge = () => {
           <div className="w-full mt-3 p-2">
             <div className="grid grid-cols-7 sm:grid-cols-7 text-center text-[10px] font-fredoka ">
               {footerNavItems.map((item) => (
-                <a
+                <span
                   key={item.label}
-                  href="#"
                   className="flex flex-col items-center"
                   onClick={() => {
                     if (item.label === "About us") {
@@ -332,12 +333,15 @@ const LandingPge = () => {
                       setContactModel(true);
                     } else if (item.label === "Guideline") {
                       setGuidelinesModel(true);
-                    } 
+                    } else if (item.label === "Partnership") {
+                      savePartnershipToken("yes")
+                      router.push("/authentication/signup");
+                    }
                   }}
                 >
                   <div className="">{item.icon}</div>
                   <span className="text-[10px">{item.label}</span>
-                </a>
+                </span>
               ))}
             </div>
 
