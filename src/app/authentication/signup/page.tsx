@@ -18,6 +18,7 @@ import { register } from "@/routes/signup_and_signin";
 import EmailVerificationModel from "@/components/Models/EmailVerificationModel/EmailVerificationModel";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import DropDown from "@/components/DropDown/DropDown";
+import { getPartnershipToken } from "@/utils/partnershipUtils";
 
 const languages = [
   {
@@ -51,6 +52,8 @@ const Signup = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const isPartnerShipAccount= getPartnershipToken()
+
 
   // ------------ from for user details -----------
   const [form, setForm] = useState({
@@ -243,7 +246,9 @@ const Signup = () => {
           {" "}
           {/* z-10 ensures text is above background */}
           <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
-            Sign up
+            {isPartnerShipAccount === "yes"
+              ? <>Advertisers & Bloggers <br />Sign Up</>
+              : "Sign up"}
           </h1>
           <GoogleIcon />
         </div>
