@@ -6,11 +6,15 @@ import Notifications from "@/components/Models/PermissionModels/Notifications";
 import Photos from "@/components/Models/PermissionModels/Photos";
 import Location from "@/components/Models/PermissionModels/Location";
 import ChooseUserNameModel from "@/components/Models/ChooseUserNameModel/ChooseUserNameModel";
-import { getPartnershipToken } from "@/utils/partnershipUtils";
+import {
+  getNewPartnershipUser,
+  getPartnershipToken,
+  removeNewPartnershipUser,
+} from "@/utils/partnershipUtils";
 
 const page = () => {
   // use the appContext to get the more option state
-  const isNewPartnershipUser = getPartnershipToken();
+  const isNewPartnershipUser = getNewPartnershipUser();
   //  ------ states for permissions ------
   // ------- state for notification permissions ------
   const [notificationPermission, setNotificationPermission] =
@@ -21,7 +25,12 @@ const page = () => {
   const [photosPermission, setPhotosPermission] = useState<boolean>(false);
   // ------- state for user name permissions ------
   const [userNamePermission, setUserNamePermission] = useState<boolean>(false);
+  // use the appContext to get the more option state
+  const { setIsBottomNavBarFixed } = useAppContext();
 
+  useEffect(() => {
+    setIsBottomNavBarFixed(false);
+  }, []);
 
   // This effect runs once when the component mounts to set notification permission
   // You can replace this with actual permission request logic if needed
@@ -69,6 +78,7 @@ const page = () => {
           <ChooseUserNameModel
             isOpen={userNamePermission}
             onClose={() => {
+              removeNewPartnershipUser();
               setUserNamePermission(false);
             }}
           />
