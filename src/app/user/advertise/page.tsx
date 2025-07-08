@@ -178,7 +178,7 @@ const page = () => {
         </div>
         {/* body section */}
 
-        <div className="space-y-1 mt-[130px] px-10 mb-50">
+        <div className="space-y-1 mt-[130px] px-10 mb-80">
           <div>
             <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3">
               Advert Category
@@ -265,6 +265,154 @@ const page = () => {
               <ImageUploadComponent />
               <ImageUploadComponent />
               <ImageUploadComponent />
+            </div>
+          </div>
+          <div className="mt-4">
+            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+              Call to Action
+            </p>
+            <DropDown
+              dataArray={[
+                { label: "Buy now", value: "Buy now" },
+                { label: "Learn more", value: "learn_more" },
+                { label: "Install now", value: "install_now" },
+                { label: "Subscribe", value: "subscribe" },
+              ]}
+              placeHolder="select"
+              isOpen={(value: boolean) => {
+                setIsDropdownOpen(value);
+              }}
+            />
+          </div>
+          <div className="mt-4">
+            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+              Call to Action link
+            </p>
+            <div className="space-y-4 mb-[24px]">
+              <div className="relative">
+                <InputComponent
+                  placeholder="Enter link"
+                  value={""}
+                  onChange={(e) => {}}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
+            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+              2nd Call to Action Text
+            </p>
+            <div className="space-y-4 mb-[24px]">
+              <div className="relative">
+                <InputComponent
+                  placeholder="Enter text"
+                  value={""}
+                  onChange={(e) => {}}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
+            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+              2nd Call to Action Link
+            </p>
+            <div className="space-y-4 mb-[24px]">
+              <div className="relative">
+                <InputComponent
+                  placeholder="Enter link"
+                  value={""}
+                  onChange={(e) => {}}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
+            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+              Saved Campaign
+            </p>
+            <div className="flex items-center gap-2 justify-between">
+              <div className="w-full">
+                <DropDown
+                  dataArray={[]}
+                  placeHolder="Special Offer"
+                  isOpen={(value: boolean) => {
+                    setIsDropdownOpen(value);
+                  }}
+                />
+              </div>
+              <div
+                className="bg-app-okay-icon-filter rounded-lg p-2 h-1/2"
+                onClick={() => {
+                  setConfirm(!confirm);
+                }}
+              >
+                {confirm ? (
+                  <OkayIcon className="text-app-icon " />
+                ) : (
+                  <OkayGreenIcon />
+                )}
+              </div>
+            </div>
+            <div className="mt-4">
+              <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+                Campaign Name
+              </p>
+              <div className="space-y-4 mb-[24px]">
+                <div className="relative">
+                  <InputComponent
+                    placeholder="New Campaign"
+                    value={""}
+                    onChange={(e) => {}}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-4">
+              <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+                Title
+              </p>
+              <div className="space-y-4 mb-[24px]">
+                <div className="relative">
+                  <InputComponent
+                    placeholder="Add a title"
+                    value={""}
+                    onChange={(e) => {}}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-4">
+              <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+                Description
+              </p>
+              <div className="space-y-4">
+                <div className="relative">
+                  <TextAreaComponent placeholder="More about the event" />
+                </div>
+              </div>
+              <p className="text-[10.59px] text-end mb-1 text-app-text-secondary font-plusJakartaSans-400">
+                23/1200 Max
+              </p>
+            </div>
+          </div>
+          <div className="mt-6">
+            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+              Audience Insight
+            </p>
+            <div className="mt-2 border-2 rounded-lg border-app-text-primary px-2 py-4">
+              <div className="mb-5">
+                <p className="text-[13.89px] mb-2 text-app-text-primary font-plusJakartaSans-400">
+                  Gender
+                </p>
+                <RadioButtonGroupComponent
+                  name=""
+                  options={[
+                    { id: 1, label: "Male", value: "male" },
+                    { id: 2, label: "Female", value: "female" },
+                    { id: 3, label: "Other", value: "other" },
+                  ]}
+                />
+              </div>
             </div>
           </div>
         </div>

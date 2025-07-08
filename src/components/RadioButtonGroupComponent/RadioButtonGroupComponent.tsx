@@ -21,7 +21,7 @@ const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
 }) => {
   return (
     <div>
-      <p className="text-sm font-medium font-plusJakartaSans text-app-text-primary mb-5">{name}</p>
+      {name !=="" && <p className="text-sm font-medium font-plusJakartaSans text-app-text-primary mb-5">{name}</p>}
       <div className="flex justify-between items-center space-x-6">
         {options.map((gender, idx) => (
           <label
