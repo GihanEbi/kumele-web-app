@@ -61,7 +61,7 @@ const PaymentPage = () => {
 
   return (
     // Main page container. This is NOT a modal.
-    <div className="min-h-screen bg-app-background-primary font-sans">
+    <div className={`min-h-screen bg-app-background-primary font-sans`}>
       <div
         className={`mx-auto max-w-2xl ${
           isPaymentSuccess && isDark

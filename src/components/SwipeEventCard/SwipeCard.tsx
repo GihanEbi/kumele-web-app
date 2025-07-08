@@ -186,7 +186,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
 
   return (
     <>
-      <div className="min-h-screen grid place-items-center pb-20">
+       <div className="relative w-full h-[464px] grid place-items-center">
         {displayEvents.map((item, idx) => {
           return (
             <EventCard
