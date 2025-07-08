@@ -15,6 +15,7 @@ import { CoinbasePaymentModal } from "@/components/PaymentModal/CoinBasePaymentM
 import { PaymentCompleteModal } from "@/components/PaymentModal/PaymentCompleteModal/PaymentCompleteModal";
 import SubscriptionExpirationModal from "./InitialPopup/Modal";
 import { useAppContext } from "@/context/AppContext";
+import { useTheme } from "next-themes";
 
 type Plan = {
   id: number;
@@ -145,6 +146,12 @@ export default function SubscriptionsPage() {
   //-----------initial pop up state
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  const isMoreOptionsOpen = useAppContext().moreOption;
+    console.log("isMoreOptionsOpen is:", isMoreOptionsOpen);
+
   //initial popup modal open handling
   useEffect(() => {
     setIsBottomNavBarFixed(true);
@@ -212,7 +219,13 @@ export default function SubscriptionsPage() {
 
   return (
     <>
-      <div className="font-sans pt-[64px] pb-20">
+      <div className={`font-sans pt-[64px] pb-20 ${
+            isMoreOptionsOpen && isDark
+              ? "bg-neutral-900"
+              : isMoreOptionsOpen && !isDark
+              ? "bg-gray-200"
+              : ""
+          }`} >
         <div className="mx-auto p-4">
           {/* Segmented Control Header */}
           <div className="bg-app-range-slider-track-active p-1 rounded-lg flex items-center mt-2">
