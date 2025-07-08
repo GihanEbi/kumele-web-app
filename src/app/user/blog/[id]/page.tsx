@@ -9,6 +9,7 @@ import CommentList from "@/components/CommentList/CommentList";
 import { useState } from "react";
 import { useTheme } from "next-themes";
 import { useParams } from "next/navigation";
+import { Confetti2Icon, YingyangIcon } from "../../../../../public/svg-icons/icons";
 
 // Mock data - replace with your actual data fetching
 const blogPosts: (BlogCardProps & {
@@ -85,7 +86,7 @@ const comments: Comment[] = [
         author: "Alkesh Sharma",
         date: "23 August 2022",
         content: "What a display dsn cdn zxnc",
-        avatarUrl: "/avatar-img/user-preview.png", 
+        avatarUrl: "/avatar-img/user-preview.png",
       },
       {
         id: 102,
@@ -194,7 +195,8 @@ export default function BlogDetailPage() {
       } pb-80`}
     >
       {/* Blog Image */}
-      <div className="mb-6 pt-[64px]">
+      <div className="mb-6 pt-[64px] ">
+        <div className="relative">
         <Image
           src={post.imageUrl}
           alt={post.title}
@@ -203,6 +205,13 @@ export default function BlogDetailPage() {
           className="rounded-t-4xl w-full h-auto"
           priority
         />
+        <div className="absolute top-5 right-6 bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1 rounded-full flex items-center space-x-1.5">
+          <Confetti2Icon width={20} height={20} />
+          <span className="font-plusJakartaSans text-white font-normal text-[11px]">
+            {/* {event.category} */} House Party
+          </span>
+        </div>
+        </div>
       </div>
       {/* Blog Header */}
       <div className="mb-6">

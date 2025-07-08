@@ -20,6 +20,7 @@ import { useTheme } from "next-themes";
 import { mockHostData, mockOtherEvents } from "./data";
 import HostInfo from "./hostInfo/HostInfo";
 import OtherEvents from "./otherEvents/OtherEvents";
+import { useAppContext } from "@/context/AppContext";
 
 //types of a event
 type Event = {
@@ -35,7 +36,6 @@ type Event = {
   subtitle: string;
   description: string;
   isPlaceholder?: boolean;
-  
 };
 
 // types for card
@@ -64,10 +64,17 @@ export default function EventCard({
   isStackExtended,
   setIsStackExtended,
 }: EventCardProps) {
-
   //identifying the theme
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
+
+  //calling app context to get the state of bottomnav bar fixed
+  const setIsBottomNavBarFixed = useAppContext().setIsBottomNavBarFixed;
+  const isBottomNavBarFixed = useAppContext().isBottomNavBarFixed;
+  console.log("isBottomNavBarFixed is:", isBottomNavBarFixed);
+
+  const isMoreOptionsOpen = useAppContext().moreOption;
+  console.log("isMoreOptionsOpen is:", isMoreOptionsOpen);
 
   //variables for dragging animations and styles
   const x = useMotionValue(0);
@@ -118,9 +125,16 @@ export default function EventCard({
   //debugging
   useMotionValueEvent(x, "change", (latest) => console.log(latest));
 
+  const handleToggleDownArrow = () => {
+    setIsStackExtended(!isStackExtended);
+    setIsBottomNavBarFixed(!isBottomNavBarFixed);
+  };
+
   return (
     <motion.div
       style={{
+        position: isStackExtended && isFront ? "absolute" : "relative", //changeddd
+        top: isStackExtended && isFront ? "0" : "auto", //chaned
         gridRow: 1,
         gridColumn: 1,
         x,
@@ -140,7 +154,8 @@ export default function EventCard({
             ? depth * 9
             : depth * 12,
 
-        zIndex: events.length - depth,
+        zIndex: events.length - depth, //change
+        // zIndex: isStackExtended && isFront ? 50 : events.length - depth,
         height: isStackExtended
           ? "92vh"
           : events.length === 1
@@ -165,10 +180,16 @@ export default function EventCard({
     >
       {(depth === 0 || depth === 1) && (
         <div
-          className={`bg-app-background-tertiary rounded-4xl w-full h-full flex flex-col ${
+          className={` ${
+            isMoreOptionsOpen && isDark
+              ? "bg-neutral-900"
+              : isMoreOptionsOpen && !isDark
+              ? "bg-gray-100"
+              : "bg-app-background-tertiary"
+          }   rounded-4xl w-full h-full flex flex-col ${
             isStackExtended && isFront
               ? "overflow-y-auto no-scrollbar"
-              : "overflow-hidden" 
+              : "overflow-hidden"
           }`}
         >
           {(depth === 0 || depth === 1) && (
@@ -192,7 +213,7 @@ export default function EventCard({
                     </span>
                   </div>
                 </div>
-                <div className="flex justify-between items-start mb-4 mt-3 px-3">
+                <div className="flex justify-between items-start mb-4 mt-3 px-5">
                   <h1 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[22px]">
                     {event.title}
                   </h1>
@@ -211,7 +232,7 @@ export default function EventCard({
                 </div>
 
                 {/* DETAILS SECTION */}
-                <div className="space-y-3 px-3 mt-8">
+                <div className="space-y-3 px-5 mt-8">
                   <div className="flex items-center gap-2 text-sm ">
                     <div className="flex items-center space-x-0.5">
                       <TwoTicketsIcon className="h-[20px] w-[20px]" />{" "}
@@ -248,7 +269,7 @@ export default function EventCard({
                       </div>
                     </div>
                     <button
-                      onClick={() => setIsStackExtended(!isStackExtended)}
+                      onClick={handleToggleDownArrow}
                       className={`${
                         isDark
                           ? "bg-gray-500"
@@ -270,7 +291,7 @@ export default function EventCard({
                     {/* Outer container for scrolling and height */}
                     <div className="mt-6 overflow-y-auto max-h-24 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                       {/* Inner container for padding AND explicit left alignment */}
-                      <div className="px-4 text-left">
+                      <div className="px-6 text-left">
                         <p className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[13px]">
                           {event.subtitle}
                         </p>
@@ -282,10 +303,10 @@ export default function EventCard({
 
                     {/* Event details section end */}
 
-                    <div className="mt-15 px-3">
+                    <div className="mt-15 px-5">
                       <HostInfo host={hostData} />
                     </div>
-                    <div className="px-3 pb-4">
+                    <div className="px-5 pb-4">
                       <OtherEvents
                         events={otherEvents}
                         hostName={hostData.name}
