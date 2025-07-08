@@ -237,12 +237,12 @@
   --app-text-tertiary: oklch(1 0 89.88); /* #FFFFFF */
   --app-text-black: oklch(0 0 0); /* #000000 */
   --app-text-blue: oklch(
-    0.5275 0.28234714827626795 260.80097608857864
+    oklch(0.6879 0.1393 263.36)
   ); /* #645EFF */
   --app-text-white: oklch(1 0 0); /* #FFFFFF */
   --app-text-yellow: oklch(0.8531 0.162 85.01); /*#FFC533*/
   --app-text-blackandwhite: oklch(1 0 0); /* #FFFFFF */
-  --app-text-host: oklch(0.5275 0.28234714827626795 260.80097608857864);
+  --app-text-host: oklch(oklch(0.6879 0.1393 263.36));
   --app-text-profile-text: oklch(0.2686 0 0);
   --app-text-profile-tabs: oklch(0.2686 0 0);
   --app-text-notifications-body: oklch(0.2686 0 0);
@@ -257,7 +257,7 @@
   --app-button-gray: oklch(0.2393 0 89.88); /* #3D3D3D */
   --app-button-yellow: oklch(0.8564 0.1871 83.38); /* #FFD966 */
   --app-button-blue: oklch(
-    0.5275 0.28234714827626795 260.80097608857864
+    oklch(0.6879 0.1393 263.36)
   ); /* #645EFF */
   --app-button-white: oklch(1 0 89.88);
   --app-button-radio: oklch(0.7952 0 0); /* #BCBCBC */
@@ -404,7 +404,7 @@
   --app-text-white: oklch(1 0 0);
   --app-text-yellow: oklch(0.8531 0.162 85.01); /*#FFC533*/
   --app-text-blackandwhite: oklch(0 0 0);
-  --app-text-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
+  --app-text-blue: oklch(oklch(0.6879 0.1393 263.36));
   --app-text-yellow: oklch(0.8564 0.1871 83.38);
   --app-text-host: oklch(0.8564 0.1871 83.38);
   --app-text-profile-text: oklch(0.9672 0 89.88);
@@ -420,7 +420,7 @@
   --app-button-secondary: oklch(0.9551 0 89.88);
   --app-button-gray: oklch(0.2393 0 89.88);
   --app-button-yellow: oklch(0.8564 0.1871 83.38);
-  --app-button-blue: oklch(0.5275 0.28234714827626795 260.80097608857864);
+  --app-button-blue: oklch(oklch(0.6879 0.1393 263.36));
   --app-button-radio: oklch(0.7952 0 0); /* #BCBCBC */
 
   /*BUTTON TEXT COLOR*/
