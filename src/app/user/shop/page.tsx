@@ -141,6 +141,7 @@ export default function SubscriptionsPage() {
   const [isSendPaymentOpen, setSendPaymentOpen] = useState(false);
   const [isCoinbaseOpen, setCoinbaseOpen] = useState(false);
   const [isThankYouOpen, setThankYouOpen] = useState(false);
+  const { setIsBottomNavBarFixed } = useAppContext();
 
   //-----------initial pop up state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -153,6 +154,7 @@ export default function SubscriptionsPage() {
 
   //initial popup modal open handling
   useEffect(() => {
+    setIsBottomNavBarFixed(true);
     const timer = setTimeout(() => {
       setIsModalOpen(true);
     }, 1000);
@@ -160,12 +162,12 @@ export default function SubscriptionsPage() {
     return () => clearTimeout(timer);
   }, []);
 
-//lock background when modal opening
+  //lock background when modal opening
   useEffect(() => {
     if (isModalOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
   }, [isModalOpen]);
   // Determine which data to show based on the active tab
@@ -342,10 +344,9 @@ export default function SubscriptionsPage() {
         isOpen={isThankYouOpen}
         onClose={handleCloseThankYou} // This closes the modal and ends the flow
       />
-
-       <SubscriptionExpirationModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <SubscriptionExpirationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
     </>
   );

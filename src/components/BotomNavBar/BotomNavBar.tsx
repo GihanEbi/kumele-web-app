@@ -4,9 +4,11 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import {
+  AdvertiseIcon,
   BlogHomeIcon,
   HomeIcon,
   MoreIcon,
+  PartnershipBlogIcon,
   ProfileIcon,
   ShopIcon,
 } from "../../../public/svg-icons/icons";
@@ -17,6 +19,7 @@ import More from "@/app/user/more/page";
 import Profile from "@/app/user/profile/page";
 import MoreOptionModel from "@/components/Models/MoreOptionModel/MoreOptionModel";
 import { useAppContext } from "@/context/AppContext";
+import { getPartnershipToken } from "@/utils/partnershipUtils";
 
 const BottomNavBar = () => {
   const router = useRouter();
@@ -30,6 +33,8 @@ const BottomNavBar = () => {
   // use the appContext to get the more option state
   const { moreOption, setMoreOption } = useAppContext();
 
+  const isPartnershipUser = getPartnershipToken();
+
   useEffect(() => {
     if (theme === "light") {
       setSelectedColor("text-black");
@@ -41,113 +46,188 @@ const BottomNavBar = () => {
   return (
     <div className="">
       <div
-        className={`h-tab-bar pb-3 pt-2 px-4 bg-app-background-bottom-navbar flex justify-around items-center shadow-tab-bar pb-safe-bottom z-[1000]`}
+        className={`h-tab-bar pb-3 pt-4 px-4 bg-app-background-bottom-navbar flex justify-around items-center shadow-tab-bar pb-safe-bottom z-[1000]`}
       >
         <div
           onClick={() => {
             setActivePageIndex(0);
-            router.push("/user/home");
+            if (isPartnershipUser === "yes") {
+              // If the user is a partnership user, do something
+              router.push("/user/partnership-home");
+            } else {
+              router.push("/user/home");
+            }
           }}
           className={`flex flex-col items-center text-app-text-primary`}
         >
-          <div
+          {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 0 ? "bg-app-button-blue" : ""
             }`}
-          >
-            {activePageIndex === 0 ? (
-              <HomeIcon
-                className={`${theme === "light" ? "text-white" : "text-black"}`}
-                width={30}
-                height={30}
-              />
-            ) : (
-              <HomeIcon width={30} height={30} />
-            )}
-          </div>
+          > */}
+          {activePageIndex === 0 ? (
+            <HomeIcon
+              className={`text-app-button-blue`}
+              width={30}
+              height={30}
+            />
+          ) : (
+            <HomeIcon width={30} height={30} />
+          )}
+          {/* </div> */}
           <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
             Home
           </div>
         </div>
-        <div
-          onClick={() => {
-            setActivePageIndex(1);
-            router.push("/user/blog");
-          }}
-          className={`flex flex-col items-center text-app-text-primary`}
-        >
+
+        {isPartnershipUser === "yes" && (
           <div
+            onClick={() => {
+              setActivePageIndex(5);
+              router.push("/user/advertise");
+            }}
+            className={`flex flex-col items-center text-app-text-primary`}
+          >
+            {/* <div
+            className={`rounded-4xl p-2 text-app-text-primary ${
+              activePageIndex === 0 ? "bg-app-button-blue" : ""
+            }`}
+          > */}
+            {activePageIndex === 5 ? (
+              <AdvertiseIcon
+                className={`text-app-button-blue`}
+                width={38}
+                height={38}
+              />
+            ) : (
+              <AdvertiseIcon width={38} height={38} />
+            )}
+            {/* </div> */}
+            <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
+              Advertise
+            </div>
+          </div>
+        )}
+
+        {isPartnershipUser === "yes" && (
+          <div
+            onClick={() => {
+              setActivePageIndex(6);
+              router.push("/user/partnership-blog");
+            }}
+            className={`flex flex-col items-center text-app-text-primary`}
+          >
+            {/* <div
+            className={`rounded-4xl p-2 text-app-text-primary ${
+              activePageIndex === 0 ? "bg-app-button-blue" : ""
+            }`}
+          > */}
+            {activePageIndex === 6 ? (
+              <PartnershipBlogIcon
+                className={`text-app-button-blue`}
+                width={30}
+                height={30}
+              />
+            ) : (
+              <PartnershipBlogIcon width={30} height={30} />
+            )}
+            {/* </div> */}
+            <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
+              Blog
+            </div>
+          </div>
+        )}
+
+        {isPartnershipUser === "no" && (
+          <div
+            onClick={() => {
+              setActivePageIndex(1);
+              router.push("/user/blog");
+            }}
+            className={`flex flex-col items-center text-app-text-primary`}
+          >
+            {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 1 ? "bg-app-button-blue" : ""
             }`}
-          >
+          > */}
             {activePageIndex === 1 ? (
               <BlogHomeIcon
-                className={`${theme === "light" ? "text-white" : "text-black"}`}
+                className={`text-app-button-blue`}
                 width={30}
                 height={30}
               />
             ) : (
               <BlogHomeIcon width={30} height={30} />
             )}
+            {/* </div> */}
+            <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
+              Blog
+            </div>
           </div>
-          <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
-            Blog
-          </div>
-        </div>
-        <div
-          onClick={() => {
-            setActivePageIndex(2);
-            router.push("/user/shop");
-          }}
-          className={`flex flex-col items-center text-app-text-primary`}
-        >
+        )}
+
+        {isPartnershipUser === "no" && (
           <div
+            onClick={() => {
+              setActivePageIndex(2);
+              router.push("/user/shop");
+            }}
+            className={`flex flex-col items-center text-app-text-primary`}
+          >
+            {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 2 ? "bg-app-button-blue" : ""
             }`}
-          >
+          > */}
             {activePageIndex === 2 ? (
               <ShopIcon
-                className={`${theme === "light" ? "text-white" : "text-black"}`}
+                className={`text-app-button-blue`}
+                // className={`${theme === "light" ? "text-white" : "text-black"}`}
                 width={30}
                 height={30}
               />
             ) : (
               <ShopIcon width={30} height={30} />
             )}
+            {/* </div> */}
+            <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
+              Shop
+            </div>
           </div>
-          <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
-            Shop
-          </div>
-        </div>
-        <div
-          onClick={() => {
-            setActivePageIndex(3);
-            setShowMoreOptionModel(true);
-            setMoreOption(true);
-          }}
-          className={`flex flex-col items-center text-app-text-primary`}
-        >
+        )}
+
+        {isPartnershipUser === "no" && (
           <div
+            onClick={() => {
+              setActivePageIndex(3);
+              setShowMoreOptionModel(true);
+              setMoreOption(true);
+            }}
+            className={`flex flex-col items-center text-app-text-primary`}
+          >
+            {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 3 ? "bg-app-button-blue" : ""
             }`}
-          >
+          > */}
             {activePageIndex === 3 ? (
               <MoreIcon
-                className={`${theme === "light" ? "text-white" : "text-black"}`}
+                className={`text-app-button-blue`}
+                // className={`${theme === "light" ? "text-white" : "text-black"}`}
                 width={30}
                 height={30}
               />
             ) : (
               <MoreIcon width={30} height={30} />
             )}
+            {/* </div> */}
+            <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
+              More
+            </div>
           </div>
-          <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
-            More
-          </div>
-        </div>
+        )}
+
         <div
           onClick={() => {
             setActivePageIndex(4);
@@ -155,21 +235,22 @@ const BottomNavBar = () => {
           }}
           className={`flex flex-col items-center text-app-text-primary`}
         >
-          <div
+          {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 4 ? "bg-app-button-blue" : ""
             }`}
-          >
-            {activePageIndex === 4 ? (
-              <ProfileIcon
-                className={`${theme === "light" ? "text-white" : "text-black"}`}
-                width={30}
-                height={30}
-              />
-            ) : (
-              <ProfileIcon width={30} height={30} />
-            )}
-          </div>
+          > */}
+          {activePageIndex === 4 ? (
+            <ProfileIcon
+              className={`text-app-button-blue`}
+              // className={`${theme === "light" ? "text-white" : "text-black"}`}
+              width={30}
+              height={30}
+            />
+          ) : (
+            <ProfileIcon width={30} height={30} />
+          )}
+          {/* </div> */}
           <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
             Profile
           </div>

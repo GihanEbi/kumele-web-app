@@ -30,6 +30,7 @@ import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
 import { paddings } from "@/constants/layout-constants";
 import { Separator } from "@/components/ui/separator";
 import { useAppContext } from "@/context/AppContext";
+import { getPartnershipToken } from "@/utils/partnershipUtils";
 const settingsGroup1 = [
   {
     icon: <SoundIcon className="text-app-icon" width={28} height={28} />,
@@ -127,9 +128,12 @@ const Profile = () => {
   const { theme, setTheme, systemTheme } = useTheme();
 
   // use the appContext to get the more option state
-  const { moreOption } = useAppContext();
+  const { moreOption, setIsBottomNavBarFixed } = useAppContext();
+
+  const isPartnershipUser = getPartnershipToken();
 
   useEffect(() => {
+    setIsBottomNavBarFixed(true);
     fetchUserData();
   }, []);
 
@@ -193,98 +197,128 @@ const Profile = () => {
             >
               <EditIcon className="text-app-icon " width={24} height={24} />
             </button>
-            <div className="flex items-start space-x-6 mb-[6px]">
-              <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
-                <Image
-                  src={"/avatar-img/profile-pic.png"}
-                  alt="Alkesh Kumar"
-                  width={76}
-                  height={76}
-                  className="rounded-full object-cover"
-                />
-              </div>
-              <div className="mt-1">
-                <h2 className="text-[19px] font-semibold font-plusJakartaSans-700 text-app-text-primary">
-                  {userData?.display_name
-                    ? userData.display_name
-                    : "Alkesh Kumar"}
-                </h2>
-                <button
-                  className="text-[9.95px] font-plusJakartaSans-700 bg-app-text-blue text-app-text-white py-1 px-3 rounded-r-sm mt-[6px]"
-                  onClick={() => {
-                    router.push("/profile-other-pages/edit-interest");
-                  }}
-                >
-                  Edit hobbies
-                </button>
-              </div>
-              <div className="w-[50px] h-[50px] sm:w-20 sm:h-20">
-                <Image
-                  src={userData?.qr_code_url || "/images/QR-code.png"}
-                  alt="QR Code"
-                  width={50}
-                  height={50}
-                  className="object-contain"
-                />
-              </div>
-            </div>
 
-            <div className="mt-6 overflow-y-auto max-h-32 pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <p className="text-[14px] text-app-text-profile-text font-plusJakartaSans-400 mb-2">
-                I am a software engineer by day, and a vanlife enthusiast by
-                heart. <br />
-                <br />
-                With a passion for both technology and the great outdoors,
-                Monika thrives on the open road, where she merges her love for
-                coding with her deep connection to nature. <br />
-                <br />
-                With a passion for both technology and the great outdoors,
-                Monika thrives on the open road, where she merges her love for
-                coding with her deep connection to nature.
-              </p>
-            </div>
-            <div className="-mx-6 mt-4">
-              <div className="border-b border-app-border-profile"></div>
-            </div>
+            {isPartnershipUser === "yes" && (
+              <div className="flex gap-5  pb-4">
+                {/* <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24"> */}
+                  <Image
+                    src={"/images/spotify.png"}
+                    alt="spotify"
+                    width={50}
+                    height={50}
+                    className="rounded-full"
+                  />
+                {/* </div> */}
+                <div className="flex flex-col">
+                  <p className="text-[19px] font-bold text-app-text-primary font-plusJakartaSans-700 ">
+                    Spotify
+                  </p>
+                  <p className="text-[14px] text-app-text-profile-tabs font-plusJakartaSans-400 ">
+                    Listening is everything. Millions of songs and podcasts. No
+                    credit card needed. GET SPOTIFY FREE.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {isPartnershipUser === "no" && (
+              <>
+                <div className="flex items-start space-x-6 mb-[6px]">
+                  <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
+                    <Image
+                      src={"/avatar-img/profile-pic.png"}
+                      alt="Alkesh Kumar"
+                      width={76}
+                      height={76}
+                      className="rounded-full object-cover"
+                    />
+                  </div>
+                  <div className="mt-1">
+                    <h2 className="text-[19px] font-semibold font-plusJakartaSans-700 text-app-text-primary">
+                      {userData?.display_name
+                        ? userData.display_name
+                        : "Alkesh Kumar"}
+                    </h2>
+                    <button
+                      className="text-[9.95px] font-plusJakartaSans-700 bg-app-text-blue text-app-text-white py-1 px-3 rounded-r-sm mt-[6px]"
+                      onClick={() => {
+                        router.push("/profile-other-pages/edit-interest");
+                      }}
+                    >
+                      Edit hobbies
+                    </button>
+                  </div>
+                  <div className="w-[50px] h-[50px] sm:w-20 sm:h-20">
+                    <Image
+                      src={userData?.qr_code_url || "/images/QR-code.png"}
+                      alt="QR Code"
+                      width={50}
+                      height={50}
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-6 overflow-y-auto max-h-32 pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                  <p className="text-[14px] text-app-text-profile-text font-plusJakartaSans-400 mb-2">
+                    I am a software engineer by day, and a vanlife enthusiast by
+                    heart. <br />
+                    <br />
+                    With a passion for both technology and the great outdoors,
+                    Monika thrives on the open road, where she merges her love
+                    for coding with her deep connection to nature. <br />
+                    <br />
+                    With a passion for both technology and the great outdoors,
+                    Monika thrives on the open road, where she merges her love
+                    for coding with her deep connection to nature.
+                  </p>
+                </div>
+                <div className="-mx-6 mt-4">
+                  <div className="border-b border-app-border-profile"></div>
+                </div>
+              </>
+            )}
           </div>
-          <div className="grid grid-cols-3 gap-4">
-            <div
-              className="flex flex-col items-center p-2 border-r-1 border-app-border-profile"
-              onClick={() =>
-                router.push(`/profile-other-pages/following?source=${true}`)
-              }
-            >
-              <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400 ">
-                Following
-              </p>
-              <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
-                {userData?.following_count || 8}
-              </p>
+          {isPartnershipUser === "no" && (
+            <div className="grid grid-cols-3 gap-4">
+              <div
+                className="flex flex-col items-center p-2 border-r-1 border-app-border-profile"
+                onClick={() =>
+                  router.push(`/profile-other-pages/following?source=${true}`)
+                }
+              >
+                <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400 ">
+                  Following
+                </p>
+                <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
+                  {userData?.following_count || 8}
+                </p>
+              </div>
+              <div
+                className="flex flex-col items-center p-2 border-r-1 border-app-border-profile"
+                onClick={() =>
+                  router.push(
+                    `/profile-other-pages/following?isFollowing=${false}`
+                  )
+                }
+              >
+                <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
+                  Followers
+                </p>
+                <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
+                  {userData?.followers_count || 23}
+                </p>
+              </div>
+              <div className="flex flex-col items-center p-2">
+                <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
+                  Gold status
+                </p>
+                <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
+                  {userData?.gold_status || 23}
+                </p>
+              </div>
             </div>
-            <div
-              className="flex flex-col items-center p-2 border-r-1 border-app-border-profile"
-              onClick={() =>
-                router.push(
-                  `/profile-other-pages/following?isFollowing=${false}`
-                )
-              }
-            >
-              <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
-                Followers
-              </p>
-              <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
-                {userData?.followers_count || 23}
-              </p>
-            </div>
-            <div className="flex flex-col items-center p-2">
-              <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
-                Gold status
-              </p>
-              <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
-                {userData?.gold_status || 23}
-              </p>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Settings */}
