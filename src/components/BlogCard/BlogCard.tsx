@@ -28,7 +28,7 @@ export default function BlogCard(props: BlogCardProps) {
               {props.title}
             </h3>
 
-            <div className="inline-flex items-center gap-3 bg-app-blog-card-category-background text-app-blog-card-category-text font-plusJakartaSans font-normal text-[10.52px] rounded-full px-3 py-1 w-fit">
+            <div className="inline-flex items-center gap-3 bg-app-blog-card-category-background text-app-blog-card-category-text font-plusJakartaSans font-normal text-[10.52px] rounded-full px-4 py-2 w-fit">
               <ConfettiIcon />
               <span>{props.categoryName}</span>
             </div>

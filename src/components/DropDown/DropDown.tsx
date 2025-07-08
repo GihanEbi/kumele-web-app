@@ -5,10 +5,10 @@ import { authConstants } from "@/constants/auth-constants";
 
 // prop types
 type DropDownProps = {
-  dataArray: Array<{ label: string; value: string }>;
+  dataArray: Array<{ label: string | React.ReactNode; value: string }>;
   isOpen: Function;
-  placeHolder: string;
-  itemSelected?: string | null;
+  placeHolder: string | React.ReactNode;
+  itemSelected?: string | null | React.ReactNode;
   bgColor?: string;
 };
 
@@ -20,14 +20,14 @@ const DropDown: React.FC<DropDownProps> = ({
   bgColor,
 }) => {
   const [isListOpen, setIsListOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<string | null>(
-    itemSelected || null
-  );
+  const [selectedItem, setSelectedItem] = useState<
+    string | null | React.ReactNode
+  >(itemSelected || null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleList = () => setIsListOpen((prev) => !prev);
 
-  const selectItem = (item: string | null) => {
+  const selectItem = (item: string | null | React.ReactNode) => {
     setSelectedItem(item);
     setIsListOpen(false);
     isOpen(false);
@@ -61,7 +61,9 @@ const DropDown: React.FC<DropDownProps> = ({
     <div className="w-full">
       {/* Custom Month Dropdown Area */}
       <div
-        className={`relative ${bgColor || "bg-app-input-primary"} rounded-sm py-2 px-4`}
+        className={`relative ${
+          bgColor || "bg-app-input-primary"
+        } rounded-sm py-2 px-2`}
         ref={dropdownRef}
       >
         <div
@@ -87,7 +89,7 @@ const DropDown: React.FC<DropDownProps> = ({
             className="absolute right-0 mt-3 w-full bg-app-background-primary rounded-md z-20 py-1 overflow-y-auto max-h-[400px] no-scrollbar"
             role="listbox"
           >
-            <ul className="overflow-y-auto">
+            <ul className="overflow-y-auto flex flex-col items-center">
               {dataArray.map((item) => (
                 <li
                   key={item.value}

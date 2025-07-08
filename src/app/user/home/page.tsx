@@ -64,7 +64,7 @@ const Home = () => {
               </div>
             </div>
           ) : (
-            <div className="-translate-y-16">
+           <div className="absolute top-28 w-[90vw] max-w-md">
               {" "}
               {/* Adjust the number as needed */}
               <SwipeEventCards onStackFinished={handleStackFinished} />

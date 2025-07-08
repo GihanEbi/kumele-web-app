@@ -14,6 +14,8 @@ import { SendPaymentModal } from "@/components/PaymentModal/SendPayment/SendPaym
 import { CoinbasePaymentModal } from "@/components/PaymentModal/CoinBasePaymentModal/CoinBasePaymentModal";
 import { PaymentCompleteModal } from "@/components/PaymentModal/PaymentCompleteModal/PaymentCompleteModal";
 import SubscriptionExpirationModal from "./InitialPopup/Modal";
+import { useAppContext } from "@/context/AppContext";
+import { useTheme } from "next-themes";
 
 type Plan = {
   id: number;
@@ -139,12 +141,20 @@ export default function SubscriptionsPage() {
   const [isSendPaymentOpen, setSendPaymentOpen] = useState(false);
   const [isCoinbaseOpen, setCoinbaseOpen] = useState(false);
   const [isThankYouOpen, setThankYouOpen] = useState(false);
+  const { setIsBottomNavBarFixed } = useAppContext();
 
   //-----------initial pop up state
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  const isMoreOptionsOpen = useAppContext().moreOption;
+    console.log("isMoreOptionsOpen is:", isMoreOptionsOpen);
+
   //initial popup modal open handling
   useEffect(() => {
+    setIsBottomNavBarFixed(true);
     const timer = setTimeout(() => {
       setIsModalOpen(true);
     }, 1000);
@@ -152,12 +162,12 @@ export default function SubscriptionsPage() {
     return () => clearTimeout(timer);
   }, []);
 
-//lock background when modal opening
+  //lock background when modal opening
   useEffect(() => {
     if (isModalOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
   }, [isModalOpen]);
   // Determine which data to show based on the active tab
@@ -209,7 +219,13 @@ export default function SubscriptionsPage() {
 
   return (
     <>
-      <div className="font-sans pt-[64px] pb-20">
+      <div className={`font-sans pt-[64px] pb-20 ${
+            isMoreOptionsOpen && isDark
+              ? "bg-neutral-900"
+              : isMoreOptionsOpen && !isDark
+              ? "bg-gray-200"
+              : ""
+          }`} >
         <div className="mx-auto p-4">
           {/* Segmented Control Header */}
           <div className="bg-app-range-slider-track-active p-1 rounded-lg flex items-center mt-2">
@@ -328,10 +344,9 @@ export default function SubscriptionsPage() {
         isOpen={isThankYouOpen}
         onClose={handleCloseThankYou} // This closes the modal and ends the flow
       />
-
-       <SubscriptionExpirationModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <SubscriptionExpirationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
     </>
   );

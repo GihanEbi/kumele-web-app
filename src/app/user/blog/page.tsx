@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import BlogCard from "@/components/BlogCard/BlogCard";
 import { FiSearch } from "react-icons/fi";
@@ -103,7 +103,7 @@ const Blog: React.FC = () => {
   const [scrollLeft, setScrollLeft] = useState(0);
 
   // use the appContext to get the more option state
-  const { moreOption } = useAppContext();
+  const { moreOption, setIsBottomNavBarFixed } = useAppContext();
 
   const filteredPosts = ALL_BLOG_POSTS.filter((post) => {
     const matchesTab = activeTab === "all" || post.tags.includes(activeTab);
@@ -113,6 +113,9 @@ const Blog: React.FC = () => {
       post.author.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesTab && matchesSearch;
   });
+  useEffect(() => {
+    setIsBottomNavBarFixed(true);
+  }, []);
 
   // Mobile-like drag scrolling handlers
   const handleMouseDown = (e: React.MouseEvent) => {
