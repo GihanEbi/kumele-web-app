@@ -46,7 +46,7 @@ const BottomNavBar = () => {
   return (
     <div className="">
       <div
-        className={`h-tab-bar pb-3 pt-4 px-4 bg-app-background-bottom-navbar flex justify-around items-center shadow-tab-bar pb-safe-bottom z-[1000]`}
+        className={`h-tab-bar pb-3 px-4 bg-app-background-bottom-navbar flex justify-around items-center shadow-tab-bar pb-safe-bottom z-[1000]`}
       >
         <div
           onClick={() => {
@@ -233,7 +233,7 @@ const BottomNavBar = () => {
             setActivePageIndex(4);
             router.push("/user/profile");
           }}
-          className={`flex flex-col items-center text-app-text-primary`}
+          className={`flex flex-col items-center text-app-text-primary border-t-3 border-app-text-blue pt-2`}
         >
           {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
