@@ -29,6 +29,7 @@ import DropDown from "@/components/DropDown/DropDown";
 import { UnderlineIcon } from "lucide-react";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
 import PreviewModel from "./models/PreviewModel";
+import BlogPreviewModel from "./models/PreviewModel";
 
 // types
 type ChooseInterestsProps = {
@@ -378,7 +379,7 @@ const page = () => {
           </div>
         </div>
       </div>
-      <PreviewModel
+      <BlogPreviewModel
         isOpen={previewBlog}
         onClose={() => setPreviewBlog(false)}
       />

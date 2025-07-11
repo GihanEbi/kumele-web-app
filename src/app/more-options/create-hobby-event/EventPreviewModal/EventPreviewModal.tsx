@@ -133,7 +133,9 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
                 }  p-1 rounded-md`}
               >
                 <ShareIcon
-                  className={`w-[18.07px] h-[18.07px] ${isDark ? "text-black" : "text-white"} `}
+                  className={`w-[18.07px] h-[18.07px] ${
+                    isDark ? "text-black" : "text-white"
+                  } `}
                 />
               </button>
             </div>
@@ -162,10 +164,7 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
               <div className="flex items-center justify-between text-sm">
                 <div>
                   <div className="flex items-center space-x-1">
-                    <ClockGif
-                      width={19}
-                      height={19}
-                    />
+                    <ClockGif width={19} height={19} />
                     <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
                       {eventData.startsIn}
                     </span>
@@ -213,20 +212,20 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
             {/* {isExtendedPreviewOpen ? (
               <OtherEvents events={otherEvents} hostName={hostData.name} />
             ) : ( */}
-              <div className="flex flex-row gap-3 mt-6 mb-10">
-                <button
-                  onClick={handleOpenPayment}
-                  className="w-full bg-app-button-primary text-app-button-text-color py-3 px-4 rounded-lg transition-colors"
-                >
-                  Pay Now
-                </button>
-                <button className="w-full bg-app-button-primary text-app-button-text-color py-3 px-4 rounded-lg transition-colors cursor-not-allowed opacity-50">
-                  Create Event
-                </button>
-              </div>
-              {isExtendedPreviewOpen &&(
-                 <OtherEvents events={otherEvents} hostName={hostData.name} />
-              )}
+            <div className="flex flex-row gap-3 mt-6 mb-10">
+              <button
+                onClick={handleOpenPayment}
+                className="w-full bg-app-button-primary text-app-button-text-color py-3 px-4 rounded-lg transition-colors"
+              >
+                Pay Now
+              </button>
+              <button className="w-full bg-app-button-primary text-app-button-text-color py-3 px-4 rounded-lg transition-colors cursor-not-allowed opacity-50">
+                Create Event
+              </button>
+            </div>
+            {isExtendedPreviewOpen && (
+              <OtherEvents events={otherEvents} hostName={hostData.name} />
+            )}
 
             {/* )} */}
           </div>

@@ -97,7 +97,7 @@ const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
                   layout="fill"
                   objectFit="cover"
                 />
-                <div className="absolute top-2 right-2 bg-gray-900 px-3 py-2 rounded-full flex items-center space-x-1">
+                <div className="absolute top-2 right-2 bg-gray-900 px-2 py-1 rounded-full flex items-center space-x-1">
                   <Confetti2Icon className="w-[14px] h-[14px] text-white" />
                   <span className="font-plusJakartaSans text-white font-normal text-[11.11px]">
                     {event.category}
