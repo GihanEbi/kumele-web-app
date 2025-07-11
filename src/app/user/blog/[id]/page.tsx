@@ -1,4 +1,3 @@
-// app/blog/[id]/page.tsx
 "use client";
 import Image from "next/image";
 import { BlogCardProps, Comment } from "@/types/blog";
@@ -9,7 +8,10 @@ import CommentList from "@/components/CommentList/CommentList";
 import { useState } from "react";
 import { useTheme } from "next-themes";
 import { useParams } from "next/navigation";
-import { Confetti2Icon, YingyangIcon } from "../../../../../public/svg-icons/icons";
+import {
+  Confetti2Icon,
+  YingyangIcon,
+} from "../../../../../public/svg-icons/icons";
 
 // Mock data - replace with your actual data fetching
 const blogPosts: (BlogCardProps & {
@@ -87,6 +89,22 @@ const comments: Comment[] = [
         date: "23 August 2022",
         content: "What a display dsn cdn zxnc",
         avatarUrl: "/avatar-img/user-preview.png",
+        replies: [
+          {
+            id: 103,
+            author: "Josh Durrant",
+            date: "23 August 2022",
+            content: "I also agree with this assessment.",
+            avatarUrl: "/avatar-img/joshdurrant.png",
+          },
+          {
+            id: 104,
+            author: "Simon Pears",
+            date: "23 August 2022",
+            content: "I also agree with this assessment.",
+            avatarUrl: "/avatar-img/simon.png",
+          },
+        ],
       },
       {
         id: 102,
@@ -123,53 +141,6 @@ const comments: Comment[] = [
     ],
   },
 ];
-// const mockData: CommentNew[] = [
-//   {
-//     id: 1,
-//     authorName: 'Josh Durrant',
-//     authorAvatarUrl: 'https://i.pravatar.cc/48?u=josh_main',
-//     date: '23 August 2022',
-//     text: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
-//     replies: [
-//       {
-//         id: 2,
-//         authorName: 'Alkesh Sharma',
-//         authorAvatarUrl: 'https://i.pravatar.cc/48?u=alkesh',
-//         date: '23 August 2022',
-//         replyingTo: 'Josh Durrant',
-//         text: 'What a display dsn cdn zxnc',
-//         replies: [],
-//       },
-//       {
-//         id: 3,
-//         authorName: 'Josh Durrant',
-//         authorAvatarUrl: 'https://i.pravatar.cc/48?u=josh_reply',
-//         date: '23 August 2022',
-//         replyingTo: 'Alkesh Sharma',
-//         text: 'What a display dsn cdn zxnc',
-//         replies: [],
-//       },
-//       {
-//         id: 4,
-//         authorName: 'Simon Pears',
-//         authorAvatarUrl: 'https://i.pravatar.cc/48?u=simon1',
-//         date: '23 August 2022',
-//         replyingTo: 'Josh Durrant',
-//         text: 'What a display dsn cdn zxnc',
-//         replies: [],
-//       },
-//        {
-//         id: 5,
-//         authorName: 'Simon Pears',
-//         authorAvatarUrl: 'https://i.pravatar.cc/48?u=simon2',
-//         date: '23 August 2022',
-//         replyingTo: 'Josh Durrant',
-//         text: 'What a display dsn cdn zxnc',
-//         replies: [],
-//       },
-//     ],
-//   },
-// ];
 
 export default function BlogDetailPage() {
   const params = useParams();
@@ -197,20 +168,20 @@ export default function BlogDetailPage() {
       {/* Blog Image */}
       <div className="mb-6 pt-[64px] ">
         <div className="relative">
-        <Image
-          src={post.imageUrl}
-          alt={post.title}
-          width={800}
-          height={400}
-          className="rounded-t-4xl w-full h-auto"
-          priority
-        />
-        <div className="absolute top-5 right-6 bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1 rounded-full flex items-center space-x-1.5">
-          <Confetti2Icon width={20} height={20} />
-          <span className="font-plusJakartaSans text-white font-normal text-[11px]">
-            {/* {event.category} */} House Party
-          </span>
-        </div>
+          <Image
+            src={post.imageUrl}
+            alt={post.title}
+            width={800}
+            height={400}
+            className="rounded-t-4xl w-full h-auto"
+            priority
+          />
+          <div className="absolute top-5 right-6 bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1 rounded-full flex items-center space-x-1.5">
+            <Confetti2Icon width={20} height={20} />
+            <span className="font-plusJakartaSans text-white font-normal text-[11px]">
+              {/* {event.category} */} House Party
+            </span>
+          </div>
         </div>
       </div>
       {/* Blog Header */}

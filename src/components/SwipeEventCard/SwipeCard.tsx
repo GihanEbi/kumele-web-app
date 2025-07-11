@@ -25,18 +25,18 @@ type Event = {
 const eventsData: Event[] = [
   {
     id: 1,
-    category: "test category",
+    category: "House Party",
     imageSrc: "/bg-imgs/preview-event.jpg",
-    title: "Family Party",
+    title: "90's Hip-Hop",
     price: "Free",
     time: "7:45-9:30",
-    guests: "100",
-    startsIn: "Starts in 6 hrs",
-    location: "25563 london",
+    guests: "12",
+    startsIn: "Starts in 7 hrs",
+    location: "22414 Indore",
     subtitle:
-      "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
+      "🌟 Step Back into the Golden Era: 90 Hip-Hop Extravaganza!",
     description:
-      "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
+      "Dust off those sneakers and get ready to groove at our 90's Hip-Hop House Party! Join us for a night of nostalgia, where the beats are fresh, the vibes are electric, and the memories come flooding back. Whether you were breakdancing in your living room or rocking out to your favorite mixtapes, this is the ultimate throwback experience. Bring your friends, your best dance moves, and let's make this a night to remember!",
   },
   {
     id: 2,

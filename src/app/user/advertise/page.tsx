@@ -31,6 +31,7 @@ import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent"
 import RadioButtonComponent from "@/components/RadioButtonComponent/RadioButtonComponent";
 import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/RadioButtonGroupComponent";
 import ImageUploadComponent from "@/components/ImageUploadComponent/ImageUploadComponent";
+import PreviewAdvertise from "./models/PreviewModal";
 
 // types
 type ChooseInterestsProps = {
