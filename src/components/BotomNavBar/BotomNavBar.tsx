@@ -44,7 +44,7 @@ const BottomNavBar = () => {
   }, [activePageIndex]);
 
   return (
-    <div className="">
+    <div className="overflow-y-auto max-h-screen no-scrollbar">
       <div
         className={`h-tab-bar pb-3 px-4 bg-app-background-bottom-navbar flex justify-around items-center shadow-tab-bar pb-safe-bottom z-[1000]`}
       >

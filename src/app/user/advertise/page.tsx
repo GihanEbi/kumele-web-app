@@ -31,6 +31,7 @@ import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent"
 import RadioButtonComponent from "@/components/RadioButtonComponent/RadioButtonComponent";
 import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/RadioButtonGroupComponent";
 import ImageUploadComponent from "@/components/ImageUploadComponent/ImageUploadComponent";
+import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
 
 // types
 type ChooseInterestsProps = {
@@ -399,8 +400,22 @@ const page = () => {
             <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
               Audience Insight
             </p>
-            <div className="mt-2 border-2 rounded-lg border-app-text-primary px-2 py-4">
+            <div className="mt-2 border-2 rounded-xl border-app-text-primary px-2 py-4">
               <div className="mb-5">
+                <div className="">
+                  <label className="block text-[13.45px] font-plusJakartaSans-400 mb-[54px]">
+                    Age range
+                  </label>
+                  {/* Age Range Slider Section using Radix UI */}
+                  <RadixAgeRangeSlider
+                    //label="Age range"
+                    min={0}
+                    max={100}
+                    initialValues={[18, 28]} // As shown in your image
+                    step={1}
+                    onValueChange={() => {}}
+                  />
+                </div>
                 <p className="text-[13.89px] mb-2 text-app-text-primary font-plusJakartaSans-400">
                   Gender
                 </p>
@@ -412,8 +427,131 @@ const page = () => {
                     { id: 3, label: "Other", value: "other" },
                   ]}
                 />
+                <div className="mt-4">
+                  <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+                    Region
+                  </p>
+                  <DropDown
+                    dataArray={[{ label: "Europe", value: "europe" }]}
+                    placeHolder="Europe"
+                    isOpen={(value: boolean) => {
+                      setIsDropdownOpen(value);
+                    }}
+                  />
+                </div>
+                <div className="mt-4">
+                  <p className="text-[13.89px] text-app-text-primary font-plusJakartaSans-400">
+                    Advert Location
+                  </p>
+                  <div className="space-y-4 mb-1">
+                    <div className="relative">
+                      <InputComponent
+                        placeholder="Enter Country, State or Town"
+                        value={""}
+                        onChange={(e) => {}}
+                      />
+                    </div>
+                  </div>
+                  <p className="text-[10.89px] text-app-text-blue font-plusJakartaSans-400">
+                    Maximum 3 locations per advert
+                  </p>
+                </div>
+                <div className="pt-4">
+                  <button
+                    className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                    onClick={() => {}}
+                  >
+                    Add
+                  </button>
+                  <div className="flex items-center gap-2 mt-1">
+                    <p className="text-[10.89px] text-app-text-secondary font-plusJakartaSans-400">
+                      Vienna
+                    </p>
+                    <p className="text-[10.89px] text-app-text-secondary font-plusJakartaSans-400">
+                      Colombo
+                    </p>
+                    <p className="text-[10.89px] text-app-text-secondary font-plusJakartaSans-400">
+                      Berlin
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+                    Language
+                  </p>
+                  <DropDown
+                    dataArray={[
+                      { label: "English", value: "english" },
+                      { label: "French", value: "french" },
+                      { label: "Spanish", value: "spanish" },
+                      { label: "German", value: "german" },
+                      { label: "Italian", value: "italian" },
+                      { label: "Portuguese", value: "portuguese" },
+                    ]}
+                    placeHolder="All"
+                    isOpen={(value: boolean) => {
+                      setIsDropdownOpen(value);
+                    }}
+                  />
+                </div>
               </div>
             </div>
+          </div>
+          <div>
+            <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3">
+              Advert Placement
+            </p>
+            <div className="mb-4">
+              <RadioButtonGroupComponent
+                name=""
+                options={[
+                  {
+                    id: 1,
+                    label: "General advert Placement Pricing",
+                    value: "General advert Placement Pricing",
+                  },
+                ]}
+              />
+            </div>
+            <div className="mb-4">
+              <RadioButtonGroupComponent
+                name=""
+                options={[
+                  {
+                    id: 2,
+                    label: "Notification Placement Pricing",
+                    value: "Notification Placement Pricing",
+                  },
+                ]}
+              />
+            </div>
+            <div className="mb-4">
+              <RadioButtonGroupComponent
+                name=""
+                options={[{ id: 3, label: "Both", value: "Both" }]}
+              />
+            </div>
+          </div>
+
+          <div className="mt-2">
+            <RadioButtonGroupComponent
+              name=""
+              options={[
+                {
+                  id: 1,
+                  label: "Ios",
+                  value: "ios",
+                },
+                {
+                  id: 2,
+                  label: "Android",
+                  value: "android",
+                },
+                { id: 3, label: "Web", value: "web" },
+                { id: 4, label: "All", value: "all" },
+              ]}
+            />
           </div>
         </div>
       </div>
