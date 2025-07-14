@@ -72,7 +72,7 @@ const DropDown: React.FC<DropDownProps> = ({
             toggleList();
           }}
           className={`text-[14.23px] ${
-            selectedItem ? "text-app-text-primary" : "text-app-text-secondary"
+            selectedItem ? "text-app-text-primary" : "text-app-text-primary"
           } flex items-center justify-between`}
           aria-haspopup="listbox"
           aria-expanded={isListOpen}

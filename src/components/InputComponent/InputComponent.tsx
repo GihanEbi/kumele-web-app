@@ -26,7 +26,7 @@ const InputComponent: React.FC<InputComponentProps> = ({
   error,
 }) => {
   return (
-    <div className="bg-app-input-primary rounded-lg">
+    <div className="bg-app-input-primary rounded-lg flex items-center relative">
       {icon && (
         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
           {icon}

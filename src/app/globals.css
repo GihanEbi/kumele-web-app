@@ -67,6 +67,7 @@
   --color-app-border: var(--app-border);
   --color-app-border-profile: var(--app-border-profile);
   --color-app-border-referral: var(--app-border-referral);
+  --color-app-border-advert: var(--app-border-advert);
   --color-app-input-primary: var(--app-input-primary);
   --color-app-input-secondary: var(--app-input-secondary);
   --color-app-input-yellow: var(--app-input-yellow);
@@ -139,7 +140,7 @@
 
   --color-app-bg-placeholder-firstcard: var(--app-bg-placeholder-firstcard);
   --color-app-bg-placeholder-secondcard: var(--app-bg-placeholder-secondcard);
-  --color-app-section-bg:var(--app-section-bg);
+  --color-app-section-bg: var(--app-section-bg);
 }
 
 :root {
@@ -217,6 +218,7 @@
   --app-border: oklch(0.8853 0 89.88);
   --app-border-profile: oklch(1 0 89.88);
   --app-border-referral: oklch(0.9448 0.0027 15.94);
+  --app-border-advert: oklch(0.8916 0.057507 264.4396);
 
   /* ICON */
   --app-icon: oklch(0 0 0);
@@ -309,7 +311,7 @@
   --app-bg-placeholder-secondcard: oklch(0.7348 0 0);
 
   /*EVENT SHARE MODAL COLORS*/
-  --app-section-bg:oklch(0.9446 0.0022 17.2);
+  --app-section-bg: oklch(0.9446 0.0022 17.2);
 }
 
 .dark {
@@ -381,6 +383,7 @@
   --app-border: oklch(0.5278 0 89.88);
   --app-border-profile: oklch(0.1591 0 89.88);
   --app-border-referral: oklch(0.5278 0 89.88);
+  --app-border-advert: oklch(1 0 0);
 
   /* ICON */
   --app-icon: oklch(1 0 89.88);
@@ -466,8 +469,19 @@
   --app-bg-placeholder-firstcard: oklch(0.5999 0 0);
   --app-bg-placeholder-secondcard: oklch(0.412 0.004 17.32);
 
-   /*EVENT SHARE MODAL COLORS*/
-  --app-section-bg:oklch(0.1591 0 0);
+  /*EVENT SHARE MODAL COLORS*/
+  --app-section-bg: oklch(0.1591 0 0);
+}
+/* Add this utility for the annotation's dotted line */
+.bg-dotted-line {
+  background-image: linear-gradient(
+    to bottom,
+    currentColor 33%,
+    transparent 0%
+  );
+  background-position: left;
+  background-size: 1px 6px;
+  background-repeat: repeat-y;
 }
 
 @layer base {
@@ -527,6 +541,18 @@
   font-size: 13px;
   line-height: 100%; /* or 1 */
   letter-spacing: 0%;
+}
+.custom-dotted-border {
+  border: 1px dotted transparent; /* Make default border transparent */
+  /* border-radius: 0.5rem; */
+  border-image-source: repeating-linear-gradient(
+    45deg,
+    currentColor 1px,
+    currentColor 2px,
+    transparent 4px,
+    transparent 8px
+  );
+  border-image-slice: 2;
 }
 
 /*
