@@ -1,47 +1,50 @@
+
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import Image from "next/image";
+import Image                   from "next/image";
 import { Comment as CommentType } from "@/types/blog";
-import { DownArrowIcon } from "../../../public/svg-icons/icons";
-import ReplyForm from "../CommentForm/ReplyForm/ReplyForm";
+import { DownArrowIcon }       from "../../../public/svg-icons/icons";
+import ReplyForm               from "../CommentForm/ReplyForm/ReplyForm";
+
+const REPLY_INDENT = 72;            // avatar (56) + gap-4 (16)
 
 interface CommentItemProps {
   comment: CommentType;
-  isReply?: boolean;
   onReplyOpen: (isOpen: boolean) => void;
+  depth?: number;                   // 0 = top-level, 1 = first reply, …
+  autoOpen?: boolean;
+  isReply?: boolean;
 }
 
 export default function CommentItem({
   comment,
-  isReply = false,
   onReplyOpen,
+  depth = 0,
+  autoOpen = false,
+  isReply = false,
 }: CommentItemProps) {
-  const [repliesOpen, setRepliesOpen] = useState(false);
+  /* ---------------------------------------------------------------- state */
+  const [repliesOpen, setRepliesOpen] = useState(autoOpen);
+  const [isReplying,  setIsReplying]  = useState(false);
   const hasReplies = comment.replies && comment.replies.length > 0;
-  const [isReplying, setIsReplying] = useState(false);
 
-  const lineRef = useRef<HTMLDivElement>(null);
+  useEffect(() => setRepliesOpen(autoOpen), [autoOpen]);
+
+  /* --------------------------------------------------------------- refs */
+  const lineRef             = useRef<HTMLDivElement>(null);
   const repliesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (
-      repliesOpen &&
-      hasReplies &&
-      lineRef.current &&
-      repliesContainerRef.current
-    ) {
-      const lastReply = repliesContainerRef.current.lastElementChild;
+    if (repliesOpen && hasReplies && lineRef.current && repliesContainerRef.current) {
+      const lastReply   = repliesContainerRef.current.lastElementChild;
       if (lastReply) {
-        const lastAvatar = lastReply.querySelector(
-          'img, [class*="rounded-full"]'
-        );
+        const lastAvatar = lastReply.querySelector('img, [class*="rounded-full"]');
         if (lastAvatar) {
-          const lineRect = lineRef.current.getBoundingClientRect();
-          const lastAvatarRect = lastAvatar.getBoundingClientRect();
-          const height =
-            lastAvatarRect.top - lineRect.top + lastAvatar.clientHeight / 2;
-          lineRef.current.style.height = `${height}px`;
+          const lineTop      = lineRef.current.getBoundingClientRect().top;
+          const avatarRect   = lastAvatar.getBoundingClientRect();
+          const h            = avatarRect.top - lineTop + avatarRect.height / 2;
+          lineRef.current.style.height = `${h}px`;
         }
       }
     } else if (lineRef.current) {
@@ -49,27 +52,38 @@ export default function CommentItem({
     }
   }, [repliesOpen, hasReplies]);
 
-  const toggleReply = () => {
-    const newState = !isReplying;
-    setIsReplying(newState);
-    onReplyOpen(newState);
+  /* ----------------------------------------------------------- handlers */
+  const toggleReplyForm = () => {
+    const next = !isReplying;
+    setIsReplying(next);
+    onReplyOpen(next);
   };
 
-  const handleReplySubmit = (replyText: string) => {
-    console.log(`Replying to ${comment.author} with: "${replyText}"`);
+  const handleReplySubmit = (text: string) => {
+    console.log(`Replying to ${comment.author}: “${text}”`);
     setIsReplying(false);
   };
 
+  /* ------------------------------------------------------- computed style */
+  const rowStyle =
+    depth > 1 ? { marginLeft: `-${(depth - 1) * REPLY_INDENT}px` } : undefined;
+
+  /* --------------------------------------------------------------- render */
   return (
     <div className="relative">
-      {isReply && (
+      {/* horizontal branch — only first-level replies */}
+      {depth === 1 && (
         <div
-          className="absolute top-7 -left-11 h-px w-11 bg-[repeating-linear-gradient(to_right,black_0_2px,transparent_2px_8px)] dark:bg-[repeating-linear-gradient(to_right,white_0_2px,transparent_2px_8px)]"
+          className="absolute top-7 -left-11 h-px w-11
+                     bg-[repeating-linear-gradient(to_right,black_0_2px,transparent_2px_8px)]
+                     dark:bg-[repeating-linear-gradient(to_right,white_0_2px,transparent_2px_8px)]"
           aria-hidden="true"
         />
       )}
 
-      <div className="flex gap-4">
+      {/* main row ---------------------------------------------------------- */}
+      <div className="flex gap-4" style={rowStyle}>
+        {/* avatar */}
         <div className="relative z-10 flex-shrink-0">
           {comment.avatarUrl ? (
             <Image
@@ -87,27 +101,37 @@ export default function CommentItem({
             </div>
           )}
         </div>
+
+        {/* text column */}
         <div className="relative flex-1">
-          {/* vertical lines */}
+          {/* vertical dotted spine */}
           {hasReplies && (
             <div
               ref={lineRef}
-              className="absolute -left-11 top-7 w-px bg-[repeating-linear-gradient(to_bottom,black_0_2px,transparent_2px_8px)] dark:bg-[repeating-linear-gradient(to_bottom,white_0_2px,transparent_2px_8px)] transition-all duration-300"
+              className="absolute -left-11 top-7 w-px
+                         bg-[repeating-linear-gradient(to_bottom,black_0_2px,transparent_2px_8px)]
+                         dark:bg-[repeating-linear-gradient(to_bottom,white_0_2px,transparent_2px_8px)]
+                         transition-all duration-300"
               aria-hidden="true"
-              style={{ height: 100 }} // Change height dynamically as needed
+              style={{ height: 0 }}
             />
           )}
 
+          {/* header row */}
           <div className="flex items-center gap-4 flex-wrap">
-            <h4 className="font-plusJakartaSans font-bold text-[18px]text-app-blog-card-heading">
+            <h4 className="font-plusJakartaSans font-bold text-[18px] text-app-blog-card-heading">
               {comment.author}
             </h4>
-            {hasReplies && (
+
+            {/* Replies toggle chip only on top-level comments */}
+            {depth === 0 && hasReplies && (
               <button
                 onClick={() => setRepliesOpen(!repliesOpen)}
-                className="inline-flex items-center px-3 py-1 rounded-full bg-app-blog-selected-tabs-background font-plusJakartaSans font-normal text-[11.81px] text-black space-x-2"
+                className="inline-flex items-center px-3 py-1 rounded-full
+                           bg-app-blog-selected-tabs-background
+                           font-plusJakartaSans text-[11.81px] text-black space-x-2"
               >
-                <span>{comment.replies?.length} Replies</span>
+                <span>{comment.replies!.length} Replies</span>
                 <span
                   className={`transform transition-transform duration-300 ${
                     repliesOpen ? "rotate-180" : ""
@@ -118,20 +142,27 @@ export default function CommentItem({
               </button>
             )}
           </div>
-          <div className="flex items-center gap-1 text-app-search-bar-text font-plusJakartaSans font-normal text-[16px] mt-1">
+
+          {/* meta row */}
+          <div className="flex items-center gap-1 text-app-search-bar-text
+                          font-plusJakartaSans text-[16px] mt-1">
             <span>•</span>
-            <span className="">{comment.date}</span>
+            <span>{comment.date}</span>
             <span>•</span>
             <button
-              onClick={toggleReply}
-              className="font-plusJakartaSans font-normal text-[16px] text-blue-500 hover:underline"
+              onClick={toggleReplyForm}
+              className="text-blue-500 hover:underline"
             >
               Reply
             </button>
           </div>
-          <p className="mt-2 text-app-blog-card-heading font-plusJakartaSans font-normal text-[14px]">
+
+          {/* body */}
+          <p className="mt-2 text-app-blog-card-heading font-plusJakartaSans text-[14px]">
             {comment.content}
           </p>
+
+          {/* reply form */}
           {isReplying && (
             <ReplyForm
               replyingTo={comment.author}
@@ -142,14 +173,18 @@ export default function CommentItem({
               onSubmit={handleReplySubmit}
             />
           )}
+
+          {/* nested replies */}
           {hasReplies && repliesOpen && (
             <div ref={repliesContainerRef} className="mt-6 pt-6 space-y-6">
-              {comment.replies?.map((reply) => (
+              {comment.replies!.map((reply) => (
                 <CommentItem
                   key={reply.id}
                   comment={reply}
-                  isReply={true}
                   onReplyOpen={onReplyOpen}
+                  depth={depth + 1}
+                  autoOpen={repliesOpen}
+                  isReply
                 />
               ))}
             </div>
