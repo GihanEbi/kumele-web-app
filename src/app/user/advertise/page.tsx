@@ -32,6 +32,7 @@ import RadioButtonComponent from "@/components/RadioButtonComponent/RadioButtonC
 import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/RadioButtonGroupComponent";
 import ImageUploadComponent from "@/components/ImageUploadComponent/ImageUploadComponent";
 import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
+import PreviewAdvertise from "./models/PreviewModal";
 
 // types
 type ChooseInterestsProps = {

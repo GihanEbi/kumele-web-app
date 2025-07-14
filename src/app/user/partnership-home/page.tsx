@@ -15,6 +15,17 @@ import AnalyticsChart from "@/components/partnershipChartComponent/AnalyticsChar
 import Image from "next/image";
 import DropDown from "@/components/DropDown/DropDown";
 import { authConstants } from "@/constants/auth-constants";
+import CurrentAdvertsCard from "./currentAdvertsCard/currentAdvertsCard";
+import {
+  HousePartyNotificationIcon,
+  LiveMusicNotificationIcon,
+  SearchIcon,
+  SpiritualityNotificationIcon,
+} from "../../../../public/svg-icons/icons";
+import CampaignAdModel from "./currentAdvertsCard/models/CampaignAdModel";
+import NotificationCard from "./currentAdvertsCard/notificationCard";
+import InputComponent from "@/components/InputComponent/InputComponent";
+import PartnershipBlogCard from "./currentAdvertsCard/blogCard";
 
 const chartData = [
   { name: "May", amountSpent: 100, reach: 2200 },
@@ -51,6 +62,114 @@ const mockData = [
   { name: "Colombo", amount: "20k", reach: "1.45K" },
 ];
 
+const blogData = ["All", "Pub & Bars", "Cannabis", "Sports", "Sports"];
+
+const advertsCard = [
+  {
+    image: "/images/notification img3.jpg",
+    title: "Special offer",
+    date: "23 August, 2022, 122.40",
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
+    iconText: "Spirituality",
+    isDisabled: false,
+  },
+  {
+    image: "/images/notification img1.jpg",
+    title: "Crazy Monday",
+    date: "23 August, 2022, 122.40",
+    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    iconText: "House party",
+    isDisabled: false,
+  },
+  {
+    image: "/images/notification img3.jpg",
+    title: "420 Party",
+    date: "23 August, 2022, 122.40",
+    icon: <LiveMusicNotificationIcon className="text-app-icon" />,
+    iconText: "Cannabis",
+    isDisabled: false,
+  },
+  {
+    image: "/images/notification img1.jpg",
+    title: "Crazy Monday",
+    date: "23 August, 2022, 122.40",
+    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    iconText: "House party",
+    isDisabled: false,
+  },
+  {
+    image: "/images/notification img3.jpg",
+    title: "Special offer",
+    date: "23 August, 2022, 122.40",
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
+    iconText: "Spirituality",
+    isDisabled: true,
+  },
+  {
+    image: "/images/notification img3.jpg",
+    title: "420 Party",
+    date: "23 August, 2022, 122.40",
+    icon: <LiveMusicNotificationIcon className="text-app-icon" />,
+    iconText: "Cannabis",
+    isDisabled: true,
+  },
+];
+
+const notificationCard = [
+  {
+    image: "/images/logo.png",
+    title: "Easter Special Discount",
+    date: "23 August, 2022, 122.40",
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
+    iconText: "Spirituality",
+    isNotification: true,
+    isDisabled: false,
+  },
+  {
+    image: "/images/logo.png",
+    title: "Holiday",
+    date: "23 August, 2022, 122.40",
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
+    iconText: "Spirituality",
+    isNotification: true,
+    isDisabled: false,
+  },
+  {
+    image: "/images/logo.png",
+    title: "40% off",
+    date: "23 August, 2022, 122.40",
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
+    iconText: "Spirituality",
+    isNotification: true,
+    isDisabled: true,
+  },
+  {
+    image: "/images/logo.png",
+    title: "Crazy Monday",
+    date: "23 August, 2022, 122.40",
+    icon: <SpiritualityNotificationIcon className="text-app-icon" />,
+    iconText: "Spirituality",
+    isNotification: true,
+    isDisabled: true,
+  },
+];
+const blogCardData = [
+  {
+    image: "/images/blogCard.jpg",
+    title: "Singleton og Glen Ord 38-year-old and Singleton range.",
+    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    iconText: "Spirituality",
+    isDisabled: false,
+  },
+  {
+    image: "/images/blogCard.jpg",
+    title: "Singleton og Glen Ord 38-year-old and Singleton range.",
+    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    iconText: "Spirituality",
+    isDisabled: false,
+  },
+];
+
 const page = () => {
   //   loading state
   const [loading, setLoading] = useState(false);
@@ -78,6 +197,7 @@ const page = () => {
   const [activeTabEvents, setActiveTabEvents] = useState<
     "Current Adverts" | "Notifications" | "Blogs"
   >("Current Adverts");
+  const [isModelOpen, setIsModelOpen] = useState(false);
 
   useEffect(() => {
     setIsBottomNavBarFixed(false);
@@ -304,8 +424,8 @@ const page = () => {
             <button onClick={() => setActiveTabEvents("Current Adverts")}>
               Current Adverts
             </button>
-            <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
-              <p className="text-[7.52px]">4</p>
+            <div className="rounded-full bg-app-input-yellow text-app-text-black py-[2px] px-2 absolute top-[1px] right-[1px]">
+              <p className="text-[10.52px]">4</p>
             </div>
           </div>
           <div
@@ -316,10 +436,10 @@ const page = () => {
             }`}
           >
             <button onClick={() => setActiveTabEvents("Notifications")}>
-              Notifications <br /> 
+              Notifications <br />
             </button>
-            <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
-              <p className="text-[7.52px]">2</p>
+            <div className="rounded-full bg-app-input-yellow text-app-text-black py-[2px] px-2 absolute top-[1px] right-[1px]">
+              <p className="text-[10.52px]">2</p>
             </div>
           </div>
           <div
@@ -328,11 +448,107 @@ const page = () => {
             }`}
           >
             <button onClick={() => setActiveTabEvents("Blogs")}>Blogs</button>
-            <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
-              <p className="text-[7.52px]">30</p>
+            <div className="rounded-full bg-app-input-yellow text-app-text-black py-[2px] px-2 absolute top-[1px] right-[1px]">
+              <p className="text-[10.52px]">3</p>
             </div>
           </div>
         </div>
+
+        {activeTabEvents === "Current Adverts" && (
+          <div className="mt-[25px]">
+            {advertsCard.map((advert, index) => (
+              <CurrentAdvertsCard
+                key={index}
+                image={advert.image}
+                title={advert.title}
+                date={advert.date}
+                icon={advert.icon}
+                iconText={advert.iconText}
+                isDisabled={advert.isDisabled}
+                cardClick={() => (
+                  setIsModelOpen(true), console.log("Card clicked")
+                )}
+              />
+            ))}
+          </div>
+        )}
+
+        {activeTabEvents === "Notifications" && (
+          <div className="mt-[25px]">
+            {notificationCard.map((advert, index) => (
+              <NotificationCard
+                key={index}
+                image={advert.image}
+                title={advert.title}
+                date={advert.date}
+                icon={advert.icon}
+                iconText={advert.iconText}
+                isDisabled={advert.isDisabled}
+                cardClick={() => (
+                  setIsModelOpen(true), console.log("Card clicked")
+                )}
+              />
+            ))}
+          </div>
+        )}
+
+        {activeTabEvents === "Blogs" && (
+          <div className="mt-[25px]">
+            <InputComponent placeholder="Search" icon={<SearchIcon />} />
+
+            <div className="mb-6 sm:mb-8 relative w-full">
+              <div
+                ref={tabsContainerRef}
+                className="flex gap-2 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
+                onMouseDown={handleMouseDown}
+                onMouseLeave={handleMouseLeave}
+                onMouseUp={handleMouseUp}
+                onMouseMove={handleMouseMove}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                style={{
+                  cursor: isDragging ? "grabbing" : "grab",
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  WebkitOverflowScrolling: "touch",
+                }}
+              >
+                {blogData.map((item, index) => (
+                  <div
+                    className="w-auto sm:w-[150px] flex-shrink-0"
+                    key={index}
+                  >
+                    <div className="mt-2 py-2 px-4 rounded-xl items-center bg-app-input-primary">
+                      <p className="text-[12.98px] font-md text-app-text-primary font-plusJakartaSans-400">
+                        {item}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-[15px]">
+              {blogCardData.map((advert, index) => (
+                <PartnershipBlogCard
+                  key={index}
+                  image={advert.image}
+                  title={advert.title}
+                  icon={advert.icon}
+                  iconText={advert.iconText}
+                  isDisabled={advert.isDisabled}
+                  cardClick={() => (
+                    setIsModelOpen(true), console.log("Card clicked")
+                  )}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        <CampaignAdModel
+          isOpen={isModelOpen}
+          onClose={() => setIsModelOpen(false)}
+        />
       </div>
       {notificationPermission && isNewPartnershipUser === "yes" && (
         <Notifications
