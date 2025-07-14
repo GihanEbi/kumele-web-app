@@ -387,10 +387,10 @@ const page = () => {
                 key={index}
               >
                 <div className="py-2 px-4 rounded-md flex flex-col items-center bg-app-input-primary">
-                  <p className="text-[10.98px] font-md text-app-text-secondary font-plusJakartaSans-400">
+                  <p className="text-[10.98px] font-md text-app-text-primary font-plusJakartaSans-400">
                     {item.name}
                   </p>
-                  <p className="text-[18.98px] font-md text-app-text-secondary font-plusJakartaSans-400">
+                  <p className="text-[18.98px] font-md text-app-text-primary font-plusJakartaSans-400">
                     {item.amount}
                   </p>
                   <div className="flex item-center">

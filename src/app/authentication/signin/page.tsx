@@ -23,6 +23,10 @@ import CreatePasskeyText from "./passkey-models/CreatePasskeyText";
 import CreatePasskey from "./passkey-models/CreatePasskey";
 import SignupOptions from "./passkey-models/SignupOptions";
 import { sign } from "crypto";
+import {
+  getPartnershipToken,
+  saveNewPartnershipUser,
+} from "@/utils/partnershipUtils";
 
 const languages = [
   {
@@ -91,6 +95,8 @@ const Signin = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const isPartnerShipAccount = getPartnershipToken();
+
   useEffect(() => {
     // 2 seconds time out
     const timeout = setTimeout(() => {
@@ -100,7 +106,15 @@ const Signin = () => {
 
   // -------- handleSubmit for form submission ---------
   const handleSubmit = async () => {
+    setTimeout(() => {
+      if (isPartnerShipAccount === "yes") {
+        saveNewPartnershipUser("no");
+        // Redirect to partnership home page
+        router.push("/user/partnership-home");
+      } else {
         router.push("/user/home");
+      }
+    }, 1000);
     // -------- check full form validation
     // -------- prevent multiple submission
     // if (loading) return;

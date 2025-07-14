@@ -23,6 +23,10 @@ import {
   SportsIcon,
   TwitterIcon,
   YoutubeIcon,
+  BlogFacebookIcon,
+  BlogInstagramIcon,
+  BlogPinterestIcon,
+  BlogTwitterIcon,
 } from "../../../../public/svg-icons/icons";
 import NotificationBadge from "@/components/NotificationCard/NotificationBadge";
 import DropDown from "@/components/DropDown/DropDown";
@@ -157,7 +161,9 @@ const page = () => {
   return (
     <div
       className={`overflow-y-auto max-h-screen no-scrollbar ${
-        isDropdownOpen ? "bg-k-background-secondary" : "bg-k-background-primary"
+        isDropdownOpen || previewBlog
+          ? "bg-k-background-secondary"
+          : "bg-k-background-primary"
       } `}
     >
       {loading && (
@@ -170,7 +176,7 @@ const page = () => {
           {/* Header */}
           <header
             className={`fixed w-full pt-[64px] flex items-center mb-10 z-1000 ${
-              isDropdownOpen
+              isDropdownOpen || previewBlog
                 ? "bg-k-background-secondary"
                 : "bg-k-background-primary"
             } `}
@@ -289,9 +295,11 @@ const page = () => {
               <div>
                 <DropDown
                   dataArray={[
-                    { label: <NewYoutubeIcon />, value: "facebook" },
-                    { label: <NewYoutubeIcon />, value: "twitter" },
-                    { label: <NewYoutubeIcon />, value: "instagram" },
+                    { label: <NewYoutubeIcon />, value: "youtube" },
+                    { label: <BlogFacebookIcon />, value: "facebook" },
+                    { label: <BlogInstagramIcon />, value: "instagram" },
+                    { label: <BlogPinterestIcon />, value: "pinterest" },
+                    { label: <BlogTwitterIcon />, value: "twitter" },
                   ]}
                   placeHolder={<NewYoutubeIcon width={24} height={24} />}
                   isOpen={(value: boolean) => {
@@ -372,7 +380,9 @@ const page = () => {
           <div className="flex flex-col items-center mt-8">
             <button
               className="w-1/2 text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-2 rounded-lg"
-              onClick={() => {setPreviewBlog(true)}}
+              onClick={() => {
+                setPreviewBlog(true);
+              }}
             >
               Preview Blog
             </button>

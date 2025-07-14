@@ -58,7 +58,9 @@ const BottomNavBar = () => {
               router.push("/user/home");
             }
           }}
-          className={`flex flex-col items-center text-app-text-primary`}
+          className={`flex flex-col items-center text-app-text-primary ${
+            activePageIndex === 0 ? "border-t-3 border-app-text-blue pt-2" : ""
+          }`}
         >
           {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
@@ -86,7 +88,11 @@ const BottomNavBar = () => {
               setActivePageIndex(5);
               router.push("/user/advertise");
             }}
-            className={`flex flex-col items-center text-app-text-primary`}
+            className={`flex flex-col items-center text-app-text-primary ${
+              activePageIndex === 5
+                ? "border-t-3 border-app-text-blue pt-2"
+                : ""
+            }`}
           >
             {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
@@ -115,7 +121,11 @@ const BottomNavBar = () => {
               setActivePageIndex(6);
               router.push("/user/partnership-blog");
             }}
-            className={`flex flex-col items-center text-app-text-primary`}
+            className={`flex flex-col items-center text-app-text-primary ${
+              activePageIndex === 6
+                ? "border-t-3 border-app-text-blue pt-2"
+                : ""
+            }`}
           >
             {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
@@ -144,7 +154,11 @@ const BottomNavBar = () => {
               setActivePageIndex(1);
               router.push("/user/blog");
             }}
-            className={`flex flex-col items-center text-app-text-primary`}
+            className={`flex flex-col items-center text-app-text-primary ${
+              activePageIndex === 1
+                ? "border-t-3 border-app-text-blue pt-2"
+                : ""
+            }`}
           >
             {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
@@ -173,7 +187,11 @@ const BottomNavBar = () => {
               setActivePageIndex(2);
               router.push("/user/shop");
             }}
-            className={`flex flex-col items-center text-app-text-primary`}
+            className={`flex flex-col items-center text-app-text-primary ${
+              activePageIndex === 2
+                ? "border-t-3 border-app-text-blue pt-2"
+                : ""
+            }`}
           >
             {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
@@ -204,7 +222,11 @@ const BottomNavBar = () => {
               setShowMoreOptionModel(true);
               setMoreOption(true);
             }}
-            className={`flex flex-col items-center text-app-text-primary`}
+            className={`flex flex-col items-center text-app-text-primary ${
+              activePageIndex === 3
+                ? "border-t-3 border-app-text-blue pt-2"
+                : ""
+            }`}
           >
             {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
@@ -233,7 +255,9 @@ const BottomNavBar = () => {
             setActivePageIndex(4);
             router.push("/user/profile");
           }}
-          className={`flex flex-col items-center text-app-text-primary border-t-3 border-app-text-blue pt-2`}
+          className={`flex flex-col items-center text-app-text-primary ${
+            activePageIndex === 4 ? "border-t-3 border-app-text-blue pt-2" : ""
+          }`}
         >
           {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${

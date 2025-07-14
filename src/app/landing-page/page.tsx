@@ -289,7 +289,7 @@ const LandingPge = () => {
             <div className="flex rounded-full overflow-hidden">
               <button
                 className="flex-1 bg-k-secondary-color text-black py-2 text-center font-fredoka text-xs"
-                onClick={() => router.push("/authentication/signin")}
+                onClick={() => router.push("/authentication/signin") }
               >
                 Sign in
               </button>

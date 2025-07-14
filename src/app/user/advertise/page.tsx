@@ -10,6 +10,7 @@ import {
   BulletedListIcon,
   HeaderOneIcon,
   ImageIcon,
+  InformationIcon,
   InstagramIcon,
   ItalicIcon,
   LinkIcon,
@@ -33,6 +34,7 @@ import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/Ra
 import ImageUploadComponent from "@/components/ImageUploadComponent/ImageUploadComponent";
 import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
 import PreviewAdvertise from "./models/PreviewModal";
+import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 
 // types
 type ChooseInterestsProps = {
@@ -94,6 +96,9 @@ const page = () => {
   const [selectedInterestsIds, setSelectedInterestsIds] = useState<number[]>(
     []
   );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateAdvert, setIsCreateAdvert] = useState(false);
 
   // CATEGORY SELECTION
 
@@ -160,7 +165,9 @@ const page = () => {
   return (
     <div
       className={`overflow-y-auto max-h-screen no-scrollbar ${
-        isDropdownOpen ? "bg-k-background-secondary" : "bg-k-background-primary"
+        isDropdownOpen || isCreateAdvert || isModalOpen
+          ? "bg-k-background-secondary"
+          : "bg-k-background-primary"
       } `}
     >
       <div className={`min-h-screen flex flex-col`}>
@@ -168,7 +175,7 @@ const page = () => {
           {/* Header */}
           <header
             className={`fixed w-full pt-[64px] flex items-center mb-10 z-1000 ${
-              isDropdownOpen
+              isDropdownOpen || isCreateAdvert || isModalOpen
                 ? "bg-k-background-secondary"
                 : "bg-k-background-primary"
             } `}
@@ -401,7 +408,7 @@ const page = () => {
             <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
               Audience Insight
             </p>
-            <div className="mt-2 border-2 rounded-xl border-app-text-primary px-2 py-4">
+            <div className="mt-2 border-2 rounded-xl border-app-border-advert px-2 py-4">
               <div className="mb-5">
                 <div className="">
                   <label className="block text-[13.45px] font-plusJakartaSans-400 mb-[54px]">
@@ -500,62 +507,166 @@ const page = () => {
             </div>
           </div>
           <div>
-            <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3">
+            <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3 mt-3">
               Advert Placement
             </p>
-            <div className="mb-4">
-              <RadioButtonGroupComponent
-                name=""
-                options={[
-                  {
-                    id: 1,
-                    label: "General advert Placement Pricing",
-                    value: "General advert Placement Pricing",
-                  },
-                ]}
-              />
+            <div className="mb-4 flex items-center justify-start gap-2">
+              <div>
+                <RadioButtonGroupComponent
+                  name=""
+                  options={[
+                    {
+                      id: 1,
+                      label: "General advert Placement Pricing",
+                      value: "General advert Placement Pricing",
+                    },
+                  ]}
+                />
+              </div>
+              <InformationIcon width={16} height={16} />
             </div>
-            <div className="mb-4">
-              <RadioButtonGroupComponent
-                name=""
-                options={[
-                  {
-                    id: 2,
-                    label: "Notification Placement Pricing",
-                    value: "Notification Placement Pricing",
-                  },
-                ]}
-              />
+            <div className="mb-4 flex items-center justify-start gap-2">
+              <div>
+                <RadioButtonGroupComponent
+                  name=""
+                  options={[
+                    {
+                      id: 1,
+                      label: "Notification Placement Pricing",
+                      value: "Notification Placement Pricing",
+                    },
+                  ]}
+                />
+              </div>
+              <InformationIcon width={16} height={16} />
             </div>
-            <div className="mb-4">
+            <div className="mb-8">
               <RadioButtonGroupComponent
                 name=""
                 options={[{ id: 3, label: "Both", value: "Both" }]}
               />
             </div>
+            <div className="mt-5">
+              <RadioButtonGroupComponent
+                name=""
+                options={[
+                  {
+                    id: 1,
+                    label: "Ios",
+                    value: "ios",
+                  },
+                  {
+                    id: 2,
+                    label: "Android",
+                    value: "android",
+                  },
+                  { id: 3, label: "Web", value: "web" },
+                  { id: 4, label: "All", value: "all" },
+                ]}
+              />
+            </div>
           </div>
-
-          <div className="mt-2">
-            <RadioButtonGroupComponent
-              name=""
-              options={[
-                {
-                  id: 1,
-                  label: "Ios",
-                  value: "ios",
-                },
-                {
-                  id: 2,
-                  label: "Android",
-                  value: "android",
-                },
-                { id: 3, label: "Web", value: "web" },
-                { id: 4, label: "All", value: "all" },
-              ]}
-            />
+          <div className="mt-4">
+            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+              Daily Budget
+            </p>
+            <div className="mt-2 border-2 rounded-xl border-app-border-advert px-2 py-4">
+              <p className="text-[11.89px] mb-1 text-app-text-secondary font-plusJakartaSans-100">
+                Est.Reach 200-200 people per day
+              </p>
+              <div className="mt-5 w-2/3">
+                <RadioButtonGroupComponent
+                  name=""
+                  options={[
+                    {
+                      id: 1,
+                      label: "1$",
+                      value: "1$",
+                    },
+                    {
+                      id: 2,
+                      label: "5$",
+                      value: "5$",
+                    },
+                    { id: 3, label: "10$", value: "10$" },
+                  ]}
+                />
+              </div>
+              <div className="mb-4 mt-4 flex items-center justify-start gap-2">
+                <div>
+                  <RadioButtonGroupComponent
+                    name=""
+                    options={[
+                      {
+                        id: 1,
+                        label: "Daily budget",
+                        value: "Daily budget",
+                      },
+                    ]}
+                  />
+                </div>
+                <InformationIcon width={16} height={16} />
+              </div>
+              <div className="ml-5">
+                <InputComponent placeholder="Custom Amount" />
+              </div>
+              <div className="ml-5 mt-4">
+                <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+                  Duration
+                </p>
+                <InputComponent placeholder="0 Days" />
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center justify-between mt-12">
+            <div>
+              <button
+                className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                onClick={() => {
+                  setIsModalOpen(true);
+                }}
+              >
+                Preview Advert
+              </button>
+            </div>
+            <div>
+              <button
+                className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                onClick={() => setIsCreateAdvert(true)}
+              >
+                Create Advert
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      <PreviewAdvertise
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+      {/* verification complete */}
+      {isCreateAdvert && (
+        <div
+          className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50 transition-opacity duration-300 ease-in-out"
+          onClick={() => setIsCreateAdvert(false)}
+        >
+          <div
+            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-3xl shadow-xl transform transition-transform duration-300 ease-out ${
+              isCreateAdvert ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
+            }`}
+            onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
+          >
+            <div className="flex flex-col items-center mb-6">
+              <div className="mb-4">
+                <CheckMarkGif />
+              </div>
+              <p className="text-app-text-primary font-plusJakartaSans text-sm mb-6 text-center">
+                Advert Created
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
