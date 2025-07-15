@@ -14,6 +14,7 @@ type CurrentAdvertsCardProps = {
   iconText: string;
   isDisabled: boolean;
   cardClick: Function;
+  onClick: Function;
 };
 
 const CurrentAdvertsCard: React.FC<CurrentAdvertsCardProps> = ({
@@ -24,6 +25,7 @@ const CurrentAdvertsCard: React.FC<CurrentAdvertsCardProps> = ({
   iconText,
   isDisabled,
   cardClick,
+  onClick,
 }) => {
   const [isModelOpen, setIsModelOpen] = React.useState(false);
   return (
@@ -32,13 +34,10 @@ const CurrentAdvertsCard: React.FC<CurrentAdvertsCardProps> = ({
         isDisabled ? "opacity-50 pointer-events-none select-none" : ""
       }`}
     >
-      <div
-        className="flex items-center justify-end"
-        onClick={() => cardClick()}
-      >
-        <CardMenuIcon />
+      <div className="flex items-center justify-end">
+        <CardMenuIcon onClick={() => cardClick()} />
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between" onClick={() => onClick()}>
         <div className="flex items-center gap-2 px-2 pb-2">
           <img
             src={image}
