@@ -202,6 +202,8 @@ export default function EventCard({
             ? depth * 18
             : isStackExtended && depth === 3
             ? depth * 18
+            : isStackExtended && depth === 3 && isOverlay
+            ? depth * 26
             : depth === 1
             ? depth * 0
             : depth === 2
@@ -269,7 +271,7 @@ export default function EventCard({
                   {isOverlay && (
                     <button
                       onClick={onCloseOverlayCard}
-                      className=" absolute top-0 right-0 z-200 bg-gray-200 dark:bg-gray-950 p-1"
+                      className=" absolute top-[1px] right-[1px] z-200 bg-app-background-secondary p-[6px]"
                       aria-label="Close"
                     >
                       <CloseIcon className="h-5 w-5" />
@@ -280,9 +282,7 @@ export default function EventCard({
                     alt={event.title}
                     draggable={false} //prevents browser default drag
                     className={`w-full h-70 object-cover pointer-events-none  ${
-                      isOverlay
-                        ? "rounded-tl-4xl"
-                        : "rounded-t-4xl"
+                      isOverlay ? "rounded-tl-4xl" : "rounded-t-4xl"
                     }`}
                   />
                   <div
