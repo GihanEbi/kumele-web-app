@@ -117,16 +117,16 @@ const RatingSection: NextPage = () => {
       <div className="space-y-1 -ml-3">
         {ratingData.map((data) => (
           <div key={data.label} className="flex items-center text-base">
-            <span className="font-plusJakartaSans font-semibold text-[15px] w-16 shrink-0">
+            <span className={`font-plusJakartaSans font-semibold text-[15px] w-16 shrink-0 ${data.percentage===0?"text-gray-500":""}`}>
               {data.label}
             </span>
             <div style={{backgroundColor:"#A6A6A6"}} className="w-full rounded-r-full h-3.5 mx-1">
               <div
-                className="bg-black dark:bg-white h-3.5 rounded-r-full"
+                className="bg-black dark:bg-white h-3.5"
                 style={{ width: `${data.percentage}%` }}
               ></div>
             </div>
-            <span className="font-plusJakartaSans font-semibold text-[15px] w-12 text-right shrink-0">{`${data.percentage}%`}</span>
+            <span className={`${data.percentage===0?"text-gray-500":""} font-plusJakartaSans font-semibold text-[15px] w-12 text-right shrink-0`}>{`${data.percentage}%`}</span>
           </div>
         ))}
       </div>
