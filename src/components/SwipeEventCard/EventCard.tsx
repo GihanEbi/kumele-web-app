@@ -8,6 +8,7 @@ import {
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   ClockIcon,
+  CloseIcon,
   DownArrowIcon,
   LocationIcon,
   ShareIcon,
@@ -17,10 +18,11 @@ import {
 } from "../../../public/svg-icons/icons";
 import ClockGif from "../GifComponents/ClockGif/ClockGif";
 import { useTheme } from "next-themes";
-import { mockHostData, mockOtherEvents } from "./data";
+import { mockHostData } from "./data";
 import HostInfo from "./hostInfo/HostInfo";
 import OtherEvents from "./otherEvents/OtherEvents";
 import { useAppContext } from "@/context/AppContext";
+import RatingSection from "./otherEvents/RatingSection";
 
 //types of a event
 type Event = {
@@ -47,7 +49,56 @@ interface EventCardProps {
   onOpenShareModal: () => void;
   isStackExtended: boolean;
   setIsStackExtended: Dispatch<SetStateAction<boolean>>;
+  onOpenOtherEvent: (ev: Event) => void;
+  isOverlay?: boolean;
+  onCloseOverlayCard?: () => void;
 }
+
+const mockOtherEvents: Event[] = [
+  {
+    id: 101,
+    category: "Live Music",
+    imageSrc: "/bg-imgs/event1.jpg",
+    title: "Acoustic Sunset",
+    price: "$10",
+    time: "6:00-8:00",
+    guests: "25",
+    startsIn: "Next Friday",
+    location: "Central Park",
+    subtitle:
+      "🎶 Unwind with an evening of live acoustic music as the sun sets.",
+    description:
+      "Enjoy a relaxing and intimate musical performance in a beautiful outdoor setting. Perfect for a date night or a peaceful evening with friends.",
+  },
+  {
+    id: 102,
+    category: "Workshop",
+    imageSrc: "/bg-imgs/event2.jpg",
+    title: "DJing 101",
+    price: "$25",
+    time: "2:00-5:00",
+    guests: "10",
+    startsIn: "In 2 weeks",
+    location: "Groove Studio",
+    subtitle: "🎧 Learn the basics of DJing from a pro!",
+    description:
+      "This hands-on workshop covers everything from beat-matching to mixing. No experience necessary. All equipment is provided.",
+  },
+  {
+    id: 103,
+    category: "Rooftop Party",
+    imageSrc: "/bg-imgs/event3.jpg",
+    title: "City Lights",
+    price: "$15",
+    time: "9:00-12:00",
+    guests: "40",
+    startsIn: "In 3 weeks",
+    location: "The Sky Lounge",
+    subtitle: "🌆 Dance under the stars with breathtaking city views.",
+    description:
+      "Join us for a rooftop party with a live DJ, great drinks, and the best views in town. Let's make it a night to remember.",
+  },
+];
 
 //destructing data for hostcard and other events components
 const { hostData, otherEvents } = {
@@ -63,6 +114,9 @@ export default function EventCard({
   index,
   isStackExtended,
   setIsStackExtended,
+  onOpenOtherEvent,
+  onCloseOverlayCard,
+  isOverlay,
 }: EventCardProps) {
   //identifying the theme
   const { resolvedTheme } = useTheme();
@@ -148,6 +202,8 @@ export default function EventCard({
             ? depth * 18
             : isStackExtended && depth === 3
             ? depth * 18
+            : isStackExtended && depth === 3 && isOverlay
+            ? depth * 26
             : depth === 1
             ? depth * 0
             : depth === 2
@@ -167,7 +223,11 @@ export default function EventCard({
       }}
       className={`${placeholderBg} ${isHidden ? "hidden" : ""} ${
         isStackExtended ? "origin-top" : "origin-bottom"
-      } rounded-4xl
+      }  ${
+        isOverlay
+          ? "rounded-tl-4xl rounded-br-4xl rounded-bl-4xl"
+          : "rounded-4xl"
+      }
             overflow-hidden  ${
               isStackExtended ? "" : "hover:cursor-grab active:cursor-grabbing"
             }`}
@@ -186,7 +246,11 @@ export default function EventCard({
               : isMoreOptionsOpen && !isDark
               ? "bg-gray-100"
               : "bg-app-background-tertiary"
-          }   rounded-4xl w-full h-full flex flex-col ${
+          }  ${
+            isOverlay
+              ? "rounded-tl-4xl rounded-br-4xl rounded-bl-4xl rounded-tr-4xl"
+              : "rounded-4xl"
+          } w-full h-full flex flex-col ${
             isStackExtended && isFront
               ? "overflow-y-auto no-scrollbar"
               : "overflow-hidden"
@@ -197,16 +261,35 @@ export default function EventCard({
               <div
                 className={`flex-1 ${
                   isStackExtended ? "overflow-y-auto no-scrollbar pb-0" : ""
-                } rounded-4xl`}
+                } ${
+                  isOverlay
+                    ? "rounded-tl-4xl rounded-br-4xl rounded-bl-4xl"
+                    : "rounded-4xl"
+                }`}
               >
                 <div className="relative">
+                  {isOverlay && (
+                    <button
+                      onClick={onCloseOverlayCard}
+                      className=" absolute top-[1px] right-[1px] z-200 bg-app-background-secondary p-[6px]"
+                      aria-label="Close"
+                    >
+                      <CloseIcon className="h-5 w-5" />
+                    </button>
+                  )}
                   <img
                     src={event.imageSrc}
                     alt={event.title}
                     draggable={false} //prevents browser default drag
-                    className="w-full h-70 object-cover pointer-events-none rounded-t-4xl"
+                    className={`w-full h-70 object-cover pointer-events-none  ${
+                      isOverlay ? "rounded-tl-4xl" : "rounded-t-4xl"
+                    }`}
                   />
-                  <div className="absolute top-5 right-6 bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1 rounded-full flex items-center space-x-1.5">
+                  <div
+                    className={`absolute ${
+                      isOverlay ? "top-8 right-8" : "top-5 right-6"
+                    }  bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1 rounded-full flex items-center space-x-1.5`}
+                  >
                     <YingyangIcon />
                     <span className="font-plusJakartaSans text-white font-normal text-[11px]">
                       {event.category}
@@ -306,8 +389,16 @@ export default function EventCard({
                     <div className="mt-15 px-5">
                       <HostInfo host={hostData} />
                     </div>
+
+                    {isOverlay && (
+                      <div className="mt-15 px-5">
+                        <RatingSection />
+                      </div>
+                    )}
+
                     <div className="px-5 pb-4">
                       <OtherEvents
+                        onSelect={onOpenOtherEvent}
                         events={otherEvents}
                         hostName={hostData.name}
                       />

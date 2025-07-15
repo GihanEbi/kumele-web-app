@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import Image from "next/image";
-import { Event } from "../data";
+//import { Event } from "../data";
 
 import {
   UsersIcon,
@@ -12,17 +12,35 @@ import {
   RightArrowIcon,
 } from "..//../../../public/svg-icons/icons";
 
+type Event = {
+  id: number;
+  imageSrc: string;
+  title: string;
+  category: string;
+  price: string;
+  time: string;
+  guests: string;
+  startsIn: string;
+  location: string;
+  subtitle: string;
+  description: string;
+  isPlaceholder?: boolean;
+};
+
 type OtherEventsProps = {
   events: Event[];
   hostName: string;
+  onSelect: (ev: Event) => void;
 };
 
-const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+
+const OtherEvents = ({ events, hostName,onSelect }: OtherEventsProps) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
@@ -86,7 +104,8 @@ const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
           className="flex space-x-4 overflow-x-auto pb-2 -mx-0 px-2 no-scrollbar cursor-grab"
         >
           {events.map((event) => (
-            <div
+            <button
+            onClick={()=>onSelect(event)}
               key={event.id}
               className="flex-shrink-0 w-[142px] h-[160px] flex flex-col bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-[14px] overflow-hidden select-none"
             >
@@ -132,7 +151,7 @@ const OtherEvents = ({ events, hostName }: OtherEventsProps) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
         <div className="absolute inset-y-0 right-0 flex items-center z-10">

@@ -128,9 +128,12 @@ const FollowingComponent = () => {
               <button onClick={() => setActiveTab("Followers")}>
                 Followers
               </button>
-              <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
-                <p className="text-[7.52px]">8</p>
+              <div className="rounded-full bg-app-input-yellow text-app-text-black py-[2px] px-2 absolute top-[1px] right-[1px]">
+                <p className="text-[10.52px]">8</p>
               </div>
+              {/* <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
+                <p className="text-[7.52px]">8</p>
+              </div> */}
             </div>
 
             <div
@@ -141,9 +144,12 @@ const FollowingComponent = () => {
               <button onClick={() => setActiveTab("Following")}>
                 Following
               </button>
-              <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
-                <p className="text-[7.52px]">8</p>
+              <div className="rounded-full bg-app-input-yellow text-app-text-black py-[2px] px-2 absolute top-[1px] right-[1px]">
+                <p className="text-[10.52px]">4</p>
               </div>
+              {/* <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
+                <p className="text-[7.52px]">8</p>
+              </div> */}
             </div>
           </div>
           {activeTab === "Followers" && (
