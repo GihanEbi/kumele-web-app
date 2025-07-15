@@ -1,12 +1,9 @@
 "use client";
-
 import { useEffect, useState } from "react";
-
 import EventCard from "./EventCard";
 import InviteModal from "./ShareModal/ShareModal";
 import ModalPortal from "../ModalPortal/ModalPortal";
 import { useScrollLock } from "@/utils/useScrollHook";
-
 
 type Event = {
   id: number;
@@ -33,8 +30,7 @@ const eventsData: Event[] = [
     guests: "12",
     startsIn: "Starts in 7 hrs",
     location: "22414 Indore",
-    subtitle:
-      "🌟 Step Back into the Golden Era: 90 Hip-Hop Extravaganza!",
+    subtitle: "🌟 Step Back into the Golden Era: 90 Hip-Hop Extravaganza!",
     description:
       "Dust off those sneakers and get ready to groove at our 90's Hip-Hop House Party! Join us for a night of nostalgia, where the beats are fresh, the vibes are electric, and the memories come flooding back. Whether you were breakdancing in your living room or rocking out to your favorite mixtapes, this is the ultimate throwback experience. Bring your friends, your best dance moves, and let's make this a night to remember!",
   },
@@ -153,7 +149,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
   const [events, setEvents] = useState<Event[]>(eventsData);
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
   const [isStackExtended, setIsStackExtended] = useState(false); //test bug fix step 1
-
+  const [overlayEvent, setOverlayEvent] = useState<Event | null>(null);
   console.log("events length is", events.length);
 
   //lock parent component when a modal is open
@@ -183,27 +179,74 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
   }));
 
   const displayEvents = [...placeholders, ...events];
+  const handleOpenOtherEvent = (ev: Event) => {
+    setOverlayEvent(ev);
+  };
+
+  const handleCloseOverlay = () => {
+    setOverlayEvent(null);
+  };
 
   return (
     <>
-       <div className="relative w-full h-[464px] grid place-items-center">
-        {displayEvents.map((item, idx) => {
-          return (
-            <EventCard
-              index={idx}
-              onOpenShareModal={() => setInviteModalOpen(true)}
-              key={item.id}
-              event={item}
-              events={displayEvents}
-              setEvents={setEvents}
+      {!overlayEvent && (
+        <div className="relative w-full h-[464px] grid place-items-center">
+          {displayEvents.map((item, idx) => {
+            return (
+              <EventCard
+                index={idx}
+                onOpenShareModal={() => setInviteModalOpen(true)}
+                key={item.id}
+                event={item}
+                events={displayEvents}
+                setEvents={setEvents}
               //bug fix-best practise
               //{...item}
-              isStackExtended={isStackExtended}
-              setIsStackExtended={setIsStackExtended}
-            />
-          );
-        })}
-      </div>
+                isStackExtended={isStackExtended}
+                setIsStackExtended={setIsStackExtended}
+                onOpenOtherEvent={handleOpenOtherEvent}
+              />
+            );
+          })}
+        </div>
+      )}
+      {overlayEvent && (
+        <div className="relative w-full h-[464px] grid place-items-center">
+          <EventCard
+            key={overlayEvent.id}
+            index={0}
+            event={overlayEvent}
+            events={[overlayEvent]}
+            setEvents={() => {}}
+            isStackExtended={true}
+            setIsStackExtended={() => setOverlayEvent(null)}
+            onOpenShareModal={() => setInviteModalOpen(true)}
+            onOpenOtherEvent={handleOpenOtherEvent}
+            isOverlay={true}
+            onCloseOverlayCard={handleCloseOverlay}
+          />
+          {/* <button
+            onClick={() => setOverlayEvent(null)}
+            className="absolute top-4 right-4 z-50 rounded-full bg-black/60 p-1 text-white hover:bg-black/80 transition-colors"
+            aria-label="Close event details"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button> */}
+        </div>
+      )}
       <div className="z-13">
         <ModalPortal>
           <InviteModal
