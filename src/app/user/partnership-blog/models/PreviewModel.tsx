@@ -29,7 +29,7 @@ const BlogPreviewModel = ({ isOpen, onClose }: BlogPreviewModalProps) => {
     <>
       <div
         onClick={onClose}
-        className="fixed inset-0 z-50 flex justify-center items-center p-4"
+        className="fixed inset-0 z-1010 flex justify-center items-center p-4"
       >
         <div
           onClick={(e) => e.stopPropagation()}
@@ -136,7 +136,7 @@ const BlogPreviewModel = ({ isOpen, onClose }: BlogPreviewModalProps) => {
       </div>
       {isBlogCreated && (
         <div
-          className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50 transition-opacity duration-300 ease-in-out"
+          className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-1030 transition-opacity duration-300 ease-in-out"
           onClick={()=>setIsBlogCreated(false)} // Close on click outside
         >
           <div

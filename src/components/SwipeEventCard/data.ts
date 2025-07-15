@@ -1,7 +1,7 @@
 // lib/mockData.ts
 
 export interface Event {
-  id: string;
+  id: number;
   category: string;
   imageSrc: string;
   title: string;
@@ -36,7 +36,7 @@ export const mockHostData = {
 
 export const mockOtherEvents: Event[] = [
   {
-    id: "1",
+    id: 1,
     category: "House Party",
     imageSrc: "/bg-imgs/event1.jpg",
     title: "90's Hip-Hop",
@@ -45,7 +45,7 @@ export const mockOtherEvents: Event[] = [
     time: "7:45-9:30",
   },
   {
-    id: "2",
+    id: 2,
     category: "House Party",
     imageSrc: "/bg-imgs/event2.jpg",
     title: "Holi with kids",
@@ -54,7 +54,7 @@ export const mockOtherEvents: Event[] = [
     time: "7:45-9:30",
   },
   {
-    id: "1",
+    id: 1,
     category: "House Party",
     imageSrc: "/bg-imgs/event3.jpg",
     title: "90's Hip-Hop",
@@ -63,7 +63,7 @@ export const mockOtherEvents: Event[] = [
     time: "7:45-9:30",
   },
   {
-    id: "1",
+    id: 1,
     category: "House Party",
     imageSrc: "/bg-imgs/event4.jpg",
     title: "90's Hip-Hop",
