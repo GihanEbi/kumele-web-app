@@ -32,7 +32,7 @@ const page = () => {
         </div>
       )}
       <div className="min-h-screen bg-app-background-primary flex flex-col items-center pt-6 font-sans">
-        <div className={`w-full max-w-md px-6 ${paddings.topMargin}`}>
+        <div className={`w-full max-w-md px-6 pt-[36px]`}>
           {/* Header */}
           <header className="flex items-center mb-10">
             <button

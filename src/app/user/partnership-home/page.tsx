@@ -26,6 +26,11 @@ import CampaignAdModel from "./currentAdvertsCard/models/CampaignAdModel";
 import NotificationCard from "./currentAdvertsCard/notificationCard";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import PartnershipBlogCard from "./currentAdvertsCard/blogCard";
+import { DateRange } from "react-day-picker";
+import { DateRangePicker } from "@/components/DateRngePicker/DateRngePicker";
+import { addDays } from "date-fns";
+import PreviewAdvertise from "../advertise/models/PreviewModal";
+import DeleteBlogModel from "./currentAdvertsCard/models/DeleteBlogModel";
 
 const chartData = [
   { name: "May", amountSpent: 100, reach: 2200 },
@@ -197,7 +202,13 @@ const page = () => {
   const [activeTabEvents, setActiveTabEvents] = useState<
     "Current Adverts" | "Notifications" | "Blogs"
   >("Current Adverts");
-  const [isModelOpen, setIsModelOpen] = useState(false);
+  const [isModelOpen, setIsModelOpen] = useState(false); // State to hold the final, applied date range
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 7),
+  });
+  const [isCardPreviewOpen, setIsCardPreviewOpen] = useState(false);
+    const [deleteBlogModelOpen, setDeleteBlogModelOpen] = useState(false);
 
   useEffect(() => {
     setIsBottomNavBarFixed(false);
@@ -279,7 +290,9 @@ const page = () => {
   return (
     <div
       className={`overflow-y-auto max-h-screen no-scrollbar ${
-        isDropdownOpen ? "bg-k-background-secondary" : "bg-k-background-primary"
+        isDropdownOpen || isModelOpen || deleteBlogModelOpen
+          ? "bg-k-background-secondary"
+          : "bg-k-background-primary"
       } `}
     >
       {/* Header Section */}
@@ -347,7 +360,9 @@ const page = () => {
             />
           </div>
           <div>
-            <DropDown
+            {/* Use the component here */}
+            <DateRangePicker date={date} onDateChange={setDate} />
+            {/* <DropDown
               dataArray={[
                 {
                   label: "Jan 6-Feb22",
@@ -358,7 +373,7 @@ const page = () => {
               isOpen={(value: boolean) => {
                 setIsDropdownOpen(value);
               }}
-            />
+            /> */}
           </div>
         </div>
       </div>
@@ -411,7 +426,6 @@ const page = () => {
         </div>
       </div>
       <AnalyticsChart data={chartData} />
-
       <div className="p-4">
         <div className="bg-app-range-slider-track-active p-1 gap-1 rounded-lg flex justify-between items-center mt-2">
           <div
@@ -468,6 +482,9 @@ const page = () => {
                 cardClick={() => (
                   setIsModelOpen(true), console.log("Card clicked")
                 )}
+                onClick={() => {
+                  setIsCardPreviewOpen(true);
+                }}
               />
             ))}
           </div>
@@ -538,7 +555,7 @@ const page = () => {
                   iconText={advert.iconText}
                   isDisabled={advert.isDisabled}
                   cardClick={() => (
-                    setIsModelOpen(true), console.log("Card clicked")
+                    setDeleteBlogModelOpen(true), console.log("Card clicked")
                   )}
                 />
               ))}
@@ -590,6 +607,19 @@ const page = () => {
               removeNewPartnershipUser();
               setUserNamePermission(false);
             }}
+          />
+        )}
+      <PreviewAdvertise
+        isOpen={isCardPreviewOpen}
+        onClose={() => {
+          setIsCardPreviewOpen(false);
+        }}
+      />
+      
+        {deleteBlogModelOpen && (
+          <DeleteBlogModel
+            isOpen={deleteBlogModelOpen}
+            onClose={() => setDeleteBlogModelOpen(false)}
           />
         )}
     </div>
