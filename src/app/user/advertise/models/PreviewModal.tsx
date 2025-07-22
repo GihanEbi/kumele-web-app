@@ -13,9 +13,11 @@ type AdvertisePreviewModalProps = {
 };
 
 const slides = [
-  "/common-gifs/advert-preview.gif",
-  "/images/advert-preview-2.png",
-  "/images/advert-preview-3.png",
+  { type: "image", src: "/common-gifs/advert-preview.gif" },
+  { type: "video", src: "/videos/short-video.mp4" },
+  { type: "video", src: "/videos/event-video-sounds.mp4" },
+  // { type: "video", src: "https://www.youtube.com/watch?v=MlRRruoNccw" },
+  { type: "image", src: "/images/advert-preview-3.png" },
 ];
 
 const PreviewAdvertise = ({ isOpen, onClose }: AdvertisePreviewModalProps) => {
@@ -29,7 +31,7 @@ const PreviewAdvertise = ({ isOpen, onClose }: AdvertisePreviewModalProps) => {
     if (isOpen) {
       const interval = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
-      }, 3000);
+      }, 5000);
       return () => clearInterval(interval);
     }
   }, [isOpen, currentIndex]);
@@ -72,11 +74,23 @@ const PreviewAdvertise = ({ isOpen, onClose }: AdvertisePreviewModalProps) => {
             >
               <CloseIcon className="h-5 w-5" />
             </button>
-            <img
-              src={slides[currentIndex]}
-              alt={`Advertisement ${currentIndex + 1}`}
-              className="w-[319px] h-[279px] object-cover rounded-t-2xl"
-            />
+            {slides[currentIndex].type === "image" ? (
+              <img
+                src={slides[currentIndex].src}
+                alt={`Advertisement ${currentIndex + 1}`}
+                className="w-[319px] h-[279px] object-cover rounded-t-2xl"
+              />
+            ) : (
+              <video
+                src={slides[currentIndex].src}
+                autoPlay
+                //muted
+                loop
+                playsInline
+                className="w-[319px] h-[279px] object-cover rounded-t-2xl"
+              />
+            )}
+
             <div className="absolute bottom-3 left-0 right-0 flex justify-center items-center gap-x-[32px] z-10">
               {slides.map((_, index) => (
                 <button
@@ -125,24 +139,24 @@ const PreviewAdvertise = ({ isOpen, onClose }: AdvertisePreviewModalProps) => {
               </div>
             )}
 
-            {!isExtendedPreviewOpen && (
-              <div className="flex justify-end mt-3">
-                <button
-                  onClick={() =>
-                    setIsExtentedPreviewOpen(!isExtendedPreviewOpen)
-                  }
-                   className={`${
-                    isDark ? "bg-gray-500" : "bg-app-range-slider-track-active"
-                  } dark:bg-zinc-700 rounded-full p-1 self-end`}
-                >
-                  <DownArrowIcon
-                    className={`w-6 h-6 text-neutral-300 transition-transform duration-300 ${
-                      isExtendedPreviewOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-              </div>
-            )}
+            <div
+              className={`flex justify-end mt-3 ${
+                isExtendedPreviewOpen ? "" : ""
+              }`}
+            >
+              <button
+                onClick={() => setIsExtentedPreviewOpen(!isExtendedPreviewOpen)}
+                className={`${
+                  isDark ? "bg-gray-500" : "bg-app-range-slider-track-active"
+                } dark:bg-zinc-700 rounded-full p-1 self-end`}
+              >
+                <DownArrowIcon
+                  className={`w-6 h-6  transition-transform duration-300 ${
+                    isExtendedPreviewOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+            </div>
           </div>
         </div>
       </div>
