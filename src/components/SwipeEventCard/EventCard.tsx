@@ -391,7 +391,7 @@ export default function EventCard({
                     </div>
 
                     {isOverlay && (
-                      <div className="mt-15 px-5">
+                      <div className="mt-10 px-5">
                         <RatingSection />
                       </div>
                     )}
