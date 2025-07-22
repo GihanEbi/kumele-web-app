@@ -35,6 +35,7 @@ import ImageUploadComponent from "@/components/ImageUploadComponent/ImageUploadC
 import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
 import PreviewAdvertise from "./models/PreviewModal";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
+import AdvertModel from "./models/AdvertModel";
 
 // types
 type ChooseInterestsProps = {
@@ -89,6 +90,7 @@ const page = () => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [confirm, setConfirm] = useState(true);
+  const [isCreateAdvertModelOpen, setIsCreateAdvertModelOpen] = useState(false);
 
   const [previewBlog, setPreviewBlog] = useState(false);
 
@@ -195,7 +197,7 @@ const page = () => {
             <div className="mb-6 sm:mb-8 relative w-full">
               <div
                 ref={tabsContainerRef}
-                className="flex gap-1 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
+                className="flex gap-2 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
                 onMouseDown={handleMouseDown}
                 onMouseLeave={handleMouseLeave}
                 onMouseUp={handleMouseUp}
@@ -276,7 +278,7 @@ const page = () => {
               <ImageUploadComponent />
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-10">
             <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
               Call to Action
             </p>
@@ -408,7 +410,7 @@ const page = () => {
             <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
               Audience Insight
             </p>
-            <div className="mt-2 border-2 rounded-xl border-app-border-advert px-2 py-4">
+            <div className="mt-2 border-2 rounded-xl border-app-border-advert px-4 py-4">
               <div className="mb-5">
                 <div className="">
                   <label className="block text-[13.45px] font-plusJakartaSans-400 mb-[54px]">
@@ -448,9 +450,18 @@ const page = () => {
                   />
                 </div>
                 <div className="mt-4">
-                  <p className="text-[13.89px] text-app-text-primary font-plusJakartaSans-400">
-                    Advert Location
-                  </p>
+                  <div className="mb-2 flex items-center gap-1">
+                    <p className="text-[13.89px] text-app-text-primary font-plusJakartaSans-400">
+                      Advert Location
+                    </p>
+                    <InformationIcon
+                      width={16}
+                      height={16}
+                      onClick={() => {
+                        setIsCreateAdvertModelOpen(true);
+                      }}
+                    />
+                  </div>
                   <div className="space-y-4 mb-1">
                     <div className="relative">
                       <InputComponent
@@ -506,7 +517,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div>
+          <div className="mt-10">
             <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3 mt-3">
               Advert Placement
             </p>
@@ -523,7 +534,13 @@ const page = () => {
                   ]}
                 />
               </div>
-              <InformationIcon width={16} height={16} />
+              <InformationIcon
+                width={16}
+                height={16}
+                onClick={() => {
+                  setIsCreateAdvertModelOpen(true);
+                }}
+              />
             </div>
             <div className="mb-4 flex items-center justify-start gap-2">
               <div>
@@ -538,7 +555,13 @@ const page = () => {
                   ]}
                 />
               </div>
-              <InformationIcon width={16} height={16} />
+              <InformationIcon
+                width={16}
+                height={16}
+                onClick={() => {
+                  setIsCreateAdvertModelOpen(true);
+                }}
+              />
             </div>
             <div className="mb-8">
               <RadioButtonGroupComponent
@@ -546,7 +569,7 @@ const page = () => {
                 options={[{ id: 3, label: "Both", value: "Both" }]}
               />
             </div>
-            <div className="mt-5">
+            <div className="mt-10">
               <RadioButtonGroupComponent
                 name=""
                 options={[
@@ -566,11 +589,11 @@ const page = () => {
               />
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-12">
             <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
               Daily Budget
             </p>
-            <div className="mt-2 border-2 rounded-xl border-app-border-advert px-2 py-4">
+            <div className="mt-2 border-2 rounded-xl border-app-border-advert px-4 py-4">
               <p className="text-[11.89px] mb-1 text-app-text-secondary font-plusJakartaSans-100">
                 Est.Reach 200-200 people per day
               </p>
@@ -605,7 +628,13 @@ const page = () => {
                     ]}
                   />
                 </div>
-                <InformationIcon width={16} height={16} />
+                <InformationIcon
+                  width={16}
+                  height={16}
+                  onClick={() => {
+                    setIsCreateAdvertModelOpen(true);
+                  }}
+                />
               </div>
               <div className="ml-5">
                 <InputComponent placeholder="Custom Amount" />
@@ -667,6 +696,10 @@ const page = () => {
           </div>
         </div>
       )}
+      <AdvertModel
+        isOpen={isCreateAdvertModelOpen}
+        onClose={() => setIsCreateAdvertModelOpen(false)}
+      />
     </div>
   );
 };

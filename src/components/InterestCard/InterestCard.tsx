@@ -26,7 +26,7 @@ const InterestCard: React.FC<InterestCardProps> = ({
       type="button"
       onClick={() => onToggle(String(interest.id))}
       className={`
-        p-3 sm:p-4 rounded-xl flex flex-col items-center justify-center aspect-square
+        py-3 px-4 sm:p-4 rounded-xl flex flex-col items-center justify-center aspect-square
         transition-all duration-200 ease-in-out
       
         ${
