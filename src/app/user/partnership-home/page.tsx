@@ -17,6 +17,7 @@ import DropDown from "@/components/DropDown/DropDown";
 import { authConstants } from "@/constants/auth-constants";
 import CurrentAdvertsCard from "./currentAdvertsCard/currentAdvertsCard";
 import {
+  DownArrowIcon,
   HousePartyNotificationIcon,
   LiveMusicNotificationIcon,
   SearchIcon,
@@ -31,7 +32,7 @@ import DatePickerRangeVertical from "@/components/DateRngePicker/DateRngePicker"
 import { addDays } from "date-fns";
 import PreviewAdvertise from "../advertise/models/PreviewModal";
 import DeleteBlogModel from "./currentAdvertsCard/models/DeleteBlogModel";
-import { MyDatePicker } from "@/components/CustomeCalender/CustomeCalender";
+import SimpleCalendar from "@/components/CustomeCalender/CustomeCalender";
 
 const chartData = [
   { name: "Jan", amountSpent: 2000, reach: 9000 },
@@ -297,7 +298,7 @@ const page = () => {
 
   return (
     <div
-      className={`overflow-y-auto max-h-screen no-scrollbar ${
+      className={`pb-30 overflow-y-auto max-h-screen no-scrollbar ${
         isDropdownOpen || isModelOpen || deleteBlogModelOpen
           ? "bg-k-background-secondary"
           : "bg-k-background-primary"
@@ -369,22 +370,21 @@ const page = () => {
           </div>
           <div>
             {/* Use the component here */}
-            <DatePickerRangeVertical
+            <div className="flex gap-4 justify-between bg-app-input-primary rounded-sm pt-2 px-2">
+              <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3">
+                Jan 12- Jul 12
+              </p>
+
+              <div className="">
+                <DownArrowIcon
+                  onClick={() => {
+                    setIsDropdownOpen(true);
+                  }}
+                />
+              </div>
+            </div>
+            {/* <DatePickerRangeVertical
               isOpens={(value: boolean) => {
-                setIsDropdownOpen(value);
-              }}
-            />
-            {/* <CustomCalendar /> */}
-            {/* <MyDatePicker /> */}
-            {/* <DropDown
-              dataArray={[
-                {
-                  label: "Jan 6-Feb22",
-                  value: "Jan 6-Feb22",
-                },
-              ]}
-              placeHolder={"Jan 6-Feb22"}
-              isOpen={(value: boolean) => {
                 setIsDropdownOpen(value);
               }}
             /> */}
@@ -638,6 +638,10 @@ const page = () => {
           onClose={() => setDeleteBlogModelOpen(false)}
         />
       )}
+      <SimpleCalendar
+        isOpen={isDropdownOpen}
+        onClose={() => setIsDropdownOpen(false)}
+      />
     </div>
   );
 };

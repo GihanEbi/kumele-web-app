@@ -21,6 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import  SimpleCalendar  from "../CustomeCalender/CustomeCalender";
 
 type props = {
   isOpens: Function;
@@ -101,48 +102,21 @@ const DatePickerRangeVertical: React.FC<props> = ({ isOpens }) => {
           className="w-auto p-0 bg-app-background-primary"
           align="start"
         >
-          {/* ---- MODIFIED SECTION ---- */}
-          {/* This is your custom header. We'll make the arrows functional. */}
-          <div className="flex items-center justify-between p-4 pb-2">
-            <div className="text-sm font-medium">
-              {format(month, "MMMM yyyy")}
-            </div>
-            <div className="flex items-center gap-1">
-              {/* Use Button components for accessibility and add onClick handlers */}
-              <BackArrow className="h-4 w-4" />
-              {/* <Button variant="outline" size="icon" onClick={handlePreviousMonth}>
-                <span className="sr-only">Go to previous month</span>
-              </Button>
-              <Button variant="outline" size="icon" onClick={handleNextMonth}>
-                <span className="sr-only">Go to next month</span>
-              </Button> */}
-              <RightArrowIcon className="h-4 w-4" />
-            </div>
-          </div>
-          {/* ---- END MODIFIED SECTION ---- */}
+          {/* <SimpleCalendar /> */}
 
-          <Calendar
-            initialFocus
-            mode="range"
-            // selected={tempDate}
-            // onSelect={setTempDate}
-            numberOfMonths={2}
-            className="flex-col-calendar"
-            month={month}
-            onMonthChange={setMonth}
-            // --- THE KEY CHANGE ---
-            // This prop hides the default arrows and titles inside the calendar
-            hideNavigation
-            // --- END KEY CHANGE ---
-            classNames={{
-              months: "pt-0",
-              month: "p-0 pt-2",
-            }}
-          />
-
-          <div className="flex justify-between gap-2 p-4">
-            <Button onClick={handleApply}>Cancel</Button>
-            <Button onClick={handleApply}>Apply</Button>
+          <div className="flex justify-between gap-4 p-4">
+            <button
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+              onClick={() => {}}
+            >
+              Cancel
+            </button>
+            <button
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+              onClick={() => {}}
+            >
+              Apply
+            </button>
           </div>
         </PopoverContent>
       </Popover>

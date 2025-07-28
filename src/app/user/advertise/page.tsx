@@ -410,7 +410,7 @@ const page = () => {
             <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
               Audience Insight
             </p>
-            <div className="mt-2 border-2 rounded-xl border-app-border-advert px-4 py-4">
+            <div className="mt-2 border-[1.6px] rounded-xl border-app-border-advert px-4 py-4">
               <div className="mb-5">
                 <div className="">
                   <label className="block text-[13.45px] font-plusJakartaSans-400 mb-[54px]">
@@ -593,7 +593,7 @@ const page = () => {
             <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
               Daily Budget
             </p>
-            <div className="mt-2 border-2 rounded-xl border-app-border-advert px-4 py-4">
+            <div className="mt-2 border-[1.6px] rounded-xl border-app-border-advert px-4 py-4">
               <p className="text-[11.89px] mb-1 text-app-text-secondary font-plusJakartaSans-100">
                 Est.Reach 200-200 people per day
               </p>
