@@ -1,11 +1,17 @@
-// src/components/ui/date-range-picker.tsx
+// src/components/your-components/DatePickerRangeVertical.tsx
 
 "use client";
 
 import * as React from "react";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { addMonths, format, subMonths } from "date-fns";
 import { DateRange } from "react-day-picker";
+
+// Your custom SVG icons
+import {
+  BackArrow,
+  DownArrowIcon,
+  RightArrowIcon,
+} from "../../../public/svg-icons/icons";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,96 +21,107 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { DownArrow } from "../../../public/svg-icons/icons";
+import  SimpleCalendar  from "../CustomeCalender/CustomeCalender";
 
-// Define the props for the component, including an optional className
-interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
-  // The selected date range
-  date?: DateRange;
-  // Callback function when the date range is applied
-  onDateChange: (date: DateRange | undefined) => void;
-}
+type props = {
+  isOpens: Function;
+};
 
-export function DateRangePicker({
-  className,
-  date: initialDate,
-  onDateChange,
-}: DateRangePickerProps) {
-  // State for the popover open/closed status
+const DatePickerRangeVertical: React.FC<props> = ({ isOpens }) => {
+  const [committedDate, setCommittedDate] = React.useState<
+    DateRange | undefined
+  >({
+    from: new Date(2025, 5, 12),
+    to: addMonths(new Date(2025, 5, 12), 1),
+  });
+  const [tempDate, setTempDate] = React.useState<DateRange | undefined>(
+    committedDate
+  );
   const [isOpen, setIsOpen] = React.useState(false);
-
-  // Local state to manage the date selection within the popover
-  // It's initialized with the prop value
-  const [date, setDate] = React.useState<DateRange | undefined>(initialDate);
-
-  // When the popover opens, reset the local date state to the prop's value
-  React.useEffect(() => {
-    if (isOpen) {
-      setDate(initialDate);
-    }
-  }, [isOpen, initialDate]);
+  const [month, setMonth] = React.useState<Date>(
+    committedDate?.from || new Date()
+  );
 
   const handleCancel = () => {
-    // Reset date to the initial state and close
-    setDate(initialDate);
+    setTempDate(committedDate);
     setIsOpen(false);
   };
 
   const handleApply = () => {
-    // Pass the selected date range to the parent component and close
-    onDateChange(date);
+    setCommittedDate(tempDate);
     setIsOpen(false);
   };
 
+  React.useEffect(() => {
+    isOpens(isOpen);
+    if (isOpen) {
+      setTempDate(committedDate);
+      setMonth(committedDate?.from || new Date());
+    }
+  }, [isOpen, committedDate]);
+
+  // These functions will now be used by your custom buttons
+  const handlePreviousMonth = () => {
+    setMonth(subMonths(month, 1));
+  };
+
+  const handleNextMonth = () => {
+    setMonth(addMonths(month, 1));
+  };
+
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className="grid gap-2">
       <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
-          <div
-            className={cn(
-              "text-left text-[14.23px] rounded-sm py-2 px-2 bg-app-input-primary flex items-center justify-between",
-              !date && "text-muted-foreground"
-            )}
-          >
-            {initialDate?.from ? (
-              initialDate.to ? (
-                <>
-                  {format(initialDate.from, "LLL dd")} -{" "}
-                  {format(initialDate.to, "LLL dd")}
-                </>
+        <PopoverTrigger asChild className="rounded-md">
+          <div className="flex items-center gap-2">
+            <Button
+              id="date"
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !committedDate && "text-muted-foreground"
+              )}
+            >
+              {committedDate?.from ? (
+                committedDate.to ? (
+                  <>
+                    {format(committedDate.from, "LLL dd")} -{" "}
+                    {format(committedDate.to, "LLL dd")}
+                  </>
+                ) : (
+                  format(committedDate.from, "LLL dd, y")
+                )
               ) : (
-                format(initialDate.from, "LLL dd")
-              )
-            ) : (
-              <span>Pick a date range</span>
-            )}
-            <DownArrow className="text-app-icon w-4 h-4 ml-3" />
+                <span>Pick a date</span>
+              )}
+              <DownArrowIcon />
+            </Button>
           </div>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-0 bg-app-background-primary "
-          align="center"
+          className="w-auto p-0 bg-app-background-primary"
+          align="start"
         >
-          {/* We add a flex container to stack the calendars vertically */}
-          <div className="flex flex-col">
-            <Calendar
-              initialFocus
-              mode="range"
-              defaultMonth={date?.from}
-              selected={date}
-              onSelect={setDate}
-              numberOfMonths={2}
-            />
-          </div>
-          {/* Action buttons at the bottom */}
-          <div className="flex justify-end gap-2 p-4 border-t border-gray-800">
-            <Button variant="ghost" onClick={handleCancel}>
+          {/* <SimpleCalendar /> */}
+
+          <div className="flex justify-between gap-4 p-4">
+            <button
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+              onClick={() => {}}
+            >
               Cancel
-            </Button>
-            <Button onClick={handleApply}>Apply</Button>
+            </button>
+            <button
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+              onClick={() => {}}
+            >
+              Apply
+            </button>
           </div>
         </PopoverContent>
       </Popover>
     </div>
   );
-}
+};
+
+export default DatePickerRangeVertical;

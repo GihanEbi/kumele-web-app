@@ -28,7 +28,7 @@ const PartnershipBlogCard: React.FC<CardProps> = ({
   return (
     <>
       <div
-        className={`bg-app-background-chat-card px-1 pb-1 rounded-lg flex flex-col mb-4 ${
+        className={`bg-app-background-chat-card pb-1 rounded-lg flex flex-col mb-4 ${
           isDisabled || deleteBlogModelOpen
             ? "opacity-50 pointer-events-none select-none"
             : ""
