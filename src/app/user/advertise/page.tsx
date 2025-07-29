@@ -272,7 +272,7 @@ const page = () => {
               />
             </div>
             <ImageUploadComponent />
-            <div className="flex gap-2 items-center justify-between mt-4">
+            <div className="flex gap-1.5 items-center justify-between mt-4">
               <ImageUploadComponent />
               <ImageUploadComponent />
               <ImageUploadComponent />
