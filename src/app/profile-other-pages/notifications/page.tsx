@@ -1,7 +1,7 @@
 "use client";
 
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BackArrow, RightArrowIcon } from "../../../../public/svg-icons/icons";
 import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
 import { sound_Notifications } from "@/routes/profile";
@@ -15,12 +15,47 @@ const Notification = () => {
 
   //   loading state
   const [loading, setLoading] = useState(false);
-  const [isToggled, setIsToggled] = useState(false);
 
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
+  /*----------i HAVE REMOVED THIS STATE AND FUNCTION TO ADD SOUNDS FILE-------*/
+  /*
+   const [isToggled, setIsToggled] = useState(false);
+   const handleToggle = () => {
+     setIsToggled(!isToggled);
+   };*/
+
+  /*----------ENABLE SOUND NOTIFICATION WHEN TOGGLE ON AND OFF-------*/
+  /*----------UNCOMMENT THESE FUNCTION-------*/
+  /*
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  useEffect(() => {
+    const el = new Audio("/sounds/notification_sound.wav");
+    el.preload = "auto";
+    el.volume = 0.9;
+    audioRef.current = el;
+    return () => {
+      el.pause();
+
+      el.src = "";
+    };
+  }, []);  */
+
+  /*
+  const playToggleSound = async () => {
+    const el = audioRef.current;
+    if (!el) return;
+    try {
+      el.currentTime = 0;
+      await el.play();
+    } catch (e) {
+      console.warn("Audio play failed", e);
+    }
+  };*/
+
+  const playEnableSound = () => {
+    const audio = new Audio("/sounds/notification_sound.wav");
+    audio.volume = 0.9;
+    void audio.play();
   };
-
   useEffect(() => {
     const sound = new URLSearchParams(window.location.search).get(
       "sound_notifications"
@@ -35,6 +70,10 @@ const Notification = () => {
   // Function to handle sound notification toggle
   const handleSoundNotificationChange = async (value: boolean) => {
     setSoundNotifications(value);
+    //play sound when notification sound enabling;
+    if (value) {
+      playEnableSound();
+    }
     setLoading(true); // Set loading state to true while processing
     try {
       // const dataObj = { enabled: value };
@@ -108,8 +147,10 @@ const Notification = () => {
               </span>
 
               <CustomToggle
-                checked={isToggled}
-                onCheckedChange={handleToggle}
+                // checked={isToggled}
+                // onCheckedChange={handleToggle}
+                checked={soundNotifications}
+                onCheckedChange={handleSoundNotificationChange}
                 aria-label="Enable or disable notifications"
                 singleChecked={false}
               />

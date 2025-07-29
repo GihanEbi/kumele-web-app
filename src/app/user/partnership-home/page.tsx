@@ -17,6 +17,7 @@ import DropDown from "@/components/DropDown/DropDown";
 import { authConstants } from "@/constants/auth-constants";
 import CurrentAdvertsCard from "./currentAdvertsCard/currentAdvertsCard";
 import {
+  DownArrowIcon,
   HousePartyNotificationIcon,
   LiveMusicNotificationIcon,
   SearchIcon,
@@ -27,13 +28,18 @@ import NotificationCard from "./currentAdvertsCard/notificationCard";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import PartnershipBlogCard from "./currentAdvertsCard/blogCard";
 import { DateRange } from "react-day-picker";
-import { DateRangePicker } from "@/components/DateRngePicker/DateRngePicker";
+import DatePickerRangeVertical from "@/components/DateRngePicker/DateRngePicker";
 import { addDays } from "date-fns";
 import PreviewAdvertise from "../advertise/models/PreviewModal";
 import DeleteBlogModel from "./currentAdvertsCard/models/DeleteBlogModel";
+import SimpleCalendar from "@/components/CustomeCalender/CustomeCalender";
 
 const chartData = [
-  { name: "May", amountSpent: 100, reach: 2200 },
+  { name: "Jan", amountSpent: 2000, reach: 9000 },
+  { name: "Feb", amountSpent: 1500, reach: 10000 },
+  { name: "Mar", amountSpent: 700, reach: 3000 },
+  { name: "Apr", amountSpent: 1800, reach: 2200 },
+  { name: "May", amountSpent: 300, reach: 1500 },
   {
     name: "Jun",
     amountSpent: 800,
@@ -50,6 +56,9 @@ const chartData = [
     annotation: { value: "−50", type: "spent" as "spent" },
   },
   { name: "Sep", amountSpent: 500, reach: 500 },
+  { name: "Oct", amountSpent: 600, reach: 2200 },
+  { name: "Nov", amountSpent: 700, reach: 1200 },
+  { name: "Dec", amountSpent: 2000, reach: 1000 },
 ];
 
 const mockData = [
@@ -208,10 +217,10 @@ const page = () => {
     to: addDays(new Date(), 7),
   });
   const [isCardPreviewOpen, setIsCardPreviewOpen] = useState(false);
-    const [deleteBlogModelOpen, setDeleteBlogModelOpen] = useState(false);
+  const [deleteBlogModelOpen, setDeleteBlogModelOpen] = useState(false);
 
   useEffect(() => {
-    setIsBottomNavBarFixed(false);
+    setIsBottomNavBarFixed(true);
   }, []);
 
   // This effect runs once when the component mounts to set notification permission
@@ -289,7 +298,7 @@ const page = () => {
 
   return (
     <div
-      className={`overflow-y-auto max-h-screen no-scrollbar ${
+      className={`pb-30 overflow-y-auto max-h-screen no-scrollbar ${
         isDropdownOpen || isModelOpen || deleteBlogModelOpen
           ? "bg-k-background-secondary"
           : "bg-k-background-primary"
@@ -361,16 +370,21 @@ const page = () => {
           </div>
           <div>
             {/* Use the component here */}
-            <DateRangePicker date={date} onDateChange={setDate} />
-            {/* <DropDown
-              dataArray={[
-                {
-                  label: "Jan 6-Feb22",
-                  value: "Jan 6-Feb22",
-                },
-              ]}
-              placeHolder={"Jan 6-Feb22"}
-              isOpen={(value: boolean) => {
+            <div className="flex gap-4 justify-between bg-app-input-primary rounded-sm pt-2 px-2">
+              <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3">
+                Jan 12- Jul 12
+              </p>
+
+              <div className="">
+                <DownArrowIcon
+                  onClick={() => {
+                    setIsDropdownOpen(true);
+                  }}
+                />
+              </div>
+            </div>
+            {/* <DatePickerRangeVertical
+              isOpens={(value: boolean) => {
                 setIsDropdownOpen(value);
               }}
             /> */}
@@ -425,11 +439,13 @@ const page = () => {
           </div>
         </div>
       </div>
-      <AnalyticsChart data={chartData} />
+      <div className="ml-0 pr-5 pl-5">
+        <AnalyticsChart data={chartData} />
+      </div>
       <div className="p-4">
         <div className="bg-app-range-slider-track-active p-1 gap-1 rounded-lg flex justify-between items-center mt-2">
           <div
-            className={`text-center relative py-3 px-5 w-full rounded-lg font-plusJakartaSans-500 font-medium text-[11px] transition-all duration-300 ${
+            className={`text-center relative py-3 px-5 w-full rounded-lg font-plusJakartaSans-500 font-medium text-[12px] transition-all duration-300 ${
               activeTabEvents === "Current Adverts"
                 ? activeTabStyles
                 : inactiveTabStyles
@@ -438,12 +454,12 @@ const page = () => {
             <button onClick={() => setActiveTabEvents("Current Adverts")}>
               Current Adverts
             </button>
-            <div className="rounded-full bg-app-input-yellow text-app-text-black py-[2px] px-2 absolute top-[1px] right-[1px]">
-              <p className="text-[10.52px]">4</p>
+            <div className="rounded-full bg-app-input-yellow w-6 h-6 absolute top-[1px] right-[1px] flex items-center justify-center">
+              <p className="text-[12px] text-app-text-black">4</p>
             </div>
           </div>
           <div
-            className={`text-center relative py-5 px-5 w-full rounded-lg font-plusJakartaSans-500 font-medium text-[11px] transition-all duration-300 ${
+            className={`text-center relative py-5 px-5 w-full rounded-lg font-plusJakartaSans-500 font-medium text-[12px] transition-all duration-300 ${
               activeTabEvents === "Notifications"
                 ? activeTabStyles
                 : inactiveTabStyles
@@ -452,24 +468,24 @@ const page = () => {
             <button onClick={() => setActiveTabEvents("Notifications")}>
               Notifications <br />
             </button>
-            <div className="rounded-full bg-app-input-yellow text-app-text-black py-[2px] px-2 absolute top-[1px] right-[1px]">
-              <p className="text-[10.52px]">2</p>
+            <div className="rounded-full bg-app-input-yellow w-6 h-6 absolute top-[1px] right-[1px] flex items-center justify-center">
+              <p className="text-[12px] text-app-text-black">2</p>
             </div>
           </div>
           <div
-            className={`text-center relative py-5 px-5 w-full rounded-lg font-plusJakartaSans-500 font-medium text-[11px] transition-all duration-300 ${
+            className={`text-center relative py-5 px-5 w-full rounded-lg font-plusJakartaSans-500 font-medium text-[12px] transition-all duration-300 ${
               activeTabEvents === "Blogs" ? activeTabStyles : inactiveTabStyles
             }`}
           >
             <button onClick={() => setActiveTabEvents("Blogs")}>Blogs</button>
-            <div className="rounded-full bg-app-input-yellow text-app-text-black py-[2px] px-2 absolute top-[1px] right-[1px]">
-              <p className="text-[10.52px]">3</p>
+            <div className="rounded-full bg-app-input-yellow w-6 h-6 absolute top-[1px] right-[1px] flex items-center justify-center">
+              <p className="text-[12px] text-app-text-black">30</p>
             </div>
           </div>
         </div>
 
         {activeTabEvents === "Current Adverts" && (
-          <div className="mt-[25px]">
+          <div className="mt-[15px]">
             {advertsCard.map((advert, index) => (
               <CurrentAdvertsCard
                 key={index}
@@ -510,10 +526,10 @@ const page = () => {
         )}
 
         {activeTabEvents === "Blogs" && (
-          <div className="mt-[25px]">
+          <div className="mt-[15px]">
             <InputComponent placeholder="Search" icon={<SearchIcon />} />
 
-            <div className="mb-6 sm:mb-8 relative w-full">
+            <div className="mb-6 sm:mb-8 relative w-full mt-2">
               <div
                 ref={tabsContainerRef}
                 className="flex gap-2 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
@@ -615,13 +631,17 @@ const page = () => {
           setIsCardPreviewOpen(false);
         }}
       />
-      
-        {deleteBlogModelOpen && (
-          <DeleteBlogModel
-            isOpen={deleteBlogModelOpen}
-            onClose={() => setDeleteBlogModelOpen(false)}
-          />
-        )}
+
+      {deleteBlogModelOpen && (
+        <DeleteBlogModel
+          isOpen={deleteBlogModelOpen}
+          onClose={() => setDeleteBlogModelOpen(false)}
+        />
+      )}
+      <SimpleCalendar
+        isOpen={isDropdownOpen}
+        onClose={() => setIsDropdownOpen(false)}
+      />
     </div>
   );
 };

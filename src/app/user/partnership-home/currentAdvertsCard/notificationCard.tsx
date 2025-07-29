@@ -41,7 +41,7 @@ const NotificationCard: React.FC<CurrentAdvertsCardProps> = ({
           />
           <div className="flex flex-col items-start">
             <h3
-              className={`text-[14px] text-app-text-primary font-plusJakartaSans-600 mb-2`}
+              className={`text-[14px] text-app-text-secondary font-plusJakartaSans-600 mb-2`}
             >
               {title}
             </h3>
@@ -50,12 +50,12 @@ const NotificationCard: React.FC<CurrentAdvertsCardProps> = ({
             </p>
           </div>
         </div>
+        {isDisabled && (
+          <div className="flex items-center justify-end px-2">
+            <DeleteIcon width={24} height={24} />
+          </div>
+        )}
       </div>
-      {isDisabled && (
-        <div className="flex items-center justify-end">
-          <DeleteIcon width={24} height={24} />
-        </div>
-      )}
     </div>
   );
 };

@@ -30,15 +30,15 @@ const CurrentAdvertsCard: React.FC<CurrentAdvertsCardProps> = ({
   const [isModelOpen, setIsModelOpen] = React.useState(false);
   return (
     <div
-      className={`bg-app-background-chat-card px-1 pb-1 rounded-lg flex flex-col mb-2 ${
+      className={`bg-app-background-chat-card px-1 pb-1 rounded-lg flex flex-col mb-3 ${
         isDisabled ? "opacity-50 pointer-events-none select-none" : ""
       }`}
     >
-      <div className="flex items-center justify-end">
-        <CardMenuIcon onClick={() => cardClick()} />
-      </div>
-      <div className="flex justify-between" onClick={() => onClick()}>
-        <div className="flex items-center gap-2 px-2 pb-2">
+      {/* <div className="flex items-center justify-end mt-2">
+        <CardMenuIcon onClick={() => cardClick()}  width={24} height={24}/>
+      </div> */}
+      <div className="flex justify-between py-4 pr-1 pl-4">
+        <div className="flex items-center gap-2 " onClick={() => onClick()}>
           <img
             src={image}
             alt={title}
@@ -46,24 +46,27 @@ const CurrentAdvertsCard: React.FC<CurrentAdvertsCardProps> = ({
           />
           <div>
             <h3
-              className={`text-[14px] text-app-text-primary font-plusJakartaSans-600 mb-2`}
+              className={`text-[14px] text-app-text-primary font-plusJakartaSans-400 mb-2`}
             >
               {title}
             </h3>
-            <p className="text-[8px] text-app-text-secondary font-plusJakartaSans text-right">
+            <p className="text-[10px] text-app-text-secondary font-plusJakartaSans text-right">
               {date}
             </p>
           </div>
         </div>
-        <div className="mr-4">
-          <NotificationBadge icon={icon} name={iconText} />
+        <div className="flex flex-col items-end gap-2">
+          <div className="flex items-start ">
+            <NotificationBadge icon={icon} name={iconText} />
+            <CardMenuIcon onClick={() => cardClick()} width={24} height={24} />
+          </div>
+          {isDisabled && (
+            <div className="flex items-center justify-end">
+              <DeleteIcon width={24} height={24} />
+            </div>
+          )}
         </div>
       </div>
-      {isDisabled && (
-        <div className="flex items-center justify-end">
-          <DeleteIcon width={24} height={24} />
-        </div>
-      )}
     </div>
   );
 };

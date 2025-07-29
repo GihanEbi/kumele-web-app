@@ -122,11 +122,11 @@ const CampaignAdModel: React.FC<modalProps> = ({ isOpen, onClose }) => {
           <p className="mt-2 leading-relaxed text-app-text-secondary font-plusJakartaSans-400 font-normal text-[16px]">
             Special Offer
           </p>
-          <div className="px-5 pb-5 mt-4 w-full">
+          <div className="pb-5 mt-4 w-full">
             <div className="mb-6 sm:mb-8 relative">
               <div
                 ref={tabsContainerRef}
-                className="flex gap-1 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
+                className="flex gap-2 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
                 onMouseDown={handleMouseDown}
                 onMouseLeave={handleMouseLeave}
                 onMouseUp={handleMouseUp}
@@ -143,14 +143,14 @@ const CampaignAdModel: React.FC<modalProps> = ({ isOpen, onClose }) => {
               >
                 {mockData.map((item, index) => (
                   <div
-                    className="w-auto min-w-1/3 sm:w-[150px] flex-shrink-0"
+                    className="w-auto min-w-1/2 sm:w-[150px] flex-shrink-0"
                     key={index}
                   >
                     <div className="py-2 px-4 rounded-md flex flex-col items-center bg-app-input-primary">
-                      <p className="text-[10.98px] font-md text-app-text-secondary font-plusJakartaSans-400">
+                      <p className="text-[10.98px] font-md text-app-text-primary font-plusJakartaSans-400">
                         {item.name}
                       </p>
-                      <p className="text-[18.98px] font-md text-app-text-secondary font-plusJakartaSans-400">
+                      <p className="text-[18.98px] font-md text-app-text-primary font-plusJakartaSans-400">
                         {item.amount}
                       </p>
                       <div className="flex item-center">
@@ -170,10 +170,10 @@ const CampaignAdModel: React.FC<modalProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-6">
             <div className="w-full px-6">
               <button
-                className="text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-5 rounded-lg"
+                className="text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-2 px-5 rounded-lg"
                 onClick={() => {}}
               >
                 Duplicate
@@ -181,7 +181,7 @@ const CampaignAdModel: React.FC<modalProps> = ({ isOpen, onClose }) => {
             </div>
             <div className="w-full px-6">
               <button
-                className="text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-10 rounded-lg"
+                className="text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-2 px-10 rounded-lg"
                 onClick={() => {}}
               >
                 Edit

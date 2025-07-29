@@ -542,19 +542,50 @@
   line-height: 100%; /* or 1 */
   letter-spacing: 0%;
 }
-.custom-dotted-border {
-  border: 1px dotted transparent; /* Make default border transparent */
-  /* border-radius: 0.5rem; */
-  border-image-source: repeating-linear-gradient(
-    45deg,
-    currentColor 1px,
-    currentColor 2px,
-    transparent 4px,
-    transparent 8px
-  );
-  border-image-slice: 2;
+
+.flex-col-calendar .rdp-months {
+  flex-direction: column;
+}
+/* This new rule hides the navigation arrows in the first calendar */
+.flex-col-calendar .rdp-month:first-child .rdp-nav {
+  display: none;
+}
+.rdp-caption_label {
+  display: none;
+}
+/* in src/app/globals.css */
+.rdp-nav_button {
+  display: none;
 }
 
+/* src/app/globals.css */
+
+.flex-col-calendar .rdp-months {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 
+  This is the most important rule.
+  By default, shadcn/react-day-picker hides all but the first caption
+  in a multi-month view. We override that to make sure our custom
+  caption is displayed for every single month.
+*/
+.flex-col-calendar .rdp-caption {
+  display: flex !important;
+}
+
+/* This hides the default top-level navigation container, since our
+   custom caption now handles the arrows internally. */
+.flex-col-calendar .rdp-nav {
+  display: none;
+}
+
+.custom-dotted-border {
+  /* This creates a dashed border using an SVG background.
+     It scales perfectly and respects the border-radius. */
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%236B7280' stroke-width='1.5' stroke-dasharray='6, 6' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+}
 /*
 //
 //
