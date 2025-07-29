@@ -53,7 +53,8 @@ const followingList = [
 
 const ChatPagesClient = () => {
   const searchParams = useSearchParams();
-  const source = searchParams.get("source");
+  // const source = searchParams.get("source");
+  const source = searchParams?.get("source") ?? "";
 
   const [loading, setLoading] = useState<boolean>(false);
   //State to track the active tab
