@@ -88,7 +88,8 @@ const FollowingComponent = () => {
   const [activeTab, setActiveTab] = useState<"Followers" | "Following">(
     "Followers"
   );
-  const source = searchParams.get("source");
+  // const source = searchParams.get("source");
+  const source = searchParams?.get("source") ?? "";
 
   useEffect(() => {
     if (source) {
