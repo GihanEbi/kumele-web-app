@@ -1,13 +1,15 @@
-import type { NextConfig } from "next";
+// import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */images: {
-    domains: ["testdomain.goodwish.com.np"],
-  },
-};
+// const nextConfig: NextConfig = {
+//   /* config options here */images: {
+//     domains: ["testdomain.goodwish.com.np"],
+//   },
+// };
 
-export default nextConfig;
+// export default nextConfig;
 // next.config.ts
+
+
 // import withPWA from "next-pwa";
 // import pwaConfig from "./pwa.config";
 
@@ -21,5 +23,25 @@ export default nextConfig;
 
 // export default withPWA(pwaConfig)(nextConfig);
 
+// "next-pwa": "^5.6.0",
 
-    // "next-pwa": "^5.6.0",
+
+
+// next.config.js
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  // ... any other aext.js config
+};
+
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development',
+  // You can add more runtime caching strategies here.
+  // runtimeCaching: [ ... ], 
+});
+
+module.exports = withPWA(nextConfig);
