@@ -1,7 +1,7 @@
 // pages/_app.tsx or pages/_app.js
 import Head from "next/head";
 import type { AppProps } from "next/app";
-import "../styles/globals.css"; // your global styles
+// import "../app/globals.css"; // your global styles
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
