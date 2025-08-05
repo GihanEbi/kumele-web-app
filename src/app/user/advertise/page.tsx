@@ -102,6 +102,15 @@ const page = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateAdvert, setIsCreateAdvert] = useState(false);
 
+  // STATES FOR RADIO BUTTONS----------//
+  const [selectedGender, setSelectedGender] = useState("male");
+  const [deviceType, setDeviceType] = useState("ios");
+  const [budget, setBudget] = useState("1$");
+  const [advertPlacement, setAdvertPlacement] = useState(
+    "General advert Placement Pricing"
+  );
+  const [addType, setAddType] = useState("static_ads");
+
   // CATEGORY SELECTION
 
   const handleTabClick = (tabId: string) => {
@@ -256,6 +265,8 @@ const page = () => {
           <div className="mb-5">
             <div className="mb-5">
               <RadioButtonGroupComponent
+                value={addType}
+                onChange={(value) => setAddType(value)}
                 name=""
                 options={[{ id: 1, label: "Static Ads", value: "static_ads" }]}
               />
@@ -265,6 +276,8 @@ const page = () => {
           <div className="mb-5">
             <div className="mb-5">
               <RadioButtonGroupComponent
+                value={addType}
+                onChange={(value) => setAddType(value)}
                 name=""
                 options={[
                   { id: 1, label: "Carousel Ads", value: "carousel_ads" },
@@ -430,6 +443,8 @@ const page = () => {
                   Gender
                 </p>
                 <RadioButtonGroupComponent
+                  onChange={(value) => setSelectedGender(value)}
+                  value={selectedGender}
                   name=""
                   options={[
                     { id: 1, label: "Male", value: "male" },
@@ -524,6 +539,8 @@ const page = () => {
             <div className="mb-4 flex items-center justify-start gap-2">
               <div>
                 <RadioButtonGroupComponent
+                  onChange={(value) => setAdvertPlacement(value)}
+                  value={advertPlacement}
                   name=""
                   options={[
                     {
@@ -545,6 +562,8 @@ const page = () => {
             <div className="mb-4 flex items-center justify-start gap-2">
               <div>
                 <RadioButtonGroupComponent
+                  onChange={(value) => setAdvertPlacement(value)}
+                  value={advertPlacement}
                   name=""
                   options={[
                     {
@@ -565,6 +584,8 @@ const page = () => {
             </div>
             <div className="mb-8">
               <RadioButtonGroupComponent
+                onChange={(value) => setAdvertPlacement(value)}
+                value={advertPlacement}
                 name=""
                 options={[{ id: 3, label: "Both", value: "Both" }]}
               />
@@ -586,6 +607,8 @@ const page = () => {
                   { id: 3, label: "Web", value: "web" },
                   { id: 4, label: "All", value: "all" },
                 ]}
+                onChange={(value) => setDeviceType(value)}
+                value={deviceType}
               />
             </div>
           </div>
@@ -599,6 +622,8 @@ const page = () => {
               </p>
               <div className="mt-5 w-2/3">
                 <RadioButtonGroupComponent
+                  onChange={(value) => setBudget(value)}
+                  value={budget}
                   name=""
                   options={[
                     {

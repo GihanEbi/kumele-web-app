@@ -59,9 +59,9 @@ const BottomNavBar = () => {
             }
           }}
           className={`flex flex-col items-center text-app-text-primary ${
-            activePageIndex === 0 ? "border-t-3 border-app-text-blue pt-2" : ""
+            activePageIndex === 0 ? "border-t-3 border-app-text-blue pt-2" : "pt-2"
           }`}
-        >
+        > 
           {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 0 ? "bg-app-button-blue" : ""
@@ -91,7 +91,7 @@ const BottomNavBar = () => {
             className={`flex flex-col items-center text-app-text-primary ${
               activePageIndex === 5
                 ? "border-t-3 border-app-text-blue pt-2"
-                : ""
+                : "pt-2"
             }`}
           >
             {/* <div
@@ -124,7 +124,7 @@ const BottomNavBar = () => {
             className={`flex flex-col items-center text-app-text-primary ${
               activePageIndex === 6
                 ? "border-t-3 border-app-text-blue pt-2"
-                : ""
+                : "pt-2"
             }`}
           >
             {/* <div
@@ -157,7 +157,7 @@ const BottomNavBar = () => {
             className={`flex flex-col items-center text-app-text-primary ${
               activePageIndex === 1
                 ? "border-t-3 border-app-text-blue pt-2"
-                : ""
+                : "pt-2"
             }`}
           >
             {/* <div
@@ -190,7 +190,7 @@ const BottomNavBar = () => {
             className={`flex flex-col items-center text-app-text-primary ${
               activePageIndex === 2
                 ? "border-t-3 border-app-text-blue pt-2"
-                : ""
+                : "pt-2"
             }`}
           >
             {/* <div
@@ -225,7 +225,7 @@ const BottomNavBar = () => {
             className={`flex flex-col items-center text-app-text-primary ${
               activePageIndex === 3
                 ? "border-t-3 border-app-text-blue pt-2"
-                : ""
+                : "pt-2"
             }`}
           >
             {/* <div
@@ -256,7 +256,7 @@ const BottomNavBar = () => {
             router.push("/user/profile");
           }}
           className={`flex flex-col items-center text-app-text-primary ${
-            activePageIndex === 4 ? "border-t-3 border-app-text-blue pt-2" : ""
+            activePageIndex === 4 ? "border-t-3 border-app-text-blue pt-2" : "pt-2"
           }`}
         >
           {/* <div

@@ -11,7 +11,7 @@ import {
   getPartnershipToken,
   removeNewPartnershipUser,
 } from "@/utils/partnershipUtils";
-import AnalyticsChart from "@/components/partnershipChartComponent/AnalyticsChart";
+//import AnalyticsChart from "@/components/partnershipChartComponent/AnalyticsChart";
 import Image from "next/image";
 import DropDown from "@/components/DropDown/DropDown";
 import { authConstants } from "@/constants/auth-constants";
@@ -33,6 +33,9 @@ import { addDays } from "date-fns";
 import PreviewAdvertise from "../advertise/models/PreviewModal";
 import DeleteBlogModel from "./currentAdvertsCard/models/DeleteBlogModel";
 import SimpleCalendar from "@/components/CustomeCalender/CustomeCalender";
+import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
+//import AnalyticsChart from "@/components/partnershipChartComponent/AnalyticsChart";
+import AnalyticsChart from "@/components/partnershipChartComponent/AnalyticsChartJs";
 
 const chartData = [
   { name: "Jan", amountSpent: 2000, reach: 9000 },
@@ -359,7 +362,7 @@ const page = () => {
           }}
         />
         <div className="flex items-center space-x-2 justify-between mt-4">
-          <div>
+          {/* <div>
             <DropDown
               dataArray={authConstants.yearList}
               isOpen={(value: boolean) => {
@@ -367,9 +370,11 @@ const page = () => {
               }}
               placeHolder="YYYY"
             />
-          </div>
-          <div>
-            {/* Use the component here */}
+          </div> */}
+          <DateRangePicker/>
+          
+          {/* <div>
+           
             <div className="flex gap-4 justify-between bg-app-input-primary rounded-sm pt-2 px-2">
               <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3">
                 Jan 12- Jul 12
@@ -383,12 +388,12 @@ const page = () => {
                 />
               </div>
             </div>
-            {/* <DatePickerRangeVertical
+            <DatePickerRangeVertical
               isOpens={(value: boolean) => {
                 setIsDropdownOpen(value);
               }}
-            /> */}
-          </div>
+            />
+          </div> */}
         </div>
       </div>
       <div className="px-5 pb-5">
@@ -440,7 +445,8 @@ const page = () => {
         </div>
       </div>
       <div className="ml-0 pr-5 pl-5">
-        <AnalyticsChart data={chartData} />
+        {/* <AnalyticsChart data={chartData} /> */}
+         <AnalyticsChart data={chartData} />
       </div>
       <div className="p-4">
         <div className="bg-app-range-slider-track-active p-1 gap-1 rounded-lg flex justify-between items-center mt-2">
