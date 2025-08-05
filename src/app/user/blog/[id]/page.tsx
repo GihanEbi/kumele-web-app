@@ -144,8 +144,8 @@ const comments: Comment[] = [
 
 export default function BlogDetailPage() {
   const params = useParams();
-  const id = params.id as string;
-  const post = blogPosts.find((b) => b.id === id);
+  const id = params?.id as string | undefined;
+  const post = id ? blogPosts.find((b) => b.id === id) : undefined;
   const [isReplyOpen, setIsReplyOpen] = useState(false);
 
   const { resolvedTheme } = useTheme();
