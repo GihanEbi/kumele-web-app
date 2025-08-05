@@ -469,13 +469,13 @@ const page = () => {
                     <p className="text-[13.89px] text-app-text-primary font-plusJakartaSans-400">
                       Advert Location
                     </p>
-                    <InformationIcon
+                    {/* <InformationIcon
                       width={16}
                       height={16}
                       onClick={() => {
                         setIsCreateAdvertModelOpen(true);
                       }}
-                    />
+                    /> */}
                   </div>
                   <div className="space-y-4 mb-1">
                     <div className="relative">
@@ -653,13 +653,13 @@ const page = () => {
                     ]}
                   />
                 </div>
-                <InformationIcon
+                {/* <InformationIcon
                   width={16}
                   height={16}
                   onClick={() => {
                     setIsCreateAdvertModelOpen(true);
                   }}
-                />
+                /> */}
               </div>
               <div className="ml-5">
                 <InputComponent placeholder="Custom Amount" />

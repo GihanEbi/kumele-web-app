@@ -232,7 +232,8 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data }) => {
           if (!chartArea) return null;
           return createGradient(ctx, chartArea, [
             { offset: 0, color: "rgba(0, 77, 255, 0.4)" },
-            { offset: 1, color: "rgba(59, 130, 246, 0)" },
+            // { offset: 1, color: "rgba(59, 130, 246, 0)" },
+            { offset: 1, color: "rgba(59, 130, 246, 0.1)" },
           ]);
         },
         fill: true,
@@ -260,12 +261,12 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data }) => {
           color: isDark ? "#FFFFFF" : "#000000",
           font: { size: 14 },
         },
-        border: { dash: [2, 6], display: false },
+        border: { dash: [4, 6], display: false },
         grid: {
           color: "#E8E8E8",
           drawTicks: false,
           borderDash: [2, 6],
-          lineWidth: 1,
+          lineWidth: 2,
           borderDashOffset: 0,
         },
       },
