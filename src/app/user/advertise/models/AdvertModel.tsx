@@ -20,65 +20,67 @@ const AdvertModel: React.FC<Props> = ({ isOpen, onClose }) => {
           onClick={onClose}
         >
           <div
-            className="w-full max-w-sm text-center rounded-lg bg-app-background-card-secondary p-6 shadow-2xl"
+            className="w-full max-w-sm text-center rounded-lg bg-white dark:bg-black p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
           >
             <div className="flex flex-col ">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center ">
-                  <LocationIcon className="text-app-background-card" />
-                  <p className="text-[13.89px] text-app-text-tertiary font-plusJakartaSans-400">
+                  <LocationIcon className="" />
+                  <p className="text-[13.89px] font-plusJakartaSans-400 text-zinc-800 dark:text-gray-500">
                     122, Street
                   </p>
-                </div>
+                </div> 
                 <div>
-                  <p className="text-[13.89px] text-app-text-tertiary font-plusJakartaSans-400">
+                  {/* <p className="text-[13.89px] text-app-text-tertiary font-plusJakartaSans-400"> */}
+                     <p className="text-[13.89px] text-zinc-800 dark:text-gray-500 font-plusJakartaSans-400">
                     Area, Town
                   </p>
                 </div>
               </div>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center ">
-                  <LocationIcon className="text-app-background-card" />
-                  <p className="text-[13.89px] text-app-text-tertiary font-plusJakartaSans-400">
+                  <LocationIcon className="" />
+                  <p className="text-[13.89px] text-zinc-800 dark:text-gray-500 font-plusJakartaSans-400">
                     122, Street
                   </p>
                 </div>
                 <div>
-                  <p className="text-[13.89px] text-app-text-tertiary font-plusJakartaSans-400">
+                  <p className="text-[13.89px] text-zinc-800 dark:text-gray-500 font-plusJakartaSans-400">
                     Area, Town
                   </p>
                 </div>
               </div>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center ">
-                  <LocationIcon className="text-app-background-card" />
-                  <p className="text-[13.89px] text-app-text-tertiary font-plusJakartaSans-400">
+                  <LocationIcon className="" />
+                  <p className="text-[13.89px] text-zinc-800 dark:text-gray-500 font-plusJakartaSans-400">
                     122, Street
                   </p>
                 </div>
                 <div>
-                  <p className="text-[13.89px] text-app-text-tertiary font-plusJakartaSans-400">
+                  <p className="text-[13.89px] text-zinc-800 dark:text-gray-500 font-plusJakartaSans-400">
                     Area, Town
                   </p>
                 </div>
               </div>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center ">
-                  <LocationIcon className="text-app-background-card" />
-                  <p className="text-[13.89px] text-app-text-tertiary font-plusJakartaSans-400">
+                  <LocationIcon className="" />
+                  <p className="text-[13.89px] text-zinc-800 dark:text-gray-500 font-plusJakartaSans-400">
                     122, Street
                   </p>
                 </div>
                 <div>
-                  <p className="text-[13.89px] text-app-text-tertiary font-plusJakartaSans-400">
+                  <p className="text-[13.89px] text-zinc-800 dark:text-gray-500 font-plusJakartaSans-400">
                     Area, Town
                   </p>
                 </div>
               </div>
             </div>
             <div className="flex justify-end">
-              <p className="text-[9.89px] text-app-text-secondary font-plusJakartaSans-400">
+              {/* <p className="text-[9.89px] text-app-text-secondary font-plusJakartaSans-400"> */}
+                <p className="text-[9.89px]  font-plusJakartaSans-400" style={{color:"#A9A9A9"}}>
                 Powered by Google inc
               </p>
             </div>
