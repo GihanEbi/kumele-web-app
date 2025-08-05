@@ -36,6 +36,12 @@ const fredoka = Fredoka({
 export const metadata: Metadata = {
   title: "Kumele",
   description: "Let your hobbies define your character",
+  icons: {
+    // Standard favicon
+    icon: '/images/logo.png',
+    // Apple touch icon
+    apple: '/icons/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({
