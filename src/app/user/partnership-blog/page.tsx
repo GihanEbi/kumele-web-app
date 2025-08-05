@@ -27,6 +27,9 @@ import {
   BlogInstagramIcon,
   BlogPinterestIcon,
   BlogTwitterIcon,
+  InsertBannerImageIcon,
+  Header3Icon,
+  Header2Icon,
 } from "../../../../public/svg-icons/icons";
 import NotificationBadge from "@/components/NotificationCard/NotificationBadge";
 import DropDown from "@/components/DropDown/DropDown";
@@ -34,6 +37,7 @@ import { UnderlineIcon } from "lucide-react";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
 import PreviewModel from "./models/PreviewModel";
 import BlogPreviewModel from "./models/PreviewModel";
+import InsertLinkModal from "./models/InsertLinkModal";
 
 // types
 type ChooseInterestsProps = {
@@ -90,6 +94,7 @@ const page = () => {
   const [confirm, setConfirm] = useState(true);
 
   const [previewBlog, setPreviewBlog] = useState(false);
+  const [isInsertLinkModalOpen, setIsInsertLinkModalOpen] = useState(false);
 
   // ------- state to hold the selected interests ------
   const [selectedInterestsIds, setSelectedInterestsIds] = useState<number[]>(
@@ -97,6 +102,8 @@ const page = () => {
   );
 
   // CATEGORY SELECTION
+
+  console.log("is dropdown open", isDropdownOpen);
 
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
@@ -158,10 +165,14 @@ const page = () => {
       });
     }
   };
+
+  /*--------Insert Link Modal Handlers --------*/
+  const openModal = () => setIsInsertLinkModalOpen(true);
+  const closeModal = () => setIsInsertLinkModalOpen(false);
   return (
     <div
       className={`overflow-y-auto max-h-screen no-scrollbar ${
-        isDropdownOpen || previewBlog
+        isDropdownOpen || previewBlog || isInsertLinkModalOpen
           ? "bg-k-background-secondary"
           : "bg-k-background-primary"
       } `}
@@ -176,7 +187,7 @@ const page = () => {
           {/* Header */}
           <header
             className={`fixed w-full pt-[64px] flex items-center mb-10 z-1000 ${
-              isDropdownOpen || previewBlog
+              isDropdownOpen || previewBlog || isInsertLinkModalOpen
                 ? "bg-k-background-secondary"
                 : "bg-k-background-primary"
             } `}
@@ -196,7 +207,7 @@ const page = () => {
             <div className="mb-6 sm:mb-8 relative w-full">
               <div
                 ref={tabsContainerRef}
-                className="flex gap-1 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
+                className="flex space-x-3 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
                 onMouseDown={handleMouseDown}
                 onMouseLeave={handleMouseLeave}
                 onMouseUp={handleMouseUp}
@@ -266,8 +277,13 @@ const page = () => {
             </p>
             <div className="flex justify-between w-1/2 bg-app-background-card-secondary rounded-lg  px-2 pt-2">
               <div>
-                <ImageIcon
+                {/* <ImageIcon
                   className="text-app-badge-background-qr"
+                  width={20}
+                  height={20}
+                /> */}
+                <ImageIcon
+                  className="text-white dark:text-black"
                   width={20}
                   height={20}
                 />
@@ -283,8 +299,8 @@ const page = () => {
               Social Media Links
             </p>
             <div className="flex gap-2">
-              <div className="space-y-4">
-                <div className="relative">
+              <div className="space-y-3">
+                <div className="relative w-[176px] h-[35px]">
                   <InputComponent
                     placeholder="www.example.com"
                     value={""}
@@ -301,14 +317,17 @@ const page = () => {
                     { label: <BlogPinterestIcon />, value: "pinterest" },
                     { label: <BlogTwitterIcon />, value: "twitter" },
                   ]}
-                  placeHolder={<NewYoutubeIcon width={24} height={24} />}
-                  isOpen={(value: boolean) => {
-                    setIsDropdownOpen(value);
-                  }}
+                  placeHolder={<NewYoutubeIcon className="w-[24px] h-[24px]" />}
+                  // isOpen={(value: boolean) => {
+                  //   console.log("is dropdown openda", value);
+                  //   setIsDropdownOpen(value);
+                  // }}
+                   isOpen={()=>setIsDropdownOpen(!isDropdownOpen)}
+                  
                 />
               </div>
               <div
-                className="bg-app-okay-icon-filter rounded-lg p-2 h-1/2"
+                className="bg-app-okay-icon-filter rounded-lg p-2 h-1/2 w-[38px] h-[38px]"
                 onClick={() => {
                   setConfirm(!confirm);
                 }}
@@ -323,15 +342,21 @@ const page = () => {
           </div>
           {/* insert image section */}
           <div className="flex justify-between items-center mb-6">
-            <div className="bg-k-background-secondary rounded-lg  px-2 pt-2 gap-2 flex justify-between">
-              <ImageIcon className="text-app-icon" width={20} height={20} />
-              <p className="text-[13.98px] font-md text-app-text-primary font-plusJakartaSans-400 mb-[10px]">
+            <div className="bg-app-background-card-secondary rounded-lg  px-2 pt-2 gap-2 flex justify-between">
+             {/* <div className="flex justify-between w-1/2 bg-app-background-card-secondary rounded-lg  px-2 pt-2"> */}
+              {/* <ImageIcon className="text-app-icon" width={20} height={20} /> */}
+               <ImageIcon
+                  className="text-white dark:text-black mt-[3px]"
+                  width={20}
+                  height={20}
+                />
+              <p className="text-[13.98px] font-md text-white dark:text-black font-plusJakartaSans-400 mb-[10px]">
                 Insert image
               </p>
             </div>
             <div className="bg-k-background-secondary rounded-lg  px-5 pt-2 gap-2 flex justify-between">
               <NewYoutubeIcon
-                className="text-app-icon"
+                className="text-app-icon mt-[3px]"
                 width={20}
                 height={20}
               />
@@ -347,13 +372,14 @@ const page = () => {
                 <DropDown
                   dataArray={[
                     { label: <HeaderOneIcon />, value: "facebook" },
-                    { label: <HeaderOneIcon />, value: "twitter" },
-                    { label: <HeaderOneIcon />, value: "instagram" },
+                    { label: <Header2Icon />, value: "twitter" },
+                    { label: <Header3Icon />, value: "instagram" },
                   ]}
                   placeHolder={<HeaderOneIcon />}
-                  isOpen={(value: boolean) => {
-                    setIsDropdownOpen(value);
-                  }}
+                  // isOpen={(value: boolean) => {
+                  //   setIsDropdownOpen(value);
+                  // }}
+                  isOpen={()=>setIsDropdownOpen(!isDropdownOpen)}
                 />
               </div>
               <div>
@@ -369,7 +395,9 @@ const page = () => {
                 <NumberListIcon />
               </div>
               <div>
-                <LinkIcon />
+                <button onClick={openModal} className="">
+                  <LinkIcon />
+                </button>
               </div>
             </div>
             <div>
@@ -393,6 +421,7 @@ const page = () => {
         isOpen={previewBlog}
         onClose={() => setPreviewBlog(false)}
       />
+      <InsertLinkModal isOpen={isInsertLinkModalOpen} onClose={closeModal} />
     </div>
   );
 };

@@ -141,6 +141,7 @@
   --color-app-bg-placeholder-firstcard: var(--app-bg-placeholder-firstcard);
   --color-app-bg-placeholder-secondcard: var(--app-bg-placeholder-secondcard);
   --color-app-section-bg: var(--app-section-bg);
+  --color-app-calendar-date: var(--app-calendar-date);
 }
 
 :root {
@@ -312,6 +313,9 @@
 
   /*EVENT SHARE MODAL COLORS*/
   --app-section-bg: oklch(0.9446 0.0022 17.2);
+
+   /*CALENDAR DATES*/
+   --app-calendar-date: oklch(0.5999 0 0); /*#808080*/
 }
 
 .dark {
@@ -471,6 +475,9 @@
 
   /*EVENT SHARE MODAL COLORS*/
   --app-section-bg: oklch(0.1591 0 0);
+
+   /*CALENDAR DATES*/
+   --app-calendar-date: oklch(0.4276 0 0); /* #4F4F4F*/
 }
 /* Add this utility for the annotation's dotted line */
 .bg-dotted-line {
