@@ -210,10 +210,10 @@ const Profile = () => {
                   />
                 {/* </div> */}
                 <div className="flex flex-col">
-                  <p className="text-[19px] font-bold text-app-text-primary font-plusJakartaSans-700 ">
+                  <p className="text-app-text-primary font-plusJakartaSans font-bold text-[19px]">
                     Spotify
                   </p>
-                  <p className="text-[14px] text-app-text-profile-tabs font-plusJakartaSans-400 ">
+                  <p className="text-app-text-profile-tabs font-plusJakartaSans font-normal text-[14px]">
                     Listening is everything. Millions of songs and podcasts. No
                     credit card needed. GET SPOTIFY FREE.
                   </p>
@@ -234,13 +234,14 @@ const Profile = () => {
                     />
                   </div>
                   <div className="mt-1">
-                    <h2 className="text-[19px] font-semibold font-plusJakartaSans-700 text-app-text-primary">
+                    <h2 className="font-plusJakartaSans font-bold text-[19px] text-app-text-primary">
                       {userData?.display_name
                         ? userData.display_name
                         : "Alkesh Kumar"}
                     </h2>
                     <button
-                      className="text-[9.95px] font-plusJakartaSans-700 bg-app-text-blue text-app-text-white py-1 px-3 rounded-r-sm mt-[6px]"
+                    style={{backgroundColor:"#004DFF"}}
+                      className="font-plusJakartaSans font-medium text-[9.95px] text-app-text-white py-1 px-3 rounded-r-sm mt-[6px]"
                       onClick={() => {
                         router.push("/profile-other-pages/edit-interest");
                       }}
@@ -260,7 +261,7 @@ const Profile = () => {
                 </div>
 
                 <div className="mt-6 overflow-y-auto max-h-32 pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                  <p className="text-[14px] text-app-text-profile-text font-plusJakartaSans-400 mb-2">
+                  <p className="text-app-text-profile-text font-plusJakartaSans font-normal text-[14px] mb-2">
                     I am a software engineer by day, and a vanlife enthusiast by
                     heart. <br />
                     <br />
@@ -287,7 +288,7 @@ const Profile = () => {
                   router.push(`/profile-other-pages/following?source=${true}`)
                 }
               >
-                <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400 ">
+                <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12px]">
                   Following
                 </p>
                 <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
@@ -302,7 +303,7 @@ const Profile = () => {
                   )
                 }
               >
-                <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
+                <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12px]">
                   Followers
                 </p>
                 <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
@@ -310,7 +311,7 @@ const Profile = () => {
                 </p>
               </div>
               <div className="flex flex-col items-center p-2">
-                <p className="text-[12px] text-app-text-primary font-plusJakartaSans-400">
+                <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12px]">
                   Gold status
                 </p>
                 <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
@@ -323,7 +324,7 @@ const Profile = () => {
 
         {/* Settings */}
         <div className="mb-[22px]">
-          <h3 className="text-[19px] font-semibold mb-[22px] text-app-text-primary font-plusJakartaSans-700">
+          <h3 className="font-plusJakartaSans font-bold text-[19px] mb-[22px] text-app-text-primary">
             Settings
           </h3>{" "}
           {/* Settings Group 1 */}
@@ -344,7 +345,7 @@ const Profile = () => {
               >
                 <div className="flex items-center space-x-3">
                   {item.icon}
-                  <span className="text-[16px] text-app-text-profile-tabs font-plusJakartaSans-400">
+                  <span className="text-app-text-profile-tabs font-plusJakartaSans font-normal text-[16px]">
                     {item.text}
                   </span>
                 </div>

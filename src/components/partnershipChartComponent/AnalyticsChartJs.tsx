@@ -254,7 +254,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data }) => {
     scales: {
       y: {
         min: 0,
-        max: 15000,
+        max: 14000,
         ticks: {
           values: [0, 2000, 5000, 10000, 15000],
           callback: (value: any) => (value === 0 ? "0" : `${value / 1000}k`),

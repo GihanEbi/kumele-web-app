@@ -46,11 +46,11 @@ const CurrentAdvertsCard: React.FC<CurrentAdvertsCardProps> = ({
           />
           <div>
             <h3
-              className={`text-[14px] text-app-text-primary font-plusJakartaSans-400 mb-2`}
+              className={`text-app-text-primary font-plusJakartaSans font-normal text-[13.98px] mb-2`}
             >
               {title}
             </h3>
-            <p className="text-[10px] text-app-text-secondary font-plusJakartaSans text-right">
+            <p className="text-app-text-secondary font-plusJakartaSans font-normal text-[11.36px]  text-right">
               {date}
             </p>
           </div>

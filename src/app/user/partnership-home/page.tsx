@@ -34,7 +34,6 @@ import PreviewAdvertise from "../advertise/models/PreviewModal";
 import DeleteBlogModel from "./currentAdvertsCard/models/DeleteBlogModel";
 import SimpleCalendar from "@/components/CustomeCalender/CustomeCalender";
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
-//import AnalyticsChart from "@/components/partnershipChartComponent/AnalyticsChart";
 import AnalyticsChart from "@/components/partnershipChartComponent/AnalyticsChartJs";
 
 const chartData = [
@@ -79,7 +78,14 @@ const mockData = [
   { name: "Colombo", amount: "20k", reach: "1.45K" },
 ];
 
-const blogData = ["All", "Pub & Bars", "Cannabis", "Sports", "Sports"];
+const TABS = [
+  { id: "all", label: "All" },
+  { id: "pubs-bars", label: "Pubs & Bars" },
+  { id: "video-games", label: "Video Games" },
+  { id: "sports", label: "Sports" },
+  { id: "music", label: "Music" },
+  { id: "travel", label: "Travel" },
+];
 
 const advertsCard = [
   {
@@ -94,7 +100,7 @@ const advertsCard = [
     image: "/images/notification img1.jpg",
     title: "Crazy Monday",
     date: "23 August, 2022, 122.40",
-    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    icon: <HousePartyNotificationIcon className="text-white" />,
     iconText: "House party",
     isDisabled: false,
   },
@@ -110,7 +116,7 @@ const advertsCard = [
     image: "/images/notification img1.jpg",
     title: "Crazy Monday",
     date: "23 August, 2022, 122.40",
-    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    icon: <HousePartyNotificationIcon className="text-white" />,
     iconText: "House party",
     isDisabled: false,
   },
@@ -174,16 +180,74 @@ const blogCardData = [
   {
     image: "/images/blogCard.jpg",
     title: "Singleton og Glen Ord 38-year-old and Singleton range.",
-    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    icon: <HousePartyNotificationIcon className="text-white" />,
     iconText: "Spirituality",
     isDisabled: false,
   },
   {
     image: "/images/blogCard.jpg",
     title: "Singleton og Glen Ord 38-year-old and Singleton range.",
-    icon: <HousePartyNotificationIcon className="text-app-icon" />,
+    icon: <HousePartyNotificationIcon className="text-white" />,
     iconText: "Spirituality",
     isDisabled: false,
+  },
+];
+
+const ALL_BLOGS_DATA = [
+  {
+    id: "1",
+    image: "/images/blogCard.jpg",
+    title: "Singleton of Glen Ord 38-year old and the Singleton range.",
+    icon: <HousePartyNotificationIcon className="text-white" />,
+    iconText: "Spirituality",
+    isDisabled: false,
+    author: "Steve Austin",
+    date: "23 August, 2022",
+    tags: ["all", "pubs-bars"],
+  },
+  {
+    id: "2",
+    image: "/images/blogCard.jpg",
+    title: "Exploring the latest indie video game hits of the year.",
+    icon: <HousePartyNotificationIcon className="text-white" />,
+    iconText: "Video Games",
+    isDisabled: false,
+    author: "Steve Austin",
+    date: "23 August, 2022",
+    tags: ["all", "video-games"],
+  },
+  {
+    id: "3",
+    image: "/images/blogCard.jpg",
+    title: "Top 5 Sports Moments You Might Have Missed This Month.",
+    icon: <HousePartyNotificationIcon className="text-white" />,
+    iconText: "Sports",
+    isDisabled: false,
+    author: "Steve Austin",
+    date: "23 August, 2022",
+    tags: ["all", "sports"],
+  },
+  {
+    id: "4",
+    image: "/images/blogCard.jpg",
+    title: "Music Festivals to Look Forward To Next Summer.",
+    icon: <HousePartyNotificationIcon className="text-white" />,
+    iconText: "Music",
+    isDisabled: true,
+    author: "Steve Austin",
+    date: "23 August, 2022",
+    tags: ["all", "music"],
+  },
+  {
+    id: "5",
+    image: "/images/blogCard.jpg",
+    title: "Backpacking Through Southeast Asia: A Travelogue.",
+    icon: <HousePartyNotificationIcon className="text-white" />,
+    iconText: "Travel",
+    isDisabled: false,
+    author: "Steve Austin",
+    date: "23 August, 2022",
+    tags: ["all", "travel"],
   },
 ];
 
@@ -222,9 +286,22 @@ const page = () => {
   const [isCardPreviewOpen, setIsCardPreviewOpen] = useState(false);
   const [deleteBlogModelOpen, setDeleteBlogModelOpen] = useState(false);
 
+  const [activeBlogTab, setActiveBlogTab] = useState<string>("all");
+  const [blogSearchTerm, setBlogSearchTerm] = useState<string>("");
+
   useEffect(() => {
     setIsBottomNavBarFixed(true);
   }, []);
+
+  // ADDED: Filtering logic for blog posts
+  const filteredBlogPosts = ALL_BLOGS_DATA.filter((post) => {
+    const matchesTab =
+      activeBlogTab === "all" || post.tags.includes(activeBlogTab);
+    const matchesSearch = post.title
+      .toLowerCase()
+      .includes(blogSearchTerm.toLowerCase());
+    return matchesTab && matchesSearch;
+  });
 
   // This effect runs once when the component mounts to set notification permission
   // You can replace this with actual permission request logic if needed
@@ -294,6 +371,12 @@ const page = () => {
     }
   };
 
+  // ADDED: Handler for clicking on a blog category tab
+  const handleBlogTabClick = (tabId: string) => {
+    setActiveBlogTab(tabId);
+    scrollToTab(`blog-tab-${tabId}`); // Using a unique prefix for blog tabs
+  };
+
   // styles for active and inactive tabs to keep the JSX clean
   const activeTabStyles =
     "bg-app-background-primary shadow text-app-blog-card-author-text";
@@ -346,7 +429,7 @@ const page = () => {
         <div className="absolute bottom-4 left-6 flex items-center space-x-2 z-10">
           {" "}
           {/* z-10 ensures text is above background */}
-          <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
+          <h1 className="text-app-text-black font-plusJakartaSans font-bold text-[23px]">
             History & Statistics
           </h1>
         </div>
@@ -371,8 +454,8 @@ const page = () => {
               placeHolder="YYYY"
             />
           </div> */}
-          <DateRangePicker/>
-          
+          <DateRangePicker />
+
           {/* <div>
            
             <div className="flex gap-4 justify-between bg-app-input-primary rounded-sm pt-2 px-2">
@@ -421,10 +504,10 @@ const page = () => {
                 key={index}
               >
                 <div className="py-2 px-4 rounded-md flex flex-col items-center bg-app-input-primary">
-                  <p className="text-[10.98px] font-md text-app-text-primary font-plusJakartaSans-400">
+                  <p className="text-app-text-primary font-plusJakartaSans font-medium text-[9.66px]">
                     {item.name}
                   </p>
-                  <p className="text-[18.98px] font-md text-app-text-primary font-plusJakartaSans-400">
+                  <p className="font-plusJakartaSans font-semibold text-[20.11px] text-app-text-primary">
                     {item.amount}
                   </p>
                   <div className="flex item-center">
@@ -434,7 +517,10 @@ const page = () => {
                       width={5}
                       height={5}
                     />
-                    <p className="text-[10.98px] font-md text-chart-2 font-plusJakartaSans-400">
+                    <p
+                      className="font-plusJakartaSans font-normal text-[10px]"
+                      style={{ color: "#01B574" }}
+                    >
                       {item.reach}
                     </p>
                   </div>
@@ -446,46 +532,63 @@ const page = () => {
       </div>
       <div className="ml-0 pr-5 pl-5">
         {/* <AnalyticsChart data={chartData} /> */}
-         <AnalyticsChart data={chartData} />
+        <AnalyticsChart data={chartData} />
       </div>
       <div className="p-4">
         <div className="bg-app-range-slider-track-active p-1 gap-1 rounded-lg flex justify-between items-center mt-2">
           <div
-            className={`text-center relative py-3 px-5 w-full rounded-lg font-plusJakartaSans-500 font-medium text-[12px] transition-all duration-300 ${
+            className={`text-center relative py-3 px-5 w-full h-[54.91px] rounded-[8px] transition-all duration-300 ${
               activeTabEvents === "Current Adverts"
                 ? activeTabStyles
                 : inactiveTabStyles
             }`}
           >
-            <button onClick={() => setActiveTabEvents("Current Adverts")}>
+            <button
+              className="font-plusJakartaSans font-semibold text-[12px]"
+              onClick={() => setActiveTabEvents("Current Adverts")}
+            >
               Current Adverts
             </button>
-            <div className="rounded-full bg-app-input-yellow w-6 h-6 absolute top-[1px] right-[1px] flex items-center justify-center">
-              <p className="text-[12px] text-app-text-black">4</p>
+            <div className="rounded-full bg-app-input-yellow w-[19px] h-[19px] absolute top-[4px] right-[4px] flex items-center justify-center">
+              <p className="text-app-text-black font-plusJakartaSans font-semibold text-[8.93px]">
+                4
+              </p>
             </div>
           </div>
           <div
-            className={`text-center relative py-5 px-5 w-full rounded-lg font-plusJakartaSans-500 font-medium text-[12px] transition-all duration-300 ${
+            className={`text-center relative py-5 px-5 w-full h-[54.91px] rounded-[8px] transition-all duration-300 ${
               activeTabEvents === "Notifications"
                 ? activeTabStyles
                 : inactiveTabStyles
             }`}
           >
-            <button onClick={() => setActiveTabEvents("Notifications")}>
+            <button
+              className="font-plusJakartaSans font-medium text-[12px]"
+              onClick={() => setActiveTabEvents("Notifications")}
+            >
               Notifications <br />
             </button>
-            <div className="rounded-full bg-app-input-yellow w-6 h-6 absolute top-[1px] right-[1px] flex items-center justify-center">
-              <p className="text-[12px] text-app-text-black">2</p>
+            <div className="rounded-full bg-app-input-yellow w-[19px] h-[19px] absolute top-[4px] right-[4px] flex items-center justify-center">
+              <p className="font-plusJakartaSans font-semibold text-[8.93px] text-[12px] text-app-text-black">
+                2
+              </p>
             </div>
           </div>
           <div
-            className={`text-center relative py-5 px-5 w-full rounded-lg font-plusJakartaSans-500 font-medium text-[12px] transition-all duration-300 ${
+            className={`text-center relative py-5 px-5 w-full h-[54.91px] rounded-[8px]  transition-all duration-300 ${
               activeTabEvents === "Blogs" ? activeTabStyles : inactiveTabStyles
             }`}
           >
-            <button onClick={() => setActiveTabEvents("Blogs")}>Blogs</button>
-            <div className="rounded-full bg-app-input-yellow w-6 h-6 absolute top-[1px] right-[1px] flex items-center justify-center">
-              <p className="text-[12px] text-app-text-black">30</p>
+            <button
+              className="font-plusJakartaSans font-medium text-[12px]"
+              onClick={() => setActiveTabEvents("Blogs")}
+            >
+              Blogs
+            </button>
+            <div className="rounded-full bg-app-input-yellow w-[19px] h-[19px] absolute top-[4px] right-[4px] flex items-center justify-center">
+              <p className="font-plusJakartaSans font-semibold text-[8.93px] text-app-text-black">
+                30
+              </p>
             </div>
           </div>
         </div>
@@ -533,9 +636,16 @@ const page = () => {
 
         {activeTabEvents === "Blogs" && (
           <div className="mt-[15px]">
-            <InputComponent placeholder="Search" icon={<SearchIcon />} />
-
-            <div className="mb-6 sm:mb-8 relative w-full mt-2">
+            {/* <InputComponent placeholder="Search" icon={<SearchIcon className="text-gray-500" />} /> */}
+            <InputComponent
+              placeholder="Search"
+              icon={<SearchIcon className="text-gray-500" />}
+              value={blogSearchTerm}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setBlogSearchTerm(e.target.value)
+              }
+            />
+            <div className="mb-6 sm:mb-8 relative w-full mt-4">
               <div
                 ref={tabsContainerRef}
                 className="flex gap-2 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
@@ -553,22 +663,37 @@ const page = () => {
                   WebkitOverflowScrolling: "touch",
                 }}
               >
-                {blogData.map((item, index) => (
+                {/* {TABS.map((item, index) => (
                   <div
                     className="w-auto sm:w-[150px] flex-shrink-0"
                     key={index}
                   >
                     <div className="mt-2 py-2 px-4 rounded-xl items-center bg-app-input-primary">
                       <p className="text-[12.98px] font-md text-app-text-primary font-plusJakartaSans-400">
-                        {item}
+                        {item.label}
                       </p>
                     </div>
                   </div>
+                ))} */}
+                {TABS.map((tab) => (
+                  <button
+                    key={tab.id}
+                    id={`blog-tab-${tab.id}`} // Unique ID for scrolling
+                    onClick={() => handleBlogTabClick(tab.id)}
+                    className={`py-2 px-5 rounded-full font-plusJakartaSans font-normal text-[13px] whitespace-nowrap flex-shrink-0 transition-colors duration-150
+                  ${
+                    activeBlogTab === tab.id
+                      ? "bg-app-blog-selected-tabs-background text-app-blog-selected-tabs-text"
+                      : "bg-app-blog-unselected-tabs-background text-app-blog-unselected-tabs-text hover:bg-gray-700"
+                  } `}
+                  >
+                    {tab.label}
+                  </button>
                 ))}
               </div>
             </div>
             <div className="mt-[15px]">
-              {blogCardData.map((advert, index) => (
+              {/* {blogCardData.map((advert, index) => (
                 <PartnershipBlogCard
                   key={index}
                   image={advert.image}
@@ -580,7 +705,28 @@ const page = () => {
                     setDeleteBlogModelOpen(true), console.log("Card clicked")
                   )}
                 />
-              ))}
+              ))} */}
+              {filteredBlogPosts.length > 0 ? (
+                filteredBlogPosts.map((post) => (
+                  <PartnershipBlogCard
+                    author={post.author}
+                    date={post.date}
+                    key={post.id}
+                    image={post.image}
+                    title={post.title}
+                    icon={post.icon}
+                    iconText={post.iconText}
+                    isDisabled={post.isDisabled}
+                    cardClick={() => (
+                      setDeleteBlogModelOpen(true), console.log("Card clicked")
+                    )}
+                  />
+                ))
+              ) : (
+                <p className="text-app-text-primary text-center py-8">
+                  No posts found matching your criteria.
+                </p>
+              )}
             </div>
           </div>
         )}

@@ -192,7 +192,7 @@ const page = () => {
                 : "bg-k-background-primary"
             } `}
           >
-            <h1 className="mt-4 text-[23px] font-semibold text-app-text-primary font-plusJakartaSans-700">
+            <h1 className="mt-4  font-semibold text-app-text-primary font-plusJakartaSans font-bold text-[23px]">
               Create Blog
             </h1>
           </header>
@@ -201,7 +201,7 @@ const page = () => {
 
         <div className="space-y-1 mt-[130px] px-10 mb-50">
           <div>
-            <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3">
+            <p className="font-plusJakartaSans font-normal text-[13.89px] text-app-text-primary mb-3">
               Advert Category
             </p>
             <div className="mb-6 sm:mb-8 relative w-full">
@@ -225,6 +225,7 @@ const page = () => {
                 {mockInterestData.map((interest, index) => (
                   <div className="">
                     <InterestCard
+                      isPartnership={true}
                       key={interest.id}
                       interest={interest}
                       isSelected={selectedInterestsIds.includes(interest.id)}
@@ -257,7 +258,7 @@ const page = () => {
           </div>
           {/* blog name */}
           <div>
-            <p className="text-[13.89px] text-app-text-primary font-plusJakartaSans-400 mb-[10px]">
+            <p className="text-app-text-primary font-plusJakartaSans font-normal text-[13.89px] mb-[10px]">
               Blog Name
             </p>
             <div className="space-y-4 mb-[24px]">
@@ -272,10 +273,10 @@ const page = () => {
           </div>
           {/* banner image */}
           <div className=" mb-[24px] ">
-            <p className="text-[13.89px] mb-[10px] text-app-text-primary font-plusJakartaSans-400">
+            <p className="mb-[10px] text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               Banner Image
             </p>
-            <div className="flex justify-between w-1/2 bg-app-background-card-secondary rounded-lg  px-2 pt-2">
+            <div className="flex justify-between w-[168.73px] h-[38px] bg-app-background-card-secondary rounded-lg  px-2 pt-2">
               <div>
                 {/* <ImageIcon
                   className="text-app-badge-background-qr"
@@ -288,14 +289,14 @@ const page = () => {
                   height={20}
                 />
               </div>
-              <p className="text-[11.98px] font-md text-app-text-tertiary font-plusJakartaSans-400 mb-[10px]">
+              <p className="font-md text-app-text-tertiary font-plusJakartaSans font-normal text-[12.98px] mb-[10px]">
                 Insert banner image
               </p>
             </div>
           </div>
           {/* social media links */}
           <div className="mb-[37px]">
-            <p className="text-[13.89px] mb-[10px] text-app-text-primary font-plusJakartaSans-400">
+            <p className="mb-[10px] text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               Social Media Links
             </p>
             <div className="flex gap-2">
@@ -322,8 +323,7 @@ const page = () => {
                   //   console.log("is dropdown openda", value);
                   //   setIsDropdownOpen(value);
                   // }}
-                   isOpen={()=>setIsDropdownOpen(!isDropdownOpen)}
-                  
+                  isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
                 />
               </div>
               <div
@@ -343,14 +343,14 @@ const page = () => {
           {/* insert image section */}
           <div className="flex justify-between items-center mb-6">
             <div className="bg-app-background-card-secondary rounded-lg  px-2 pt-2 gap-2 flex justify-between">
-             {/* <div className="flex justify-between w-1/2 bg-app-background-card-secondary rounded-lg  px-2 pt-2"> */}
+              {/* <div className="flex justify-between w-1/2 bg-app-background-card-secondary rounded-lg  px-2 pt-2"> */}
               {/* <ImageIcon className="text-app-icon" width={20} height={20} /> */}
-               <ImageIcon
-                  className="text-white dark:text-black mt-[3px]"
-                  width={20}
-                  height={20}
-                />
-              <p className="text-[13.98px] font-md text-white dark:text-black font-plusJakartaSans-400 mb-[10px]">
+              <ImageIcon
+                className="text-white dark:text-black mt-[3px]"
+                width={20}
+                height={20}
+              />
+              <p className="font-md text-white dark:text-black font-plusJakartaSans font-normal text-[12.98px] mb-[10px]">
                 Insert image
               </p>
             </div>
@@ -360,7 +360,7 @@ const page = () => {
                 width={20}
                 height={20}
               />
-              <p className="text-[13.98px] font-md text-app-text-primary font-plusJakartaSans-400 mb-[10px]">
+              <p className="font-md text-app-text-primary font-plusJakartaSans font-normal text-[12.98px] mb-[10px]">
                 paste video link
               </p>
             </div>
@@ -379,7 +379,7 @@ const page = () => {
                   // isOpen={(value: boolean) => {
                   //   setIsDropdownOpen(value);
                   // }}
-                  isOpen={()=>setIsDropdownOpen(!isDropdownOpen)}
+                  isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
                 />
               </div>
               <div>
@@ -407,7 +407,7 @@ const page = () => {
           {/* submit button */}
           <div className="flex flex-col items-center mt-8">
             <button
-              className="w-1/2 text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-2 rounded-lg"
+              className="w-1/2 bg-app-button-primary text-app-text-tertiary font-plusJakartaSans font-normal text-[14.57px] py-3 px-2 rounded-lg"
               onClick={() => {
                 setPreviewBlog(true);
               }}
