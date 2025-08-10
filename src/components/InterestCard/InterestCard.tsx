@@ -13,12 +13,14 @@ type InterestCardProps = {
   interest: Interest;
   isSelected: boolean;
   onToggle: (id: string) => void;
+  isPartnership?: boolean; // Optional prop for partnership
 };
 
 const InterestCard: React.FC<InterestCardProps> = ({
   interest,
   isSelected,
   onToggle,
+  isPartnership = false,
 }) => {
   const { id, name, icon } = interest;
   return (
@@ -26,13 +28,17 @@ const InterestCard: React.FC<InterestCardProps> = ({
       type="button"
       onClick={() => onToggle(String(interest.id))}
       className={`
-        py-3 px-4 sm:p-4 rounded-[8.48px] flex flex-col h-[58.13px] w-[65px] items-center justify-center aspect-square
+        py-3 px-4 sm:p-4 rounded-[8.48px] flex flex-col ${
+          isPartnership ? "h-[82.21px] w-[91.94px]" : "h-[82.21px] w-[91.94px]"
+        }  items-center justify-center aspect-square
         transition-all duration-200 ease-in-out
       
         ${
-          isSelected
-            ? "bg-app-input-yellow text-app-text-black border border-[0.71px] border-red-600" // Selected style from image
-            : "bg-app-input-primary" // Unselected style from image
+          isSelected && isPartnership
+            ? "bg-app-input-yellow text-app-text-black border border-[0.71px] border-red-600"
+            : isSelected
+            ? "bg-app-input-yellow text-app-text-black" 
+            : "bg-app-input-primary" 
         }
       `}
     >
