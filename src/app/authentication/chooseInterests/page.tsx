@@ -471,7 +471,7 @@ const ChooseInterests = () => {
           </p>
 
           {/* Interests Grid */}
-          <div className="grid grid-cols-3 gap-[14px] px-3">
+          <div className="grid grid-cols-3 gap-[14px] px-3 ml-2">
             {mockInterestData.map((interest) => (
               <InterestCard
                 key={interest.id}

@@ -201,11 +201,12 @@ const Profile = () => {
             {isPartnershipUser === "yes" && (
               <div className="flex gap-5  pb-4">
                 {/* <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24"> */}
+                {/* <img src={"/images/spotify.png"} alt="spotify" width={63} height={63} /> */}
                   <Image
                     src={"/images/spotify.png"}
                     alt="spotify"
-                    width={50}
-                    height={50}
+                    width={93}
+                    height={63}
                     className="rounded-full"
                   />
                 {/* </div> */}

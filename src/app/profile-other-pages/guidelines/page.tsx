@@ -54,7 +54,7 @@ const Guidelines = () => {
                   : inactiveTabStyles
               }`}
             >
-              C. Guidelines
+              C.Guidelines
             </button>
 
             {/* Guest Tickets Button */}
@@ -76,7 +76,7 @@ const Guidelines = () => {
             </button>
           </div>
           {activeTab === "C. Guidelines" && (
-            <div className="mt-[25px]">
+            <div className="mt-[25px] font-plusJakartaSans-400 font-regular text-[13px]">
               {" "}
               Lorem ipsum dolor sit, amet consectetur adipisicing elit.
               Assumenda ipsam soluta quae numquam minima! Autem ab sunt minima
@@ -101,7 +101,7 @@ const Guidelines = () => {
             </div>
           )}
           {activeTab === "How to" && (
-            <div className="mt-[25px]">
+            <div className="mt-[25px] font-plusJakartaSans-400 font-regular text-[13px]">
               {" "}
               dolor sit, amet consectetur adipisicing elit. Assumenda ipsam
               soluta quae numquam minima! Autem ab sunt minima in cumque,
@@ -126,7 +126,7 @@ const Guidelines = () => {
             </div>
           )}
           {activeTab === "Popular" && (
-            <div className="mt-[25px]">
+            <div className="mt-[25px] font-plusJakartaSans-400 font-regular text-[13px]">
               {" "}
               eveniet voluptas tempora perspiciatis. Possimus quia rem quae
               alias aliquam?
