@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   Geist,
   Geist_Mono,
@@ -42,6 +42,30 @@ export const metadata: Metadata = {
     // Apple touch icon
     apple: '/icons/apple-touch-icon.png',
   },
+  manifest: "/manifest.json", // Link to the manifest file
+  // Apple-specific meta tags
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "AwesomePWA",
+    // startUpImage: [], // You can add startup images for different devices
+  },
+};
+// export const metadata: Metadata = {
+//   title: "My Awesome Next.js PWA",
+//   description: "A standalone PWA that works on iOS",
+//   manifest: "/manifest.json", // Link to the manifest file
+//   // Apple-specific meta tags
+//   appleWebApp: {
+//     capable: true,
+//     statusBarStyle: "default",
+//     title: "AwesomePWA",
+//     // startUpImage: [], // You can add startup images for different devices
+//   },
+// };
+// Define viewport settings
+export const viewport: Viewport = {
+  themeColor: "#000000", // Match the theme-color in manifest.json
 };
 
 export default function RootLayout({
@@ -51,6 +75,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+       <head>
+        {/*
+          This is the icon that will be used for the "Add to Home Screen" button
+          and the app icon on the home screen.
+        */}
+        <link
+          rel="apple-touch-icon"
+          href="/icons/apple-touch-icon.png"
+        />
+      </head>
       <body
         className={`${fredoka.variable} ${plusJakartaSans.variable} antialiased`}
         // className={fredoka.className }

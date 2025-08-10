@@ -176,7 +176,10 @@ const page = () => {
   return (
     <div
       className={`overflow-y-auto max-h-screen no-scrollbar ${
-        isDropdownOpen || isCreateAdvert || isModalOpen
+        isDropdownOpen ||
+        isCreateAdvert ||
+        isModalOpen ||
+        isCreateAdvertModelOpen
           ? "bg-k-background-secondary"
           : "bg-k-background-primary"
       } `}
@@ -186,12 +189,15 @@ const page = () => {
           {/* Header */}
           <header
             className={`fixed w-full pt-[64px] flex items-center mb-10 z-1000 ${
-              isDropdownOpen || isCreateAdvert || isModalOpen
+              isDropdownOpen ||
+              isCreateAdvert ||
+              isModalOpen ||
+              isCreateAdvertModelOpen
                 ? "bg-k-background-secondary"
                 : "bg-k-background-primary"
             } `}
           >
-            <h1 className="mt-4 text-[23px] font-semibold text-app-text-primary font-plusJakartaSans-700">
+            <h1 className="mt-4 text-[23px] font-bold text-app-text-primary font-plusJakartaSans">
               Create advert
             </h1>
           </header>
@@ -200,7 +206,7 @@ const page = () => {
 
         <div className="space-y-1 mt-[130px] px-10 mb-80">
           <div>
-            <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3">
+            <p className="font-plusJakartaSans font-normal text-[12.97px] text-app-text-primary mb-3">
               Advert Category
             </p>
             <div className="mb-6 sm:mb-8 relative w-full">
@@ -224,6 +230,7 @@ const page = () => {
                 {mockInterestData.map((interest, index) => (
                   <div className="">
                     <InterestCard
+                      isPartnership={true}
                       key={interest.id}
                       interest={interest}
                       isSelected={selectedInterestsIds.includes(interest.id)}
@@ -255,10 +262,10 @@ const page = () => {
             </div>
           </div>
           <div className="mb-[10px]">
-            <p className="text-[13.89px] text-app-text-primary font-plusJakartaSans-400">
+            <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12.97px]">
               Advert Image
             </p>
-            <p className="text-[10.59px] text-app-text-secondary font-plusJakartaSans-400 mb-[10px]">
+            <p className="text-app-text-secondary font-plusJakartaSans font-normal text-[10.54px] mb-[10px]">
               (Recommended size 400*400px)
             </p>
           </div>
@@ -292,7 +299,7 @@ const page = () => {
             </div>
           </div>
           <div className="mt-10">
-            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               Call to Action
             </p>
             <DropDown
@@ -303,13 +310,14 @@ const page = () => {
                 { label: "Subscribe", value: "subscribe" },
               ]}
               placeHolder="select"
-              isOpen={(value: boolean) => {
-                setIsDropdownOpen(value);
-              }}
+              // isOpen={(value: boolean) => {
+              //   setIsDropdownOpen(value);
+              // }}
+              isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
             />
           </div>
           <div className="mt-4">
-            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+            <p className="font-plusJakartaSans font-normal text-[13.89px] mb-1 text-app-text-primary ">
               Call to Action link
             </p>
             <div className="space-y-4 mb-[24px]">
@@ -323,7 +331,7 @@ const page = () => {
             </div>
           </div>
           <div className="mt-4">
-            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               2nd Call to Action Text
             </p>
             <div className="space-y-4 mb-[24px]">
@@ -337,7 +345,7 @@ const page = () => {
             </div>
           </div>
           <div className="mt-4">
-            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               2nd Call to Action Link
             </p>
             <div className="space-y-4 mb-[24px]">
@@ -351,17 +359,22 @@ const page = () => {
             </div>
           </div>
           <div className="mt-4">
-            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               Saved Campaign
             </p>
             <div className="flex items-center gap-2 justify-between">
               <div className="w-full">
                 <DropDown
-                  dataArray={[]}
+                  dataArray={[
+                    {label: "Special Offer", value: "special_offer" }, 
+                    {label: "New Year Sale", value: "new_year_sale" }, 
+                    {label: "Summer Sale", value: "summer_sale" },
+                  ]}
                   placeHolder="Special Offer"
-                  isOpen={(value: boolean) => {
-                    setIsDropdownOpen(value);
-                  }}
+                  // isOpen={(value: boolean) => {
+                  //   setIsDropdownOpen(value);
+                  // }}
+                  isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
                 />
               </div>
               <div
@@ -378,7 +391,7 @@ const page = () => {
               </div>
             </div>
             <div className="mt-4">
-              <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+              <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
                 Campaign Name
               </p>
               <div className="space-y-4 mb-[24px]">
@@ -392,7 +405,7 @@ const page = () => {
               </div>
             </div>
             <div className="mt-4">
-              <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+              <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
                 Title
               </p>
               <div className="space-y-4 mb-[24px]">
@@ -406,7 +419,7 @@ const page = () => {
               </div>
             </div>
             <div className="mt-4">
-              <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+              <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
                 Description
               </p>
               <div className="space-y-4">
@@ -420,13 +433,13 @@ const page = () => {
             </div>
           </div>
           <div className="mt-6">
-            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               Audience Insight
             </p>
             <div className="mt-2 border-[1.6px] rounded-xl border-app-border-advert px-4 py-4">
               <div className="mb-5">
                 <div className="">
-                  <label className="block text-[13.45px] font-plusJakartaSans-400 mb-[54px]">
+                  <label className="block font-plusJakartaSans font-normal text-[13.45px] mb-[54px]">
                     Age range
                   </label>
                   {/* Age Range Slider Section using Radix UI */}
@@ -439,7 +452,7 @@ const page = () => {
                     onValueChange={() => {}}
                   />
                 </div>
-                <p className="text-[13.89px] mb-2 text-app-text-primary font-plusJakartaSans-400">
+                <p className="mb-2 text-app-text-primary font-plusJakartaSans font-normal text-[13.45px]">
                   Gender
                 </p>
                 <RadioButtonGroupComponent
@@ -453,20 +466,21 @@ const page = () => {
                   ]}
                 />
                 <div className="mt-4">
-                  <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+                  <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.45px]">
                     Region
                   </p>
                   <DropDown
                     dataArray={[{ label: "Europe", value: "europe" }]}
                     placeHolder="Europe"
-                    isOpen={(value: boolean) => {
-                      setIsDropdownOpen(value);
-                    }}
+                    // isOpen={(value: boolean) => {
+                    //   setIsDropdownOpen(value);
+                    // }}
+                    isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
                   />
                 </div>
                 <div className="mt-4">
                   <div className="mb-2 flex items-center gap-1">
-                    <p className="text-[13.89px] text-app-text-primary font-plusJakartaSans-400">
+                    <p className="text-app-text-primary font-plusJakartaSans font-normal text-[13.45px]">
                       Advert Location
                     </p>
                     {/* <InformationIcon
@@ -486,32 +500,35 @@ const page = () => {
                       />
                     </div>
                   </div>
-                  <p className="text-[10.89px] text-app-text-blue font-plusJakartaSans-400">
+                  <p
+                    style={{ color: "#004DFF" }}
+                    className="font-plusJakartaSans font-normal text-[10px]"
+                  >
                     Maximum 3 locations per advert
                   </p>
                 </div>
                 <div className="pt-4">
                   <button
-                    className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                    className="w-full bg-app-button-primary font-plusJakartaSans font-normal text-[16px] text-app-text-tertiary py-3 px-4 rounded-lg"
                     onClick={() => {}}
                   >
                     Add
                   </button>
-                  <div className="flex items-center gap-2 mt-1">
-                    <p className="text-[10.89px] text-app-text-secondary font-plusJakartaSans-400">
+                  <div className="flex items-center gap-[24px] mt-1">
+                    <p className="text-app-text-secondary font-plusJakartaSans font-normal text-[10px]">
                       Vienna
                     </p>
-                    <p className="text-[10.89px] text-app-text-secondary font-plusJakartaSans-400">
+                    <p className="text-app-text-secondary font-plusJakartaSans font-normal text-[10px]">
                       Colombo
                     </p>
-                    <p className="text-[10.89px] text-app-text-secondary font-plusJakartaSans-400">
+                    <p className="text-app-text-secondary font-plusJakartaSans font-normal text-[10px]">
                       Berlin
                     </p>
                   </div>
                 </div>
 
                 <div className="mt-4">
-                  <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+                  <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.45px]">
                     Language
                   </p>
                   <DropDown
@@ -524,16 +541,17 @@ const page = () => {
                       { label: "Portuguese", value: "portuguese" },
                     ]}
                     placeHolder="All"
-                    isOpen={(value: boolean) => {
-                      setIsDropdownOpen(value);
-                    }}
+                    // isOpen={(value: boolean) => {
+                    //   setIsDropdownOpen(value);
+                    // }}
+                    isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
                   />
                 </div>
               </div>
             </div>
           </div>
           <div className="mt-10">
-            <p className="text-xs font-plusJakartaSans text-app-text-primary mb-3 mt-3">
+            <p className="font-plusJakartaSans font-normal text-[13.89px] text-app-text-primary mb-3 mt-3">
               Advert Placement
             </p>
             <div className="mb-4 flex items-center justify-start gap-2">
@@ -613,11 +631,14 @@ const page = () => {
             </div>
           </div>
           <div className="mt-12">
-            <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               Daily Budget
             </p>
             <div className="mt-2 border-[1.6px] rounded-xl border-app-border-advert px-4 py-4">
-              <p className="text-[11.89px] mb-1 text-app-text-secondary font-plusJakartaSans-100">
+              <p
+                className="mb-1 font-plusJakartaSans font-normal text-[12px]"
+                style={{ color: "#808080" }}
+              >
                 Est.Reach 200-200 people per day
               </p>
               <div className="mt-5 w-2/3">
@@ -665,7 +686,7 @@ const page = () => {
                 <InputComponent placeholder="Custom Amount" />
               </div>
               <div className="ml-5 mt-4">
-                <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans-400">
+                <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
                   Duration
                 </p>
                 <InputComponent placeholder="0 Days" />
@@ -675,7 +696,7 @@ const page = () => {
           <div className="flex items-center justify-between mt-12">
             <div>
               <button
-                className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                className="w-full font-plusJakartaSans font-normal text-[14.57px] bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg"
                 onClick={() => {
                   setIsModalOpen(true);
                 }}
@@ -685,7 +706,7 @@ const page = () => {
             </div>
             <div>
               <button
-                className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                className="w-full  bg-app-button-primary text-app-text-tertiary font-plusJakartaSans font-normal text-[14.57px] py-3 px-4 rounded-lg"
                 onClick={() => setIsCreateAdvert(true)}
               >
                 Create Advert

@@ -38,7 +38,7 @@ export default function Document() {
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="NextPWA" />
+        <meta name="apple-mobile-web-app-title" content="Kumele" />
 
         {/* (Optional) Add splash screens for iOS --> See next step */}
       </Head>
