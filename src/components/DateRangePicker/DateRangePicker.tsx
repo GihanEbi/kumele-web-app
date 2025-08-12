@@ -130,7 +130,7 @@ const SingleCalendar: React.FC<SingleCalendarProps> = ({
               <BackToPageIcon className="-rotate-90 w-[25px] h-[25px]" />
             </button>
             {isYearDropdownOpen && (
-              <div className="absolute right-0 top-full mt-2 w-[77px] bg-app-background-primary rounded-[2px] shadow-lg z-20 border border-gray-200 dark:border-gray-700 max-h-48 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="absolute right-0 top-full mt-2 w-[77px] bg-app-background-primary rounded-md z-20 border border-gray-200 dark:border-gray-700 max-h-48 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {years.map((y) => (
                   <button
                     key={y}
