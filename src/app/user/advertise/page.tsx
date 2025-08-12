@@ -204,7 +204,7 @@ const page = () => {
         </div>
         {/* body section */}
 
-        <div className="space-y-1 mt-[130px] px-10 mb-80">
+        <div className="space-y-1 mt-[130px] px-6 mb-80">
           <div>
             <p className="font-plusJakartaSans font-normal text-[12.97px] text-app-text-primary mb-3">
               Advert Category
