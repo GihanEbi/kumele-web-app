@@ -96,7 +96,11 @@ const SingleCalendar: React.FC<SingleCalendarProps> = ({
     const dayClasses = `
         w-[35.21px] h-[29.03px] rounded-[2.67px] flex items-center justify-center font-plusJakartaSans font-normal text-[12.13px]
         hover:bg-gray-100 dark:hover:bg-gray-700/50
-        ${isSelectedStart || isSelectedEnd ? "bg-black text-white dark:bg-white dark:text-black" : ""}
+        ${
+          isSelectedStart || isSelectedEnd
+            ? "bg-black text-white dark:bg-white dark:text-black"
+            : ""
+        }
     `;
 
     return (
@@ -120,18 +124,18 @@ const SingleCalendar: React.FC<SingleCalendarProps> = ({
           <div className="relative" ref={yearSelectorRef}>
             <button
               onClick={() => setIsYearDropdownOpen((prev) => !prev)}
-              className="w-[77px] h-[28px] flex items-center space-x-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-md font-plusJakartaSans font-normal text-[13px] hover:bg-gray-200 dark:hover:bg-gray-700"
+              className="w-[77px] h-[28px] flex items-center space-x-2 px-3 py-1.5 bg-app-input-primary rounded-md font-plusJakartaSans font-normal text-[13px] hover:bg-gray-200 dark:hover:bg-gray-700"
             >
               <span>{year}</span>
-              <BackToPageIcon className="-rotate-90 w-[20px] h-[20px]" />
+              <BackToPageIcon className="-rotate-90 w-[25px] h-[25px]" />
             </button>
             {isYearDropdownOpen && (
-              <div className="absolute right-0 top-full mt-2 w-28 bg-white dark:bg-gray-900 rounded-[4px] shadow-lg z-20 border border-gray-200 dark:border-gray-700 max-h-48 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="absolute right-0 top-full mt-2 w-[77px] bg-app-background-primary rounded-[2px] shadow-lg z-20 border border-gray-200 dark:border-gray-700 max-h-48 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {years.map((y) => (
                   <button
                     key={y}
                     onClick={() => handleYearSelect(y)}
-                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="block w-full text-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     {y}
                   </button>
@@ -139,6 +143,7 @@ const SingleCalendar: React.FC<SingleCalendarProps> = ({
               </div>
             )}
           </div>
+          
           <div className="flex items-center -space-x-1">
             <button
               onClick={handlePrevMonth}
@@ -155,7 +160,7 @@ const SingleCalendar: React.FC<SingleCalendarProps> = ({
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-7 text-center font-plusJakartaSans font-normal text-[9.1px]  text-app-calendar-date mb-2">
+      <div className="grid grid-cols-7 text-center font-plusJakartaSans font-bold text-[10px]  text-app-calendar-date mb-2">
         {daysOfWeek.map((day) => (
           <div key={day} className="w-full">
             {day}
