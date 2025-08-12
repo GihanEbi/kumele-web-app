@@ -106,7 +106,7 @@ const BottomNavBar = () => {
                 height={38}
               />
             ) : (
-              <AdvertiseIcon width={38} height={38} />
+              <AdvertiseIcon width={38} height={38} className="mt-[-1px]" />
             )}
             {/* </div> */}
             <div className="text-app-text-primary text-center text-[14px] font-plusJakartaSans-700">
