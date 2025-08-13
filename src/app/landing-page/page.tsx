@@ -180,7 +180,6 @@ const LandingPge = () => {
     touchEndX.current = null;
   };
 
-  
   // Get the current background object
   const currentBg = backgroundImageData[carouselIndex];
 
@@ -189,29 +188,45 @@ const LandingPge = () => {
 
   return (
     <div
-      className="h-screen bg-cover bg-center text-white flex flex-col justify-between overflow-y-hidden"
-      style={{
-        backgroundImage: !isVideo ? `url(${backgroundImageData[carouselIndex].src})` : "none",
-      }} // Replace with your actual background
+      className="h-screen overflow-hidden bg-black text-white"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {isVideo && (
-        <video
-          // Use a key to force React to re-render the video element when the src changes
-          key={currentBg.src}
-          className="absolute top-0 left-0 w-full h-full object-cover -z-10"
-          autoPlay // Autoplays the video
-          loop     // Loops the video
-          muted    // Mutes the video (required for autoplay in most browsers)
-          playsInline // Important for iOS to prevent fullscreen
-        >
-          <source src={currentBg.src} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      )}
-      {/* Overlay to darken the background image a bit */}
-      <div className="absolute inset-0 bg-black/50 z-0 "></div>
+      <div
+        className="fixed inset-0 z-0"
+        // style={{
+        //   backgroundImage: !isVideo
+        //     ? `url(${backgroundImageData[carouselIndex].src})`
+        //     : "none",
+        // }} // Replace with your actual background
+        // onTouchStart={handleTouchStart}
+        // onTouchEnd={handleTouchEnd}
+      >
+        {!isVideo && (
+          <Image
+            key={backgroundImageData[carouselIndex].src} // Key ensures re-render on change
+            src={backgroundImageData[carouselIndex].src}
+            alt={backgroundImageData[carouselIndex].name || "Background"}
+            layout="fill"
+            objectFit="cover"
+            className="transition-opacity duration-1000"
+          />
+        )}
+        {isVideo && (
+          <video
+            key={currentBg.src}
+            className="h-full w-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source src={currentBg.src} type="video/mp4" />
+          </video>
+        )}
+        {/* Overlay to darken the background image a bit */}
+        <div className="absolute inset-0 bg-black/50 z-0"></div>
+      </div>
 
       {/* Main Content - make it scrollable if content exceeds screen height */}
       <main className="relative z-10 flex-grow flex flex-col items-center pt-2 overflow-y-auto">
@@ -221,7 +236,7 @@ const LandingPge = () => {
           <div className="relative flex justify-between mb-4">
             <div className="flex-1/4">
               <Image
-                className="w 10 h-auto"
+                className="w-10 h-auto"
                 alt="logo"
                 src="/images/logo.png"
                 width={63}
@@ -311,7 +326,7 @@ const LandingPge = () => {
             <div className="flex rounded-full overflow-hidden">
               <button
                 className="flex-1 bg-k-secondary-color text-black py-2 text-center font-fredoka text-xs"
-                onClick={() => router.push("/authentication/signin") }
+                onClick={() => router.push("/authentication/signin")}
               >
                 Sign in
               </button>
@@ -356,7 +371,7 @@ const LandingPge = () => {
                     } else if (item.label === "Guideline") {
                       setGuidelinesModel(true);
                     } else if (item.label === "Partnership") {
-                      savePartnershipToken("yes")
+                      savePartnershipToken("yes");
                       router.push("/authentication/signup");
                     }
                   }}
