@@ -204,7 +204,7 @@ const page = () => {
         </div>
         {/* body section */}
 
-        <div className="space-y-1 mt-[130px] px-6 mb-80">
+        <div className="space-y-1 mt-[130px] px-6 mb-40">
           <div>
             <p className="font-plusJakartaSans font-normal text-[12.97px] text-app-text-primary mb-3">
               Advert Category
@@ -436,7 +436,7 @@ const page = () => {
             <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               Audience Insight
             </p>
-            <div className="mt-2 border-[1.6px] rounded-xl border-app-border-advert px-4 py-4">
+            <div className="mt-2 border-[1.6px] rounded-xl border-app-border-advert px-8 py-6">
               <div className="mb-5">
                 <div className="">
                   <label className="block font-plusJakartaSans font-normal text-[13.45px] mb-[54px]">
@@ -528,7 +528,7 @@ const page = () => {
                 </div>
 
                 <div className="mt-4">
-                  <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.45px]">
+                  <p className="text-[13.89px] mb-1 text-app-text-primary font-plusJakartaSans font-normal">
                     Language
                   </p>
                   <DropDown
@@ -634,7 +634,7 @@ const page = () => {
             <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               Daily Budget
             </p>
-            <div className="mt-2 border-[1.6px] rounded-xl border-app-border-advert px-4 py-4">
+            <div className="mt-2 border-[1.6px] rounded-xl border-app-border-advert px-8 py-6">
               <p
                 className="mb-1 font-plusJakartaSans font-normal text-[12px]"
                 style={{ color: "#808080" }}
@@ -682,10 +682,10 @@ const page = () => {
                   }}
                 /> */}
               </div>
-              <div className="ml-5">
+              <div className="ml-8">
                 <InputComponent placeholder="Custom Amount" />
               </div>
-              <div className="ml-5 mt-4">
+              <div className="ml-8 mt-4">
                 <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
                   Duration
                 </p>

@@ -259,6 +259,7 @@ const page = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [subscription, setSubscription] = useState<boolean>(false);
   // use the appContext to get the more option state
   const isNewPartnershipUser = getNewPartnershipUser();
   //  ------ states for permissions ------
@@ -385,7 +386,14 @@ const page = () => {
   return (
     <div
       className={`pb-30 overflow-y-auto max-h-screen no-scrollbar ${
-        isDropdownOpen || isModelOpen || deleteBlogModelOpen
+        isDropdownOpen ||
+        isModelOpen ||
+        deleteBlogModelOpen ||
+        locationPermission || 
+        photosPermission ||
+        notificationPermission ||
+        userNamePermission ||
+        subscription
           ? "bg-k-background-secondary"
           : "bg-k-background-primary"
       } `}
@@ -441,7 +449,7 @@ const page = () => {
           ]}
           placeHolder={"Spotify Subscription"}
           isOpen={(value: boolean) => {
-            setIsDropdownOpen(value);
+            setSubscription(value);
           }}
         />
         <div className="flex items-center space-x-2 justify-between mt-4">

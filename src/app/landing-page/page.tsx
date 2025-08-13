@@ -90,7 +90,8 @@ const backgroundImageData = [
   {
     id: 1,
     name: "",
-    src: "/bg-imgs/home-page-gif.gif", // Default background image
+    // src: "/bg-imgs/home-page-gif.gif", // Default background image
+    src: "/bg-video/home-video.mp4", // Default background image
   },
   {
     id: 2,
@@ -179,17 +180,53 @@ const LandingPge = () => {
     touchEndX.current = null;
   };
 
+  // Get the current background object
+  const currentBg = backgroundImageData[carouselIndex];
+
+  // Check if the current source is a video
+  const isVideo = currentBg.src.endsWith(".mp4");
+
   return (
     <div
-      className="h-screen bg-cover bg-center text-white flex flex-col justify-between"
-      style={{
-        backgroundImage: `url(${backgroundImageData[carouselIndex].src})`,
-      }} // Replace with your actual background
+      className="h-screen overflow-hidden bg-black text-white"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Overlay to darken the background image a bit */}
-      <div className="absolute inset-0 bg-black/50 z-0 "></div>
+      <div
+        className="fixed inset-0 z-0"
+        // style={{
+        //   backgroundImage: !isVideo
+        //     ? `url(${backgroundImageData[carouselIndex].src})`
+        //     : "none",
+        // }} // Replace with your actual background
+        // onTouchStart={handleTouchStart}
+        // onTouchEnd={handleTouchEnd}
+      >
+        {!isVideo && (
+          <Image
+            key={backgroundImageData[carouselIndex].src} // Key ensures re-render on change
+            src={backgroundImageData[carouselIndex].src}
+            alt={backgroundImageData[carouselIndex].name || "Background"}
+            layout="fill"
+            objectFit="cover"
+            className="transition-opacity duration-1000"
+          />
+        )}
+        {isVideo && (
+          <video
+            key={currentBg.src}
+            className="h-full w-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source src={currentBg.src} type="video/mp4" />
+          </video>
+        )}
+        {/* Overlay to darken the background image a bit */}
+        <div className="absolute inset-0 bg-black/50 z-0"></div>
+      </div>
 
       {/* Main Content - make it scrollable if content exceeds screen height */}
       <main className="relative z-10 flex-grow flex flex-col items-center pt-2 overflow-y-auto">
@@ -199,7 +236,7 @@ const LandingPge = () => {
           <div className="relative flex justify-between mb-4">
             <div className="flex-1/4">
               <Image
-                className="w 10 h-auto"
+                className="w-10 h-auto"
                 alt="logo"
                 src="/images/logo.png"
                 width={63}
@@ -237,8 +274,8 @@ const LandingPge = () => {
                     <span className="text-white text-xs mt-1">{pic.name}</span>
                   </div>
                 ))}
-                <div className="flex flex-col items-center ml-[-6px] h-15">
-                  <div className="bg-white text-black text-xs px-3 rounded-full font-semibold flex items-center h-7">
+                <div className="flex flex-col items-center ml-[-8px] h-15">
+                  <div className="bg-white text-black text-xs px-3 rounded-full font-semibold flex items-center h-7 pl-4">
                     +20 Guest <LandingPageIcon1 />
                   </div>
                 </div>
@@ -289,7 +326,7 @@ const LandingPge = () => {
             <div className="flex rounded-full overflow-hidden">
               <button
                 className="flex-1 bg-k-secondary-color text-black py-2 text-center font-fredoka text-xs"
-                onClick={() => router.push("/authentication/signin") }
+                onClick={() => router.push("/authentication/signin")}
               >
                 Sign in
               </button>
@@ -334,7 +371,7 @@ const LandingPge = () => {
                     } else if (item.label === "Guideline") {
                       setGuidelinesModel(true);
                     } else if (item.label === "Partnership") {
-                      savePartnershipToken("yes")
+                      savePartnershipToken("yes");
                       router.push("/authentication/signup");
                     }
                   }}
