@@ -90,7 +90,8 @@ const backgroundImageData = [
   {
     id: 1,
     name: "",
-    src: "/bg-imgs/home-page-gif.gif", // Default background image
+    // src: "/bg-imgs/home-page-gif.gif", // Default background image
+    src: "/bg-video/home-video.mp4", // Default background image
   },
   {
     id: 2,
@@ -179,15 +180,36 @@ const LandingPge = () => {
     touchEndX.current = null;
   };
 
+  
+  // Get the current background object
+  const currentBg = backgroundImageData[carouselIndex];
+
+  // Check if the current source is a video
+  const isVideo = currentBg.src.endsWith(".mp4");
+
   return (
     <div
-      className="h-screen bg-cover bg-center text-white flex flex-col justify-between"
+      className="h-screen bg-cover bg-center text-white flex flex-col justify-between overflow-y-hidden"
       style={{
-        backgroundImage: `url(${backgroundImageData[carouselIndex].src})`,
+        backgroundImage: !isVideo ? `url(${backgroundImageData[carouselIndex].src})` : "none",
       }} // Replace with your actual background
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      {isVideo && (
+        <video
+          // Use a key to force React to re-render the video element when the src changes
+          key={currentBg.src}
+          className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+          autoPlay // Autoplays the video
+          loop     // Loops the video
+          muted    // Mutes the video (required for autoplay in most browsers)
+          playsInline // Important for iOS to prevent fullscreen
+        >
+          <source src={currentBg.src} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      )}
       {/* Overlay to darken the background image a bit */}
       <div className="absolute inset-0 bg-black/50 z-0 "></div>
 
@@ -237,8 +259,8 @@ const LandingPge = () => {
                     <span className="text-white text-xs mt-1">{pic.name}</span>
                   </div>
                 ))}
-                <div className="flex flex-col items-center ml-[-6px] h-15">
-                  <div className="bg-white text-black text-xs px-3 rounded-full font-semibold flex items-center h-7">
+                <div className="flex flex-col items-center ml-[-8px] h-15">
+                  <div className="bg-white text-black text-xs px-3 rounded-full font-semibold flex items-center h-7 pl-4">
                     +20 Guest <LandingPageIcon1 />
                   </div>
                 </div>
