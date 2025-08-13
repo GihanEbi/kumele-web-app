@@ -160,7 +160,7 @@ const SingleCalendar: React.FC<SingleCalendarProps> = ({
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-7 text-center font-plusJakartaSans font-bold text-[10px]  text-app-calendar-date mb-2">
+      <div className="grid grid-cols-7 text-center text-black dark:text-white font-plusJakartaSans font-normal text-[14px]  text-app-calendar-date mb-2">
         {daysOfWeek.map((day) => (
           <div key={day} className="w-full">
             {day}

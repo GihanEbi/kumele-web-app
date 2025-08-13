@@ -261,12 +261,32 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data }) => {
           color: isDark ? "#FFFFFF" : "#000000",
           font: { size: 14 },
         },
-        border: { dash: [4, 6], display: false },
+        border: {
+          dash: (context: any) => {
+            if (context.tick.value === 0) {
+              return [];
+            }
+            return [4, 6];
+          },
+          display: false,
+        },
         grid: {
-          color: "#E8E8E8",
+          // color: "#E8E8E8",
+          color: (context: any) => {
+            if (context.tick.value === 0) {
+              return isDark ? "#E8E8E8" : "#000000";
+            }
+
+            return isDark ? "#E8E8E8" : "#000000";
+          },
           drawTicks: false,
           borderDash: [2, 6],
-          lineWidth: 2,
+          lineWidth: (context: any) => {
+            if (context.tick.value === 0) {
+              return 0.5;
+            }
+            return 1;
+          },
           borderDashOffset: 0,
         },
       },
@@ -312,10 +332,10 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data }) => {
           </span>
         </div>
       </div>
-      
+
       <div
         className="w-full overflow-x-auto hide-scrollbar"
-        style={{ minWidth: 0,}}
+        style={{ minWidth: 0 }}
       >
         <div style={{ width: "1000px", height: "300px" }}>
           <Line options={chartOptions} data={chartData as any} />
