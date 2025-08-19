@@ -14,7 +14,10 @@ import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/Ra
 import { authConstants } from "@/constants/auth-constants";
 import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
-import { register } from "@/routes/signup_and_signin";
+import {
+  register,
+  send_otp_for_verification,
+} from "@/routes/signup_and_signin";
 import EmailVerificationModel from "@/components/Models/EmailVerificationModel/EmailVerificationModel";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import DropDown from "@/components/DropDown/DropDown";
@@ -52,8 +55,7 @@ const Signup = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const isPartnerShipAccount= getPartnershipToken()
-
+  const isPartnerShipAccount = getPartnershipToken();
 
   // ------------ from for user details -----------
   const [form, setForm] = useState({
@@ -99,42 +101,66 @@ const Signup = () => {
   const [isDayDropdownOpen, setIsDayDropdownOpen] = useState(false);
 
   // -------- handleSubmit for form submission ---------
+  // const handleSubmit = async () => {
+  //   // -------- check full form validation
+  //   // -------- prevent multiple submission
+  //   if (loading) return;
+  //   setLoading(true);
+  //   // backend form data
+  //   let correctBirthday = birthDay.YYYY + "-" + birthDay.MM + "-" + birthDay.DD;
+  //   const dataObj = {
+  //     email: form.email,
+  //     password: form.password,
+  //     confirm_password: form.confirm_password,
+  //     name: form.name,
+  //     gender: form.gender,
+  //     date_of_birth: correctBirthday,
+  //     above_legal_age: form.above_legal_age,
+  //     terms_and_conditions: form.terms_and_conditions,
+  //     subscribe_to_newsletter: form.subscribe_to_newsletter,
+  //   };
+
+  //   try {
+  //     // const data = await register(dataObj);
+  //     setShowEmailVerificationModel(true);
+  //     // if (data.success) {
+  //     //   console.log(data);
+  //     //   // router.push("/user");
+  //     // } else {
+  //     //   console.log(data);
+  //     // }
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     // --------- set loading to false ---------
+  //     setLoading(false);
+  //   }
+  // };
+
+// Handle send OTP for email verification
   const handleSubmit = async () => {
-    // -------- check full form validation
-    // -------- prevent multiple submission
     if (loading) return;
     setLoading(true);
-    // backend form data
-    let correctBirthday = birthDay.YYYY + "-" + birthDay.MM + "-" + birthDay.DD;
-    const dataObj = {
-      email: form.email,
-      password: form.password,
-      confirm_password: form.confirm_password,
-      name: form.name,
-      gender: form.gender,
-      date_of_birth: correctBirthday,
-      above_legal_age: form.above_legal_age,
-      terms_and_conditions: form.terms_and_conditions,
-      subscribe_to_newsletter: form.subscribe_to_newsletter,
-    };
 
     try {
-      // const data = await register(dataObj);
-      setShowEmailVerificationModel(true);
-      // if (data.success) {
-      //   console.log(data);
-      //   // router.push("/user");
-      // } else {
-      //   console.log(data);
-      // }
+      const email = form.email;
+      if (!email) {
+        throw new Error("Email is required");
+      }
+      const data = await send_otp_for_verification(email);
+      if (data.success) {
+        setShowEmailVerificationModel(true);
+      } else {
+        console.log(data?.message || "Failed to send OTP. Please try again.");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error sending OTP:", error);
     } finally {
-      // --------- set loading to false ---------
       setLoading(false);
     }
   };
 
+  
   // LANGUAGE SELECTION
 
   const handleTabClick = (tabId: string) => {
@@ -246,9 +272,14 @@ const Signup = () => {
           {" "}
           {/* z-10 ensures text is above background */}
           <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
-            {isPartnerShipAccount === "yes"
-              ? <>Advertisers & Bloggers <br />Sign Up</>
-              : "Sign up"}
+            {isPartnerShipAccount === "yes" ? (
+              <>
+                Advertisers & Bloggers <br />
+                Sign Up
+              </>
+            ) : (
+              "Sign up"
+            )}
           </h1>
           <GoogleIcon />
         </div>
@@ -500,7 +531,12 @@ const Signup = () => {
         <EmailVerificationModel
           onClose={() => setShowEmailVerificationModel(false)}
           isOpen={showEmailVerificationModel}
-          email={form.email}
+           formData={{
+            ...form,
+            date_of_birth: `${birthDay.YYYY}-${birthDay.MM}-${birthDay.DD}`,
+          }}
+          //email={form.email}
+          //password={form.password} // Pass password if needed for verification"
         />
       )}
     </div>
