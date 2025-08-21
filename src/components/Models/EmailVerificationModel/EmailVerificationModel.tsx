@@ -24,13 +24,14 @@ interface FormData {
   email: string;
   password: string;
   confirm_password: string;
-  name: string;
+  language: string;
+  fullName: string;
   gender: string;
-  date_of_birth: string;
-  referrer_code: string;
-  above_legal_age: boolean;
-  terms_and_conditions: boolean;
-  subscribe_to_newsletter: boolean;
+  dateOfBirth: string;
+  referralCode: string;
+  aboveLegalAge: boolean;
+  termsAndConditionsAccepted: boolean;
+  subscribedToNewsletter: boolean;
 }
 
 // props types
@@ -148,7 +149,8 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
 
   const userRegister = async () => {
     try {
-      const registrationResponse = await register(formData);
+      const { confirm_password, ...formDataWithoutConfirm } = formData;
+      const registrationResponse = await register(formDataWithoutConfirm);
       return registrationResponse;
     } catch (error) {
       console.log("Error during registration:", error);

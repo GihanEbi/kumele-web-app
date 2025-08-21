@@ -4,14 +4,15 @@ import { config } from "@/config";
 type registrationForm = {
   email: string;
   password: string;
-  confirm_password: string;
-  name: string;
+  language: string;
+//  confirm_password: string;
+  fullName: string;
   gender: string;
-  date_of_birth: string;
-  //   referrer_code: string;
-  above_legal_age: Boolean;
-  terms_and_conditions: Boolean;
-  subscribe_to_newsletter: Boolean;
+  dateOfBirth: string;
+  referralCode?: string;
+  aboveLegalAge: Boolean;
+  termsAndConditionsAccepted: Boolean;
+  subscribedToNewsletter: Boolean;
 };
 
 type verificationEmailForm = {
@@ -32,7 +33,7 @@ const commonUrl = `${config.baseUrl}`;
 
 export async function register(dataObj: registrationForm) {
   try {
-    const res = await fetch(`${commonUrl}/user/register`, {
+    const res = await fetch(`${commonUrl}/users/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

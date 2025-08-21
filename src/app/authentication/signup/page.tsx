@@ -25,23 +25,23 @@ import { getPartnershipToken } from "@/utils/partnershipUtils";
 
 const languages = [
   {
-    id: "english",
+    id: "English",
     label: "English",
   },
   {
-    id: "french",
+    id: "French",
     label: "French",
   },
   {
-    id: "spanish",
+    id: "Spanish",
     label: "Spanish",
   },
   {
-    id: "chinese",
+    id: "Chinese",
     label: "Chinese",
   },
   {
-    id: "arabic",
+    id: "Arabic",
     label: "Arabic",
   },
 ];
@@ -62,13 +62,14 @@ const Signup = () => {
     email: "",
     password: "",
     confirm_password: "",
-    name: "",
+    fullName: "",
     gender: "",
-    date_of_birth: "",
-    referrer_code: "",
-    above_legal_age: false,
-    terms_and_conditions: false,
-    subscribe_to_newsletter: false,
+    language: "",
+    // date_of_,birth: "",
+    referralCode: "",
+    aboveLegalAge: false,
+    termsAndConditionsAccepted: false,
+    subscribedToNewsletter: false,
   });
 
   // set separate birthday component value together
@@ -137,7 +138,7 @@ const Signup = () => {
   //   }
   // };
 
-// Handle send OTP for email verification
+  // Handle send OTP for email verification
   const handleSubmit = async () => {
     if (loading) return;
     setLoading(true);
@@ -160,11 +161,11 @@ const Signup = () => {
     }
   };
 
-  
   // LANGUAGE SELECTION
 
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
+    handleInputChange(tabId, "language");
     scrollToTab(tabId);
   }; // Mobile-like drag scrolling handlers
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -342,9 +343,9 @@ const Signup = () => {
             <InputComponent
               icon={<UserIcon className="text-app-icon" />}
               placeholder="Enter name"
-              value={form.name}
+              value={form.fullName}
               onChange={(e) => {
-                handleInputChange(e.target.value, "name");
+                handleInputChange(e.target.value, "fullName");
               }}
               className="bg-k-primary-color"
             />
@@ -383,6 +384,10 @@ const Signup = () => {
                 setIsDayDropdownOpen(value);
               }}
               placeHolder="DD"
+              itemSelected={birthDay.DD}
+              onChange={(value: string) => {
+                setBirthday((prev) => ({ ...prev, DD: value }));
+              }}
             />
             <DropDown
               dataArray={authConstants.monthList}
@@ -390,6 +395,11 @@ const Signup = () => {
                 setIsMonthDropdownOpen(value);
               }}
               placeHolder="MM"
+              itemSelected={birthDay.MM}
+              onChange={(value: string) => {
+                setBirthday((prev) => ({ ...prev, MM: value }));
+                console.log("month is",value);
+              }}
             />
             <DropDown
               dataArray={authConstants.yearList}
@@ -397,6 +407,10 @@ const Signup = () => {
                 setIsYearDropdownOpen(value);
               }}
               placeHolder="YYYY"
+              itemSelected={birthDay.YYYY}
+              onChange={(value: string) => {
+                setBirthday((prev) => ({ ...prev, YYYY: value }));
+              }}
             />
           </div>
         </div>
@@ -457,9 +471,9 @@ const Signup = () => {
           <InputComponent
             placeholder="e.g. DF3R435"
             onChange={(e) => {
-              handleInputChange(e.target.value, "referrer_code");
+              handleInputChange(e.target.value, "referralCode");
             }}
-            value={form.referrer_code}
+            value={form.referralCode}
           />
         </div>
         {/* check boxes */}
@@ -467,23 +481,23 @@ const Signup = () => {
           <CheckBoxComponent
             label="I am a legal adult (18/21+)"
             onChange={(e) => {
-              handleInputChange(e.target.checked, "above_legal_age");
+              handleInputChange(e.target.checked, "aboveLegalAge");
             }}
-            value={form.above_legal_age}
+            value={form.aboveLegalAge}
           />
           <CheckBoxComponent
             label="Subscribe to newsletter"
             onChange={(e) => {
-              handleInputChange(e.target.checked, "subscribe_to_newsletter");
+              handleInputChange(e.target.checked, "subscribedToNewsletter");
             }}
-            value={form.subscribe_to_newsletter}
+            value={form.subscribedToNewsletter}
           />
           <CheckBoxComponent
             label="By creating an account you agree to Terms & Conditions"
             onChange={(e) => {
-              handleInputChange(e.target.checked, "terms_and_conditions");
+              handleInputChange(e.target.checked, "termsAndConditionsAccepted");
             }}
-            value={form.terms_and_conditions}
+            value={form.termsAndConditionsAccepted}
           />
           <div className="flex items-center">
             <CheckBoxComponent
@@ -531,9 +545,9 @@ const Signup = () => {
         <EmailVerificationModel
           onClose={() => setShowEmailVerificationModel(false)}
           isOpen={showEmailVerificationModel}
-           formData={{
+          formData={{
             ...form,
-            date_of_birth: `${birthDay.YYYY}-${birthDay.MM}-${birthDay.DD}`,
+            dateOfBirth: `${birthDay.YYYY}-${birthDay.MM}-${birthDay.DD}`,
           }}
           //email={form.email}
           //password={form.password} // Pass password if needed for verification"
