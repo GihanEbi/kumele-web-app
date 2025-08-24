@@ -51,6 +51,7 @@ import GuestPricesModal from "./GuestPriceModal/GuestPriceModal";
 import EventsTimeDetailsModal from "./EventsStartDetailsModal/EventStartDetails";
 import Link from "next/link";
 import { useScrollLock } from "@/utils/useScrollHook";
+import { get_hobbies_list } from "@/routes/permissions_and_hobbies";
 
 //event category data(need to move into utils file)-------------------
 const EVENT_CATEGORIES = [
@@ -113,7 +114,9 @@ const paymentOptionsConfig: OptionConfig[] = [
 
 //main page function started--------------------------
 const CreateEventSection = () => {
+
   // states
+   const [loading, setLoading] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -361,6 +364,33 @@ const CreateEventSection = () => {
     setIsTimeDurationModalOpen(false);
   };
 
+  //ENDPOINTS FETCHING
+  /*
+    const fetchInterests = async () => {
+      setLoading(true);
+      try {
+        const res = await get_hobbies_list(); 
+        const mapped: ChooseInterestsProps[] = (res?.data ?? []).map(
+          (item: any) => ({
+            id: item.id, 
+            name: item.name, 
+            icon: (
+              <InlineSvg
+                svg={item.svg_code} 
+                className="text-app-icon" 
+                title={item.name}
+              />
+            ),
+          })
+        );
+        setInterests(mapped);
+      } catch (error) {
+        console.error("Error fetching interests:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+*/
   return (
     <div
       className={`max-w-full mx-auto p-6 px-8 no-scrollbar ${

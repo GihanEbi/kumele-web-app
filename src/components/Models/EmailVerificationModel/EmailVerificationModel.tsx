@@ -136,8 +136,9 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
       };
       if (dataObj.password) {
         const data = await login(dataObj);
-        if (data.success && data.data.user_token) {
-          saveToken(data.data.user_token);
+        console.log("Login data:", data);
+        if (data.success && data.data.token) {
+          saveToken(data.data.token);
         } else {
           console.error("Login failed after registration:", data.message);
         }
@@ -212,7 +213,7 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
 
         if (registerResponse.success) {
           await userLogin();
-
+          console.log("User registered and logged in successfully");
           setIsVerified(true);
           setModelOpen(false);
 
@@ -352,7 +353,8 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
                   <button
                     className="flex-1 py-3 text-sm px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                     onClick={() => {
-                      // handleVerify();
+                      //router.push("/authentication/chooseInterests")
+                      
                       handle_otp_verification();
                     }}
                   >
