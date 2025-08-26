@@ -143,11 +143,11 @@ const LandingPge = () => {
   const totalSlides = 5;
   // Auto-play carousel every 5 seconds
   React.useEffect(() => {
-    const interval = setInterval(() => {
-      setCarouselIndex((prevIndex) => (prevIndex + 1) % totalSlides);
-    }, 10000);
+    // const interval = setInterval(() => {
+    //   setCarouselIndex((prevIndex) => (prevIndex + 1) % totalSlides);
+    // }, 10000);
     savePartnershipToken("no"); // Reset partnership token on landing page load
-    return () => clearInterval(interval); // cleanup on unmount
+    // return () => clearInterval(interval); // cleanup on unmount
   }, []);
 
   const touchStartX = React.useRef<number | null>(null);

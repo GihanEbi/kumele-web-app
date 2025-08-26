@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import Image from "next/image";
 import {
   EyeIcon,
@@ -14,7 +15,7 @@ import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/Ra
 import { authConstants } from "@/constants/auth-constants";
 import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
-import { login } from "@/routes/signup_and_signin";
+import { google_sign_in, login } from "@/routes/signup_and_signin";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { saveToken } from "@/utils/authUtils";
 import SignInPasskey from "./passkey-models/SignInPasskey";
@@ -27,6 +28,7 @@ import {
   getPartnershipToken,
   saveNewPartnershipUser,
 } from "@/utils/partnershipUtils";
+import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 
 const languages = [
   {
@@ -50,6 +52,13 @@ const languages = [
     label: "Arabic",
   },
 ];
+
+// Define the props for our custom button
+interface CustomGoogleButtonProps {
+  onSuccess: (credentialResponse: CredentialResponse) => void;
+  onError?: () => void;
+  text?: string;
+}
 
 const Signin = () => {
   const router = useRouter();
@@ -89,6 +98,7 @@ const Signin = () => {
   const [createPasskey, setCreatePasskey] = useState(false);
   // state for signin option
   const [signinOption, setSigninOption] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // -------- handleChange for input fields ---------
   const handleInputChange = (value: string | Boolean, name: string) => {
@@ -103,6 +113,46 @@ const Signin = () => {
       setShowPasskeyModel(true);
     }, 2000); // Hide after 2 seconds
   }, []);
+
+  const handleGoogleSignInSuccess = async (
+    credentialResponse: CredentialResponse
+  ) => {
+    // The 'credential' field contains the ID Token.
+    const idToken = credentialResponse.credential;
+
+    if (!idToken) {
+      setError("Google sign-in failed: No ID token received.");
+      return;
+    }
+
+    try {
+      const data = await google_sign_in({ token: idToken });
+      if (data.success) {
+        saveToken(data.data.token);
+        setLoading(false);
+        // --------- show success model ---------
+        setShowSuccessModel(true);
+        setTimeout(() => {
+          if (isPartnerShipAccount === "yes") {
+            saveNewPartnershipUser("no");
+            // Redirect to partnership home page
+            router.push("/user/partnership-home");
+          } else {
+            router.push("/user/home");
+          }
+        }, 1000);
+      } else {
+        console.log(data);
+      }
+    } catch (err) {
+      console.error("API call failed:", err);
+      setError("Could not connect to the server. Please try again.");
+    }
+  };
+  const handleGoogleSignInError = () => {
+    console.error("Google Sign-In failed.");
+    setError("Google Sign-In failed. Please try again.");
+  };
 
   // -------- handleSubmit for form submission ---------
   const handleSubmit = async () => {
@@ -260,7 +310,16 @@ const Signin = () => {
           <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
             Sign in
           </h1>
-          <GoogleIcon />
+          <div>
+            {/* <GoogleIcon /> */}
+
+            <GoogleLogin
+              onSuccess={handleGoogleSignInSuccess}
+              onError={handleGoogleSignInError}
+              theme="outline"
+              size="large"
+            />
+          </div>
         </div>
       </div>
 
@@ -271,6 +330,7 @@ const Signin = () => {
           faceIdModel ||
           createPasskeyModel ||
           createPasskey ||
+          showSuccessModel ||
           signinOption
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
@@ -437,12 +497,7 @@ const Signin = () => {
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <Image
-                  src="/common-gifs/email-verification-succsess.gif"
-                  alt="Success"
-                  width={100}
-                  height={100}
-                />
+                <CheckMarkGif />
               </div>
               <p className="text-gray-600 text-sm mb-6 text-center">
                 Login successful

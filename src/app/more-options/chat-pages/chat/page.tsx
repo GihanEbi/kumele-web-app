@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { io, Socket } from "socket.io-client";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
@@ -38,6 +39,27 @@ const profilePics = [
     borderColor: "border-blue-500",
   },
 ];
+
+// Define the message structure, matching the backend model
+interface Message {
+  id?: string;
+  event_id: string;
+  user_id: string;
+  username: string;
+  message_text: string;
+  created_at?: Date;
+}
+
+interface ChatProps {
+  eventId: string;
+  currentUser: {
+    id: string;
+    username: string;
+  };
+  token: string; // For fetching initial messages
+}
+
+let socket: Socket;
 
 const page = () => {
   //   loading state

@@ -56,7 +56,7 @@ const page = () => {
         onClose={handleClosePayment}
         onPayWithWalletClick={handleNavigateToSendPayment}
       />
-      <AddCardModal isOpen={isAddCardModalOpen} onClose={handleCloseAddCard} />
+      {/* <AddCardModal isOpen={isAddCardModalOpen} onClose={handleCloseAddCard} /> */}
       <SendPaymentModal
         isOpen={isSendPaymentOpen}
         onClose={handleCloseSendPayment}

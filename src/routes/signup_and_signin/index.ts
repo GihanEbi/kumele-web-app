@@ -20,7 +20,7 @@ type verificationEmailForm = {
 };
 
 type googleSignInForm = {
-  auth_token: string;
+  token: string;
 };
 
 type loginForm = {
@@ -28,7 +28,7 @@ type loginForm = {
   password: string;
 };
 
-const commonUrl = `${config.baseUrl}/auth`;
+const commonUrl = `${config.baseUrl}/users`;
 
 export async function register(dataObj: registrationForm) {
   try {

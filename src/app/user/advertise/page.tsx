@@ -206,6 +206,54 @@ const page = () => {
 
         <div className="space-y-1 mt-[130px] px-6 mb-40">
           <div>
+            {" "}
+            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
+              Saved Campaign
+            </p>
+            <div className="flex items-center gap-2 justify-between">
+              <div className="w-full">
+                <DropDown
+                  dataArray={[
+                    { label: "Special Offer", value: "special_offer" },
+                    { label: "New Year Sale", value: "new_year_sale" },
+                    { label: "Summer Sale", value: "summer_sale" },
+                  ]}
+                  placeHolder="Special Offer"
+                  // isOpen={(value: boolean) => {
+                  //   setIsDropdownOpen(value);
+                  // }}
+                  isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
+                />
+              </div>
+              <div
+                className="bg-app-okay-icon-filter rounded-lg p-2 h-1/2"
+                onClick={() => {
+                  setConfirm(!confirm);
+                }}
+              >
+                {confirm ? (
+                  <OkayIcon className="text-app-icon " />
+                ) : (
+                  <OkayGreenIcon />
+                )}
+              </div>
+            </div>
+            <div className="mt-4">
+              <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
+                Campaign Name
+              </p>
+              <div className="space-y-4 mb-[24px]">
+                <div className="relative">
+                  <InputComponent
+                    placeholder="New Campaign"
+                    value={""}
+                    onChange={(e) => {}}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
             <p className="font-plusJakartaSans font-normal text-[12.97px] text-app-text-primary mb-3">
               Advert Category
             </p>
@@ -359,51 +407,6 @@ const page = () => {
             </div>
           </div>
           <div className="mt-4">
-            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
-              Saved Campaign
-            </p>
-            <div className="flex items-center gap-2 justify-between">
-              <div className="w-full">
-                <DropDown
-                  dataArray={[
-                    {label: "Special Offer", value: "special_offer" }, 
-                    {label: "New Year Sale", value: "new_year_sale" }, 
-                    {label: "Summer Sale", value: "summer_sale" },
-                  ]}
-                  placeHolder="Special Offer"
-                  // isOpen={(value: boolean) => {
-                  //   setIsDropdownOpen(value);
-                  // }}
-                  isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
-                />
-              </div>
-              <div
-                className="bg-app-okay-icon-filter rounded-lg p-2 h-1/2"
-                onClick={() => {
-                  setConfirm(!confirm);
-                }}
-              >
-                {confirm ? (
-                  <OkayIcon className="text-app-icon " />
-                ) : (
-                  <OkayGreenIcon />
-                )}
-              </div>
-            </div>
-            <div className="mt-4">
-              <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
-                Campaign Name
-              </p>
-              <div className="space-y-4 mb-[24px]">
-                <div className="relative">
-                  <InputComponent
-                    placeholder="New Campaign"
-                    value={""}
-                    onChange={(e) => {}}
-                  />
-                </div>
-              </div>
-            </div>
             <div className="mt-4">
               <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
                 Title
