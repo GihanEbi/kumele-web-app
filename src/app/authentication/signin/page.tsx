@@ -155,6 +155,7 @@ const Signin = () => {
   };
 
   // -------- handleSubmit for form submission ---------
+  /*
   const handleSubmit = async () => {
     setTimeout(() => {
       if (isPartnerShipAccount === "yes") {
@@ -194,6 +195,48 @@ const Signin = () => {
     //   // --------- set loading to false ---------
     //   setLoading(false);
     // }
+  };
+*/
+  const handleSubmit = async () => {
+    if (loading) return;
+    if (!form.email?.trim() || !form.password) {
+      console.warn("Email and password are required.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const payload = {
+        email: form.email.trim(),
+        password: form.password,
+      };
+      console.log("Submitting login with payload:", payload);
+      const json = await login(payload);
+      if (!json?.success) {
+        throw new Error(json?.message || "Sign in failed");
+      }
+      const token = json?.data?.token;
+      if (!token) {
+        throw new Error("No token returned from server");
+      }
+      saveToken(token);
+      setShowSuccessModel(true);
+      setTimeout(() => {
+        setShowSuccessModel(false);
+        const isPartner = getPartnershipToken(); // "yes" | "no" | null
+        if (isPartner === "yes") {
+          saveNewPartnershipUser("no");
+          router.push("/user/partnership-home");
+        } else {
+          router.push("/user/home");
+        }
+      }, 800);
+    } catch (error: any) {
+      console.error(error);
+      setShowErrorModel(true); // you can render a simple error modal/toast if desired
+      setTimeout(() => setShowErrorModel(false), 1800);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // LANGUAGE SELECTION

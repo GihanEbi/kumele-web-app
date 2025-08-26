@@ -12,6 +12,7 @@ type UserNameProps = {
   onClose: Function;
 };
 
+type Action = "skip" | "save";
 const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
@@ -21,6 +22,7 @@ const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
     action: "skip", // default action is skip
     username: "",
   });
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   //   state for username input
   const [usernameInput, setUsernameInput] = useState("");
@@ -66,6 +68,51 @@ const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
       onClose();
     }
   };
+  useEffect(() => {
+    if (errorMsg && usernameInput.trim().length > 0) setErrorMsg(null);
+  }, [usernameInput, errorMsg]);
+
+  const handleSubmitUserNameOn = async (action: Action) => {
+    setErrorMsg(null);
+    if (action === "save" && usernameInput.trim().length === 0) {
+      setErrorMsg("Please enter a username to save.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const body =
+        action === "skip"
+          ? { action }
+          : { action, username: usernameInput.trim() };
+      const res = await set_user_name(body);
+      let json: any = null;
+      try {
+        json = await res.json();
+      } catch {
+        // ignore if response has no body
+      }
+      if (!res.success || (json && json.success === false)) {
+        const msg =
+          (json && (json.message || json.error)) ||
+          `Request failed with status ${res.status}`;
+        setErrorMsg(
+          typeof msg === "string" ? msg : "Failed to submit username."
+        );
+        return;
+      }
+      onClose();
+    } catch (err: any) {
+      setErrorMsg(err?.message || "Network error submitting username.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !loading) {
+      handleSubmitUserNameOn("save");
+    }
+  };
+  if (!isOpen) return null;
   return (
     <div>
       {/* Loading spinner */}
@@ -94,7 +141,7 @@ const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
             <button
               onClick={() => {
                 setUserNameForm((prev) => ({ ...prev, action: "skip" }));
-                handleSubmitUserName("skip");
+                handleSubmitUserNameOn("skip");
               }}
               aria-label="Close notification prompt"
               className="p-1 -m-1 text-gray-500 hover:text-gray-700 transition-colors"
@@ -115,23 +162,30 @@ const ChooseUserNameModel: React.FC<UserNameProps> = ({ isOpen, onClose }) => {
               <InputComponent
                 placeholder="Enter your user name"
                 value={usernameInput}
-                onChange={(e) => setUsernameInput(e.target.value)}
+                onChange={(e: any) => setUsernameInput(e?.target?.value ?? e)}
+                //onKeyDown={onKeyDown}
+                disabled={loading}
               />
+              {errorMsg && (
+                <p className="mt-2 text-sm text-red-500 px-2">{errorMsg}</p>
+              )}
             </div>
             <div className="space-y-3 mb-[16px]">
               <button
+                disabled={loading}
                 className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                 onClick={() => {
                   setUserNameForm((prev) => ({ ...prev, action: "skip" }));
-                  handleSubmitUserName("skip");
+                  handleSubmitUserNameOn("skip");
                 }}
               >
                 Skip
               </button>
               <button
+                disabled={loading || usernameInput.trim().length === 0}
                 onClick={() => {
                   setUserNameForm((prev) => ({ ...prev, action: "save" }));
-                  handleSubmitUserName("save");
+                  handleSubmitUserNameOn("save");
                 }}
                 className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
               >

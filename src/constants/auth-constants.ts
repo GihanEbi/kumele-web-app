@@ -1,8 +1,8 @@
 export class authConstants {
   static gender = [
-    { id: 0 ,label: "Male", value: "Male" },
-    { id: 1 ,label: "Female", value: "Female" },
-    { id: 2 ,label: "Non-Binary", value: "Non-Binary" },
+    { id: 0 ,label: "Male", value: "male" },
+    { id: 1 ,label: "Female", value: "female" },
+    { id: 2 ,label: "Non-Binary", value: "Non-binary" },
   ];
   static dayList = [
     { label: "01", value: "01" },
