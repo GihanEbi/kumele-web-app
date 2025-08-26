@@ -3,9 +3,9 @@ import React from "react";
 
 // --- Types ---
 type Interest = {
-  id: number;
+  id: string | number;               
   name: string;
-  icon: React.JSX.Element;
+  icon: React.ReactNode;              
 };
 
 // --- Interest Card Component ---
