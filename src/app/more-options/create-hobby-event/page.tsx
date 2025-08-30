@@ -285,10 +285,13 @@ const CreateEventSection = () => {
   };
 
   // Image upload handler
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImageUpload = (file: any) => {
+   // const file = e.target.files?.[0];
+
     if (!file) return;
+
     if (file) {
+      
       console.log("file is this", file);
       setImageFile(file); // NEW
       const reader = new FileReader();
@@ -413,6 +416,7 @@ const CreateEventSection = () => {
   const parsePayment = (
     val: string
   ): { payment_type: string; price: number } => {
+    console.log(val, "selected payment value");
     if (val === "free") return { payment_type: "free", price: 0 };
     if (val.startsWith("card_"))
       return { payment_type: "card", price: Number(val.split("_")[1] || 0) };
@@ -422,44 +426,126 @@ const CreateEventSection = () => {
   };
 
   // --- CREATE EVENT submit
+
   const handleCreateEvent = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!imageFile) {
+      alert("Please upload an image.");
+      return;
+    }
     const { payment_type, price } = parsePayment(selectedPayment);
-    const payload = {
-      user_id: "US00009",
-      category_id: selectedCategory,
-      destination:
-        `${street} ${homeNumber}, ${district}, ${state} ${postalCode}`.trim(),
-      event_image: imageFile,
-      event_name: eventName,
-      subtitle,
-      description,
-      event_start_in: eventStartIn || "",
-      event_date: selectedDate,
-      event_start_time: selectedStartTime,
-      event_end_time: selectedEndTime || "",
-      street_address: street,
-      home_number: homeNumber,
-      district,
-      postal_zip_code: postalCode,
-      state,
-      age_range_min: ageRange[0],
-      age_range_max: ageRange[1],
-      max_guests: guestCount,
-      payment_type,
-      price,
-    };
-    console.log(payload);
+   // const form = new FormData();
+    //const eventImage = form.append("event_image", imageFile, imageFile.name); // <-- key line
+     const form = new FormData();
+        //form.append("file", imageFile);
+    // const payload = {
+    //   user_id: "US00001",
+    //   category_id: selectedCategory,
+
+    //   destination: "events",
+    //   event_image: imageFile,
+    //   event_name: eventName,
+    //   subtitle,
+    //   description,
+    //   event_start_in: eventStartIn || "",
+    //   event_date: "2025-08-05",
+    //   event_start_time: selectedStartTime,
+    //   event_end_time: selectedEndTime || "",
+    //   street_address: street,
+    //   home_number: homeNumber,
+    //   district,
+    //   postal_zip_code: postalCode,
+    //   state,
+    //   age_range_min: ageRange[0],
+    //   age_range_max: ageRange[1],
+    //   max_guests: guestCount,
+    //   payment_type,
+    //   price,
+    // };
+     form.append("user_id", "US00009");
+    form.append("category_id", selectedCategory ?? "");
+    form.append(
+      "destination",
+      "events"
+    );
+    form.append("event_image", imageFile, imageFile.name); 
+
+    form.append("event_name", eventName);
+    form.append("subtitle", subtitle);
+    form.append("description", description);
+    form.append("event_start_in", eventStartIn || "");
+    form.append("event_date", selectedDate || "");
+    form.append("event_start_time", selectedStartTime || "");
+    form.append("event_end_time", selectedEndTime || "");
+    form.append("street_address", street);
+    form.append("home_number", homeNumber);
+    form.append("district", district);
+    form.append("postal_zip_code", postalCode);
+    form.append("state", state);
+    form.append("age_range_min", String(ageRange[0]));
+    form.append("age_range_max", String(ageRange[1]));
+    form.append("max_guests", String(guestCount));
+    form.append("payment_type", payment_type);
+    form.append("price", String(price));
+    //console.log(payload);
     try {
       setLoading(true);
       //setSaving(true);
-      const res = await createEvent(payload as any);
-      console.log(res,'response is::::')
+      const res = await createEvent(form);
+      console.log(res, "response is::::");
       alert(res?.message || "Event created!");
     } catch (error: any) {
       alert(error?.message || "Failed to create event.");
     } finally {
       setSaving(false);
+      setLoading(false);
+    }
+  };
+
+  const handleCreateEvents = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!imageFile) {
+      alert("Please upload an image.");
+      return;
+    }
+
+    const { payment_type, price } = parsePayment(selectedPayment);
+
+    const form = new FormData();
+    form.append("user_id", "US00009");
+    form.append("category_id", selectedCategory ?? "");
+    form.append(
+      "destination",
+      `${street} ${homeNumber}, ${district}, ${state} ${postalCode}`.trim()
+    );
+    form.append("event_image", imageFile, imageFile.name); // <-- key line
+
+    form.append("event_name", eventName);
+    form.append("subtitle", subtitle);
+    form.append("description", description);
+    form.append("event_start_in", eventStartIn || "");
+    form.append("event_date", selectedDate || "");
+    form.append("event_start_time", selectedStartTime || "");
+    form.append("event_end_time", selectedEndTime || "");
+    form.append("street_address", street);
+    form.append("home_number", homeNumber);
+    form.append("district", district);
+    form.append("postal_zip_code", postalCode);
+    form.append("state", state);
+    form.append("age_range_min", String(ageRange[0]));
+    form.append("age_range_max", String(ageRange[1]));
+    form.append("max_guests", String(guestCount));
+    form.append("payment_type", payment_type);
+    form.append("price", String(price));
+
+    try {
+      setLoading(true);
+      const res = await createEvent(form); // createEvent should POST body=form
+      alert(res?.message || "Event created!");
+    } catch (error: any) {
+      alert(error?.message || "Failed to create event.");
+    } finally {
       setLoading(false);
     }
   };
@@ -649,7 +735,13 @@ const CreateEventSection = () => {
           <input
             type="file"
             ref={fileInputRef}
-            onChange={handleImageUpload}
+            //onChange={handleImageUpload}
+              onChange={(e: any) => {
+                      handleImageUpload(
+                        e.target.files[0],
+                       
+                      );
+                    }}
             accept="image/*"
             className="hidden"
           />

@@ -28,6 +28,7 @@ type EventCreationPayload = {
 const commonUrl = `${config.baseUrl}`;
 
 //---------create event------------------
+/*
 export async function createEvent(payload: EventCreationPayload) {
   try {
     const formData = new FormData();
@@ -50,7 +51,7 @@ export async function createEvent(payload: EventCreationPayload) {
     console.error("Failed to create event:", error);
     return error;
   }
-}
+}*/
 
 //---------get all events----------------
 export async function get_all_event_list() {
@@ -156,3 +157,45 @@ export async function update_event(
     return error;
   }
 }
+
+
+export async function createEvent(data: {
+  [k: string]: any;
+  event_image?: File | null;
+}) {
+  const form = new FormData();
+
+ 
+  if (data.event_image instanceof File) {
+    form.append("event_image", data.event_image, data.event_image.name);
+  }
+
+ 
+  Object.entries(data).forEach(([key, value]) => {
+    if (key === "event_image") return;
+    if (value === undefined || value === null) return;
+
+   
+    if (typeof value === "object" && !(value instanceof File)) {
+      form.append(key, JSON.stringify(value));
+    } else {
+      form.append(key, String(value));
+    }
+  });
+
+   const res = await fetch(`${commonUrl}/events/create-event`, {
+    method: "POST",
+    body: form, 
+    headers: {
+      Authorization: `${getToken()}`,
+    },
+    //credentials: "include",
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || `Request failed with status ${res.status}`);
+  }
+  return res.json();
+}
+
