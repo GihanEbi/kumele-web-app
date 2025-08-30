@@ -386,7 +386,7 @@ const ChooseInterests = () => {
           icon: (
             <InlineSvg
               svg={item.svg_code} 
-              className="text-app-icon" 
+              //className="text-app-icon" 
               title={item.name}
             />
           ),
