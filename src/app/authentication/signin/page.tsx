@@ -11,9 +11,6 @@ import {
   UserIcon,
 } from "../../../../public/svg-icons/icons";
 import InputComponent from "@/components/InputComponent/InputComponent";
-import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/RadioButtonGroupComponent";
-import { authConstants } from "@/constants/auth-constants";
-import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
 import { google_sign_in, login } from "@/routes/signup_and_signin";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
@@ -23,12 +20,13 @@ import SigninPasskeyFaceId from "./passkey-models/SigninPasskeyFaceId";
 import CreatePasskeyText from "./passkey-models/CreatePasskeyText";
 import CreatePasskey from "./passkey-models/CreatePasskey";
 import SignupOptions from "./passkey-models/SignupOptions";
-import { sign } from "crypto";
 import {
   getPartnershipToken,
   saveNewPartnershipUser,
 } from "@/utils/partnershipUtils";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
+import PadLockGif from "@/components/GifComponents/PadLockGif/PadLockGif";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 
 const languages = [
   {
@@ -53,19 +51,10 @@ const languages = [
   },
 ];
 
-// Define the props for our custom button
-interface CustomGoogleButtonProps {
-  onSuccess: (credentialResponse: CredentialResponse) => void;
-  onError?: () => void;
-  text?: string;
-}
-
 const Signin = () => {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("english");
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const tabsContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -149,58 +138,19 @@ const Signin = () => {
       setError("Could not connect to the server. Please try again.");
     }
   };
+
   const handleGoogleSignInError = () => {
     console.error("Google Sign-In failed.");
     setError("Google Sign-In failed. Please try again.");
   };
 
-  // -------- handleSubmit for form submission ---------
-  /*
-  const handleSubmit = async () => {
-    setTimeout(() => {
-      if (isPartnerShipAccount === "yes") {
-        saveNewPartnershipUser("no");
-        // Redirect to partnership home page
-        router.push("/user/partnership-home");
-      } else {
-        router.push("/user/home");
-      }
-    }, 1000);
-    // -------- check full form validation
-    // -------- prevent multiple submission
-    // if (loading) return;
-    // setLoading(true);
-    // if (!form.email || !form.password) {
-    //   setLoading(false);
-    //   return;
-    // }
-
-    // try {
-    //   const data = await login(form);
-    //   if (data.success) {
-    //     saveToken(data.data.user_token);
-    //     setLoading(false);
-    //     // --------- show success model ---------
-    //     setShowSuccessModel(true);
-    //     setTimeout(() => {
-    //       setShowSuccessModel(false);
-    //     }, 1000); // Hide after 2 seconds
-    //     router.push("/user");
-    //   } else {
-    //     console.log(data);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // } finally {
-    //   // --------- set loading to false ---------
-    //   setLoading(false);
-    // }
-  };
-*/
+  // handle form submit
   const handleSubmit = async () => {
     if (loading) return;
     if (!form.email?.trim() || !form.password) {
-      console.warn("Email and password are required.");
+      setError("Email and password are required.");
+      setShowErrorModel(true); // you can render a simple error modal/toast if desired
+      setTimeout(() => setShowErrorModel(false), 3600);
       return;
     }
     setLoading(true);
@@ -209,15 +159,19 @@ const Signin = () => {
         email: form.email.trim(),
         password: form.password,
       };
-      console.log("Submitting login with payload:", payload);
       const json = await login(payload);
+
       if (!json?.success) {
-        throw new Error(json?.message || "Sign in failed");
+        setError(json?.message);
+        setShowErrorModel(true); // you can render a simple error modal/toast if desired
+        setTimeout(() => setShowErrorModel(false), 3600);
+        return;
       }
       const token = json?.data?.token;
       if (!token) {
         throw new Error("No token returned from server");
       }
+
       saveToken(token);
       setShowSuccessModel(true);
       setTimeout(() => {
@@ -231,9 +185,9 @@ const Signin = () => {
         }
       }, 800);
     } catch (error: any) {
-      console.error(error);
+      setError("Sign in failed");
       setShowErrorModel(true); // you can render a simple error modal/toast if desired
-      setTimeout(() => setShowErrorModel(false), 1800);
+      setTimeout(() => setShowErrorModel(false), 3600);
     } finally {
       setLoading(false);
     }
@@ -349,7 +303,6 @@ const Signin = () => {
     */}
         <div className="absolute bottom-4 left-6 flex items-center space-x-2 z-10">
           {" "}
-          {/* z-10 ensures text is above background */}
           <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
             Sign in
           </h1>
@@ -374,6 +327,7 @@ const Signin = () => {
           createPasskeyModel ||
           createPasskey ||
           showSuccessModel ||
+          showErrorModel ||
           signinOption
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
@@ -442,6 +396,7 @@ const Signin = () => {
             }}
             value={form.password}
             type={passwordVisible ? "text" : "password"}
+            required
           />
           <button
             type="button"
@@ -519,11 +474,12 @@ const Signin = () => {
             } // Open Passkey model on click
           }
         >
-          <img
+          <PadLockGif className="w-11 h-11 mx-auto" />
+          {/* <img
             src="/bg-imgs/auth/passkey.gif" // Assumes lock.gif is in the /public folder
             alt="Passkey Lock Icon"
             className="w-11 h-11 mx-auto" // 44px by 44px, centered
-          />
+          /> */}
         </div>{" "}
         {/* Recommendation Text */}
         <p className="text-[10px] text-app-text-blue font-plusJakartaSans text-center">
@@ -602,6 +558,14 @@ const Signin = () => {
           router.push("/user/home");
           setSigninOption(false);
         }}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
       />
     </div>
   );

@@ -29,11 +29,11 @@ type loginForm = {
   password: string;
 };
 
-const commonUrl = `${config.baseUrl}/users`;
+const commonUrl = `${config.baseUrl}`;
 
 export async function register(dataObj: registrationForm) {
   try {
-    const res = await fetch(`${commonUrl}/register`, {
+    const res = await fetch(`${commonUrl}/users/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export async function verification_email(dataObj: verificationEmailForm) {
 
 export async function google_sign_in(dataObj: googleSignInForm) {
   try {
-    const res = await fetch(`${commonUrl}/google-signin/`, {
+    const res = await fetch(`${commonUrl}/users/google-signin/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

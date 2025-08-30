@@ -61,7 +61,6 @@ const ChangePasswordPage = () => {
       let data = await changePassword(dataObj);
 
       if (data.success) {
-        console.log("Password changed successfully");
         // reset form
         setFormData({
           oldPassword: "",
@@ -70,6 +69,10 @@ const ChangePasswordPage = () => {
         });
         // show success model
         setShowSuccessModel(true);
+        setTimeout(() => {
+          setShowSuccessModel(false);
+        }, 1000); // Hide after 2 seconds
+        router.push("/user/profile");
       } else {
         console.log(data.message);
       }
@@ -87,14 +90,14 @@ const ChangePasswordPage = () => {
           <LoadingComponent />
         </div>
       )}
-      <div
-        className={`${
-          showSuccessModel || showErrorModel
-            ? "bg-k-background-secondary"
-            : "bg-k-background-primary"
-        } relative z-10`}
-      >
-        <div className="min-h-screen bg-app-background-primary flex flex-col items-center">
+      <div>
+        <div
+          className={`${
+            showSuccessModel
+              ? "bg-k-background-secondary"
+              : "bg-k-background-primary"
+          } relative z-10 min-h-screen flex flex-col items-center`}
+        >
           <div className={`w-full max-w-md px-6 ${paddings.topMargin}`}>
             {/* Header */}
             <header className="flex items-center mb-5">
