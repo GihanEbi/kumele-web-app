@@ -7,23 +7,47 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
+import { verifyOtp } from "@/routes/profile";
 
 // props types
 type AuthenticatorModelProps = {
   isOpen: boolean;
+  qrCode: string;
   onClose: () => void;
 };
 
 const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
+  qrCode,
   isOpen,
   onClose,
 }) => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
+  // ?state for OTP
+  const [otp, setOtp] = useState("");
 
   if (!isOpen) {
     return null; // Don't render anything if the modal is not open
   }
+
+  const handleSubmitTwoFactor = async () => {
+    if (loading) return;
+
+    setLoading(true);
+
+    try {
+      const data = await verifyOtp({ otp });
+      if (data.success) {
+        onClose();
+      } else {
+        console.log(data.message || "Failed to verify OTP.");
+      }
+    } catch (error) {
+      console.error("Error updating about me:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -130,12 +154,15 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                     </strong>
                   </p>
                   <div className="inline-block mt-[8px] bg-white pt-2 rounded-lg">
-                    <Image
-                      src="/images/image-7.png"
-                      alt="Authenticator QR code"
-                      width={109}
-                      height={109}
-                    />
+                    {qrCode !== "" && (
+                      <Image
+                        src={qrCode}
+                        alt="QR Code"
+                        width={109}
+                        height={109}
+                        className="object-contain"
+                      />
+                    )}
                   </div>
                   <div>
                     <Button
@@ -158,6 +185,8 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                     <InputComponent
                       placeholder="Enter Verification Code Here"
                       className="text-base "
+                      onChange={(e) => setOtp(e.target.value)}
+                      value={otp}
                     />
                   </div>
                   <div className="flex items-center mt-[14px] space-x-2">
@@ -172,7 +201,7 @@ const AuthenticatorModel: React.FC<AuthenticatorModelProps> = ({
                   <button
                     className="w-full mt-[15px] mb-[10px] text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                     onClick={() => {
-                      onClose();
+                      handleSubmitTwoFactor();
                     }}
                   >
                     Submit

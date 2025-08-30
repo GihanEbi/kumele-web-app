@@ -6,6 +6,7 @@ import InputComponent from "@/components/InputComponent/InputComponent";
 import React, { useState } from "react";
 import { BackToPageIcon, Eye2Icon } from "../../../../public/svg-icons/icons";
 import { useTheme } from "next-themes";
+import PaymentPage from "@/app/user/more/cart/payment/payment";
 
 // --- Icons for the Add Card Modal ---
 
@@ -68,7 +69,9 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
           <button onClick={onClose} className="p-2 -ml-2">
             <BackToPageIcon className="w-6 h-6" />
           </button>
-          <h2 className="font-plusJakartaSans font-bold text-[23px] text-app-blog-card-heading">Add Card</h2>
+          <h2 className="font-plusJakartaSans font-bold text-[23px] text-app-blog-card-heading">
+            Add Card
+          </h2>
         </div>
       </div>
 
@@ -77,7 +80,10 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
         <div className="max-w-md mx-auto flex flex-col gap-6">
           {/* Country */}
           <div>
-            <label htmlFor="country" className="block font-plusJakartaSans font-normal text-[14px] mb-3">
+            <label
+              htmlFor="country"
+              className="block font-plusJakartaSans font-normal text-[14px] mb-3"
+            >
               Country
             </label>
             <div className="relative">
@@ -98,7 +104,10 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
 
           {/* Cardholder's name */}
           <div>
-            <label htmlFor="cardholder-name" className="block font-plusJakartaSans font-normal text-[14px] mb-3">
+            <label
+              htmlFor="cardholder-name"
+              className="block font-plusJakartaSans font-normal text-[14px] mb-3"
+            >
               Cardholder's name
             </label>
 
@@ -107,7 +116,10 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
 
           {/* Card number */}
           <div>
-            <label htmlFor="card-number" className="block font-plusJakartaSans font-normal text-[14px] mb-3">
+            <label
+              htmlFor="card-number"
+              className="block font-plusJakartaSans font-normal text-[14px] mb-3"
+            >
               Card number
             </label>
             <div className="relative">
@@ -122,14 +134,20 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
           {/* Expiry and CVC */}
           <div className="flex gap-4">
             <div className="flex-1">
-              <label htmlFor="expiry-date" className="block font-plusJakartaSans font-normal text-[14px] mb-3">
+              <label
+                htmlFor="expiry-date"
+                className="block font-plusJakartaSans font-normal text-[14px] mb-3"
+              >
                 Expiry date
               </label>
 
               <InputComponent placeholder="MM-YY" />
             </div>
             <div className="flex-1">
-              <label htmlFor="cvc" className="block font-plusJakartaSans font-normal text-[14px] mb-3">
+              <label
+                htmlFor="cvc"
+                className="block font-plusJakartaSans font-normal text-[14px] mb-3"
+              >
                 CVC
               </label>
 
@@ -148,6 +166,8 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
           >
             Add card
           </button>
+
+          <PaymentPage />
         </div>
       </div>
       {isSuccess && (
@@ -163,7 +183,7 @@ export const AddCardModal: React.FC<AddCardModalProps> = ({
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <CheckMarkGif/>
+                <CheckMarkGif />
               </div>
               <p className="text-app-text-primary font-plusJakartaSans font-normal text-[16px] mb-6 text-center">
                 Card added successfully

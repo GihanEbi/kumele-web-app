@@ -22,6 +22,7 @@ import EmailVerificationModel from "@/components/Models/EmailVerificationModel/E
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import DropDown from "@/components/DropDown/DropDown";
 import { getPartnershipToken } from "@/utils/partnershipUtils";
+import GoogleSigninOtherModel from "@/components/Models/googleSigninOtherModel/GoogleSigninOtherModel";
 
 const languages = [
   {
@@ -56,6 +57,8 @@ const Signup = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const isPartnerShipAccount = getPartnershipToken();
+  const [showGoogleVerificationModel, setShowGoogleVerificationModel] =
+    useState(false);
 
   // ------------ from for user details -----------
   const [form, setForm] = useState({
@@ -282,7 +285,9 @@ const Signup = () => {
               "Sign up"
             )}
           </h1>
-          <GoogleIcon />
+          <div onClick={() => setShowGoogleVerificationModel(true)}>
+            <GoogleIcon />
+          </div>
         </div>
       </div>
 
@@ -398,7 +403,7 @@ const Signup = () => {
               itemSelected={birthDay.MM}
               onChange={(value: string) => {
                 setBirthday((prev) => ({ ...prev, MM: value }));
-                console.log("month is",value);
+                console.log("month is", value);
               }}
             />
             <DropDown
@@ -461,20 +466,37 @@ const Signup = () => {
           </button>
         </div>
         {/* referral code */}
-        <div className="pt-5">
-          <p className="text-sm font-plusJakartaSans text-app-text-primary mb-1">
-            Referral code{" "}
-            <span className="font-plusJakartaSans text-app-text-primary">
+        <div className="flex justify-between items-center gap-5">
+          <div className="pt-5">
+            <p className="text-sm font-plusJakartaSans text-app-text-primary mb-1">
+              Referral code{" "}
+              {/* <span className="font-plusJakartaSans text-app-text-primary">
               (Optional)
-            </span>
-          </p>
-          <InputComponent
-            placeholder="e.g. DF3R435"
-            onChange={(e) => {
-              handleInputChange(e.target.value, "referralCode");
-            }}
-            value={form.referralCode}
-          />
+            </span> */}
+            </p>
+            <InputComponent
+              placeholder="e.g. DF3R435"
+              onChange={(e) => {
+                handleInputChange(e.target.value, "referralCode");
+              }}
+              value={form.referralCode}
+            />
+          </div>
+          <div className="pt-5">
+            <p className="text-sm font-plusJakartaSans text-app-text-primary mb-1">
+              Beta code{" "}
+              {/* <span className="font-plusJakartaSans text-app-text-primary">
+              (Optional)
+            </span> */}
+            </p>
+            <InputComponent
+              placeholder="e.g. DF3R435"
+              onChange={(e) => {
+                // handleInputChange(e.target.value, "referralCode");
+              }}
+              value={""}
+            />
+          </div>
         </div>
         {/* check boxes */}
         <div className="space-y-3 pt-5">
@@ -549,6 +571,16 @@ const Signup = () => {
             ...form,
             dateOfBirth: `${birthDay.YYYY}-${birthDay.MM}-${birthDay.DD}`,
           }}
+          //email={form.email}
+          //password={form.password} // Pass password if needed for verification"
+        />
+      )}
+
+      {/* google Verification Model */}
+      {showGoogleVerificationModel && (
+        <GoogleSigninOtherModel
+          onClose={() => setShowGoogleVerificationModel(false)}
+          isOpen={showGoogleVerificationModel}
           //email={form.email}
           //password={form.password} // Pass password if needed for verification"
         />

@@ -577,7 +577,7 @@ const page = () => {
               Notifications <br />
             </button>
             <div className="rounded-full bg-app-input-yellow w-[19px] h-[19px] absolute top-[4px] right-[4px] flex items-center justify-center">
-              <p className="font-plusJakartaSans font-semibold text-[8.93px] text-[12px] text-app-text-black">
+              <p className="text-app-text-black font-plusJakartaSans font-semibold text-[8.93px]">
                 2
               </p>
             </div>

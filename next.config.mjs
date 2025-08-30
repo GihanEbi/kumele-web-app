@@ -9,7 +9,6 @@
 // export default nextConfig;
 // next.config.ts
 
-
 // import withPWA from "next-pwa";
 // import pwaConfig from "./pwa.config";
 
@@ -25,8 +24,6 @@
 
 // "next-pwa": "^5.6.0",
 
-
-
 // next.config.js
 
 // /** @type {import('next').NextConfig} */
@@ -41,7 +38,7 @@
 //   skipWaiting: true,
 //   disable: process.env.NODE_ENV === 'development',
 //   // You can add more runtime caching strategies here.
-//   // runtimeCaching: [ ... ], 
+//   // runtimeCaching: [ ... ],
 // });
 
 // module.exports = withPWA(nextConfig);
@@ -53,6 +50,16 @@
 const nextConfig = {
   // Your regular Next.js config goes here
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "5001", // allow your backend server
+        pathname: "/uploads/**",
+      },
+    ],
+  },
 };
 
 // Importing the PWA plugin

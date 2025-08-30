@@ -1,9 +1,14 @@
-import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
+"use client";
+
 import React, { useState } from "react";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { CloseIcon } from "../../../../public/svg-icons/icons";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
 import Image from "next/image";
+import ErrorModel from "../ErrorModel/ErrorModel";
+import SuccessModel from "../SuccessModel/SuccessModel";
+import { customerSupport } from "@/routes/profile";
 // props types
 type ContactModelProps = {
   isOpen: boolean;
@@ -21,9 +26,63 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
 
+  // ---------- form for login details -----------
+  const [form, setForm] = useState({
+    supportType: "",
+    supportMessage: "",
+  });
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
   if (!isOpen) {
     return null; // Don't render anything if the modal is not open
   }
+
+  // -------- handleChange for input fields ---------
+  const handleInputChange = (value: string | Boolean, name: string) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async () => {
+    if (loading) return;
+    if (!form.supportType || !form.supportMessage.trim()) {
+      setError("All fields are required.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    }
+    setLoading(true);
+    try {
+      const data = await customerSupport(form);
+      if (data?.success) {
+        setSuccess("Your message has been sent successfully.");
+        setShowSuccessModel(true);
+        // reset the form
+        setForm({
+          supportType: "",
+          supportMessage: "",
+        });
+        setTimeout(() => setShowSuccessModel(false), 3600);
+      } else {
+        setError(data?.message || "An error occurred");
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
+        return;
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       {/* Loading spinner */}
@@ -39,7 +98,11 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`${
+              showErrorModel || showSuccessModel
+                ? "bg-app-background-primary"
+                : "bg-app-background-model"
+            } w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
@@ -72,27 +135,28 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
                     key={index}
                     className="flex items-center space-x-2 cursor-pointer mb-3"
                     onClick={() => {
-                      setValue(item.value);
-                      console.log("Selectedsss value:", item.value);
+                      handleInputChange(item.value, "supportType");
                     }}
                   >
                     <input
                       type="radio"
                       name={""}
-                      value={value}
+                      value={form.supportType}
                       className="peer hidden"
                     />
 
                     <div
                       className={`w-5 h-5 rounded-full border-2 ${
-                        item.value !== value
+                        item.value !== form.supportType
                           ? "border-app-button-radio"
                           : "border-app-button-blue"
                       } flex items-center justify-center`}
                     >
                       <div
                         className={`w-2.5 h-2.5 rounded-full ${
-                          item.value !== value ? "" : "bg-app-button-blue"
+                          item.value !== form.supportType
+                            ? ""
+                            : "bg-app-button-blue"
                         } transition-all`}
                       />
                     </div>
@@ -106,12 +170,20 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
                 Comment
               </p>
               <div>
-                <TextAreaComponent placeholder="Add your comment" />
+                <TextAreaComponent
+                  placeholder="Add your comment"
+                  value={form.supportMessage}
+                  onChange={(e) =>
+                    handleInputChange(e.target.value, "supportMessage")
+                  }
+                />
               </div>
               <div className="pt-4 mt-[24px]">
                 <button
-              className="w-full text-[16px] mb-[12px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
-                  onClick={() => () => {}}
+                  className="w-full text-[16px] mb-[12px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                  onClick={() => {
+                    handleSubmit();
+                  }}
                 >
                   Send
                 </button>
@@ -127,6 +199,22 @@ const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
       )}
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
     </div>
   );
 };

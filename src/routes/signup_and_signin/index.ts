@@ -21,7 +21,7 @@ type verificationEmailForm = {
 };
 
 type googleSignInForm = {
-  auth_token: string;
+  token: string;
 };
 
 type loginForm = {
@@ -65,7 +65,7 @@ export async function verification_email(dataObj: verificationEmailForm) {
 
 export async function google_sign_in(dataObj: googleSignInForm) {
   try {
-    const res = await fetch(`${commonUrl}/google-signin/`, {
+    const res = await fetch(`${commonUrl}/users/google-signin/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

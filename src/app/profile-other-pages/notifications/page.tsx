@@ -2,11 +2,13 @@
 
 import Head from "next/head";
 import React, { useEffect, useState, useRef } from "react";
-import { BackArrow, RightArrowIcon } from "../../../../public/svg-icons/icons";
-import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
-import { sound_Notifications } from "@/routes/profile";
+import { BackArrow } from "../../../../public/svg-icons/icons";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
+import {
+  createOrUpdateProfileNotificationStatus,
+  getProfileNotificationStatus,
+} from "@/routes/profileNotifications";
 
 const Notification = () => {
   // State to manage sound and email notifications
@@ -15,41 +17,6 @@ const Notification = () => {
 
   //   loading state
   const [loading, setLoading] = useState(false);
-
-  /*----------i HAVE REMOVED THIS STATE AND FUNCTION TO ADD SOUNDS FILE-------*/
-  /*
-   const [isToggled, setIsToggled] = useState(false);
-   const handleToggle = () => {
-     setIsToggled(!isToggled);
-   };*/
-
-  /*----------ENABLE SOUND NOTIFICATION WHEN TOGGLE ON AND OFF-------*/
-  /*----------UNCOMMENT THESE FUNCTION-------*/
-  /*
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  useEffect(() => {
-    const el = new Audio("/sounds/notification_sound.wav");
-    el.preload = "auto";
-    el.volume = 0.9;
-    audioRef.current = el;
-    return () => {
-      el.pause();
-
-      el.src = "";
-    };
-  }, []);  */
-
-  /*
-  const playToggleSound = async () => {
-    const el = audioRef.current;
-    if (!el) return;
-    try {
-      el.currentTime = 0;
-      await el.play();
-    } catch (e) {
-      console.warn("Audio play failed", e);
-    }
-  };*/
 
   const playEnableSound = () => {
     const audio = new Audio("/sounds/notification_sound.wav");
@@ -65,7 +32,25 @@ const Notification = () => {
     );
     setSoundNotifications(sound === "true");
     setEmailNotifications(email === "true");
+    // Fetch initial notification settings from the server
+    fetchSoundData();
   }, []);
+
+  // function to fetch sound data
+  const fetchSoundData = async () => {
+    setLoading(true);
+    try {
+      const data = await getProfileNotificationStatus();
+      if (data.success) {
+        setSoundNotifications(data.data.sound_notifications);
+        setEmailNotifications(data.data.email_notifications);
+      }
+    } catch (error) {
+      console.error("Error fetching sound data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Function to handle sound notification toggle
   const handleSoundNotificationChange = async (value: boolean) => {
@@ -76,14 +61,16 @@ const Notification = () => {
     }
     setLoading(true); // Set loading state to true while processing
     try {
-      // const dataObj = { enabled: value };
-      // const data = await sound_Notifications(dataObj);
-      // console.log("Sound notifications data:", data);
-      // if (data.success) {
-      //   console.log("Sound notifications updated successfully");
-      // } else {
-      //   console.error("Failed to update sound notifications:", data.message);
-      // }
+      const dataObj = {
+        soundNotifications: value,
+        emailNotifications: emailNotifications,
+      };
+      const data = await createOrUpdateProfileNotificationStatus(dataObj);
+      if (data.success) {
+        console.log("Sound notifications updated successfully");
+      } else {
+        console.error("Failed to update sound notifications:", data.message);
+      }
     } catch (error) {
       console.error("Error updating sound notifications:", error);
     } finally {
@@ -94,16 +81,22 @@ const Notification = () => {
   // Function to handle email notification toggle
   const handleEmailNotificationChange = async (value: boolean) => {
     setEmailNotifications(value);
+    //play sound when notification sound enabling;
+    if (value) {
+      playEnableSound();
+    }
     setLoading(true); // Set loading state to true while processing
     try {
-      // const dataObj = { enabled: value };
-      // const data = await sound_Notifications(dataObj);
-      // console.log("Email notifications data:", data);
-      // if (data.success) {
-      //   console.log("Email notifications updated successfully");
-      // } else {
-      //   console.error("Failed to update email notifications:", data.message);
-      // }
+      const dataObj = {
+        soundNotifications: soundNotifications,
+        emailNotifications: value,
+      };
+      const data = await createOrUpdateProfileNotificationStatus(dataObj);
+      if (data.success) {
+        console.log("Email notifications updated successfully");
+      } else {
+        console.error("Failed to update email notifications:", data.message);
+      }
     } catch (error) {
       console.error("Error updating email notifications:", error);
     } finally {
