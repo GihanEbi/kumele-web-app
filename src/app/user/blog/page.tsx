@@ -1,11 +1,16 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import Image from "next/image";
+
 import BlogCard from "@/components/BlogCard/BlogCard";
 import { FiSearch } from "react-icons/fi";
 import { SearchIcon } from "../../../../public/svg-icons/icons";
 import { useAppContext } from "@/context/AppContext";
+import { get_all_blogs } from "@/routes/Blogs APIs";
+
+import { get_hobbies_list } from "@/routes/permissions_and_hobbies";
+import InlineSvg from "@/components/InlineSVG/InlineSVG";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 
 interface BlogCardProps {
   id: string;
@@ -16,7 +21,31 @@ interface BlogCardProps {
   date: string;
   showIndicator?: boolean;
   tags: string[];
+  categoryIcon?: React.ReactNode;
 }
+
+type ApiBlog = {
+  id: string;
+  event_category_id: string;
+  blog_name: string;
+  banner_img_url: string;
+  blog_img_url: string;
+  blog_video_link?: string;
+  youtube_link?: string;
+  facebook_link?: string;
+  instagram_link?: string;
+  pinterest_link?: string;
+  twitter_link?: string;
+  blog_content: string;
+  author_id: string;
+  created_at: string;
+};
+
+export type FetchedCategory = {
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+};
 
 const TABS = [
   { id: "all", label: "All" },
@@ -101,11 +130,16 @@ const Blog: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [blogs, setBlogs] = useState<BlogCardProps[]>([]);
+  const [categories, setCategories] = useState<FetchedCategory[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   // use the appContext to get the more option state
   const { moreOption, setIsBottomNavBarFixed } = useAppContext();
+  const API_BASE_URL = "http://localhost:5001/";
 
-  const filteredPosts = ALL_BLOG_POSTS.filter((post) => {
+  const filteredPosts = blogs.filter((post) => {
     const matchesTab = activeTab === "all" || post.tags.includes(activeTab);
     const matchesSearch =
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -115,7 +149,23 @@ const Blog: React.FC = () => {
   });
   useEffect(() => {
     setIsBottomNavBarFixed(true);
+    const categoryData = async () => {
+      await fetchCategories();
+    };
+
+    categoryData();
   }, []);
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      const categoryMap: Record<string, FetchedCategory> = {};
+      categories.forEach((cat) => {
+        categoryMap[cat.id] = cat;
+      });
+
+      fetchBlogs(categoryMap);
+    }
+  }, [categories]);
 
   // Mobile-like drag scrolling handlers
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -180,12 +230,92 @@ const Blog: React.FC = () => {
     scrollToTab(tabId);
   };
 
+  const fetchCategories = async () => {
+    setLoading(true);
+    try {
+      const res = await get_hobbies_list();
+      const mapped: FetchedCategory[] = (res?.data ?? []).map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        icon: (
+          <InlineSvg
+            svg={item.svg_code}
+            title={item.name}
+            className="w-[16.18px] h-[16.18px]"
+          />
+        ),
+      }));
+      setCategories([{ id: "all", name: "All", icon: null }, ...mapped]);
+      console.log("Fetched categories:", mapped);
+    } catch (error) {
+      console.error("Error fetching interests:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const mapApiToCard = (
+    apiBlog: ApiBlog,
+    categoryMap: Record<string, FetchedCategory>
+  ): BlogCardProps => {
+    const category = categoryMap[apiBlog.event_category_id] || {
+      name: "Unknown",
+      icon: null,
+    };
+    console.log("Mapping blog:", apiBlog, "to category:", category);
+    return {
+      id: apiBlog.id,
+      imageUrl: apiBlog.blog_img_url
+        ? `${API_BASE_URL}${apiBlog.blog_img_url}`
+        : "/images/blog-demo.jpg",
+      title: apiBlog.blog_name,
+      categoryName: category.name,
+      categoryIcon: category.icon,
+      author: apiBlog.author_id,
+      date: new Date(apiBlog.created_at).toLocaleDateString("en-US", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
+      tags: ["all", apiBlog.event_category_id],
+    };
+  };
+
+  const fetchBlogs = async (categoryMap: Record<string, FetchedCategory>) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await get_all_blogs();
+      if (res?.success && Array.isArray(res.data)) {
+        const mapped = (res.data as ApiBlog[]).map((blog) =>
+          mapApiToCard(blog, categoryMap)
+        );
+        setBlogs(mapped);
+        console.log("Fetched blogs:", mapped);
+      } else {
+        setBlogs([]);
+        setError("No blogs found.");
+      }
+    } catch (err) {
+      console.error("Error fetching blogs:", err);
+      setError("Failed to load blogs.");
+      setBlogs([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div
       className={`max-w-full mx-auto rounded-lg pt-[64px] pb-50 ${
         moreOption ? "bg-k-background-secondary" : "bg-k-background-primary"
       }`}
     >
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 ">
         <h2 className="font-plusJakartaSans  font-bold text-[23px] mb-6">
           Blog
@@ -228,7 +358,7 @@ const Blog: React.FC = () => {
               WebkitOverflowScrolling: "touch",
             }}
           >
-            {TABS.map((tab) => (
+            {categories.map((tab) => (
               <button
                 key={tab.id}
                 id={`tab-${tab.id}`}
@@ -240,7 +370,7 @@ const Blog: React.FC = () => {
                       : "bg-app-blog-unselected-tabs-background text-app-blog-unselected-tabs-text hover:bg-gray-700"
                   } `}
               >
-                {tab.label}
+                {tab.name}
               </button>
             ))}
           </div>

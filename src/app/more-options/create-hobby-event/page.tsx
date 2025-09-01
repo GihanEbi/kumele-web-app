@@ -209,7 +209,7 @@ const CreateEventSection = () => {
           icon: (
             <InlineSvg
               svg={item.svg_code}
-              //className="text-app-icon"
+             className="w-[35px] h-[35px]"
               title={item.name}
             />
           ),
