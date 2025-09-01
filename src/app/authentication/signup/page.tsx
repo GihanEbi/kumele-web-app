@@ -14,31 +14,35 @@ import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/Ra
 import { authConstants } from "@/constants/auth-constants";
 import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
-import { register } from "@/routes/signup_and_signin";
+import {
+  register,
+  send_otp_for_verification,
+} from "@/routes/signup_and_signin";
 import EmailVerificationModel from "@/components/Models/EmailVerificationModel/EmailVerificationModel";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import DropDown from "@/components/DropDown/DropDown";
 import { getPartnershipToken } from "@/utils/partnershipUtils";
+import GoogleSigninOtherModel from "@/components/Models/googleSigninOtherModel/GoogleSigninOtherModel";
 
 const languages = [
   {
-    id: "english",
+    id: "English",
     label: "English",
   },
   {
-    id: "french",
+    id: "French",
     label: "French",
   },
   {
-    id: "spanish",
+    id: "Spanish",
     label: "Spanish",
   },
   {
-    id: "chinese",
+    id: "Chinese",
     label: "Chinese",
   },
   {
-    id: "arabic",
+    id: "Arabic",
     label: "Arabic",
   },
 ];
@@ -52,21 +56,23 @@ const Signup = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const isPartnerShipAccount= getPartnershipToken()
-
+  const isPartnerShipAccount = getPartnershipToken();
+  const [showGoogleVerificationModel, setShowGoogleVerificationModel] =
+    useState(false);
 
   // ------------ from for user details -----------
   const [form, setForm] = useState({
     email: "",
     password: "",
     confirm_password: "",
-    name: "",
+    fullName: "",
     gender: "",
-    date_of_birth: "",
-    referrer_code: "",
-    above_legal_age: false,
-    terms_and_conditions: false,
-    subscribe_to_newsletter: false,
+    language: "",
+    // date_of_,birth: "",
+    referralCode: "",
+    aboveLegalAge: false,
+    termsAndConditionsAccepted: false,
+    subscribedToNewsletter: false,
   });
 
   // set separate birthday component value together
@@ -99,38 +105,61 @@ const Signup = () => {
   const [isDayDropdownOpen, setIsDayDropdownOpen] = useState(false);
 
   // -------- handleSubmit for form submission ---------
+  // const handleSubmit = async () => {
+  //   // -------- check full form validation
+  //   // -------- prevent multiple submission
+  //   if (loading) return;
+  //   setLoading(true);
+  //   // backend form data
+  //   let correctBirthday = birthDay.YYYY + "-" + birthDay.MM + "-" + birthDay.DD;
+  //   const dataObj = {
+  //     email: form.email,
+  //     password: form.password,
+  //     confirm_password: form.confirm_password,
+  //     name: form.name,
+  //     gender: form.gender,
+  //     date_of_birth: correctBirthday,
+  //     above_legal_age: form.above_legal_age,
+  //     terms_and_conditions: form.terms_and_conditions,
+  //     subscribe_to_newsletter: form.subscribe_to_newsletter,
+  //   };
+
+  //   try {
+  //     // const data = await register(dataObj);
+  //     setShowEmailVerificationModel(true);
+  //     // if (data.success) {
+  //     //   console.log(data);
+  //     //   // router.push("/user");
+  //     // } else {
+  //     //   console.log(data);
+  //     // }
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     // --------- set loading to false ---------
+  //     setLoading(false);
+  //   }
+  // };
+
+  // Handle send OTP for email verification
   const handleSubmit = async () => {
-    // -------- check full form validation
-    // -------- prevent multiple submission
     if (loading) return;
     setLoading(true);
-    // backend form data
-    let correctBirthday = birthDay.YYYY + "-" + birthDay.MM + "-" + birthDay.DD;
-    const dataObj = {
-      email: form.email,
-      password: form.password,
-      confirm_password: form.confirm_password,
-      name: form.name,
-      gender: form.gender,
-      date_of_birth: correctBirthday,
-      above_legal_age: form.above_legal_age,
-      terms_and_conditions: form.terms_and_conditions,
-      subscribe_to_newsletter: form.subscribe_to_newsletter,
-    };
 
     try {
-      // const data = await register(dataObj);
-      setShowEmailVerificationModel(true);
-      // if (data.success) {
-      //   console.log(data);
-      //   // router.push("/user");
-      // } else {
-      //   console.log(data);
-      // }
+      const email = form.email;
+      if (!email) {
+        throw new Error("Email is required");
+      }
+      const data = await send_otp_for_verification(email);
+      if (data.success) {
+        setShowEmailVerificationModel(true);
+      } else {
+        console.log(data?.message || "Failed to send OTP. Please try again.");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error sending OTP:", error);
     } finally {
-      // --------- set loading to false ---------
       setLoading(false);
     }
   };
@@ -139,6 +168,7 @@ const Signup = () => {
 
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
+    handleInputChange(tabId, "language");
     scrollToTab(tabId);
   }; // Mobile-like drag scrolling handlers
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -246,11 +276,18 @@ const Signup = () => {
           {" "}
           {/* z-10 ensures text is above background */}
           <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
-            {isPartnerShipAccount === "yes"
-              ? <>Advertisers & Bloggers <br />Sign Up</>
-              : "Sign up"}
+            {isPartnerShipAccount === "yes" ? (
+              <>
+                Advertisers & Bloggers <br />
+                Sign Up
+              </>
+            ) : (
+              "Sign up"
+            )}
           </h1>
-          <GoogleIcon />
+          <div onClick={() => setShowGoogleVerificationModel(true)}>
+            <GoogleIcon />
+          </div>
         </div>
       </div>
 
@@ -311,9 +348,9 @@ const Signup = () => {
             <InputComponent
               icon={<UserIcon className="text-app-icon" />}
               placeholder="Enter name"
-              value={form.name}
+              value={form.fullName}
               onChange={(e) => {
-                handleInputChange(e.target.value, "name");
+                handleInputChange(e.target.value, "fullName");
               }}
               className="bg-k-primary-color"
             />
@@ -352,6 +389,10 @@ const Signup = () => {
                 setIsDayDropdownOpen(value);
               }}
               placeHolder="DD"
+              itemSelected={birthDay.DD}
+              onChange={(value: string) => {
+                setBirthday((prev) => ({ ...prev, DD: value }));
+              }}
             />
             <DropDown
               dataArray={authConstants.monthList}
@@ -359,6 +400,11 @@ const Signup = () => {
                 setIsMonthDropdownOpen(value);
               }}
               placeHolder="MM"
+              itemSelected={birthDay.MM}
+              onChange={(value: string) => {
+                setBirthday((prev) => ({ ...prev, MM: value }));
+                console.log("month is", value);
+              }}
             />
             <DropDown
               dataArray={authConstants.yearList}
@@ -366,6 +412,10 @@ const Signup = () => {
                 setIsYearDropdownOpen(value);
               }}
               placeHolder="YYYY"
+              itemSelected={birthDay.YYYY}
+              onChange={(value: string) => {
+                setBirthday((prev) => ({ ...prev, YYYY: value }));
+              }}
             />
           </div>
         </div>
@@ -416,43 +466,60 @@ const Signup = () => {
           </button>
         </div>
         {/* referral code */}
-        <div className="pt-5">
-          <p className="text-sm font-plusJakartaSans text-app-text-primary mb-1">
-            Referral code{" "}
-            <span className="font-plusJakartaSans text-app-text-primary">
+        <div className="flex justify-between items-center gap-5">
+          <div className="pt-5">
+            <p className="text-sm font-plusJakartaSans text-app-text-primary mb-1">
+              Referral code{" "}
+              {/* <span className="font-plusJakartaSans text-app-text-primary">
               (Optional)
-            </span>
-          </p>
-          <InputComponent
-            placeholder="e.g. DF3R435"
-            onChange={(e) => {
-              handleInputChange(e.target.value, "referrer_code");
-            }}
-            value={form.referrer_code}
-          />
+            </span> */}
+            </p>
+            <InputComponent
+              placeholder="e.g. DF3R435"
+              onChange={(e) => {
+                handleInputChange(e.target.value, "referralCode");
+              }}
+              value={form.referralCode}
+            />
+          </div>
+          <div className="pt-5">
+            <p className="text-sm font-plusJakartaSans text-app-text-primary mb-1">
+              Beta code{" "}
+              {/* <span className="font-plusJakartaSans text-app-text-primary">
+              (Optional)
+            </span> */}
+            </p>
+            <InputComponent
+              placeholder="e.g. DF3R435"
+              onChange={(e) => {
+                // handleInputChange(e.target.value, "referralCode");
+              }}
+              value={""}
+            />
+          </div>
         </div>
         {/* check boxes */}
         <div className="space-y-3 pt-5">
           <CheckBoxComponent
             label="I am a legal adult (18/21+)"
             onChange={(e) => {
-              handleInputChange(e.target.checked, "above_legal_age");
+              handleInputChange(e.target.checked, "aboveLegalAge");
             }}
-            value={form.above_legal_age}
+            value={form.aboveLegalAge}
           />
           <CheckBoxComponent
             label="Subscribe to newsletter"
             onChange={(e) => {
-              handleInputChange(e.target.checked, "subscribe_to_newsletter");
+              handleInputChange(e.target.checked, "subscribedToNewsletter");
             }}
-            value={form.subscribe_to_newsletter}
+            value={form.subscribedToNewsletter}
           />
           <CheckBoxComponent
             label="By creating an account you agree to Terms & Conditions"
             onChange={(e) => {
-              handleInputChange(e.target.checked, "terms_and_conditions");
+              handleInputChange(e.target.checked, "termsAndConditionsAccepted");
             }}
-            value={form.terms_and_conditions}
+            value={form.termsAndConditionsAccepted}
           />
           <div className="flex items-center">
             <CheckBoxComponent
@@ -500,7 +567,22 @@ const Signup = () => {
         <EmailVerificationModel
           onClose={() => setShowEmailVerificationModel(false)}
           isOpen={showEmailVerificationModel}
-          email={form.email}
+          formData={{
+            ...form,
+            dateOfBirth: `${birthDay.YYYY}-${birthDay.MM}-${birthDay.DD}`,
+          }}
+          //email={form.email}
+          //password={form.password} // Pass password if needed for verification"
+        />
+      )}
+
+      {/* google Verification Model */}
+      {showGoogleVerificationModel && (
+        <GoogleSigninOtherModel
+          onClose={() => setShowGoogleVerificationModel(false)}
+          isOpen={showGoogleVerificationModel}
+          //email={form.email}
+          //password={form.password} // Pass password if needed for verification"
         />
       )}
     </div>

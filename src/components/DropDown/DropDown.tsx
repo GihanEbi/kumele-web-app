@@ -10,6 +10,12 @@ type DropDownProps = {
   placeHolder: string | React.ReactNode;
   itemSelected?: string | null | React.ReactNode;
   bgColor?: string;
+  onChange?: Function
+};
+// Define a more specific type for the items in the data array
+type DataItem = {
+  label: string | React.ReactNode;
+  value: string;
 };
 
 const DropDown: React.FC<DropDownProps> = ({
@@ -18,23 +24,49 @@ const DropDown: React.FC<DropDownProps> = ({
   dataArray,
   itemSelected,
   bgColor,
+  onChange,
 }) => {
   const [isListOpen, setIsListOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<
     string | null | React.ReactNode
   >(itemSelected || null);
+  const [selectedLabel, setSelectedLabel] = useState<
+    string | null | React.ReactNode
+  >(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleList = () => setIsListOpen((prev) => !prev);
 
-  const selectItem = (item: string | null | React.ReactNode) => {
-    setSelectedItem(item);
-    setIsListOpen(false);
-    isOpen(false);
-    itemSelected = item; // Update the itemSelected prop
-  };
+  // const selectItem = (item: string | null | React.ReactNode) => {
+  //   setSelectedItem(item);
+  //   setIsListOpen(false);
+  //   isOpen(false);
+  //   itemSelected = item; // Update the itemSelected prop
+  //   onChange && onChange(item); // Call onChange if provided
+  // };
 
   // Effect for closing dropdown on click outside
+  const selectItem = (item: DataItem) => {
+    setSelectedLabel(item.label); // Set the display label
+    setIsListOpen(false);
+    isOpen(false);
+    // Call onChange with the item's VALUE
+    if (onChange) {
+      onChange(item.value);
+    }
+  };
+
+  useEffect(() => {
+    if (itemSelected) {
+      const selected = dataArray.find(item => item.value === itemSelected);
+      if (selected) {
+        setSelectedLabel(selected.label);
+      }
+    } else {
+        setSelectedLabel(null);
+    }
+  }, [itemSelected, dataArray]);
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -78,8 +110,8 @@ const DropDown: React.FC<DropDownProps> = ({
           aria-expanded={isListOpen}
           aria-controls="dropdown"
         >
-          <span>{selectedItem ? selectedItem : placeHolder}</span>
-
+          {/* <span>{selectedItem ? selectedItem : placeHolder}</span> */}
+ <span>{selectedLabel ? selectedLabel : placeHolder}</span>
           <DownArrow className="text-app-icon w-[20px] h-[20px] ml-3" />
         </div>
 
@@ -95,7 +127,7 @@ const DropDown: React.FC<DropDownProps> = ({
                   key={item.value}
                   className={`block px-4 py-1.5 text-[14.23px] text-app-text-primary text-center`}
                   onClick={() => {
-                    selectItem(item.label);
+                    selectItem(item);
                   }}
                   role="option"
                   aria-selected={selectedItem === item.label}

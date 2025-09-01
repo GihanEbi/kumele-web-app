@@ -4,114 +4,131 @@ import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import {
   BackArrow,
-  EmoryIcon,
   EyeIcon,
-  PasswordIcon,
   ProfileIcon,
-  RightArrowIcon,
 } from "../../../../public/svg-icons/icons";
-import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
-import { sound_Notifications } from "@/routes/profile";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
-import InterestCard from "@/components/InterestCard/InterestCard";
-import Image from "next/image";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
 import { paddings } from "@/constants/layout-constants";
+import {
+  createOrUpdateAbout,
+  getAllUserData,
+  updateProfilePicture,
+} from "@/routes/profile";
+import Image from "next/image";
+import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
+import { useRouter } from "next/navigation";
 
-const languages = [
-  {
-    id: "english",
-    label: "English",
-  },
-  {
-    id: "french",
-    label: "French",
-  },
-  {
-    id: "spanish",
-    label: "Spanish",
-  },
-  {
-    id: "chinese",
-    label: "Chinese",
-  },
-  {
-    id: "arabic",
-    label: "Arabic",
-  },
-];
+const imgUrl = "http://localhost:5001";
+
+// ---------- interface ----------
+interface profileData {
+  id: string;
+  username: string;
+  fullname: string;
+  email: string;
+  gender: string;
+  language: string;
+  dateofbirth: string;
+  referralcode: string;
+  abovelegalage: boolean;
+  termsandconditionsaccepted: boolean;
+  subscribedtonewsletter: boolean;
+  profilepicture: string;
+  about_me: string;
+  to_tp_secret: string;
+  is_2fa_enabled: boolean;
+  my_referral_code: string;
+  qr_code_url: string;
+}
+
 const page = () => {
+  const router = useRouter();
   //   loading state
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>("english");
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const tabsContainerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  const [userData, setUserData] = useState<profileData | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  // state for about me
+  const [aboutMe, setAboutMe] = useState<string>("");
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
 
-  // LANGUAGE SELECTION
+  const handleClick = () => {
+    fileInputRef.current?.click(); // programmatically open file selector
+  };
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
-  const handleTabClick = (tabId: string) => {
-    setActiveTab(tabId);
-    scrollToTab(tabId);
-  }; // Mobile-like drag scrolling handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setStartX(e.pageX - (tabsContainerRef.current?.offsetLeft || 0));
-    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
+  const handleSubmitAboutMe = async () => {
+    if (loading) return;
+
+    setLoading(true);
+
+    try {
+      const data = await createOrUpdateAbout({ about: aboutMe });
+      if (data.success) {
+        fetchUserData();
+        setShowSuccessModel(true);
+        setTimeout(() => {
+          setShowSuccessModel(false);
+        }, 1000); // Hide after 2 seconds
+        router.push("/user/profile");
+      } else {
+        console.log(data.message || "Failed to update about me.");
+        setShowSuccessModel(false);
+      }
+    } catch (error) {
+      console.error("Error updating about me:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleMouseLeave = () => {
-    setIsDragging(false);
+  // Simulate fetching user data
+  const fetchUserData = async () => {
+    setLoading(true);
+    try {
+      const data = await getAllUserData();
+
+      if (data.success) {
+        setUserData(data.data);
+        setAboutMe(data.data.about_me || "");
+      } else {
+        console.error("Failed to fetch user data:", data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+  const handleFileUpload = async (file: any) => {
+    if (loading) {
+      return;
+    }
+    try {
+      setLoading(true);
+      if (file) {
+        let formData = new FormData();
+        formData.append("destination", "profiles");
+        formData.append("profilePicture", file);
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !tabsContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - (tabsContainerRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2; // Scroll speed multiplier
-    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX - (tabsContainerRef.current?.offsetLeft || 0));
-    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !tabsContainerRef.current) return;
-    e.preventDefault();
-    const x = e.touches[0].pageX - (tabsContainerRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2;
-    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-  const scrollToTab = (tabId: string) => {
-    const tabElement = document.getElementById(`tab-${tabId}`);
-    if (tabElement && tabsContainerRef.current) {
-      const container = tabsContainerRef.current;
-      const containerWidth = container.offsetWidth;
-      const tabLeft = tabElement.offsetLeft;
-      const tabWidth = tabElement.offsetWidth;
-
-      const scrollPosition = tabLeft - (containerWidth - tabWidth) / 2;
-
-      container.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
+        const data = await updateProfilePicture(formData);
+        if (data.success) {
+          // Handle successful profile picture update
+          fetchUserData();
+          console.log(data.message);
+        } else {
+          console.log(data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -122,7 +139,13 @@ const page = () => {
           <LoadingComponent />
         </div>
       )}
-      <div className="min-h-screen bg-app-background-primary flex flex-col pt-6 font-plusJakartaSans">
+      <div
+        className={`${
+          showSuccessModel
+            ? "bg-k-background-secondary"
+            : "bg-k-background-primary"
+        } min-h-screen flex flex-col pt-6 font-plusJakartaSans`}
+      >
         <div className={`w-full max-w-md px-4 ${paddings.topMargin}`}>
           {/* Header */}
           <header className="sticky top-0 bg-app-background-primary z-10 flex items-center">
@@ -140,53 +163,41 @@ const page = () => {
         </div>
 
         <div className="flex flex-col items-center group mt-10">
-          <div className="bg-app-input-yellow rounded-full w-[80px] h-[80px] flex items-center justify-center mb-3">
-            <ProfileIcon className="text-app-text-black w-12 h-12" />
+          <div
+            onClick={handleClick}
+            className={`${
+              userData && userData.profilepicture ? "bg-app-input-yellow" : "bg-app-input-yellow"
+            } rounded-full w-[80px] h-[80px] flex items-center justify-center mb-3 cursor-pointer hover:opacity-80`}
+          >
+            {userData && userData.profilepicture ? (
+              <Image
+                src={`${imgUrl}/${userData.profilepicture.replace(/\\/g, "/")}`}
+                alt="Alkesh Kumar"
+                width={76}
+                height={76}
+                className="rounded-full object-cover"
+              />
+            ) : (
+              <ProfileIcon className="text-app-text-black w-12 h-12" />
+            )}
           </div>
           <p className="text-[16px] font-plusJakartaSans-400 text-center text-app-text-primary">
             Username
           </p>
+
+          {/* Hidden file input */}
+          <input
+            type="file"
+            accept="image/*,application/pdf"
+            ref={fileInputRef}
+            className="hidden"
+            onChange={(e) => {
+              if (e.target.files && e.target.files[0]) {
+                handleFileUpload(e.target.files[0]);
+              }
+            }}
+          />
         </div>
-        {/* <div className="mb-6 px-5">
-          <p className="text-xs font-plusJakartaSans text-app-text-primary mb-5">
-            Language choice:
-          </p>
-          <div className="mb-6 sm:mb-8 relative w-full">
-            <div
-              ref={tabsContainerRef}
-              className="flex gap-5 space-x-4 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-0 sm:px-0 no-scrollbar"
-              onMouseDown={handleMouseDown}
-              onMouseLeave={handleMouseLeave}
-              onMouseUp={handleMouseUp}
-              onMouseMove={handleMouseMove}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              style={{
-                cursor: isDragging ? "grabbing" : "grab",
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
-                WebkitOverflowScrolling: "touch",
-              }}
-            >
-              {languages.map((tab, index) => (
-                <button
-                  key={tab.id}
-                  id={`tab-${tab.id}`}
-                  onClick={() => handleTabClick(tab.id)}
-                  className={`py-2 px-5 rounded-md text-sm font-medium whitespace-nowrap flex-shrink-0 transition-colors duration-150
-                  ${
-                    activeTab === tab.id
-                      ? "bg-app-button-yellow text-app-text-black font-medium"
-                      : "bg-app-input-primary text-app-text-secondary"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div> */}
 
         <div className="mt-5 w-full items-center max-w-md px-5">
           <div className="mb-[25px]">
@@ -227,18 +238,41 @@ const page = () => {
             <p className="text-sm font-plusJakartaSans mb-2 text-app-text-primary">
               About
             </p>
-            <TextAreaComponent placeholder="Enter your bio(Max 500 characters" />
+            <TextAreaComponent
+              placeholder="Enter your bio(Max 500 characters"
+              onChange={(e) => setAboutMe(e.target.value)}
+              value={aboutMe}
+            />
           </div>
         </div>
-          <div className="fixed bottom-[40px] left-1/2 transform -translate-x-1/2 w-full px-6">
+        <div className="space-y-3 mt-10 px-3 mb-10">
           <button
-            onClick={() => {}}
-              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+            onClick={() => {
+              handleSubmitAboutMe();
+            }}
+            className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
           >
             Update profile
           </button>
         </div>
       </div>
+      {showSuccessModel && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-50 transition-opacity duration-300 ease-in-out">
+          <div
+            className={`bg-app-background-primary w-full max-w-md p-6 sm:p-8 rounded-t-2xl shadow-xl transform transition-transform duration-300 ease-out `}
+            onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
+          >
+            <div className="flex flex-col items-center">
+              <div className="mb-4">
+                <CheckMarkGif />
+              </div>
+              <p className="text-gray-600 text-sm mb-6 text-center">
+                Update Successfully
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

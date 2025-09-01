@@ -36,7 +36,9 @@ import {
   OutdoorsIcon,
   VolunteerIcon,
 } from "../../../../public/svg-icons/icons";
-import TimeDurationSelector from "@/components/TimeDurationSelector/TimeDurationSelector";
+import TimeDurationSelector, {
+  TimeOption,
+} from "@/components/TimeDurationSelector/TimeDurationSelector";
 
 import DatePicker from "@/components/DatePicker/DatePickerUpdate";
 
@@ -51,6 +53,10 @@ import GuestPricesModal from "./GuestPriceModal/GuestPriceModal";
 import EventsTimeDetailsModal from "./EventsStartDetailsModal/EventStartDetails";
 import Link from "next/link";
 import { useScrollLock } from "@/utils/useScrollHook";
+import { get_hobbies_list } from "@/routes/permissions_and_hobbies";
+import InlineSvg from "@/components/InlineSVG/InlineSVG";
+import { createEvent } from "@/routes/Events";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 
 //event category data(need to move into utils file)-------------------
 const EVENT_CATEGORIES = [
@@ -89,6 +95,12 @@ interface OptionConfig {
   value: string;
 }
 
+type EventCategoryProps = {
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+};
+
 //payment option(need to move into utils file)
 const paymentOptionsConfig: OptionConfig[] = [
   {
@@ -114,9 +126,16 @@ const paymentOptionsConfig: OptionConfig[] = [
 //main page function started--------------------------
 const CreateEventSection = () => {
   // states
+  const [loading, setLoading] = useState<boolean>(false);
+  const [saving, setSaving] = useState<boolean>(false);
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [categories, setCategories] = useState<EventCategoryProps[]>([]);
+
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null); // NEW
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const categoriesContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -126,6 +145,8 @@ const CreateEventSection = () => {
   const [eventName, setEventName] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
+  // Selected duration for "event_start_in"
+  const [eventStartIn, setEventStartIn] = useState<TimeOption>("24 Hrs");
 
   // Address fields
   const [street, setStreet] = useState<string>("");
@@ -134,40 +155,35 @@ const CreateEventSection = () => {
   const [postalCode, setPostalCode] = useState<string>("");
   const [state, setState] = useState<string>("");
 
-  //set modal state
+  // pickers/modals
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  //state for date picker
   const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
-  //state for event start time selector modal opening
   const [isStartTimePickerOpen, setIsStartTimePickerOpen] =
     useState<boolean>(false);
-  //state for event end time selector modal opening
   const [isEndTimePickerOpen, setIsEndTimePickerOpen] =
     useState<boolean>(false);
-  //states for event start and end time
+  const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false);
+  const [isGuestPriceModalOpen, setIsGuestPriceModalOpen] =
+    useState<boolean>(false);
+  const [isEventTimePriceModalOpen, setIsEventTimePriceModalOpen] =
+    useState<boolean>(false);
+  const [isTimeDurationModalOpen, setIsTimeDurationModalOpen] =
+    useState<boolean>(false);
+
+  // times
   const [selectedStartTime, setSelectedStartTime] = useState<string>("");
   const [selectedEndTime, setSelectedEndTime] = useState<string>("");
 
   const [isAddedCartSuccess, setIsAddedCardSuccess] = useState<boolean>(false);
-
   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
-
-  //event preview main modal opening
-  const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false);
-
-  const [isGuestPriceModalOpen, setIsGuestPriceModalOpen] =
-    useState<boolean>(false);
-
-  const [isEventTimePriceModalOpen, setIsEventTimePriceModalOpen] =
-    useState<boolean>(false);
-
-  //payment selection state
   const [selectedPayment, setSelectedPayment] = useState<string>("free");
+  const [ageRange, setAgeRange] = useState<[number, number]>([18, 28]);
+  const [guestCount, setGuestCount] = useState<number>(1); // NEW
+  const [selectedDate, setSelectedDate] = useState<string>(""); // NEW (YYYY-MM-DD)
 
-  //time duration modal state
-  const [isTimeDurationModalOpen, setIsTimeDurationModalOpen] =
-    useState<boolean>(false);
+  //dark theme identification
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   //custom hook for scrolling locking when preview open custom hook calling
   useScrollLock(isPreviewOpen);
@@ -176,6 +192,39 @@ const CreateEventSection = () => {
   useScrollLock(isEndTimePickerOpen);
   useScrollLock(isStartTimePickerOpen);
   useScrollLock(isModalOpen);
+
+  //load categories
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    setLoading(true);
+    try {
+      const res = await get_hobbies_list();
+      const mapped: EventCategoryProps[] = (res?.data ?? []).map(
+        (item: any) => ({
+          id: item.id,
+          name: item.name,
+          icon: (
+            <InlineSvg
+              svg={item.svg_code}
+              //className="text-app-icon"
+              title={item.name}
+            />
+          ),
+        })
+      );
+      console.log(mapped, "catorgoris areee ");
+      setCategories(mapped);
+    } catch (error) {
+      console.error("Error fetching interests:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // -------------------- handlers --------------------
 
   //function for handle event start time
   const handleStartTimeChange = (newTime: string) => {
@@ -191,10 +240,6 @@ const CreateEventSection = () => {
     setSelectedEndTime(newTime);
   };
 
-  //dark theme identification
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
-
   //modal open handle
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
@@ -206,7 +251,6 @@ const CreateEventSection = () => {
   //maximum characters define for event description text area
   const maxCharacters = 1200;
 
-  //date picker selection calendar open handling(to close time picker clocks if open)
   const handleSetDatePickerOpen = (isOpen: boolean) => {
     setDatePickerOpen(isOpen);
     if (isOpen) {
@@ -215,7 +259,6 @@ const CreateEventSection = () => {
     }
   };
 
-  //time picker selection clocks handling
   const handleSetStartTimePickerOpen = (isOpen: boolean) => {
     setIsStartTimePickerOpen(isOpen);
     if (isOpen) {
@@ -242,9 +285,15 @@ const CreateEventSection = () => {
   };
 
   // Image upload handler
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImageUpload = (file: any) => {
+   // const file = e.target.files?.[0];
+
+    if (!file) return;
+
     if (file) {
+      
+      console.log("file is this", file);
+      setImageFile(file); // NEW
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -258,7 +307,7 @@ const CreateEventSection = () => {
     fileInputRef.current?.click();
   };
 
-  // Mobile-like drag scrolling handlers
+  // scroll handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setStartX(e.pageX - (categoriesContainerRef.current?.offsetLeft || 0));
@@ -309,10 +358,12 @@ const CreateEventSection = () => {
   };
   const handleAgeRangeChange = (values: [number, number]) => {
     console.log("Selected age range (Radix):", values);
+    setAgeRange(values);
   };
 
   const handleGuestAddToCart = (guests: number) => {
     console.log(`Adding ${guests} guests to cart.`);
+    setGuestCount(guests);
     setIsAddedCardSuccess(true);
     // Add your cart logic here
   };
@@ -359,6 +410,144 @@ const CreateEventSection = () => {
 
   const handleTimeDurationInnerModalClose = () => {
     setIsTimeDurationModalOpen(false);
+  };
+
+  // --- helper: parse payment radio value -> API fields
+  const parsePayment = (
+    val: string
+  ): { payment_type: string; price: number } => {
+    console.log(val, "selected payment value");
+    if (val === "free") return { payment_type: "free", price: 0 };
+    if (val.startsWith("card_"))
+      return { payment_type: "card", price: Number(val.split("_")[1] || 0) };
+    if (val.startsWith("cash_"))
+      return { payment_type: "cash", price: Number(val.split("_")[1] || 0) };
+    return { payment_type: "free", price: 0 };
+  };
+
+  // --- CREATE EVENT submit
+
+  const handleCreateEvent = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!imageFile) {
+      alert("Please upload an image.");
+      return;
+    }
+    const { payment_type, price } = parsePayment(selectedPayment);
+   // const form = new FormData();
+    //const eventImage = form.append("event_image", imageFile, imageFile.name); // <-- key line
+     const form = new FormData();
+        //form.append("file", imageFile);
+    // const payload = {
+    //   user_id: "US00001",
+    //   category_id: selectedCategory,
+
+    //   destination: "events",
+    //   event_image: imageFile,
+    //   event_name: eventName,
+    //   subtitle,
+    //   description,
+    //   event_start_in: eventStartIn || "",
+    //   event_date: "2025-08-05",
+    //   event_start_time: selectedStartTime,
+    //   event_end_time: selectedEndTime || "",
+    //   street_address: street,
+    //   home_number: homeNumber,
+    //   district,
+    //   postal_zip_code: postalCode,
+    //   state,
+    //   age_range_min: ageRange[0],
+    //   age_range_max: ageRange[1],
+    //   max_guests: guestCount,
+    //   payment_type,
+    //   price,
+    // };
+     form.append("user_id", "US00009");
+    form.append("category_id", selectedCategory ?? "");
+    form.append(
+      "destination",
+      "events"
+    );
+    form.append("event_image", imageFile, imageFile.name); 
+
+    form.append("event_name", eventName);
+    form.append("subtitle", subtitle);
+    form.append("description", description);
+    form.append("event_start_in", eventStartIn || "");
+    form.append("event_date", selectedDate || "");
+    form.append("event_start_time", selectedStartTime || "");
+    form.append("event_end_time", selectedEndTime || "");
+    form.append("street_address", street);
+    form.append("home_number", homeNumber);
+    form.append("district", district);
+    form.append("postal_zip_code", postalCode);
+    form.append("state", state);
+    form.append("age_range_min", String(ageRange[0]));
+    form.append("age_range_max", String(ageRange[1]));
+    form.append("max_guests", String(guestCount));
+    form.append("payment_type", payment_type);
+    form.append("price", String(price));
+    //console.log(payload);
+    try {
+      setLoading(true);
+      //setSaving(true);
+      const res = await createEvent(form);
+      console.log(res, "response is::::");
+      alert(res?.message || "Event created!");
+    } catch (error: any) {
+      alert(error?.message || "Failed to create event.");
+    } finally {
+      setSaving(false);
+      setLoading(false);
+    }
+  };
+
+  const handleCreateEvents = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!imageFile) {
+      alert("Please upload an image.");
+      return;
+    }
+
+    const { payment_type, price } = parsePayment(selectedPayment);
+
+    const form = new FormData();
+    form.append("user_id", "US00009");
+    form.append("category_id", selectedCategory ?? "");
+    form.append(
+      "destination",
+      `${street} ${homeNumber}, ${district}, ${state} ${postalCode}`.trim()
+    );
+    form.append("event_image", imageFile, imageFile.name); // <-- key line
+
+    form.append("event_name", eventName);
+    form.append("subtitle", subtitle);
+    form.append("description", description);
+    form.append("event_start_in", eventStartIn || "");
+    form.append("event_date", selectedDate || "");
+    form.append("event_start_time", selectedStartTime || "");
+    form.append("event_end_time", selectedEndTime || "");
+    form.append("street_address", street);
+    form.append("home_number", homeNumber);
+    form.append("district", district);
+    form.append("postal_zip_code", postalCode);
+    form.append("state", state);
+    form.append("age_range_min", String(ageRange[0]));
+    form.append("age_range_max", String(ageRange[1]));
+    form.append("max_guests", String(guestCount));
+    form.append("payment_type", payment_type);
+    form.append("price", String(price));
+
+    try {
+      setLoading(true);
+      const res = await createEvent(form); // createEvent should POST body=form
+      alert(res?.message || "Event created!");
+    } catch (error: any) {
+      alert(error?.message || "Failed to create event.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -420,6 +609,11 @@ const CreateEventSection = () => {
       }`}
       onClick={closeModal}
     >
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
       <div className="flex flex-row gap-5 pt-[64px] -ml-3">
         <div className="mt-2">
           <Link href="/user/home">
@@ -457,7 +651,7 @@ const CreateEventSection = () => {
                 WebkitOverflowScrolling: "touch",
               }}
             >
-              {EVENT_CATEGORIES.map((category) => (
+              {categories.map((category) => (
                 <div
                   className={`${
                     selectedCategory === category.id
@@ -494,7 +688,7 @@ const CreateEventSection = () => {
                           : "text"
                       } leading-tight`}
                     >
-                      {category.label}
+                      {category.name}
                     </span>
                   </button>
                 </div>
@@ -541,7 +735,13 @@ const CreateEventSection = () => {
           <input
             type="file"
             ref={fileInputRef}
-            onChange={handleImageUpload}
+            //onChange={handleImageUpload}
+              onChange={(e: any) => {
+                      handleImageUpload(
+                        e.target.files[0],
+                       
+                      );
+                    }}
             accept="image/*"
             className="hidden"
           />
@@ -623,6 +823,8 @@ const CreateEventSection = () => {
           setIsitemAdded={setIsTimeDurationModalOpen}
           handleModalOpen={handleTimeDurationInnerModalOpen}
           handleCloseModal={handleTimeDurationInnerModalClose}
+          selected={eventStartIn} // NEW
+          onChange={setEventStartIn}
         />
       </div>
 
@@ -773,7 +975,8 @@ const CreateEventSection = () => {
 
       {/* Create Event Button */}
       <button
-        onClick={() => setIsPreviewOpen(true)}
+        //onClick={() => setIsPreviewOpen(true)}
+        onClick={handleCreateEvent}
         className="w-full mt-12 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-50 "
       >
         Preview Event

@@ -1,18 +1,20 @@
 "use client";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { BuyIcon } from "../../../public/svg-icons/icons";
 import CheckMarkGif from "../GifComponents/CheckMarkGif/CheckMarkGif";
 import { useScrollLock } from "@/utils/useScrollHook";
 
 // Define the possible time options
 const TIME_OPTIONS = ["24 Hrs", "48 Hrs", "7 Days"] as const; // Use 'as const' for stricter typing
-type TimeOption = (typeof TIME_OPTIONS)[number];
+export type TimeOption = (typeof TIME_OPTIONS)[number];
 
 interface TimeDurationSelectorProps {
   handleModalOpen?: () => void;
   handleCloseModal?: () => void;
   isItemAdded: boolean;
   setIsitemAdded: Dispatch<SetStateAction<boolean>>;
+  selected?: TimeOption; 
+   onChange?: (value: TimeOption) => void; 
 }
 
 const TimeDurationSelector: React.FC<TimeDurationSelectorProps> = ({
@@ -20,25 +22,45 @@ const TimeDurationSelector: React.FC<TimeDurationSelectorProps> = ({
   isItemAdded,
   handleCloseModal,
   handleModalOpen,
+  selected,
+  onChange,
 }) => {
-  const [currentTimeIndex, setCurrentTimeIndex] = useState<number>(0); // Start with "24 Hrs"
-  ;
+  const [currentTimeIndex, setCurrentTimeIndex] = useState<number>(() => {
+    if (selected) {
+      const idx = TIME_OPTIONS.indexOf(selected);
+      return idx >= 0 ? idx : 0;
+    }
+    return 0;
+  });
+   // keep internal index in sync if parent changes the value
+  useEffect(() => {
+    if (selected) {
+      const idx = TIME_OPTIONS.indexOf(selected);
+      if (idx >= 0 && idx !== currentTimeIndex) setCurrentTimeIndex(idx);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
+  
 
   const currentTime: TimeOption = TIME_OPTIONS[currentTimeIndex];
   const isBlueSectionVisible = currentTime !== "24 Hrs";
 
   //useScrollLock(isItemAddedSuccess)
 
-  const handleIncrement = () => {
-    if (currentTimeIndex < TIME_OPTIONS.length - 1) {
-      setCurrentTimeIndex((prevIndex) => prevIndex + 1);
-    }
+const handleIncrement = () => {
+    setCurrentTimeIndex((prev) => {
+      const next = Math.min(prev + 1, TIME_OPTIONS.length - 1);
+      onChange?.(TIME_OPTIONS[next]);
+      return next;
+    });
   };
 
   const handleDecrement = () => {
-    if (currentTimeIndex > 0) {
-      setCurrentTimeIndex((prevIndex) => prevIndex - 1);
-    }
+    setCurrentTimeIndex((prev) => {
+      const next = Math.max(prev - 1, 0);
+      onChange?.(TIME_OPTIONS[next]);
+      return next;
+    });
   };
 
   return (
