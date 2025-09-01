@@ -24,7 +24,6 @@ const contactReasons = [
 const ContactModel: React.FC<ContactModelProps> = ({ isOpen, onClose }) => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState("");
 
   // ---------- form for login details -----------
   const [form, setForm] = useState({

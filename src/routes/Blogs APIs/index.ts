@@ -27,7 +27,7 @@ type commentToBlog = {
   reply_to: string;
 };
 
-const commonUrl = `${config.baseUrl}/api/blogs`;
+const commonUrl = `${config.baseUrl}/blogs`;
 
 export async function create_blog(dataObj: createUpdateBlogForm) {
   const formData = new FormData();
