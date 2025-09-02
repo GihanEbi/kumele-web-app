@@ -11,6 +11,7 @@ import {
   CloseIcon,
   DownArrowIcon,
   LocationIcon,
+  RateIcon,
   ShareIcon,
   TwoTicketsIcon,
   UsersIcon,
@@ -53,6 +54,7 @@ interface EventCardProps {
   onOpenOtherEvent: (ev: Event) => void;
   isOverlay?: boolean;
   onCloseOverlayCard?: () => void;
+  onOpenRating: () => void;
 }
 
 const mockOtherEvents: Event[] = [
@@ -118,13 +120,19 @@ export default function EventCard({
   onOpenOtherEvent,
   onCloseOverlayCard,
   isOverlay,
+  onOpenRating,
 }: EventCardProps) {
   //identifying the theme
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
-  const [showLeftBadge, setShowLeftBadge] = useState(false);
-  const [showRightBadge, setShowRightBadge] = useState(false);
+  const [showLeftBadge, setShowLeftBadge] = useState<boolean>(false);
+  const [showRightBadge, setShowRightBadge] = useState<boolean>(false);
+  // inside EventCard component, near your other useState hooks
+
+  const [isRatingOpen, setIsRatingOpen] = useState(false);
+  const openRating = () => setIsRatingOpen(true);
+  const closeRating = () => setIsRatingOpen(false);
 
   //calling app context to get the state of bottomnav bar fixed
   const setIsBottomNavBarFixed = useAppContext().setIsBottomNavBarFixed;
@@ -281,7 +289,7 @@ export default function EventCard({
           onClick={(e) => {
             e.stopPropagation();
             //setShowRightBadge((v) => !v);
-            router.push("/user/home/event-matched");
+            router.push("/more-options/event-matched");
             console.log("Right badge clicked");
           }}
           className={`absolute top-5 right-5 translate-x-1/2 -translate-y-1/2 z-[1000]
@@ -320,7 +328,7 @@ export default function EventCard({
           onClick={(e) => {
             setShowLeftBadge((v) => !v);
             e.stopPropagation();
-            onCloseOverlayCard?.();
+            onOpenRating();
           }}
           className={`absolute top-5 left-5 -translate-x-1/2 -translate-y-1/2 z-[1000]
               transition-opacity transition-transform duration-200

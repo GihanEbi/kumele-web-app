@@ -1,10 +1,11 @@
 "use client";
 
 import { Fredoka } from "next/font/google";
-import { TypingIcon, YingYang2 } from "../../../../../public/svg-icons/icons";
+import { TypingIcon, YingYang2 } from "../../../../public/svg-icons/icons";
 import { PaymentModal } from "@/components/PaymentModal/PaymentModal";
 import { AddCardModal } from "@/components/PaymentModal/AddNewCard/AddNewCard";
 import { useState } from "react";
+import ModalPortal from "@/components/ModalPortal/ModalPortal";
 
 const Fredoka_font = Fredoka({ subsets: ["latin"], weight: ["700"] });
 
