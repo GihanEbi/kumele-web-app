@@ -5,12 +5,13 @@ import {
   useMotionValueEvent,
   useTransform,
 } from "framer-motion";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, use, useEffect, useState } from "react";
 import {
   ClockIcon,
   CloseIcon,
   DownArrowIcon,
   LocationIcon,
+  RateIcon,
   ShareIcon,
   TwoTicketsIcon,
   UsersIcon,
@@ -23,6 +24,7 @@ import HostInfo from "./hostInfo/HostInfo";
 import OtherEvents from "./otherEvents/OtherEvents";
 import { useAppContext } from "@/context/AppContext";
 import RatingSection from "./otherEvents/RatingSection";
+import { useRouter } from "next/navigation";
 
 //types of a event
 type Event = {
@@ -52,6 +54,7 @@ interface EventCardProps {
   onOpenOtherEvent: (ev: Event) => void;
   isOverlay?: boolean;
   onCloseOverlayCard?: () => void;
+  onOpenRating: () => void;
 }
 
 const mockOtherEvents: Event[] = [
@@ -117,10 +120,19 @@ export default function EventCard({
   onOpenOtherEvent,
   onCloseOverlayCard,
   isOverlay,
+  onOpenRating,
 }: EventCardProps) {
   //identifying the theme
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
+
+  const [showLeftBadge, setShowLeftBadge] = useState<boolean>(false);
+  const [showRightBadge, setShowRightBadge] = useState<boolean>(false);
+  // inside EventCard component, near your other useState hooks
+
+  const [isRatingOpen, setIsRatingOpen] = useState(false);
+  const openRating = () => setIsRatingOpen(true);
+  const closeRating = () => setIsRatingOpen(false);
 
   //calling app context to get the state of bottomnav bar fixed
   const setIsBottomNavBarFixed = useAppContext().setIsBottomNavBarFixed;
@@ -129,6 +141,8 @@ export default function EventCard({
 
   const isMoreOptionsOpen = useAppContext().moreOption;
   console.log("isMoreOptionsOpen is:", isMoreOptionsOpen);
+
+  const router = useRouter();
 
   //variables for dragging animations and styles
   const x = useMotionValue(0);
@@ -211,6 +225,7 @@ export default function EventCard({
             : depth * 12,
 
         zIndex: events.length - depth, //change
+        overflow: "visible",
         // zIndex: isStackExtended && isFront ? 50 : events.length - depth,
         height: isStackExtended
           ? "92vh"
@@ -238,6 +253,111 @@ export default function EventCard({
       }}
       onDragEnd={handleDragEnd}
     >
+      {/* Transparent Left and Right Buttons to reveal badges */}
+      <button
+        type="button"
+        aria-label="Reveal close badge"
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowLeftBadge((v) => !v);
+          //setShowRightBadge(false);
+        }}
+        className="absolute top-5 left-5 -translate-x-1/2 -translate-y-1/2
+             h-16 w-16 z-[900] bg-transparent pointer-events-auto"
+      />
+
+      <button
+        type="button"
+        aria-label="Reveal right badge"
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowRightBadge((v) => !v);
+          //setShowLeftBadge(false);
+        }}
+        className="absolute top-5 right-5 translate-x-1/2 -translate-y-1/2
+             h-16 w-16 z-[900] bg-transparent pointer-events-auto"
+      />
+
+      {/* TOP-RIGHT VERIFIED BADGE */}
+      {isFront && (
+        <button
+          type="button"
+          aria-label="Verified"
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            //setShowRightBadge((v) => !v);
+            router.push("/more-options/event-matched");
+            console.log("Right badge clicked");
+          }}
+          className={`absolute top-5 right-5 translate-x-1/2 -translate-y-1/2 z-[1000]
+              transition-opacity transition-transform duration-200
+              ${
+                showRightBadge && !showLeftBadge
+                  ? "opacity-100 scale-100 pointer-events-auto"
+                  : "opacity-0 scale-95 pointer-events-none"
+              }`}
+        >
+          <span
+            className={`h-12 w-12 rounded-full bg-[#F7B500] ring-4 ${
+              isDark ? "ring-black" : "ring-white"
+            }  shadow-md grid place-items-center`}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-10 w-10"
+              fill="none"
+              stroke={isDark ? "black" : "white"}
+              strokeWidth={3}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+          </span>
+        </button>
+      )}
+      {/* TOP-LEFT CLOSE BADGE */}
+      {isFront && (
+        <button
+          type="button"
+          aria-label="Close"
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            setShowLeftBadge((v) => !v);
+            e.stopPropagation();
+            onOpenRating();
+          }}
+          className={`absolute top-5 left-5 -translate-x-1/2 -translate-y-1/2 z-[1000]
+              transition-opacity transition-transform duration-200
+              ${
+                showLeftBadge
+                  ? "opacity-100 scale-100 pointer-events-auto"
+                  : "opacity-0 scale-95 pointer-events-none"
+              }`}
+        >
+          <span
+            className={`h-12 w-12 rounded-full bg-[#FF6B6B] ring-4 ${
+              isDark ? "ring-black" : "ring-white"
+            } shadow-md grid place-items-center`}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-10 w-10"
+              fill="none"
+              stroke={isDark ? "black" : "white"}
+              strokeWidth={3}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M6 6l12 12M6 18L18 6" />
+            </svg>
+          </span>
+        </button>
+      )}
+
       {(depth === 0 || depth === 1) && (
         <div
           className={` ${
