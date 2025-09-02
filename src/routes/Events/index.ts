@@ -2,10 +2,9 @@ import { config } from "@/config";
 import { getToken } from "@/utils/authUtils";
 
 type EventCreationPayload = {
-  user_id: string;
   category_id: string;
   destination: string;
-  event_image: File | null;
+  event_image: string;
   event_name: string;
   subtitle: string;
   description: string;
@@ -18,14 +17,53 @@ type EventCreationPayload = {
   district: string;
   postal_zip_code: string;
   state: string;
-  age_range_min: number;
-  age_range_max: number;
-  max_guests: number;
+  age_range_min: string;
+  age_range_max: string;
+  max_guests: string;
   payment_type: string;
-  price: number;
+  price: string;
 };
 
 const commonUrl = `${config.baseUrl}`;
+
+export async function createEvent(data: EventCreationPayload) {
+  const formData = new FormData();
+  formData.append("category_id", data.category_id);
+  formData.append("destination", data.destination);
+  formData.append("event_image", data.event_image);
+  formData.append("event_name", data.event_name);
+  formData.append("subtitle", data.subtitle);
+  formData.append("description", data.description);
+  formData.append("event_start_in", data.event_start_in);
+  formData.append("event_date", data.event_date);
+  formData.append("event_start_time", data.event_start_time);
+  formData.append("event_end_time", data.event_end_time);
+  formData.append("street_address", data.street_address);
+  formData.append("home_number", data.home_number);
+  formData.append("district", data.district);
+  formData.append("postal_zip_code", data.postal_zip_code);
+  formData.append("state", data.state);
+  formData.append("age_range_min", data.age_range_min);
+  formData.append("age_range_max", data.age_range_max);
+  formData.append("max_guests", data.max_guests);
+  formData.append("payment_type", data.payment_type);
+  formData.append("price", data.price);
+
+  try {
+    const res = await fetch(`${commonUrl}/events/create-event`, {
+      method: "POST",
+      headers: {
+        authorization: `${getToken()}`, // Ensure getToken() returns a valid token
+      },
+      body: formData,
+    });
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
 
 //---------create event------------------
 /*
@@ -145,7 +183,6 @@ export async function update_event(
         headers: {
           "Content-Type": "application/json",
           Authorization: `${getToken()}`,
-          
         },
         body: JSON.stringify(updatedData),
       }
@@ -157,45 +194,3 @@ export async function update_event(
     return error;
   }
 }
-
-
-export async function createEvent(data: {
-  [k: string]: any;
-  event_image?: File | null;
-}) {
-  const form = new FormData();
-
- 
-  if (data.event_image instanceof File) {
-    form.append("event_image", data.event_image, data.event_image.name);
-  }
-
- 
-  Object.entries(data).forEach(([key, value]) => {
-    if (key === "event_image") return;
-    if (value === undefined || value === null) return;
-
-   
-    if (typeof value === "object" && !(value instanceof File)) {
-      form.append(key, JSON.stringify(value));
-    } else {
-      form.append(key, String(value));
-    }
-  });
-
-   const res = await fetch(`${commonUrl}/events/create-event`, {
-    method: "POST",
-    body: form, 
-    headers: {
-      Authorization: `${getToken()}`,
-    },
-    //credentials: "include",
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || `Request failed with status ${res.status}`);
-  }
-  return res.json();
-}
-

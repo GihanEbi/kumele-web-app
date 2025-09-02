@@ -24,13 +24,46 @@ import { SendPaymentModal } from "@/components/PaymentModal/SendPayment/SendPaym
 import { CoinbasePaymentModal } from "@/components/PaymentModal/CoinBasePaymentModal/CoinBasePaymentModal";
 import { PaymentCompleteModal } from "@/components/PaymentModal/PaymentCompleteModal/PaymentCompleteModal";
 import InviteModal from "./ShareModal/ShareModal";
+import HobbyTagIcon from "@/components/HobbyTagIcon/HobbyTagIcon";
+
+type EventCreationPayload = {
+  category_id: string;
+  destination: string;
+  event_image: string;
+  event_name: string;
+  subtitle: string;
+  description: string;
+  event_start_in: string;
+  event_date: string;
+  event_start_time: string;
+  event_end_time: string;
+  street_address: string;
+  home_number: string;
+  district: string;
+  postal_zip_code: string;
+  state: string;
+  age_range_min: string;
+  age_range_max: string;
+  max_guests: string;
+  payment_type: string;
+  price: string;
+};
 
 type EventPreviewModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  eventDataObj: EventCreationPayload;
+  tempImgUrl: string | undefined | null;
+  onEventCreate: Function;
 };
 
-const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
+const EventPreviewModal = ({
+  isOpen,
+  onClose,
+  eventDataObj,
+  tempImgUrl,
+  onEventCreate,
+}: EventPreviewModalProps) => {
   const [isExtendedPreviewOpen, setIsExtentedPreviewOpen] =
     useState<boolean>(false);
   const [isPaymentModalOpen, setPaymentModalOpen] = useState<boolean>(false);
@@ -87,6 +120,41 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
     setPaymentModalOpen(true); // Close the final screen, ending the flow
   };
 
+  // get the remaining time to event start
+  function getHoursRemaining(
+    eventDate: string | Date,
+    eventStartTime: string
+  ): number {
+    // Convert eventDate to Date object
+    const baseDate = new Date(eventDate);
+
+    // Extract hours and minutes from eventStartTime (e.g., "09:26 PM")
+    const [time, modifier] = eventStartTime.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+
+    if (modifier.toLowerCase() === "pm" && hours < 12) {
+      hours += 12;
+    }
+    if (modifier.toLowerCase() === "am" && hours === 12) {
+      hours = 0;
+    }
+
+    // Create a new Date with combined date + time
+    const eventDateTime = new Date(baseDate);
+    eventDateTime.setHours(hours, minutes, 0, 0);
+
+    // Get current time
+    const now = new Date();
+
+    // Calculate difference in hours
+    const diffMs = eventDateTime.getTime() - now.getTime();
+    const diffHours = diffMs / (1000 * 60 * 60);
+
+    // Round down to nearest hour (no decimals)
+    return Math.floor(diffHours);
+  }
+
+
   return (
     <>
       <div
@@ -109,22 +177,18 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
                 <CloseIcon className="h-5 w-5" />
               </button>
               <Image
-                src={eventData.imageSrc}
+                src={tempImgUrl ? tempImgUrl : "/images/blog-preview.png"}
                 alt={eventData.title}
                 width={400}
                 height={250}
                 className="w-full h-65 object-cover rounded-t-2xl"
               />
-              <div className="absolute top-5 right-6 bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1.5">
-                <YingyangIcon />
-                <span className="font-plusJakartaSans text-white font-normal text-[13px]">
-                  {eventData.category}
-                </span>
-              </div>
+
+              <HobbyTagIcon hobbyId={eventDataObj.category_id} />
             </div>
             <div className="flex justify-between items-start mb-4 mt-3">
               <h1 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[25px]">
-                {eventData.title}
+                {eventDataObj?.event_name}
               </h1>
               <button
                 onClick={() => setInviteModalOpen(true)}
@@ -145,19 +209,25 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
                 <div className="flex items-center space-x-1">
                   <TwoTicketsIcon className="h-[20px] w-[20px]" />{" "}
                   <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                    {eventData.price}
+                    {eventDataObj?.payment_type}
                   </span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <ClockIcon className="h-[20px] w-[20px]" />{" "}
                   <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                    {eventData.time}
+                    {eventDataObj?.event_start_time
+                      .replace(/(AM|PM)/i, "")
+                      .trim()}
+                    -
+                    {eventDataObj?.event_end_time
+                      .replace(/(AM|PM)/i, "")
+                      .trim()}
                   </span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <UsersIcon className="h-[20px] w-[20px]" />{" "}
                   <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                    {eventData.guests} guests
+                    {eventDataObj?.max_guests} guests
                   </span>
                 </div>
               </div>
@@ -166,13 +236,18 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
                   <div className="flex items-center space-x-1">
                     <ClockGif width={19} height={19} />
                     <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                      {eventData.startsIn}
+                      Starts in{" "}
+                      {getHoursRemaining(
+                        eventDataObj?.event_date,
+                        eventDataObj?.event_start_time
+                      )}{" "}
+                      hrs
                     </span>
                   </div>
                   <div className="flex items-center space-x-1 mt-1">
                     <LocationIcon className="h-[20px] w-[20px]" />{" "}
                     <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                      {eventData.location}
+                      {eventDataObj.home_number} {eventDataObj.street_address}
                     </span>
                   </div>
                 </div>
@@ -196,11 +271,11 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
             <div className="mt-6 overflow-y-auto max-h-24 pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <div className="flex items-start space-x-2 mb-4">
                 <p className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[13px]">
-                  {eventData.subtitle}
+                  {eventDataObj.subtitle}
                 </p>
               </div>
               <p className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px] mt-1">
-                {eventData.description}
+                {eventDataObj.description}
               </p>
             </div>
             {/* Event details section end */}
@@ -219,7 +294,8 @@ const EventPreviewModal = ({ isOpen, onClose }: EventPreviewModalProps) => {
               >
                 Pay Now
               </button>
-              <button className="w-full bg-app-button-primary text-app-button-text-color py-3 px-4 rounded-lg transition-colors cursor-not-allowed opacity-50">
+              <button className="w-full bg-app-button-primary text-app-button-text-color py-3 px-4 rounded-lg transition-colors cursor-not-allowed opacity-50"
+              onClick={()=>{onEventCreate()}}>
                 Create Event
               </button>
             </div>

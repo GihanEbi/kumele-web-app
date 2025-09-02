@@ -165,7 +165,6 @@ const page = () => {
     if (loading) {
       return;
     }
-    console.log("ss");
 
     try {
       setLoading(true);
@@ -283,7 +282,6 @@ const page = () => {
               onChange={(value: ChooseInterestsProps) => {
                 handleInputChange(value.id, "event_category_id");
                 setSelectedCategoryData(value);
-                console.log(value.icon);
               }}
             />
           </div>
@@ -328,8 +326,6 @@ const page = () => {
                 ref={fileInputRef}
                 //onChange={handleImageUpload}
                 onChange={(e: any) => {
-                  console.log("/////////////");
-
                   handleFileUploadTenderDocument(
                     e.target.files[0],
                     "banner_img_url"
