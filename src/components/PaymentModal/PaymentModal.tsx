@@ -35,7 +35,7 @@ interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onAddNewCardClick: () => void;
-  onPayWithWalletClick: () => void;
+  onPayWithWalletClick?: () => void;
 }
 
 export const PaymentModal: React.FC<PaymentModalProps> = ({
