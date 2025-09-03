@@ -4,6 +4,7 @@ import EventCard from "./EventCard";
 import InviteModal from "./ShareModal/ShareModal";
 import ModalPortal from "../ModalPortal/ModalPortal";
 import { useScrollLock } from "@/utils/useScrollHook";
+import {RateIcon } from "../../../public/svg-icons/icons";
 
 type Event = {
   id: number;
@@ -151,6 +152,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
   const [isStackExtended, setIsStackExtended] = useState(false); //test bug fix step 1
   const [overlayEvent, setOverlayEvent] = useState<Event | null>(null);
   console.log("events length is", events.length);
+  const [isRatingOpen, setIsRatingOpen] = useState(false);
 
   //lock parent component when a modal is open
   useScrollLock(isInviteModalOpen);
@@ -200,11 +202,12 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
                 event={item}
                 events={displayEvents}
                 setEvents={setEvents}
-              //bug fix-best practise
-              //{...item}
+                //bug fix-best practise
+                //{...item}
                 isStackExtended={isStackExtended}
                 setIsStackExtended={setIsStackExtended}
                 onOpenOtherEvent={handleOpenOtherEvent}
+                onOpenRating={() => setIsRatingOpen(true)}
               />
             );
           })}
@@ -224,6 +227,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
             onOpenOtherEvent={handleOpenOtherEvent}
             isOverlay={true}
             onCloseOverlayCard={handleCloseOverlay}
+            onOpenRating={() => setIsRatingOpen(true)}
           />
           {/* <button
             onClick={() => setOverlayEvent(null)}
@@ -255,6 +259,37 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
           />
         </ModalPortal>
       </div>
+
+      {isRatingOpen && (
+        <ModalPortal>
+          <div
+            role="dialog"
+            aria-modal="true"
+            className="fixed inset-0 z-[2000] flex items-end justify-center bg-black/50"
+            onClick={() => setIsRatingOpen(false)}
+          >
+            <div
+              className="bg-app-background-primary w-full max-w-md pt-6 pb-20  rounded-t-4xl shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-[20px]">
+                  <RateIcon />
+                </div>
+                <h2 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[23px]">
+                  Please rate your last event
+                </h2>
+                <p className="mt-2 font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
+                  Your ratings help improve the community experience.
+                </p>
+                <p className="mt-2 font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
+                  -Thank you!
+                </p>
+              </div>
+            </div>
+          </div>
+        </ModalPortal>
+      )}
     </>
   );
 }

@@ -174,6 +174,35 @@ const CreateEventSection = () => {
   // -------- handleChange for input fields ---------
   const handleInputChange = (value: string | Boolean, name: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
+    //load categories
+    // useEffect(() => {
+    //   fetchCategories();
+    // }, []);
+
+    // const fetchCategories = async () => {
+    //   setLoading(true);
+    //   try {
+    //     const res = await get_hobbies_list();
+    //     const mapped: EventCategoryProps[] = (res?.data ?? []).map(
+    //       (item: any) => ({
+    //         id: item.id,
+    //         name: item.name,
+    //         icon: (
+    //           <InlineSvg
+    //             svg={item.svg_code}
+    //            className="w-[35px] h-[35px]"
+    //             title={item.name}
+    //           />
+    //         ),
+    //       })
+    //     );
+    //     console.log(mapped, "catorgoris areee ");
+    //     setCategories(mapped);
+    //   } catch (error) {
+    //     console.error("Error fetching interests:", error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
   };
 
   // -------------------- handlers --------------------

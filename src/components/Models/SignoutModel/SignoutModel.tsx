@@ -5,7 +5,7 @@ import InputComponent from "@/components/InputComponent/InputComponent";
 import { SignOutIcon } from "../../../../public/svg-icons/icons";
 import { useRouter } from "next/navigation";
 import { useAppContext } from "@/context/AppContext";
-import { removeToken } from "@/utils/authUtils";
+import { removeNewPartnershipUser, removePartnershipUserToken, removeToken } from "@/utils/authUtils";
 // props types
 type SignoutModelProps = {
   isOpen: boolean;
@@ -64,7 +64,9 @@ const SignoutModel: React.FC<SignoutModelProps> = ({ isOpen, onClose }) => {
                   className="text-[16px] flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans-400"
                   onClick={() => {
                     setIsPartnerShipAccount(false);
-                    removeToken()
+                    removeToken();
+                    removeNewPartnershipUser();
+                    removePartnershipUserToken();
                     router.push("/");
                   }}
                 >

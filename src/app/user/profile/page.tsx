@@ -147,8 +147,12 @@ const Profile = () => {
   useEffect(() => {
     setIsBottomNavBarFixed(true);
     if (!isPartnershipUser) {
-      fetchUserData();
+      console.log("///");
+      
     }
+    fetchUserData();
+    console.log("aaaaaaaa");
+    
   }, []);
 
   // Simulate fetching user data
@@ -243,7 +247,7 @@ const Profile = () => {
                   <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
                     {userData && userData.profilepicture && (
                       <Image
-                        src={`${imgUrl}/${userData.profilepicture.replace(
+                        src={`${userData.profilepicture.replace(
                           /\\/g,
                           "/"
                         )}`}

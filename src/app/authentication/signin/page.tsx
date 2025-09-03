@@ -60,6 +60,7 @@ const Signin = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
+  const googleLoginRef = useRef<HTMLInputElement>(null);
   // ---------- form for login details -----------
   const [form, setForm] = useState({
     email: "",
@@ -256,6 +257,16 @@ const Signin = () => {
     }
   };
 
+  const handleGoogleIconClick = () => {
+    if (googleLoginRef.current) {
+      const googleButton =
+        googleLoginRef.current.querySelector('div[role="button"]');
+      if (googleButton instanceof HTMLElement) {
+        googleButton.click();
+      }
+    }
+  };
+
   return (
     <div>
       {/* Loading spinner */}
@@ -307,14 +318,17 @@ const Signin = () => {
             Sign in
           </h1>
           <div>
-            {/* <GoogleIcon /> */}
-
-            <GoogleLogin
-              onSuccess={handleGoogleSignInSuccess}
-              onError={handleGoogleSignInError}
-              theme="outline"
-              size="large"
-            />
+            <div onClick={handleGoogleIconClick} style={{ cursor: "pointer" }}>
+              <GoogleIcon />
+            </div>
+            <div ref={googleLoginRef} style={{ display: "none" }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSignInSuccess}
+                onError={handleGoogleSignInError}
+                theme="outline"
+                size="large"
+              />
+            </div>
           </div>
         </div>
       </div>

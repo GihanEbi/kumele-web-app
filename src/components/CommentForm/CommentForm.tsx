@@ -1,22 +1,34 @@
-// components/CommentForm.tsx
-'use client';
+"use client";
 
-import { FormEvent } from 'react';
+import { FormEvent } from "react";
 
 interface CommentFormProps {
-  onSubmit: (comment: string) => void;
+  onSubmit: (comment: string, replyTo?: string) => void;
+  replyTo?: string;
 }
 
-export default function CommentForm({ onSubmit }: CommentFormProps) {
+export default function CommentForm({ onSubmit, replyTo }: CommentFormProps) {
+  /*
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     onSubmit(formData.get('comment') as string);
+  };*/
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    console.log("submit called");
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const comment = formData.get("comment") as string;
+    onSubmit(comment, replyTo);
+    e.currentTarget.reset();
   };
 
   return (
     <div className="mt-8">
-      <h3 className="font-plusJakartaSans font-bold text-[13.89px] mb-4 text-text-app-blog-card-heading">Comment</h3>
+      <h3 className="font-plusJakartaSans font-bold text-[13.89px] mb-4 text-text-app-blog-card-heading">
+        Comment
+      </h3>
       <form onSubmit={handleSubmit}>
         <textarea
           name="comment"

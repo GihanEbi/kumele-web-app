@@ -6,6 +6,8 @@ export interface BlogCardProps {
   author: string;
   date: string;
   showIndicator?: boolean;
+  categoryIcon?: React.ReactNode;
+
   tags: string[];
   content?: string;
   videoUrl?: string;
