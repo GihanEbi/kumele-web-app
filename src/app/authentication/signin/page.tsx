@@ -95,7 +95,7 @@ const Signin = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const isPartnerShipAccount = getPartnershipToken();
+  // const isPartnerShipAccount = getPartnershipToken();
 
   useEffect(() => {
     // 2 seconds time out
@@ -123,7 +123,7 @@ const Signin = () => {
         // --------- show success model ---------
         setShowSuccessModel(true);
         setTimeout(() => {
-          if (isPartnerShipAccount === "yes") {
+          if (getPartnershipToken() === "yes") {
             saveNewPartnershipUser("no");
             // Redirect to partnership home page
             router.push("/user/partnership-home");

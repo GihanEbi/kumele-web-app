@@ -1,11 +1,12 @@
 import { config } from "@/config";
+import { getToken } from "@/utils/authUtils";
 
 // ---------- types --------------
 type registrationForm = {
   email: string;
   password: string;
   language: string;
-//  confirm_password: string;
+  //  confirm_password: string;
   fullName: string;
   gender: string;
   dateOfBirth: string;
@@ -95,6 +96,72 @@ export async function login(dataObj: loginForm) {
   }
 }
 
+export async function passkeyRegistration() {
+  try {
+    const res = await fetch(`${commonUrl}/passkeys/register/start`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `${getToken()}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function finishPasskeyRegistration(dataObj: any) {
+  try {
+    const res = await fetch(`${commonUrl}/passkeys/register/finish`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `${getToken()}`,
+      },
+      body: JSON.stringify(dataObj),
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function startSigninPasskey() {
+  try {
+    const res = await fetch(`${commonUrl}/passkeys/authenticate/start`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // authorization: `${getToken()}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function finishSigninPasskey(dataObj: any) {
+  try {
+    const res = await fetch(`${commonUrl}/passkeys/authenticate/finish`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // authorization: `${getToken()}`,
+      },
+      body: JSON.stringify(dataObj),
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
 export async function send_otp_for_verification(email: string) {
   try {
     const res = await fetch(`${commonUrl}/otp/send-otp-email-verification`, {
@@ -102,7 +169,7 @@ export async function send_otp_for_verification(email: string) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({email}),
+      body: JSON.stringify({ email }),
     });
     const data = await res.json();
     return data;

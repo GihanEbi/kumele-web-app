@@ -7,6 +7,16 @@ import {
   FaceIdIcon,
   ThumbIcon,
 } from "../../../../../public/svg-icons/icons";
+import {
+  finishSigninPasskey,
+  startSigninPasskey,
+} from "@/routes/signup_and_signin";
+import { startAuthentication } from "@simplewebauthn/browser";
+import { saveToken } from "@/utils/authUtils";
+import {
+  getPartnershipToken,
+  saveNewPartnershipUser,
+} from "@/utils/partnershipUtils";
 
 // props types
 type passkeyModelProps = {
@@ -20,9 +30,92 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({
   onClose,
   onContinue,
 }) => {
+  const router = useRouter();
+  // --------- state for loading spinner ---------
+  const [loading, setLoading] = useState(false);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+
+  // --------- state for checkbox value ---------
+  const [rememberMe, setRememberMe] = useState(false);
+  const [notRobot, setNotRobot] = useState(false);
+  // --------- show passkey model ----------
+  const [showPasskeyModel, setShowPasskeyModel] = useState(false);
+  // --------- show face id model ----------
+  const [faceIdModel, setFaceIdModel] = useState(false);
+  // --------- state for create passkey model ----------
+  const [createPasskeyModel, setCreatePasskeyModel] = useState(false);
+  // create passkey
+  const [createPasskey, setCreatePasskey] = useState(false);
+  // state for signin option
+  const [signinOption, setSigninOption] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   if (!isOpen) {
     return null; // Don't render anything if the modal is not open
   }
+
+  // handle form submit
+  const handleSubmit = async () => {
+    if (loading) return;
+
+    setLoading(true);
+    try {
+      const passkey = await startSigninPasskey();
+
+      if (!passkey?.success) {
+        setError(passkey?.message);
+        setShowErrorModel(true); // you can render a simple error modal/toast if desired
+        setTimeout(() => setShowErrorModel(false), 3600);
+        return;
+      }
+      // Step 2: Start browser authentication process
+      const authenticationResponse = await startAuthentication(passkey.data);
+      if (authenticationResponse) {
+        console.log(authenticationResponse);
+        const verificationResponse = await finishSigninPasskey({
+          authenticationResponse: authenticationResponse,
+        });
+
+        if (!verificationResponse?.success) {
+          setError(verificationResponse?.message);
+          setShowErrorModel(true); // you can render a simple error modal/toast if desired
+          setTimeout(() => setShowErrorModel(false), 3600);
+          return;
+        }
+
+        const token = verificationResponse?.token;
+        if (!token) {
+          throw new Error("No token returned from server");
+        }
+
+        saveToken(token);
+        setShowSuccessModel(true);
+        setTimeout(() => {
+          setShowSuccessModel(false);
+          const isPartner = getPartnershipToken(); // "yes" | "no" | null
+          if (isPartner === "yes") {
+            console.log("partnership user");
+
+            saveNewPartnershipUser("no");
+            router.push("/user/partnership-home");
+          } else {
+            console.log("regular user");
+
+            router.push("/user/home");
+          }
+        }, 800);
+      }
+    } catch (error: any) {
+      setError("Sign in failed");
+      setShowErrorModel(true); // you can render a simple error modal/toast if desired
+      setTimeout(() => setShowErrorModel(false), 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div>
       {isOpen && (
@@ -75,9 +168,10 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({
             </div>
             <div className="mt-[51px] mb-[48px] px-2">
               <button
-              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                 onClick={() => {
-                  onContinue();
+                  // onContinue();
+                  handleSubmit();
                 }}
               >
                 Continue
