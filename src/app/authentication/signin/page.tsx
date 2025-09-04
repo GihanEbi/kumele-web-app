@@ -27,6 +27,8 @@ import {
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 import PadLockGif from "@/components/GifComponents/PadLockGif/PadLockGif";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ForgotPasswordModel from "@/components/Models/ForgotPasswordModel/ForgotPasswordModel";
 
 const languages = [
   {
@@ -89,7 +91,9 @@ const Signin = () => {
   // state for signin option
   const [signinOption, setSigninOption] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
+  const [showForgotPasswordModel, setShowForgotPasswordModel] = useState(false);
   // -------- handleChange for input fields ---------
   const handleInputChange = (value: string | Boolean, name: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -342,7 +346,8 @@ const Signin = () => {
           createPasskey ||
           showSuccessModel ||
           showErrorModel ||
-          signinOption
+          signinOption ||
+          showForgotPasswordModel
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
         } px-8 py-6 relative z-10`}
@@ -433,7 +438,12 @@ const Signin = () => {
               value={rememberMe}
             />
           </div>
-          <p className="text-xs font-semibold font-plusJakartaSans text-app-text-blue">
+          <p
+            className="text-xs font-semibold font-plusJakartaSans text-app-text-blue cursor-pointer"
+            onClick={() => {
+              setShowForgotPasswordModel(true);
+            }}
+          >
             Forgot password?
           </p>
         </div>
@@ -580,6 +590,21 @@ const Signin = () => {
           setError("");
         }}
         errorMessage={error || ""}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+        }}
+        successMessage={
+          successMessage || "Password reset link sent successfully!"
+        }
+      />
+      <ForgotPasswordModel
+        isOpen={showForgotPasswordModel}
+        onClose={() => {
+          setShowForgotPasswordModel(false);
+        }}
       />
     </div>
   );

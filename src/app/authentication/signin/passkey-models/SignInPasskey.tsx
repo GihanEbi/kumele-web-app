@@ -17,6 +17,8 @@ import {
   getPartnershipToken,
   saveNewPartnershipUser,
 } from "@/utils/partnershipUtils";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 
 // props types
 type passkeyModelProps = {
@@ -74,7 +76,6 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({
       // Step 2: Start browser authentication process
       const authenticationResponse = await startAuthentication(passkey.data);
       if (authenticationResponse) {
-        console.log(authenticationResponse);
         const verificationResponse = await finishSigninPasskey({
           authenticationResponse: authenticationResponse,
         });
@@ -97,13 +98,9 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({
           setShowSuccessModel(false);
           const isPartner = getPartnershipToken(); // "yes" | "no" | null
           if (isPartner === "yes") {
-            console.log("partnership user");
-
             saveNewPartnershipUser("no");
             router.push("/user/partnership-home");
           } else {
-            console.log("regular user");
-
             router.push("/user/home");
           }
         }, 800);
@@ -124,7 +121,11 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`${
+              showErrorModel || showSuccessModel
+                ? "bg-k-background-secondary"
+                : "bg-app-background-model"
+            } w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
@@ -180,6 +181,21 @@ const SignInPasskey: React.FC<passkeyModelProps> = ({
           </div>
         </div>
       )}
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+        }}
+        successMessage="Successfully sign in"
+      />
     </div>
   );
 };

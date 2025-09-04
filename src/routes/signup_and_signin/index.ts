@@ -96,6 +96,43 @@ export async function login(dataObj: loginForm) {
   }
 }
 
+export async function sendPasswordResetEmail(passwordResetForm: {
+  email: string;
+}) {
+  try {
+    const res = await fetch(`${commonUrl}/users/send-password-reset-email/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(passwordResetForm),
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function resetPassword(resetForm: {
+  newPassword: string;
+  reset_password_token: string | null;
+}) {
+  try {
+    const res = await fetch(`${commonUrl}/users/reset-password/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(resetForm),
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
 export async function passkeyRegistration() {
   try {
     const res = await fetch(`${commonUrl}/passkeys/register/start`, {

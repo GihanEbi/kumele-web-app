@@ -18,6 +18,12 @@ import {
   startRegistration,
   startAuthentication,
 } from "@simplewebauthn/browser";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import {
+  getPartnershipToken,
+  saveNewPartnershipUser,
+} from "@/utils/partnershipUtils";
 
 // props types
 type passkeyModelProps = {
@@ -30,6 +36,7 @@ const CreatePasskey: React.FC<passkeyModelProps> = ({
   onClose,
   onContinue,
 }) => {
+  const router = useRouter();
   // ---------- form for login details -----------
   const [form, setForm] = useState({
     email: "",
@@ -68,7 +75,6 @@ const CreatePasskey: React.FC<passkeyModelProps> = ({
 
   // handle form submit
   const handleSubmit = async () => {
-    console.log("sasas");
     if (loading) return;
     if (!form.email?.trim() || !form.password) {
       setError("Email and password are required.");
@@ -106,26 +112,31 @@ const CreatePasskey: React.FC<passkeyModelProps> = ({
       }
 
       const attestationResponse = await startRegistration(passkey.data);
-      console.log(attestationResponse);
 
       // Step 3: Send response to server for verification
       const verificationResponse = await finishPasskeyRegistration({
         attestationResponse: attestationResponse,
       });
-      console.log(verificationResponse);
 
-      // onContinue();
-      // setShowSuccessModel(true);
-      // setTimeout(() => {
-      //   setShowSuccessModel(false);
-      //   const isPartner = getPartnershipToken(); // "yes" | "no" | null
-      //   if (isPartner === "yes") {
-      //     saveNewPartnershipUser("no");
-      //     router.push("/user/partnership-home");
-      //   } else {
-      //     router.push("/user/home");
-      //   }
-      // }, 800);
+      if (verificationResponse?.success) {
+        setShowSuccessModel(true);
+        setTimeout(() => {
+          setShowSuccessModel(false);
+          const isPartner = getPartnershipToken(); // "yes" | "no" | null
+          if (isPartner === "yes") {
+            saveNewPartnershipUser("no");
+            router.push("/user/partnership-home");
+          } else {
+            router.push("/user/home");
+          }
+        }, 800);
+      }
+
+      setError(verificationResponse?.message || "Passkey creation failed");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+      }, 800);
     } catch (error: any) {
       setError("Sign in failed");
       setShowErrorModel(true); // you can render a simple error modal/toast if desired
@@ -142,7 +153,11 @@ const CreatePasskey: React.FC<passkeyModelProps> = ({
           onClick={onClose}
         >
           <div
-            className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
+            className={`${
+              showErrorModel || showSuccessModel
+                ? "bg-k-background-secondary"
+                : "bg-app-background-model"
+            } w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
             }`}
             onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
@@ -197,6 +212,21 @@ const CreatePasskey: React.FC<passkeyModelProps> = ({
           </div>
         </div>
       )}
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+        }}
+        successMessage="Passkey created"
+      />
     </div>
   );
 };
