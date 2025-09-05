@@ -8,6 +8,7 @@ export interface ClientMessage {
   user_id: string;
   username: string;
   message_text: string;
+  profilepicture?: string;
   created_at?: string; // Use string as Date objects are often serialized to strings
 }
 

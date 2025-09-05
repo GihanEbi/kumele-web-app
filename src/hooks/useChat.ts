@@ -89,7 +89,7 @@ export const useChat = ({ eventId, token }: UseChatOptions) => {
   }, [eventId, token, fetchMessages]);
 
   // Function to send a new message via your backend API
-  const sendMessage = async (message_text: string) => {
+  const sendMessage = async (message_text: string, profilepicture: string) => {
     if (!message_text.trim()) return; // Don't send empty messages
 
     try {
@@ -98,19 +98,8 @@ export const useChat = ({ eventId, token }: UseChatOptions) => {
         user_id: "userId",
         username: "username",
         message_text: message_text,
+        profilepicture: profilepicture,
       };
-
-      // Send message to your Express API. The API will then save it and broadcast via Socket.io.
-      //   const response = await axios.post(
-      //     `${API_BASE_URL}/chat/messages`,
-      //     newMessage,
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${token}`,
-      //         "Content-Type": "application/json",
-      //       },
-      //     }
-      //   );
       const response = await fetch(`${API_BASE_URL}/chat/messages`, {
         method: "POST",
         headers: {
