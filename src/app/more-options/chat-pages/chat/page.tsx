@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, FormEvent } from "react";
 import { io, Socket } from "socket.io-client";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import Image from "next/image";
@@ -14,7 +14,9 @@ import {
 import InboxMessageCard from "@/components/InboxMessageCard/InboxMessageCard";
 import SentMessageCard from "@/components/SentMessageCard/SentMessageCard";
 import ChatInput from "@/components/ChatInput/ChatInput";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useChat } from "@/hooks/useChat";
+import { getToken } from "@/utils/authUtils";
 // mock data for avatars
 // should be replaced with actual user data
 const profilePics = [
@@ -60,11 +62,58 @@ interface ChatProps {
 }
 
 let socket: Socket;
+const DUMMY_AUTH_TOKEN = getToken() || "";
 
 const page = () => {
+  const searchParams = useSearchParams();
+  const event_id = searchParams ? searchParams.get("event_id") : null;
+  const [newMessageText, setNewMessageText] = useState<string>("");
+  const messagesEndRef = useRef<HTMLDivElement>(null); // Ref for auto-scrolling
   //   loading state
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // Use the custom chat hook
+  const { messages, loading, error, sendMessage } = useChat({
+    eventId: event_id as string, // Cast eventId to string
+    token: DUMMY_AUTH_TOKEN,
+  });
+
+  // Scroll to the bottom of the chat whenever messages update
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    console.log("Messages updated:", messages);
+  }, [messages]);
+
+  const handleSubmit = async () => {
+    if (newMessageText.trim() && event_id) {
+      try {
+        await sendMessage(newMessageText);
+        setNewMessageText(""); // Clear input after sending
+      } catch (err) {
+        // Error handling for sending message (e.g., show a toast notification)
+        console.error("Failed to send message:", err);
+        alert("Failed to send message. Please try again.");
+      }
+    }
+  };
+
+  if (!event_id) {
+    return <div>Loading event ID...</div>;
+  }
+
+  if (loading) {
+    return <div>Loading chat...</div>;
+  }
+
+  if (error) {
+    return (
+      <div>
+        <p>Error: {error}</p>
+        <p>Please ensure your backend is running and you have a valid token.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-y-auto max-h-screen no-scrollbar">
       {loading && (
@@ -152,45 +201,30 @@ const page = () => {
           <p className="text-[13px] text-center text-app-text-profile-tabs font-plusJakartaSans-400">
             Today
           </p>
-          <div>
-            <InboxMessageCard
-              img="/avatar-img/avatar-1.jpg"
-              name="Alkesh Kumar"
-              date="23 August 2022"
-              message="Welcome to my event"
-            />
-          </div>
-          <div className="flex justify-end mt-10">
-            <SentMessageCard
-              img="/avatar-img/avatar-4.jpg"
-              name="Josh Durrant"
-              date="23 August 2022"
-              message="lorem ipsum dolor sit amet, consectetur adipiscing elit."
-              receiver="Alkesh Kumar"
-            />
-          </div>
-          <div className="mt-10">
-            <InboxMessageCard
-              img="/avatar-img/avatar-1.jpg"
-              name="Alkesh Kumar"
-              date="23 August 2022"
-              message="Welcome to my event"
-            />
-          </div>
-          <div className="flex justify-end mt-10">
-            <SentMessageCard
-              img="/avatar-img/avatar-4.jpg"
-              name="Josh Durrant"
-              date="23 August 2022"
-              message="lorem ipsum dolor sit amet, consectetur adipiscing elit."
-              receiver="Alkesh Kumar"
-            />
-          </div>
+          {messages.map((msg) => (
+            <div key={msg.id}>
+              <InboxMessageCard
+                img="/avatar-img/avatar-1.jpg"
+                name={msg.username}
+                date={
+                  msg.created_at
+                    ? new Date(msg.created_at).toLocaleTimeString()
+                    : ""
+                }
+                message={msg.message_text}
+              />
+            </div>
+          ))}
+          <div ref={messagesEndRef} /> {/* For auto-scrolling */}
         </div>
 
         <div className="w-full max-w-md px-5 fixed bottom-0 left-0 pb-10 bg-app-background-primary">
           <div className="z-200 w-full">
-            <ChatInput />
+            <ChatInput
+              onChange={(value: string) => setNewMessageText(value)}
+              value={newMessageText}
+              onSend={handleSubmit}
+            />
           </div>
         </div>
       </div>

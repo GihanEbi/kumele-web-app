@@ -20,6 +20,7 @@ type ChatCardProps = {
   scannedList: string;
   eventStatus: string;
   isActive: boolean;
+  event_id: string; // Required event_id prop
 };
 
 const ChatCard: React.FC<ChatCardProps> = ({
@@ -33,6 +34,7 @@ const ChatCard: React.FC<ChatCardProps> = ({
   scannedList,
   eventStatus,
   isActive,
+  event_id,
 }) => {
   const [showMoreOptions, setShowMoreOptions] = React.useState(false);
   const router = useRouter();
@@ -80,7 +82,7 @@ const ChatCard: React.FC<ChatCardProps> = ({
             {leftDays} days left to rate & <br /> review
           </p>
           <div className="mt-1 w-full">
-          <ProgressBarComponent />
+            <ProgressBarComponent />
           </div>
           <p className="text-[8px] mt-2 text-app-text-primary font-plusJakartaSans text-right">
             Scanned list: {scannedList} <br />
@@ -92,8 +94,7 @@ const ChatCard: React.FC<ChatCardProps> = ({
         <div
           className="text-sm text-app-text-tertiary font-plusJakartaSans bg-app-button-primary px-6 py-1 rounded-md"
           onClick={() => {
-            router.push("/more-options/chat-pages/chat");
-            
+            router.push(`/more-options/chat-pages/chat?event_id=${event_id}`);
           }}
         >
           {eventStatus}
