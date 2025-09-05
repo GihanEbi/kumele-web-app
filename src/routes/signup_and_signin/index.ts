@@ -80,6 +80,46 @@ export async function google_sign_in(dataObj: googleSignInForm) {
   }
 }
 
+export async function google_sign_up(dataObj: googleSignInForm) {
+  try {
+    const res = await fetch(`${commonUrl}/users/google-signup/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataObj),
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function google_sign_up_complete(dataObj: {
+  aboveLegalAge: boolean;
+  gender: string;
+  referralCode: string;
+  subscribedToNewsletter: boolean;
+  termsAndConditionsAccepted: boolean;
+  dateOfBirth: string;
+}) {
+  try {
+    const res = await fetch(`${commonUrl}/users/google-signup-complete/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `${getToken()}`,
+      },
+      body: JSON.stringify(dataObj),
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
 export async function login(dataObj: loginForm) {
   try {
     const res = await fetch(`${commonUrl}/users/login/`, {

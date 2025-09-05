@@ -15,14 +15,22 @@ import { authConstants } from "@/constants/auth-constants";
 import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
 import {
+  google_sign_up,
   register,
   send_otp_for_verification,
 } from "@/routes/signup_and_signin";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import EmailVerificationModel from "@/components/Models/EmailVerificationModel/EmailVerificationModel";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import DropDown from "@/components/DropDown/DropDown";
-import { getPartnershipToken } from "@/utils/partnershipUtils";
+import {
+  getPartnershipToken,
+  saveNewPartnershipUser,
+} from "@/utils/partnershipUtils";
 import GoogleSigninOtherModel from "@/components/Models/googleSigninOtherModel/GoogleSigninOtherModel";
+import { saveToken } from "@/utils/authUtils";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 
 const languages = [
   {
@@ -92,6 +100,13 @@ const Signup = () => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
 
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
   // -------- handleChange for input fields ---------
   const handleInputChange = (value: string | Boolean, name: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -104,42 +119,7 @@ const Signup = () => {
   // state from day dropdown
   const [isDayDropdownOpen, setIsDayDropdownOpen] = useState(false);
 
-  // -------- handleSubmit for form submission ---------
-  // const handleSubmit = async () => {
-  //   // -------- check full form validation
-  //   // -------- prevent multiple submission
-  //   if (loading) return;
-  //   setLoading(true);
-  //   // backend form data
-  //   let correctBirthday = birthDay.YYYY + "-" + birthDay.MM + "-" + birthDay.DD;
-  //   const dataObj = {
-  //     email: form.email,
-  //     password: form.password,
-  //     confirm_password: form.confirm_password,
-  //     name: form.name,
-  //     gender: form.gender,
-  //     date_of_birth: correctBirthday,
-  //     above_legal_age: form.above_legal_age,
-  //     terms_and_conditions: form.terms_and_conditions,
-  //     subscribe_to_newsletter: form.subscribe_to_newsletter,
-  //   };
-
-  //   try {
-  //     // const data = await register(dataObj);
-  //     setShowEmailVerificationModel(true);
-  //     // if (data.success) {
-  //     //   console.log(data);
-  //     //   // router.push("/user");
-  //     // } else {
-  //     //   console.log(data);
-  //     // }
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     // --------- set loading to false ---------
-  //     setLoading(false);
-  //   }
-  // };
+  const googleLoginRef = useRef<HTMLInputElement>(null);
 
   // Handle send OTP for email verification
   const handleSubmit = async () => {
@@ -162,6 +142,41 @@ const Signup = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSignInSuccess = async (
+    credentialResponse: CredentialResponse
+  ) => {
+    // The 'credential' field contains the ID Token.
+    const idToken = credentialResponse.credential;
+
+    if (!idToken) {
+      setError("Google sign-in failed: No ID token received.");
+      return;
+    }
+
+    try {
+      const data = await google_sign_up({ token: idToken });
+      if (data.success) {
+        saveToken(data.data.token);
+        setLoading(false);
+
+        setShowGoogleVerificationModel(true);
+      } else {
+        setError(data?.message);
+        setShowErrorModel(true); // you can render a simple error modal/toast if desired
+        setTimeout(() => setShowErrorModel(false), 3600);
+        return;
+      }
+    } catch (err) {
+      console.error("API call failed:", err);
+      setError("Could not connect to the server. Please try again.");
+    }
+  };
+
+  const handleGoogleSignInError = () => {
+    console.error("Google Sign-In failed.");
+    setError("Google Sign-In failed. Please try again.");
   };
 
   // LANGUAGE SELECTION
@@ -228,6 +243,16 @@ const Signup = () => {
     }
   };
 
+  const handleGoogleIconClick = () => {
+    if (googleLoginRef.current) {
+      const googleButton =
+        googleLoginRef.current.querySelector('div[role="button"]');
+      if (googleButton instanceof HTMLElement) {
+        googleButton.click();
+      }
+    }
+  };
+
   return (
     <div className="">
       {/* Loading spinner */}
@@ -285,8 +310,21 @@ const Signup = () => {
               "Sign up"
             )}
           </h1>
-          <div onClick={() => setShowGoogleVerificationModel(true)}>
+          {/* <div onClick={() => setShowGoogleVerificationModel(true)}>
             <GoogleIcon />
+          </div> */}
+          <div>
+            <div onClick={handleGoogleIconClick} style={{ cursor: "pointer" }}>
+              <GoogleIcon />
+            </div>
+            <div ref={googleLoginRef} style={{ display: "none" }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSignInSuccess}
+                onError={handleGoogleSignInError}
+                theme="outline"
+                size="large"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -585,6 +623,21 @@ const Signup = () => {
           //password={form.password} // Pass password if needed for verification"
         />
       )}
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+        }}
+        successMessage={successMessage || "Registration successfully!"}
+      />
     </div>
   );
 };
