@@ -283,13 +283,21 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data }) => {
           },
           drawTicks: false,
           borderDash: [2, 6],
-          lineWidth: (context: any) => {
-            if (context.tick.value === 0) {
-              return 0;
-            } else if (isDark) {
-              return 0.5;
-            }
-            return 0.2;
+          // lineWidth: (context: any) => {
+          //   if (context.tick.value === 0) {
+          //     return 0;
+          //   } else if (isDark) {
+          //     return 0.5;
+          //   }
+          //   return 0.2;
+          // },
+          //lineWidth:1,
+          lineWidth:()=>{
+              if(isDark){
+                return 0.5;
+              }else{
+                return 0.2;
+              }
           },
           borderDashOffset: 0,
         },
