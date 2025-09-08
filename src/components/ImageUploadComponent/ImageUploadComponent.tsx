@@ -5,22 +5,20 @@ import {
 } from "../../../public/svg-icons/icons";
 import Image from "next/image";
 
-/*const ImageUploadComponent = () => {
-  return (
-    <div>
-      <div 
-  className="flex flex-col items-center py-5 px-2 custom-dotted-border">
-        <ImageUploadIcon className="text-app-text-secondary "/>
-        <p className="text-[10.59px] text-app-text-secondary text-center font-plusJakartaSans-400 mb-[10px]">
-          Upload an image
-        </p>
-      </div>
-    </div>
-  );
+type ImageUploadComponentProps = {
+  onChange?: (file: File) => void;
+  isDisabled?: boolean;
+  value?: string | null;
 };
-*/
-const ImageUploadComponent = () => {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+const ImageUploadComponent = ({
+  onChange,
+  isDisabled,
+  value,
+}: ImageUploadComponentProps) => {
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    value || null
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const triggerFileInput = () => {
     fileInputRef.current?.click();
@@ -40,7 +38,11 @@ const ImageUploadComponent = () => {
   return (
     <div
       onClick={triggerFileInput}
-      className="border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
+      className={`${
+        !value
+          ? "border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
+          : ""
+      } `}
     >
       {imagePreview ? (
         <div className="relative w-full h-40 rounded-md overflow-hidden">
@@ -66,7 +68,13 @@ const ImageUploadComponent = () => {
       <input
         type="file"
         ref={fileInputRef}
-        onChange={handleImageUpload}
+        disabled={true}
+        onChange={(e: any) => {
+          handleImageUpload(e);
+          // setImagePreview(URL.createObjectURL(e.target.files[0]));
+          // handleInputChange(e.target.files[0], "event_image");
+          // onChange?.(e.target.files[0]);
+        }}
         accept="image/*"
         className="hidden"
       />

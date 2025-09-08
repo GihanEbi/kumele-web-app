@@ -148,11 +148,8 @@ const Profile = () => {
     setIsBottomNavBarFixed(true);
     if (!isPartnershipUser) {
       console.log("///");
-      
     }
     fetchUserData();
-    console.log("aaaaaaaa");
-    
   }, []);
 
   // Simulate fetching user data
@@ -216,8 +213,8 @@ const Profile = () => {
 
             {isPartnershipUser === "yes" && (
               <div className="flex gap-5  pb-4">
-                {/* <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24"> */}
-                {/* <img src={"/images/spotify.png"} alt="spotify" width={63} height={63} /> */}
+                <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
+                <img src={"/images/spotify.png"} alt="spotify" width={63} height={63} />
                 {/* <Image
                   src={`${imgUrl}/${userData?.profilepicture.replace(
                     /\\/g,
@@ -228,7 +225,7 @@ const Profile = () => {
                   height={63}
                   className="rounded-full"
                 /> */}
-                {/* </div> */}
+                </div>
                 <div className="flex flex-col">
                   <p className="text-app-text-primary font-plusJakartaSans font-bold text-[19px]">
                     Spotify
@@ -247,11 +244,12 @@ const Profile = () => {
                   <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
                     {userData && userData.profilepicture && (
                       <Image
-                        src={`${userData.profilepicture.replace(
-                          /\\/g,
-                          "/"
-                        )}`}
-                        alt="Alkesh Kumar"
+                        src={`${
+                          userData.profilepicture
+                            ? userData.profilepicture.replace(/\\/g, "/")
+                            : userData.username[0]
+                        }`}
+                        alt={userData.username}
                         width={76}
                         height={76}
                         className="rounded-full object-cover"

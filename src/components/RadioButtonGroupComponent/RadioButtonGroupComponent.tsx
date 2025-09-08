@@ -1,13 +1,16 @@
 import React from "react";
 
+type Option = { id?: number; label: string; value: string };
+
 type RadioButtonGroupComponentProps = {
   name: string;
-  defaultValue?: string;
-  onChange?: (value: string) => void;
-  options: { id: number; label: string; value: string }[];
-  value?: string;
+  defaultValue?: string | string[];
+  onChange?: (value: string | string[]) => void;
+  options: Option[];
+  value?: string | string[];
   disabled?: boolean;
   error?: string;
+  isMultiSelect?: boolean;
 };
 
 const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
@@ -18,36 +21,71 @@ const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
   value,
   disabled,
   error,
+  isMultiSelect = false,
 }) => {
+  // Normalize value
+  const selectedValues = Array.isArray(value) ? value : value ? [value] : [];
+
+  const handleChange = (selectedValue: string) => {
+    if (isMultiSelect) {
+      let updated: string[];
+      if (selectedValues.includes(selectedValue)) {
+        updated = selectedValues.filter((v) => v !== selectedValue);
+      } else {
+        updated = [...selectedValues, selectedValue];
+      }
+      onChange?.(updated);
+    } else {
+      onChange?.(selectedValue);
+    }
+  };
+
   return (
     <div>
-      {name !=="" && <p className="text-sm font-medium font-plusJakartaSans text-app-text-primary mb-5">{name}</p>}
+      {name !== "" && (
+        <p className="text-sm font-medium font-plusJakartaSans text-app-text-primary mb-5">
+          {name}
+        </p>
+      )}
       <div className="flex justify-between items-center space-x-6">
-        {options.map((gender, idx) => (
-          <label
-            key={idx}
-            className="flex items-center space-x-2 cursor-pointer"
-          >
-            <input
-              type="radio"
-              name={name || ""}
-              value={gender.value}
-              onChange={onChange ? (e) => onChange(e.target.value) : undefined}
-              className="peer hidden"
-            />
+        {options.map((opt, idx) => {
+          const isSelected = selectedValues.includes(opt.value);
 
-            <div
-              className={`w-5 h-5 rounded-full border-2 ${
-                gender.value !== value
-                  ? "border-app-button-radio"
-                  : "border-app-button-blue"
-              } flex items-center justify-center`}
+          return (
+            <label
+              key={idx}
+              className={`flex items-center space-x-2 cursor-pointer ${
+                disabled ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              <div className={`w-2.5 h-2.5 rounded-full ${gender.value !== value ? "" : "bg-app-button-blue"} transition-all`} />
-            </div>
-            <p className="text-sm text-app-text-primary font-plusJakartaSans">{gender.label}</p>
-          </label>
-        ))}
+              <input
+                type={isMultiSelect ? "checkbox" : "radio"}
+                name={isMultiSelect ? `${name}-${idx}` : name || ""}
+                value={opt.value}
+                checked={isSelected}
+                onChange={() => handleChange(opt.value)}
+                disabled={disabled}
+                className="peer hidden"
+              />
+
+              {/* Custom circle style */}
+              <div
+                className={`w-5 h-5 rounded-full border-2 ${
+                  isSelected ? "border-app-button-blue" : "border-app-button-radio"
+                } flex items-center justify-center`}
+              >
+                <div
+                  className={`w-2.5 h-2.5 rounded-full ${
+                    isSelected ? "bg-app-button-blue" : ""
+                  } transition-all`}
+                />
+              </div>
+              <p className="text-sm text-app-text-primary font-plusJakartaSans">
+                {opt.label}
+              </p>
+            </label>
+          );
+        })}
       </div>
     </div>
   );
