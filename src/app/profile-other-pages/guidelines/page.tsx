@@ -137,11 +137,14 @@ const Guidelines = () => {
 
         <main className="mt-[12px]">
           {/* Scrollable Tabbar */}
+
           <div
+            style={{ scrollPaddingLeft: 5, scrollPaddingRight: 5 }}
             role="tablist"
             aria-label="Guidelines tabs"
             className="bg-app-range-slider-track-active p-1 rounded-lg flex items-center mt-2 overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap gap-1 snap-x snap-mandatory"
           >
+            <span aria-hidden className="shrink-0 w-0 md:w-2 snap-start" />
             {tabs.map((tab) => (
               <button
                 key={tab.key}
