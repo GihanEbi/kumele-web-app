@@ -17,6 +17,7 @@ const chatData = [
     scannedList: "13",
     eventStatus: "Chat",
     isActive: true,
+    event_id: "EV00003",
   },
   {
     icon: <HousePartyNotificationIcon className="text-app-icon" />,
@@ -29,6 +30,7 @@ const chatData = [
     scannedList: "13",
     eventStatus: "Chat",
     isActive: true,
+    event_id: "EV00003",
   },
   {
     icon: <HousePartyNotificationIcon className="text-app-icon" />,
@@ -41,6 +43,7 @@ const chatData = [
     scannedList: "13",
     eventStatus: "Chat",
     isActive: false,
+    event_id: "EV00003",
   },
   {
     icon: <HousePartyNotificationIcon className="text-app-icon" />,
@@ -53,6 +56,7 @@ const chatData = [
     scannedList: "13",
     eventStatus: "Event Cancelled",
     isActive: false,
+    event_id: "EV00003",
   },
   {
     icon: <HousePartyNotificationIcon className="text-app-icon" />,
@@ -65,6 +69,7 @@ const chatData = [
     scannedList: "13",
     eventStatus: "Event Cancelled",
     isActive: false,
+    event_id: "EV00003",
   },
   {
     icon: <HousePartyNotificationIcon className="text-app-icon" />,
@@ -77,6 +82,7 @@ const chatData = [
     scannedList: "13",
     eventStatus: "Event Cancelled",
     isActive: false,
+    event_id: "EV00003",
   },
 ];
 
@@ -111,6 +117,7 @@ const page = () => {
                   scannedList={item.scannedList}
                   eventStatus={item.eventStatus}
                   isActive={item.isActive}
+                  event_id={item.event_id}
                 />
               </div>
             ))}

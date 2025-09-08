@@ -25,3 +25,22 @@ export function removeToken() {
   }
 }
 
+export function removeNewPartnershipUser() {
+  try {
+    localStorage.removeItem("new_partnership_user");
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+export function removePartnershipUserToken() {
+  try {
+    localStorage.removeItem("partnership_token");
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}

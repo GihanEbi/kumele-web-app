@@ -58,6 +58,12 @@ const nextConfig = {
         port: "5001", // allow your backend server
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        // port: "5001", // allow your backend server
+        // pathname: "/uploads/**",
+      },
     ],
   },
 };
