@@ -1,6 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import { RatingIcon } from "../../../../../../public/svg-icons/icons";
 import MedalGif from "@/components/GifComponents/MedalGif/MedalGif";
+import { useEffect, useState } from "react";
+import { getAllUserData } from "@/routes/profile";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 
 type HostInfoProps = {
   host: {
@@ -15,15 +20,58 @@ type HostInfoProps = {
   };
 };
 
-const SealIcon = ({ className }: { className?: string }) => ({});
+type fetch_user = {
+  id: string;
+  profilepicture: string;
+  username: string;
+  about_me: string;
+};
 
 const HostInfo = ({ host }: HostInfoProps) => {
+  //   loading state
+  const [loading, setLoading] = useState(false);
+  // state for user data
+  const [userData, setUserData] = useState<fetch_user | null>({
+    id: "",
+    profilepicture: "",
+    username: "",
+    about_me: "",
+  });
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    setLoading(true);
+    try {
+      const data = await getAllUserData();
+      if (data.success) {
+        setUserData({
+          id: data.data.id,
+          profilepicture: data.data.profilepicture,
+          username: data.data.username,
+          about_me: data.data.about_me,
+        });
+      } else {
+        setUserData(null);
+      }
+    } catch (error) {
+      console.error("Error fetching interests:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="relative bg-app-bg-color-modal rounded-2xl p-4 pt-12 mt-10">
+      {loading && (
+        <div className="flex items-center justify-center min-h-screen">
+          <LoadingComponent />
+        </div>
+      )}
       <div className="absolute -top-12 left-[-3px] flex items-start space-x-3">
         <Image
-          src={host.avatarSrc}
-          alt={host.name}
+          src={userData?.profilepicture || ""}
+          alt={userData?.username || ""}
           width={88}
           height={88}
           className="relative z-10 rounded-full object-cover flex-shrink-0"
@@ -62,7 +110,7 @@ const HostInfo = ({ host }: HostInfoProps) => {
               width={19.96}
               height={19.96}
             /> */}
-            <MedalGif width={19.96} height={19.96}/>
+            <MedalGif width={19.96} height={19.96} />
             <div className="absolute -top-4 -right-4 bg-app-blog-selected-tabs-background text-black text-[10.98px] font-extrabold w-[21.95px] h-[21.95px] rounded-full flex items-center justify-center  dark:border-zinc-800">
               {host.levelIcon}
             </div>
@@ -77,14 +125,14 @@ const HostInfo = ({ host }: HostInfoProps) => {
                         [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           <p className="font-plusJakartaSans text-left text-app-button-model-text-color font-bold text-[13px]">
-            About {host.name}:{" "}
+            About {userData?.username}:{" "}
             <span className="font-plusJakartaSans text-left text-app-button-model-text-color font-normal text-[13px]">
-              {host.aboutTitle}{" "}
+              {userData?.about_me}{" "}
             </span>
           </p>
 
           <p className="mt-4 text-left font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px]  leading-relaxed">
-            {host.aboutBio}
+            {/* {host.aboutBio} */}
           </p>
         </div>
       </div>

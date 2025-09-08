@@ -102,17 +102,23 @@ const CalendarPopup: React.FC<CalendarProps> = ({
 
 interface DatePickerProps {
   label?: string;
+  onChange: Function;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
   label = "Date",
   isOpen,
   setIsOpen,
+  onChange,
 }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date("2022-04-13"));
-  const [calendarDate, setCalendarDate] = useState(new Date("2022-12-01"));
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [calendarDate, setCalendarDate] = useState(new Date());
 
   const datePickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    onChange(selectedDate);
+  }, [selectedDate, onChange]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

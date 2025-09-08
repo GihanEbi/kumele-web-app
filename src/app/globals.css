@@ -214,6 +214,7 @@
   --app-background-add: oklch(0.9551 0 89.88);
   --app-background-chat-sent: oklch(0.6066 0 89.88); /* #9B9B9B */
   --app-background-chat-progress: oklch(0.2686 0 0); /* #9B9B9B */
+  --app-background-chat-my-messages: oklch(0.6066 0 180); /* #828282ff */
 
   /* BORDERS */
   --app-border: oklch(0.8853 0 89.88);
@@ -382,6 +383,7 @@
   --app-background-add: oklch(0.3995 0.0184 313.28);
   --app-background-chat-sent: oklch(0.6066 0 89.88);
   --app-background-chat-progress: oklch(0.8853 0 206.57); /* #9B9B9B */
+  --app-background-chat-my-messages: oklch(0.6066 0 180); /* #828282ff */
 
   /* BORDERS */
   --app-border: oklch(0.5278 0 89.88);

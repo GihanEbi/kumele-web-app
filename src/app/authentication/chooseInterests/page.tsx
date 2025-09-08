@@ -70,134 +70,6 @@ type PermissionsForm = {
   allow_location: LocationChoice;
 };
 
-const mockInterestData = [
-  {
-    id: 1,
-    name: "Sports",
-    icon: <SvgIcon1 />,
-  },
-  {
-    id: 2,
-    name: "Music",
-    icon: <SvgIcon2 />,
-  },
-  {
-    id: 3,
-    name: "Travel",
-    icon: <SvgIcon3 />,
-  },
-  {
-    id: 4,
-    name: "Cooking",
-    icon: <SvgIcon4 />,
-  },
-  {
-    id: 5,
-    name: "Art",
-    icon: <SvgIcon5 />,
-  },
-  {
-    id: 6,
-    name: "Travel",
-    icon: <SvgIcon6 />,
-  },
-  {
-    id: 7,
-    name: "Sports",
-    icon: <SvgIcon7 />,
-  },
-  {
-    id: 8,
-    name: "Music",
-    icon: <SvgIcon8 />,
-  },
-  {
-    id: 9,
-    name: "Travel",
-    icon: <SvgIcon9 />,
-  },
-  {
-    id: 10,
-    name: "Sports",
-    icon: <SvgIcon10 />,
-  },
-  {
-    id: 11,
-    name: "Music",
-    icon: <SvgIcon11 />,
-  },
-  {
-    id: 12,
-    name: "Travel",
-    icon: <SvgIcon12 />,
-  },
-  {
-    id: 13,
-    name: "Sports",
-    icon: <SvgIcon13 />,
-  },
-  {
-    id: 14,
-    name: "Music",
-    icon: <SvgIcon14 />,
-  },
-  {
-    id: 15,
-    name: "Travel",
-    icon: <SvgIcon15 />,
-  },
-  {
-    id: 16,
-    name: "Sports",
-    icon: <SvgIcon16 />,
-  },
-  {
-    id: 17,
-    name: "Music",
-    icon: <SvgIcon17 />,
-  },
-  {
-    id: 18,
-    name: "Travel",
-    icon: <SvgIcon18 />,
-  },
-  {
-    id: 19,
-    name: "Sports",
-    icon: <SvgIcon19 />,
-  },
-  {
-    id: 20,
-    name: "Music",
-    icon: <SvgIcon20 />,
-  },
-  {
-    id: 21,
-    name: "Travel",
-    icon: <SvgIcon21 />,
-  },
-  {
-    id: 22,
-    name: "Sports",
-    icon: <SvgIcon22 />,
-  },
-  {
-    id: 23,
-    name: "Music",
-    icon: <SvgIcon23 />,
-  },
-  {
-    id: 24,
-    name: "Travel",
-    icon: <SvgIcon24 />,
-  },
-  {
-    id: 25,
-    name: "Travel",
-    icon: <SvgIcon25 />,
-  },
-];
-
 // maximum number of selections allowed
 const MAX_SELECTIONS = 5;
 
@@ -232,13 +104,11 @@ const ChooseInterests = () => {
     allow_photos: "non",
     allow_location: "non",
   });
-  console.log(form, " form values");
 
   const [interests, setInterests] = useState<ChooseInterestsProps[]>([]);
 
   // ------- state to hold the selected interests ------
   const [selectedInterestsIds, setSelectedInterestsIds] = useState<any[]>([]);
-  console.log(selectedInterestsIds, " selected interests ids");
 
   useEffect(() => {
     fetchInterests();
