@@ -2,7 +2,6 @@
 
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import React, { useEffect, useRef, useState } from "react";
-import InterestCard from "@/components/InterestCard/InterestCard";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import {
   AdvertiseIcon,
@@ -30,139 +29,209 @@ import {
   InsertBannerImageIcon,
   Header3Icon,
   Header2Icon,
+  DeleteIcon,
+  OkayRedIcon,
 } from "../../../../public/svg-icons/icons";
-import NotificationBadge from "@/components/NotificationCard/NotificationBadge";
 import DropDown from "@/components/DropDown/DropDown";
-import { UnderlineIcon } from "lucide-react";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
-import PreviewModel from "./models/PreviewModel";
 import BlogPreviewModel from "./models/PreviewModel";
 import InsertLinkModal from "./models/InsertLinkModal";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import { create_banner_image, create_blog } from "@/routes/Blogs APIs";
+import VerticalHobbyScroller from "@/components/VerticalHobbyScroller/VerticalHobbyScroller";
+import { fetch_profile, getAllUserData } from "@/routes/profile";
 
-// types
-type ChooseInterestsProps = {
-  id: number;
-  name: string;
-  icon: string;
+type createUpdateBlogForm = {
+  event_category_id: string;
+  blog_name: string;
+  destination: string;
+  blog_img_url: any;
+  banner_img_url: string;
+  blog_video_link: string;
+  youtube_link: string;
+  facebook_link: string;
+  instagram_link: string;
+  pinterest_link: string;
+  twitter_link: string;
+  blog_content: string;
 };
 
-const mockInterestData = [
-  {
-    id: 1,
-    name: "Movies",
-    icon: <MovieIcon />,
-  },
-  {
-    id: 2,
-    name: "Sports",
-    icon: <SportsIcon />,
-  },
-  {
-    id: 3,
-    name: "Festival",
-    icon: <PubIcon />,
-  },
-  {
-    id: 4,
-    name: "Movies",
-    icon: <MovieIcon />,
-  },
-  {
-    id: 5,
-    name: "Sports",
-    icon: <SportsIcon />,
-  },
-  {
-    id: 6,
-    name: "Festival",
-    icon: <PubIcon />,
-  },
-];
+type ChooseInterestsProps = {
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+};
 
-// maximum number of selections allowed
-const MAX_SELECTIONS = 5;
+type fetch_user = {
+  id: string;
+  userImg: string;
+  userName: string;
+};
 
 const page = () => {
   //   loading state
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>("english");
-  const tabsContainerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [confirm, setConfirm] = useState(true);
 
   const [previewBlog, setPreviewBlog] = useState(false);
   const [isInsertLinkModalOpen, setIsInsertLinkModalOpen] = useState(false);
 
-  // ------- state to hold the selected interests ------
-  const [selectedInterestsIds, setSelectedInterestsIds] = useState<number[]>(
-    []
+  // form data
+  const [form, setForm] = useState<createUpdateBlogForm>({
+    event_category_id: "",
+    blog_name: "",
+    destination: "blog",
+    blog_img_url: "",
+    banner_img_url: "",
+    blog_video_link: "",
+    youtube_link: "",
+    facebook_link: "",
+    instagram_link: "",
+    pinterest_link: "",
+    twitter_link: "",
+    blog_content: "",
+  });
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // selected category other data
+  const [selectedCategoryData, setSelectedCategoryData] =
+    useState<ChooseInterestsProps | null>(null);
+
+  // set temporary preview image url
+  const [tempImageConfig, setTempImageConfig] = useState<string | undefined>(
+    undefined
   );
 
-  // CATEGORY SELECTION
+  // state to tempSocialLink
+  const [tempSocialLink, setTempSocialLink] = useState<string>("");
+  const [tempSocialLinkComponent, setTempSocialLinkComponent] =
+    useState<string>("youtube_link");
 
-  console.log("is dropdown open", isDropdownOpen);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef2 = useRef<HTMLInputElement>(null);
 
-  const handleTabClick = (tabId: string) => {
-    setActiveTab(tabId);
-    scrollToTab(tabId);
-  }; // Mobile-like drag scrolling handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setStartX(e.pageX - (tabsContainerRef.current?.offsetLeft || 0));
-    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
+  // state for user data
+  const [userData, setUserData] = useState<fetch_user | null>({
+    id: "",
+    userImg: "",
+    userName: "",
+  });
+
+  // Trigger file input click
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
   };
 
-  const handleMouseLeave = () => {
-    setIsDragging(false);
+  const triggerFileInput2 = () => {
+    fileInputRef2.current?.click();
+  };
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    setLoading(true);
+    try {
+      const data = await getAllUserData();
+      if (data.success) {
+        setUserData({
+          id: data.data.id,
+          userImg: data.data.profilepicture,
+          userName: data.data.username,
+        });
+      } else {
+        setUserData(null);
+      }
+    } catch (error) {
+      console.error("Error fetching interests:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
+  // -------- handleChange for input fields ---------
+  const handleInputChange = (value: string | Boolean, name: string) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !tabsContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - (tabsContainerRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2; // Scroll speed multiplier
-    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
+  const handleFileUploadTenderDocument = async (file: any, name: string) => {
+    if (loading) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      if (file) {
+        const formData = new FormData();
+        formData.append("destination", "blog");
+        formData.append("banner_img_url", file);
+
+        const data = await create_banner_image(formData);
+        if (data.success) {
+          setForm((prev) => ({
+            ...prev,
+            [name]: data.banner_img_url,
+          }));
+        } else {
+          setError(data?.message || "An error occurred");
+          setShowErrorModel(true);
+          setTimeout(() => setShowErrorModel(false), 3600);
+          return;
+        }
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX - (tabsContainerRef.current?.offsetLeft || 0));
-    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
-  };
+  const handleSubmit = async () => {
+    if (loading) return;
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !tabsContainerRef.current) return;
-    e.preventDefault();
-    const x = e.touches[0].pageX - (tabsContainerRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2;
-    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-  const scrollToTab = (tabId: string) => {
-    const tabElement = document.getElementById(`tab-${tabId}`);
-    if (tabElement && tabsContainerRef.current) {
-      const container = tabsContainerRef.current;
-      const containerWidth = container.offsetWidth;
-      const tabLeft = tabElement.offsetLeft;
-      const tabWidth = tabElement.offsetWidth;
-
-      const scrollPosition = tabLeft - (containerWidth - tabWidth) / 2;
-
-      container.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
+    setLoading(true);
+    try {
+      const data = await create_blog(form);
+      if (data?.success) {
+        setSuccess("Your blog has been created successfully.");
+        setShowSuccessModel(true);
+        setTimeout(() => setShowSuccessModel(false), 3600);
+        // reset form
+        setForm({
+          event_category_id: "",
+          blog_name: "",
+          destination: "blog",
+          blog_img_url: "",
+          banner_img_url: "",
+          blog_video_link: "",
+          youtube_link: "",
+          facebook_link: "",
+          instagram_link: "",
+          pinterest_link: "",
+          twitter_link: "",
+          blog_content: "",
+        });
+      } else {
+        setError(data?.message || "An error occurred");
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
+        return;
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -172,7 +241,11 @@ const page = () => {
   return (
     <div
       className={`overflow-y-auto max-h-screen no-scrollbar ${
-        isDropdownOpen || previewBlog || isInsertLinkModalOpen
+        isDropdownOpen ||
+        previewBlog ||
+        isInsertLinkModalOpen ||
+        showSuccessModel ||
+        showErrorModel
           ? "bg-k-background-secondary"
           : "bg-k-background-primary"
       } `}
@@ -192,7 +265,7 @@ const page = () => {
                 : "bg-k-background-primary"
             } `}
           >
-            <h1 className="mt-4  font-semibold text-app-text-primary font-plusJakartaSans font-bold text-[23px]">
+            <h1 className="mt-4 text-app-text-primary font-plusJakartaSans font-bold text-[23px]">
               Create Blog
             </h1>
           </header>
@@ -204,57 +277,13 @@ const page = () => {
             <p className="font-plusJakartaSans font-normal text-[13.89px] text-app-text-primary mb-3">
               Advert Category
             </p>
-            <div className="mb-6 sm:mb-8 relative w-full">
-              <div
-                ref={tabsContainerRef}
-                className="flex space-x-3 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
-                onMouseDown={handleMouseDown}
-                onMouseLeave={handleMouseLeave}
-                onMouseUp={handleMouseUp}
-                onMouseMove={handleMouseMove}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-                style={{
-                  cursor: isDragging ? "grabbing" : "grab",
-                  scrollbarWidth: "none",
-                  msOverflowStyle: "none",
-                  WebkitOverflowScrolling: "touch",
-                }}
-              >
-                {mockInterestData.map((interest, index) => (
-                  <div className="">
-                    <InterestCard
-                      isPartnership={true}
-                      key={interest.id}
-                      interest={interest}
-                      isSelected={selectedInterestsIds.includes(interest.id)}
-                      onToggle={(id) => {
-                        // Handle interest selection logic here
-                        // push or remove interest from selectedInterestsIds
-                        const interestId = parseInt(id, 10);
-                        if (selectedInterestsIds.includes(interestId)) {
-                          setSelectedInterestsIds((prev) =>
-                            prev.filter((i) => i !== interestId)
-                          );
-                        } else if (
-                          selectedInterestsIds.length < MAX_SELECTIONS
-                        ) {
-                          setSelectedInterestsIds((prev) => [
-                            ...prev,
-                            interestId,
-                          ]);
-                        } else {
-                          alert(
-                            `You can only select up to ${MAX_SELECTIONS} interests.`
-                          );
-                        }
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+            <VerticalHobbyScroller
+              selectedValue={form.event_category_id}
+              onChange={(value: ChooseInterestsProps) => {
+                handleInputChange(value.id, "event_category_id");
+                setSelectedCategoryData(value);
+              }}
+            />
           </div>
           {/* blog name */}
           <div>
@@ -265,8 +294,10 @@ const page = () => {
               <div className="relative">
                 <InputComponent
                   placeholder="Add a title"
-                  value={""}
-                  onChange={(e) => {}}
+                  value={form.blog_name}
+                  onChange={(e) => {
+                    handleInputChange(e.target.value, "blog_name");
+                  }}
                 />
               </div>
             </div>
@@ -276,13 +307,11 @@ const page = () => {
             <p className="mb-[10px] text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               Banner Image
             </p>
-            <div className="flex justify-between w-[168.73px] h-[38px] bg-app-background-card-secondary rounded-lg  px-2 pt-2">
+            <div
+              className="flex justify-between w-[168.73px] h-[38px] bg-app-background-card-secondary rounded-lg  px-2 pt-2"
+              onClick={triggerFileInput}
+            >
               <div>
-                {/* <ImageIcon
-                  className="text-app-badge-background-qr"
-                  width={20}
-                  height={20}
-                /> */}
                 <ImageIcon
                   className="text-white dark:text-black"
                   width={20}
@@ -292,6 +321,19 @@ const page = () => {
               <p className="font-md text-app-text-tertiary font-plusJakartaSans font-normal text-[12.98px] mb-[10px]">
                 Insert banner image
               </p>
+              <input
+                type="file"
+                ref={fileInputRef}
+                //onChange={handleImageUpload}
+                onChange={(e: any) => {
+                  handleFileUploadTenderDocument(
+                    e.target.files[0],
+                    "banner_img_url"
+                  );
+                }}
+                accept="image/*"
+                className="hidden"
+              />
             </div>
           </div>
           {/* social media links */}
@@ -304,47 +346,62 @@ const page = () => {
                 <div className="relative w-[176px] h-[35px]">
                   <InputComponent
                     placeholder="www.example.com"
-                    value={""}
-                    onChange={(e) => {}}
+                    value={tempSocialLink}
+                    onChange={(e) => {
+                      setTempSocialLink(e.target.value);
+                    }}
                   />
                 </div>
               </div>
               <div>
                 <DropDown
                   dataArray={[
-                    { label: <NewYoutubeIcon />, value: "youtube" },
-                    { label: <BlogFacebookIcon />, value: "facebook" },
-                    { label: <BlogInstagramIcon />, value: "instagram" },
-                    { label: <BlogPinterestIcon />, value: "pinterest" },
-                    { label: <BlogTwitterIcon />, value: "twitter" },
+                    { label: <NewYoutubeIcon />, value: "youtube_link" },
+                    { label: <BlogFacebookIcon />, value: "facebook_link" },
+                    { label: <BlogInstagramIcon />, value: "instagram_link" },
+                    { label: <BlogPinterestIcon />, value: "pinterest_link" },
+                    { label: <BlogTwitterIcon />, value: "twitter_link" },
                   ]}
                   placeHolder={<NewYoutubeIcon className="w-[24px] h-[24px]" />}
-                  // isOpen={(value: boolean) => {
-                  //   console.log("is dropdown openda", value);
-                  //   setIsDropdownOpen(value);
-                  // }}
+                  onChange={(value: string) => {
+                    setTempSocialLinkComponent(value);
+                    setTempSocialLink(
+                      form[value as keyof createUpdateBlogForm]
+                    );
+                    console.log(value);
+                  }}
+                  itemSelected={tempSocialLinkComponent || undefined}
                   isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
                 />
               </div>
               <div
-                className="bg-app-okay-icon-filter rounded-lg p-2 h-1/2 w-[38px] h-[38px]"
+                className="bg-app-okay-icon-filter rounded-lg p-2 w-[38px] h-[38px]"
                 onClick={() => {
-                  setConfirm(!confirm);
+                  if (tempSocialLink !== "") {
+                    handleInputChange(tempSocialLink, tempSocialLinkComponent);
+                  } else {
+                    setError("Please provide a social link");
+                    setShowErrorModel(true);
+                    setTimeout(() => setShowErrorModel(false), 3600);
+                  }
                 }}
               >
-                {confirm ? (
-                  <OkayIcon className="text-app-icon " />
-                ) : (
+                {form &&
+                form[tempSocialLinkComponent as keyof createUpdateBlogForm] !==
+                  "" ? (
                   <OkayGreenIcon />
+                ) : (
+                  <OkayIcon className="text-app-icon" />
                 )}
               </div>
             </div>
           </div>
           {/* insert image section */}
-          <div className="flex justify-between items-center mb-6">
-            <div className="bg-app-background-card-secondary rounded-lg  px-2 pt-2 gap-2 flex justify-between">
-              {/* <div className="flex justify-between w-1/2 bg-app-background-card-secondary rounded-lg  px-2 pt-2"> */}
-              {/* <ImageIcon className="text-app-icon" width={20} height={20} /> */}
+          <div className="flex justify-between items-center mb-6 gap-2">
+            <div
+              className="w-1/2 bg-app-background-card-secondary rounded-lg  px-2 pt-2 gap-2 flex justify-between"
+              onClick={triggerFileInput2}
+            >
               <ImageIcon
                 className="text-white dark:text-black mt-[3px]"
                 width={20}
@@ -353,17 +410,35 @@ const page = () => {
               <p className="font-md text-white dark:text-black font-plusJakartaSans font-normal text-[12.98px] mb-[10px]">
                 Insert image
               </p>
-            </div>
-            <div className="bg-k-background-secondary rounded-lg  px-5 pt-2 gap-2 flex justify-between">
-              <NewYoutubeIcon
-                className="text-app-icon mt-[3px]"
-                width={20}
-                height={20}
+              <input
+                type="file"
+                ref={fileInputRef2}
+                onChange={(e: any) => {
+                  setForm((prev) => ({
+                    ...prev,
+                    blog_img_url: e.target.files[0],
+                  }));
+                  setTempImageConfig(URL.createObjectURL(e.target.files[0]));
+                }}
+                accept="image/*"
+                className="hidden"
               />
-              <p className="font-md text-app-text-primary font-plusJakartaSans font-normal text-[12.98px] mb-[10px]">
-                paste video link
-              </p>
             </div>
+
+            <InputComponent
+              placeholder="paste video link"
+              value={form.blog_video_link}
+              onChange={(e) => {
+                handleInputChange(e.target.value, "blog_video_link");
+              }}
+              icon={
+                <NewYoutubeIcon
+                  className="text-app-icon mt-[3px]"
+                  width={20}
+                  height={20}
+                />
+              }
+            />
           </div>
           {/* blog writing section */}
           <div>
@@ -401,7 +476,13 @@ const page = () => {
               </div>
             </div>
             <div>
-              <TextAreaComponent placeholder="Write your blog..." />
+              <TextAreaComponent
+                placeholder="Write your blog..."
+                value={form.blog_content}
+                onChange={(e) =>
+                  handleInputChange(e.target.value, "blog_content")
+                }
+              />
             </div>
           </div>
           {/* submit button */}
@@ -418,10 +499,36 @@ const page = () => {
         </div>
       </div>
       <BlogPreviewModel
+        blogData={form}
+        tempImgUrl={tempImageConfig}
         isOpen={previewBlog}
         onClose={() => setPreviewBlog(false)}
+        userImg={userData?.userImg || ""}
+        userName={userData?.userName || ""}
+        onBlogCreate={() => {
+          setPreviewBlog(false);
+
+          handleSubmit();
+        }}
       />
       <InsertLinkModal isOpen={isInsertLinkModalOpen} onClose={closeModal} />
+
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
     </div>
   );
 };

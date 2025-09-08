@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import Image from "next/image";
 import {
   EyeIcon,
@@ -10,11 +11,8 @@ import {
   UserIcon,
 } from "../../../../public/svg-icons/icons";
 import InputComponent from "@/components/InputComponent/InputComponent";
-import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/RadioButtonGroupComponent";
-import { authConstants } from "@/constants/auth-constants";
-import SelectComponent from "@/components/SelectComponent/SelectComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
-import { login } from "@/routes/signup_and_signin";
+import { google_sign_in, login } from "@/routes/signup_and_signin";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { saveToken } from "@/utils/authUtils";
 import SignInPasskey from "./passkey-models/SignInPasskey";
@@ -22,11 +20,15 @@ import SigninPasskeyFaceId from "./passkey-models/SigninPasskeyFaceId";
 import CreatePasskeyText from "./passkey-models/CreatePasskeyText";
 import CreatePasskey from "./passkey-models/CreatePasskey";
 import SignupOptions from "./passkey-models/SignupOptions";
-import { sign } from "crypto";
 import {
   getPartnershipToken,
   saveNewPartnershipUser,
 } from "@/utils/partnershipUtils";
+import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
+import PadLockGif from "@/components/GifComponents/PadLockGif/PadLockGif";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ForgotPasswordModel from "@/components/Models/ForgotPasswordModel/ForgotPasswordModel";
 
 const languages = [
   {
@@ -54,14 +56,13 @@ const languages = [
 const Signin = () => {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("english");
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const tabsContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
+  const googleLoginRef = useRef<HTMLInputElement>(null);
   // ---------- form for login details -----------
   const [form, setForm] = useState({
     email: "",
@@ -89,13 +90,16 @@ const Signin = () => {
   const [createPasskey, setCreatePasskey] = useState(false);
   // state for signin option
   const [signinOption, setSigninOption] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
+  const [showForgotPasswordModel, setShowForgotPasswordModel] = useState(false);
   // -------- handleChange for input fields ---------
   const handleInputChange = (value: string | Boolean, name: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const isPartnerShipAccount = getPartnershipToken();
+  // const isPartnerShipAccount = getPartnershipToken();
 
   useEffect(() => {
     // 2 seconds time out
@@ -104,46 +108,94 @@ const Signin = () => {
     }, 2000); // Hide after 2 seconds
   }, []);
 
-  // -------- handleSubmit for form submission ---------
-  const handleSubmit = async () => {
-    setTimeout(() => {
-      if (isPartnerShipAccount === "yes") {
-        saveNewPartnershipUser("no");
-        // Redirect to partnership home page
-        router.push("/user/partnership-home");
-      } else {
-        router.push("/user/home");
-      }
-    }, 1000);
-    // -------- check full form validation
-    // -------- prevent multiple submission
-    // if (loading) return;
-    // setLoading(true);
-    // if (!form.email || !form.password) {
-    //   setLoading(false);
-    //   return;
-    // }
+  const handleGoogleSignInSuccess = async (
+    credentialResponse: CredentialResponse
+  ) => {
+    // The 'credential' field contains the ID Token.
+    const idToken = credentialResponse.credential;
 
-    // try {
-    //   const data = await login(form);
-    //   if (data.success) {
-    //     saveToken(data.data.user_token);
-    //     setLoading(false);
-    //     // --------- show success model ---------
-    //     setShowSuccessModel(true);
-    //     setTimeout(() => {
-    //       setShowSuccessModel(false);
-    //     }, 1000); // Hide after 2 seconds
-    //     router.push("/user");
-    //   } else {
-    //     console.log(data);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // } finally {
-    //   // --------- set loading to false ---------
-    //   setLoading(false);
-    // }
+    if (!idToken) {
+      setError("Google sign-in failed: No ID token received.");
+      return;
+    }
+
+    try {
+      const data = await google_sign_in({ token: idToken });
+      if (data.success) {
+        saveToken(data.data.token);
+        setLoading(false);
+        // --------- show success model ---------
+        setShowSuccessModel(true);
+        setTimeout(() => {
+          if (getPartnershipToken() === "yes") {
+            saveNewPartnershipUser("no");
+            // Redirect to partnership home page
+            router.push("/user/partnership-home");
+          } else {
+            router.push("/user/home");
+          }
+        }, 1000);
+      } else {
+        console.log(data);
+      }
+    } catch (err) {
+      console.error("API call failed:", err);
+      setError("Could not connect to the server. Please try again.");
+    }
+  };
+
+  const handleGoogleSignInError = () => {
+    console.error("Google Sign-In failed.");
+    setError("Google Sign-In failed. Please try again.");
+  };
+
+  // handle form submit
+  const handleSubmit = async () => {
+    if (loading) return;
+    if (!form.email?.trim() || !form.password) {
+      setError("Email and password are required.");
+      setShowErrorModel(true); // you can render a simple error modal/toast if desired
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    }
+    setLoading(true);
+    try {
+      const payload = {
+        email: form.email.trim(),
+        password: form.password,
+      };
+      const json = await login(payload);
+
+      if (!json?.success) {
+        setError(json?.message);
+        setShowErrorModel(true); // you can render a simple error modal/toast if desired
+        setTimeout(() => setShowErrorModel(false), 3600);
+        return;
+      }
+      const token = json?.data?.token;
+      if (!token) {
+        throw new Error("No token returned from server");
+      }
+
+      saveToken(token);
+      setShowSuccessModel(true);
+      setTimeout(() => {
+        setShowSuccessModel(false);
+        const isPartner = getPartnershipToken(); // "yes" | "no" | null
+        if (isPartner === "yes") {
+          saveNewPartnershipUser("no");
+          router.push("/user/partnership-home");
+        } else {
+          router.push("/user/home");
+        }
+      }, 800);
+    } catch (error: any) {
+      setError("Sign in failed");
+      setShowErrorModel(true); // you can render a simple error modal/toast if desired
+      setTimeout(() => setShowErrorModel(false), 3600);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // LANGUAGE SELECTION
@@ -209,6 +261,16 @@ const Signin = () => {
     }
   };
 
+  const handleGoogleIconClick = () => {
+    if (googleLoginRef.current) {
+      const googleButton =
+        googleLoginRef.current.querySelector('div[role="button"]');
+      if (googleButton instanceof HTMLElement) {
+        googleButton.click();
+      }
+    }
+  };
+
   return (
     <div>
       {/* Loading spinner */}
@@ -256,11 +318,22 @@ const Signin = () => {
     */}
         <div className="absolute bottom-4 left-6 flex items-center space-x-2 z-10">
           {" "}
-          {/* z-10 ensures text is above background */}
           <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
             Sign in
           </h1>
-          <GoogleIcon />
+          <div>
+            <div onClick={handleGoogleIconClick} style={{ cursor: "pointer" }}>
+              <GoogleIcon />
+            </div>
+            <div ref={googleLoginRef} style={{ display: "none" }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSignInSuccess}
+                onError={handleGoogleSignInError}
+                theme="outline"
+                size="large"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -271,7 +344,10 @@ const Signin = () => {
           faceIdModel ||
           createPasskeyModel ||
           createPasskey ||
-          signinOption
+          showSuccessModel ||
+          showErrorModel ||
+          signinOption ||
+          showForgotPasswordModel
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
         } px-8 py-6 relative z-10`}
@@ -339,6 +415,7 @@ const Signin = () => {
             }}
             value={form.password}
             type={passwordVisible ? "text" : "password"}
+            required
           />
           <button
             type="button"
@@ -361,7 +438,12 @@ const Signin = () => {
               value={rememberMe}
             />
           </div>
-          <p className="text-xs font-semibold font-plusJakartaSans text-app-text-blue">
+          <p
+            className="text-xs font-semibold font-plusJakartaSans text-app-text-blue cursor-pointer"
+            onClick={() => {
+              setShowForgotPasswordModel(true);
+            }}
+          >
             Forgot password?
           </p>
         </div>
@@ -416,11 +498,12 @@ const Signin = () => {
             } // Open Passkey model on click
           }
         >
-          <img
+          <PadLockGif className="w-11 h-11 mx-auto" />
+          {/* <img
             src="/bg-imgs/auth/passkey.gif" // Assumes lock.gif is in the /public folder
             alt="Passkey Lock Icon"
             className="w-11 h-11 mx-auto" // 44px by 44px, centered
-          />
+          /> */}
         </div>{" "}
         {/* Recommendation Text */}
         <p className="text-[10px] text-app-text-blue font-plusJakartaSans text-center">
@@ -437,12 +520,7 @@ const Signin = () => {
           >
             <div className="flex flex-col items-center">
               <div className="mb-4">
-                <Image
-                  src="/common-gifs/email-verification-succsess.gif"
-                  alt="Success"
-                  width={100}
-                  height={100}
-                />
+                <CheckMarkGif />
               </div>
               <p className="text-gray-600 text-sm mb-6 text-center">
                 Login successful
@@ -503,6 +581,29 @@ const Signin = () => {
         onContinue={() => {
           router.push("/user/home");
           setSigninOption(false);
+        }}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+        }}
+        successMessage={
+          successMessage || "Password reset link sent successfully!"
+        }
+      />
+      <ForgotPasswordModel
+        isOpen={showForgotPasswordModel}
+        onClose={() => {
+          setShowForgotPasswordModel(false);
         }}
       />
     </div>

@@ -17,16 +17,22 @@ type selectHobbiesForUsers = {
   hobbies: Number[];
 };
 
-const commonUrl = `${config.baseUrl}/auth`;
+type SelectedInterests = {
+event_category_ids:string[]; // array of selected interest IDs as strings
+  }
+
+const commonUrl = `${config.baseUrl}/`;
 // should have to get the token and set it on the request
 
 export async function user_permissions(dataObj: updatePermissionsForm) {
+ // const token = await getToken();
+  console.log("token is ", getToken());
   try {
-    const res = await fetch(`${commonUrl}/update-permissions/`, {
+    const res = await fetch(`${commonUrl}users/update-permissions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Token ${getToken()}`, // Uncomment if you need to send a token
+        "authorization": `${getToken()}`, // Uncomment if you need to send a token
       },
       body: JSON.stringify(dataObj),
     });
@@ -39,11 +45,11 @@ export async function user_permissions(dataObj: updatePermissionsForm) {
 
 export async function set_user_name(dataObj: setUserNamesForm) {
   try {
-    const res = await fetch(`${commonUrl}/set-username/`, {
+    const res = await fetch(`${commonUrl}users/set-username/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Token ${getToken()}`, // Uncomment if you need to send a token
+        "Authorization": `${getToken()}`, // Uncomment if you need to send a token
       },
       body: JSON.stringify(dataObj),
     });
@@ -54,13 +60,13 @@ export async function set_user_name(dataObj: setUserNamesForm) {
   }
 }
 
-export async function select_hobbies_for_users(dataObj: selectHobbiesForUsers) {
+export async function select_hobbies_for_users(dataObj: SelectedInterests) {
   try {
-    const res = await fetch(`${config.baseUrl}/api/select-hobbies/`, {
+    const res = await fetch(`${config.baseUrl}/users/set-user-event-categories`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Token ${getToken()}`, // Uncomment if you need to send a token
+        "Authorization": `${getToken()}`, // Uncomment if you need to send a token
       },
       body: JSON.stringify(dataObj),
     });
@@ -73,8 +79,12 @@ export async function select_hobbies_for_users(dataObj: selectHobbiesForUsers) {
 
 export async function get_hobbies_list() {
   try {
-    const res = await fetch(`${config.baseUrl}/api/hobbies/`, {
+    const res = await fetch(`${config.baseUrl}/event-category/get-event-categories`, {
       method: "GET",
+       headers: {
+        "Content-Type": "application/json",
+        "Authorization": `${getToken()}`, // Uncomment if you need to send a token
+      },
     });
     const data = await res.json();
     return data;

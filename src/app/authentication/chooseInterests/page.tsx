@@ -46,264 +46,29 @@ import {
   SvgIcon8,
   SvgIcon9,
 } from "../../../../public/svg-icons/newInterestIcons";
+import InlineSvg from "@/components/InlineSVG/InlineSVG";
 
 // types
+// type ChooseInterestsProps = {
+//   id: number;
+//   name: string;
+//   icon: string;
+// };
+
 type ChooseInterestsProps = {
-  id: number;
+  id: string | number; 
   name: string;
-  icon: string;
+  icon: React.ReactNode; 
 };
 
-// const mockInterestData = [
-//   {
-//     id: 1,
-//     name: "Sports",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 2,
-//     name: "Music",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 3,
-//     name: "Travel",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 4,
-//     name: "Cooking",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 5,
-//     name: "Art",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 6,
-//     name: "Travel",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 7,
-//     name: "Sports",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 8,
-//     name: "Music",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 9,
-//     name: "Travel",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 10,
-//     name: "Sports",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 11,
-//     name: "Music",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 12,
-//     name: "Travel",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 13,
-//     name: "Sports",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 14,
-//     name: "Music",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 15,
-//     name: "Travel",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 16,
-//     name: "Sports",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 17,
-//     name: "Music",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 18,
-//     name: "Travel",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 19,
-//     name: "Sports",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 20,
-//     name: "Music",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 21,
-//     name: "Travel",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 22,
-//     name: "Sports",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 23,
-//     name: "Music",
-//     icon: <EmoryIcon />,
-//   },
-//   {
-//     id: 24,
-//     name: "Travel",
-//     icon: <EmoryIcon />,
-//   },
-// ];
+type PhotosChoice = "non" | "selected" | "all";
+type LocationChoice = "non" | "while_using" | "once";
 
-const mockInterestData = [
-  {
-    id: 1,
-    name: "Sports",
-    icon: <SvgIcon1 />,
-  },
-  {
-    id: 2,
-    name: "Music",
-    icon: <SvgIcon2 />,
-  },
-  {
-    id: 3,
-    name: "Travel",
-    icon: <SvgIcon3 />,
-  },
-  {
-    id: 4,
-    name: "Cooking",
-    icon: <SvgIcon4 />,
-  },
-  {
-    id: 5,
-    name: "Art",
-    icon: <SvgIcon5 />,
-  },
-  {
-    id: 6,
-    name: "Travel",
-    icon: <SvgIcon6 />,
-  },
-  {
-    id: 7,
-    name: "Sports",
-    icon: <SvgIcon7 />,
-  },
-  {
-    id: 8,
-    name: "Music",
-    icon: <SvgIcon8 />,
-  },
-  {
-    id: 9,
-    name: "Travel",
-    icon: <SvgIcon9 />,
-  },
-  {
-    id: 10,
-    name: "Sports",
-    icon: <SvgIcon10 />,
-  },
-  {
-    id: 11,
-    name: "Music",
-    icon: <SvgIcon11 />,
-  },
-  {
-    id: 12,
-    name: "Travel",
-    icon: <SvgIcon12 />,
-  },
-  {
-    id: 13,
-    name: "Sports",
-    icon: <SvgIcon13 />,
-  },
-  {
-    id: 14,
-    name: "Music",
-    icon: <SvgIcon14 />,
-  },
-  {
-    id: 15,
-    name: "Travel",
-    icon: <SvgIcon15 />,
-  },
-  {
-    id: 16,
-    name: "Sports",
-    icon: <SvgIcon16 />,
-  },
-  {
-    id: 17,
-    name: "Music",
-    icon: <SvgIcon17 />,
-  },
-  {
-    id: 18,
-    name: "Travel",
-    icon: <SvgIcon18 />,
-  },
-  {
-    id: 19,
-    name: "Sports",
-    icon: <SvgIcon19 />,
-  },
-  {
-    id: 20,
-    name: "Music",
-    icon: <SvgIcon20 />,
-  },
-  {
-    id: 21,
-    name: "Travel",
-    icon: <SvgIcon21 />,
-  },
-  {
-    id: 22,
-    name: "Sports",
-    icon: <SvgIcon22 />,
-  },
-  {
-    id: 23,
-    name: "Music",
-    icon: <SvgIcon23 />,
-  },
-  {
-    id: 24,
-    name: "Travel",
-    icon: <SvgIcon24 />,
-  },
-  {
-    id: 25,
-    name: "Travel",
-    icon: <SvgIcon25 />,
-  },
-];
+type PermissionsForm = {
+  allow_notifications: boolean;
+  allow_photos: PhotosChoice;
+  allow_location: LocationChoice;
+};
 
 // maximum number of selections allowed
 const MAX_SELECTIONS = 5;
@@ -334,16 +99,20 @@ const ChooseInterests = () => {
   const [userNamePermission, setUserNamePermission] = useState<boolean>(false);
 
   // ------- form values for permissions ------
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<PermissionsForm>({
     allow_notifications: false,
-    allow_photos: "",
-    allow_location: "",
+    allow_photos: "non",
+    allow_location: "non",
   });
 
+  const [interests, setInterests] = useState<ChooseInterestsProps[]>([]);
+
   // ------- state to hold the selected interests ------
-  const [selectedInterestsIds, setSelectedInterestsIds] = useState<number[]>(
-    []
-  );
+  const [selectedInterestsIds, setSelectedInterestsIds] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchInterests();
+  }, []);
 
   // This effect runs once when the component mounts to set notification permission
   // You can replace this with actual permission request logic if needed
@@ -352,18 +121,18 @@ const ChooseInterests = () => {
   }, []);
 
   //   Function to fetch interests from the backend
-  const fetchInterests = async () => {
-    setLoading(true); // Set loading state to true while fetching
-    try {
-      const data = await get_hobbies_list();
-      // Assuming data is an array of interests
-      setSelectedInterests(data.data);
-    } catch (error) {
-      console.error("Error fetching interests:", error);
-    } finally {
-      setLoading(false); // Reset loading state after fetching
-    }
-  };
+  // const fetchInterests = async () => {
+  //   setLoading(true); // Set loading state to true while fetching
+  //   try {
+  //     const data = await get_hobbies_list();
+  //     // Assuming data is an array of interests
+  //     setSelectedInterests(data.data);
+  //   } catch (error) {
+  //     console.error("Error fetching interests:", error);
+  //   } finally {
+  //     setLoading(false); // Reset loading state after fetching
+  //   }
+  // };
 
   // Function to submit the permissions form
   const handleSubmitPermission = async (locationVal: string) => {
@@ -405,6 +174,30 @@ const ChooseInterests = () => {
     // }
   };
 
+  const submitPermissions = async () => {
+    setLoading(true);
+    const normalize = (v: string) => (v === "none" ? "non" : v);
+    const payload = {
+      allow_notifications: form.allow_notifications,
+      allow_photos: normalize(form.allow_photos),
+      allow_location: normalize(form.allow_location),
+    };
+
+    try {
+      const response = await user_permissions(payload);
+      if (!response.success) {
+        const text = await response.text();
+        throw new Error(text || `HTTP ${response.status}`);
+      }
+      setLocationPermission(false);
+      setUserNamePermission(true);
+    } catch (error) {
+      console.error("Update permissions failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // function to submit the interests
   const handleSubmitInterests = async () => {
     setLoading(true);
@@ -423,6 +216,55 @@ const ChooseInterests = () => {
       // }
     } catch (error) {
       console.error("Error submitting interests:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmitSelectInterests = async () => {
+    if (selectedInterestsIds.length === 0) {
+      alert("Please select at least one interest.");
+      return;
+    }
+    setLoading(true);
+    const payload = {
+      event_category_ids: selectedInterestsIds,
+    };
+    try {
+      const data = await select_hobbies_for_users(payload);
+      if (data.success) {
+        // redirect to earnMedals page
+        router.push("/authentication/earnMedals");
+      } else {
+        console.error("Failed to submit interests:", data);
+      }
+    } catch (error) {
+      console.error("Error submitting interests:", error);
+      alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchInterests = async () => {
+    setLoading(true);
+    try {
+      const res = await get_hobbies_list(); 
+      const mapped: ChooseInterestsProps[] = (res?.data ?? []).map(
+        (item: any) => ({
+          id: item.id, 
+          name: item.name, 
+          icon: (
+            <InlineSvg
+              svg={item.svg_code} 
+              className="w-[35px] h-[35px]" 
+              title={item.name}
+            />
+          ),
+        })
+      );
+      setInterests(mapped);
+    } catch (error) {
+      console.error("Error fetching interests:", error);
     } finally {
       setLoading(false);
     }
@@ -472,15 +314,16 @@ const ChooseInterests = () => {
 
           {/* Interests Grid */}
           <div className="grid grid-cols-3 gap-[14px] px-3 ml-2">
-            {mockInterestData.map((interest) => (
+            {interests.map((interest) => (
               <InterestCard
                 key={interest.id}
                 interest={interest}
                 isSelected={selectedInterestsIds.includes(interest.id)}
                 onToggle={(id) => {
+                  console.log(selectedInterestsIds, " selected interests ids");
                   // Handle interest selection logic here
                   // push or remove interest from selectedInterestsIds
-                  const interestId = parseInt(id, 10);
+                  const interestId = id;
                   if (selectedInterestsIds.includes(interestId)) {
                     setSelectedInterestsIds((prev) =>
                       prev.filter((i) => i !== interestId)
@@ -499,9 +342,9 @@ const ChooseInterests = () => {
           <div className="space-y-3 mt-50 px-3 mb-10">
             <button
               onClick={() => {
-                handleSubmitInterests();
+                handleSubmitSelectInterests();
               }}
-                className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+              className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
             >
               Continue
             </button>
@@ -521,8 +364,7 @@ const ChooseInterests = () => {
       {photosPermission && !notificationPermission && (
         <Photos
           isOpen={photosPermission}
-          onClose={(value: string) => {
-            console.log("Photos permission:", value);
+          onClose={(value: PhotosChoice) => {
             setForm((prev) => ({ ...prev, allow_photos: value }));
             setPhotosPermission(false);
             setLocationPermission(true);
@@ -532,10 +374,9 @@ const ChooseInterests = () => {
       {locationPermission && !photosPermission && (
         <Location
           isOpen={locationPermission}
-          onClose={(value: string) => {
-            console.log("Location permission:", value);
+          onClose={(value: LocationChoice) => {
             setForm((prev) => ({ ...prev, allow_location: value }));
-            handleSubmitPermission(value);
+            submitPermissions(); // <-- send all three values here
           }}
         />
       )}

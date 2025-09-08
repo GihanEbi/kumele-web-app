@@ -4,6 +4,8 @@ import Head from "next/head";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
+const imgUrl = "http://localhost:5001";
+
 import {
   ContactIcon,
   DeleteAccountIcon,
@@ -19,7 +21,7 @@ import {
   TermsAndConditionsIcon,
 } from "../../../../public/svg-icons/icons";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
-import { fetch_profile } from "@/routes/profile";
+import { fetch_profile, getAllUserData } from "@/routes/profile";
 import { useRouter } from "next/navigation";
 import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
 import ContactModel from "@/components/Models/ContactModel/ContactModel";
@@ -95,24 +97,31 @@ const settingsGroup2 = [
 ];
 
 // ---------- interface ----------
-interface fetch_profile {
-  display_name: string;
-  bio: string;
-  picture_url: string;
+interface profileData {
+  id: string;
+  username: string;
+  fullname: string;
+  email: string;
+  gender: string;
+  language: string;
+  dateofbirth: string;
+  referralcode: string;
+  abovelegalage: boolean;
+  termsandconditionsaccepted: boolean;
+  subscribedtonewsletter: boolean;
+  profilepicture: string;
+  about_me: string;
+  to_tp_secret: string;
+  is_2fa_enabled: boolean;
+  my_referral_code: string;
   qr_code_url: string;
-  followers_count: number;
-  following_count: number;
-  gold_status: number;
-  sound_notifications: boolean;
-  email_notifications: boolean;
-  theme_mode: string; // "light" or "dark"
 }
 
 const Profile = () => {
   // routing
   const router = useRouter();
   // state for store the fetched user data
-  const [userData, setUserData] = useState<fetch_profile | null>(null);
+  const [userData, setUserData] = useState<profileData | null>(null);
 
   // state for loading state
   const [loading, setLoading] = useState<boolean>(false);
@@ -132,8 +141,14 @@ const Profile = () => {
 
   const isPartnershipUser = getPartnershipToken();
 
+  // state for profile picture
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+
   useEffect(() => {
     setIsBottomNavBarFixed(true);
+    if (!isPartnershipUser) {
+      console.log("///");
+    }
     fetchUserData();
   }, []);
 
@@ -141,10 +156,8 @@ const Profile = () => {
   const fetchUserData = async () => {
     setLoading(true);
     try {
-      const data = await fetch_profile();
-      const tempData = {
-        picture_url: "/avatar-img/profile-pic.png",
-      };
+      const data = await getAllUserData();
+
       if (data.success) {
         setUserData(data.data);
       } else {
@@ -200,16 +213,19 @@ const Profile = () => {
 
             {isPartnershipUser === "yes" && (
               <div className="flex gap-5  pb-4">
-                {/* <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24"> */}
-                {/* <img src={"/images/spotify.png"} alt="spotify" width={63} height={63} /> */}
-                  <Image
-                    src={"/images/spotify.png"}
-                    alt="spotify"
-                    width={93}
-                    height={63}
-                    className="rounded-full"
-                  />
-                {/* </div> */}
+                <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
+                <img src={"/images/spotify.png"} alt="spotify" width={63} height={63} />
+                {/* <Image
+                  src={`${imgUrl}/${userData?.profilepicture.replace(
+                    /\\/g,
+                    "/"
+                  )}`}
+                  alt="spotify"
+                  width={93}
+                  height={63}
+                  className="rounded-full"
+                /> */}
+                </div>
                 <div className="flex flex-col">
                   <p className="text-app-text-primary font-plusJakartaSans font-bold text-[19px]">
                     Spotify
@@ -226,22 +242,26 @@ const Profile = () => {
               <>
                 <div className="flex items-start space-x-6 mb-[6px]">
                   <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
-                    <Image
-                      src={"/avatar-img/profile-pic.png"}
-                      alt="Alkesh Kumar"
-                      width={76}
-                      height={76}
-                      className="rounded-full object-cover"
-                    />
+                    {userData && userData.profilepicture && (
+                      <Image
+                        src={`${
+                          userData.profilepicture
+                            ? userData.profilepicture.replace(/\\/g, "/")
+                            : userData.username[0]
+                        }`}
+                        alt={userData.username}
+                        width={76}
+                        height={76}
+                        className="rounded-full object-cover"
+                      />
+                    )}
                   </div>
                   <div className="mt-1">
                     <h2 className="font-plusJakartaSans font-bold text-[19px] text-app-text-primary">
-                      {userData?.display_name
-                        ? userData.display_name
-                        : "Alkesh Kumar"}
+                      {userData?.username ? userData.username : "User NAme"}
                     </h2>
                     <button
-                    style={{backgroundColor:"#004DFF"}}
+                      style={{ backgroundColor: "#004DFF" }}
                       className="font-plusJakartaSans font-medium text-[9.95px] text-app-text-white py-1 px-3 rounded-r-sm mt-[6px]"
                       onClick={() => {
                         router.push("/profile-other-pages/edit-interest");
@@ -251,28 +271,23 @@ const Profile = () => {
                     </button>
                   </div>
                   <div className="w-[50px] h-[50px] sm:w-20 sm:h-20">
-                    <Image
-                      src={userData?.qr_code_url || "/images/QR-code.png"}
-                      alt="QR Code"
-                      width={50}
-                      height={50}
-                      className="object-contain"
-                    />
+                    {userData?.qr_code_url && (
+                      <Image
+                        src={userData.qr_code_url}
+                        alt="QR Code"
+                        width={50}
+                        height={50}
+                        className="object-contain"
+                      />
+                    )}
                   </div>
                 </div>
 
                 <div className="mt-6 overflow-y-auto max-h-32 pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                   <p className="text-app-text-profile-text font-plusJakartaSans font-normal text-[14px] mb-2">
-                    I am a software engineer by day, and a vanlife enthusiast by
-                    heart. <br />
-                    <br />
-                    With a passion for both technology and the great outdoors,
-                    Monika thrives on the open road, where she merges her love
-                    for coding with her deep connection to nature. <br />
-                    <br />
-                    With a passion for both technology and the great outdoors,
-                    Monika thrives on the open road, where she merges her love
-                    for coding with her deep connection to nature.
+                    {userData?.about_me
+                      ? userData.about_me
+                      : "This is the about me section. You can write a brief description about yourself here."}
                   </p>
                 </div>
                 <div className="-mx-6 mt-4">
@@ -293,7 +308,7 @@ const Profile = () => {
                   Following
                 </p>
                 <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
-                  {userData?.following_count || 8}
+                  {8}
                 </p>
               </div>
               <div
@@ -308,7 +323,7 @@ const Profile = () => {
                   Followers
                 </p>
                 <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
-                  {userData?.followers_count || 23}
+                  {23}
                 </p>
               </div>
               <div className="flex flex-col items-center p-2">
@@ -316,7 +331,7 @@ const Profile = () => {
                   Gold status
                 </p>
                 <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
-                  {userData?.gold_status || 23}
+                  {23}
                 </p>
               </div>
             </div>

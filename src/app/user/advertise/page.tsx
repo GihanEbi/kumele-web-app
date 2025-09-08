@@ -2,40 +2,34 @@
 
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import React, { useEffect, useRef, useState } from "react";
-import InterestCard from "@/components/InterestCard/InterestCard";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import {
-  AdvertiseIcon,
-  BoldIcon,
-  BulletedListIcon,
-  HeaderOneIcon,
-  ImageIcon,
   InformationIcon,
-  InstagramIcon,
-  ItalicIcon,
-  LinkIcon,
-  MovieIcon,
-  NewYoutubeIcon,
-  NumberListIcon,
   OkayGreenIcon,
   OkayIcon,
-  PictureIcon,
-  PubIcon,
-  SportsIcon,
-  TwitterIcon,
-  YoutubeIcon,
+  UploadImageIcon,
 } from "../../../../public/svg-icons/icons";
-import NotificationBadge from "@/components/NotificationCard/NotificationBadge";
 import DropDown from "@/components/DropDown/DropDown";
-import { UnderlineIcon } from "lucide-react";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
-import RadioButtonComponent from "@/components/RadioButtonComponent/RadioButtonComponent";
 import RadioButtonGroupComponent from "@/components/RadioButtonGroupComponent/RadioButtonGroupComponent";
 import ImageUploadComponent from "@/components/ImageUploadComponent/ImageUploadComponent";
 import RadixAgeRangeSlider from "@/components/AgeRangeSlider/AgeRangeSlider";
 import PreviewAdvertise from "./models/PreviewModal";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 import AdvertModel from "./models/AdvertModel";
+import VerticalHobbyScroller from "@/components/VerticalHobbyScroller/VerticalHobbyScroller";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import {
+  create_advert,
+  get_advert_saved_list,
+  get_all_advert_daily_budget_types,
+  get_all_advert_languages,
+  get_all_advert_regions,
+  get_all_call_to_actions,
+  upload_advert_image,
+} from "@/routes/advert";
+import Image from "next/image";
 
 // types
 type ChooseInterestsProps = {
@@ -44,60 +38,57 @@ type ChooseInterestsProps = {
   icon: string;
 };
 
-const mockInterestData = [
-  {
-    id: 1,
-    name: "Movies",
-    icon: <MovieIcon />,
-  },
-  {
-    id: 2,
-    name: "Sports",
-    icon: <SportsIcon />,
-  },
-  {
-    id: 3,
-    name: "Festival",
-    icon: <PubIcon />,
-  },
-  {
-    id: 4,
-    name: "Movies",
-    icon: <MovieIcon />,
-  },
-  {
-    id: 5,
-    name: "Sports",
-    icon: <SportsIcon />,
-  },
-  {
-    id: 6,
-    name: "Festival",
-    icon: <PubIcon />,
-  },
-];
+type AdvertProps = {
+  category_id: string;
+  advert_image_type: string;
+  advert_image_url_1: File | string;
+  advert_image_url_2?: File | string;
+  advert_image_url_3?: File | string;
+  call_to_action: string;
+  call_to_action_link: string;
+  second_call_to_action: string;
+  second_call_to_action_link: string;
+  campaign_name: string;
+  title: string;
+  description: string;
+  audience_min_age: number;
+  audience_max_age: number;
+  gender: string[];
+  region: string;
+  advert_location: string[];
+  language: string;
+  advert_placement: string;
+  platform: string[];
+  daily_budget_type: string;
+  daily_budget: number;
+  advert_duration: number;
+  save_template?: boolean;
+};
 
-// maximum number of selections allowed
-const MAX_SELECTIONS = 5;
+type SavedAdvertList = {
+  label: string;
+  value: string;
+};
+
+type MetaDataProps = {
+  label: string;
+  value: string;
+};
 
 const page = () => {
   //   loading state
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>("english");
-  const tabsContainerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [confirm, setConfirm] = useState(true);
   const [isCreateAdvertModelOpen, setIsCreateAdvertModelOpen] = useState(false);
-
-  const [previewBlog, setPreviewBlog] = useState(false);
-
-  // ------- state to hold the selected interests ------
-  const [selectedInterestsIds, setSelectedInterestsIds] = useState<number[]>(
-    []
-  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateAdvert, setIsCreateAdvert] = useState(false);
@@ -111,68 +102,413 @@ const page = () => {
   );
   const [addType, setAddType] = useState("static_ads");
 
-  // CATEGORY SELECTION
+  // states for meta data
+  const [savedAdvertList, setSavedAdvertList] = useState<SavedAdvertList[]>([]);
+  const [advertRegions, setAdvertRegions] = useState<MetaDataProps[]>([]);
+  const [advertLanguages, setAdvertLanguages] = useState<MetaDataProps[]>([]);
+  const [advertDailyBudgets, setAdvertDailyBudgets] = useState<MetaDataProps[]>(
+    []
+  );
+  const [callToActions, setCallToActions] = useState<MetaDataProps[]>([]);
 
-  const handleTabClick = (tabId: string) => {
-    setActiveTab(tabId);
-    scrollToTab(tabId);
-  }; // Mobile-like drag scrolling handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setStartX(e.pageX - (tabsContainerRef.current?.offsetLeft || 0));
-    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
-  };
+  // tempAdvertLocation
+  const [tempAdvertLocation, setTempAdvertLocation] = useState<string>("");
 
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
+  // temp  state for advert image urls
+  const [staticAdvertImage, setStaticAdvertImage] = useState<string | null>(
+    null
+  );
+  const [carouselAdvertImage1, setCarouselAdvertImage1] = useState<
+    string | null
+  >(null);
+  const [carouselAdvertImage2, setCarouselAdvertImage2] = useState<
+    string | null
+  >(null);
+  const [carouselAdvertImage3, setCarouselAdvertImage3] = useState<
+    string | null
+  >(null);
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+  // form data state
+  const [form, setForm] = useState<AdvertProps>({
+    category_id: "",
+    advert_image_type: "static",
+    advert_image_url_1: "",
+    advert_image_url_2: "",
+    advert_image_url_3: "",
+    call_to_action: "",
+    call_to_action_link: "",
+    second_call_to_action: "",
+    second_call_to_action_link: "",
+    campaign_name: "",
+    title: "",
+    description: "",
+    audience_min_age: 18,
+    audience_max_age: 28,
+    gender: [],
+    region: "",
+    advert_location: [],
+    language: "",
+    advert_placement: "",
+    platform: [],
+    daily_budget_type: "",
+    daily_budget: 0,
+    advert_duration: 0,
+    save_template: false,
+  });
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !tabsContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - (tabsContainerRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2; // Scroll speed multiplier
-    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
+  // first get saved advert list
+  useEffect(() => {
+    fetchSavedAdvertByUser();
+    // get functions for metadata
+    fetchCallToActions();
+    fetchAdvertRegions();
+    fetchAdvertLanguages();
+    fetchAdvertDailyBudgets();
+  }, []);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX - (tabsContainerRef.current?.offsetLeft || 0));
-    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
-  };
+  const fetchSavedAdvertByUser = async () => {
+    setLoading(true);
+    try {
+      const data = await get_advert_saved_list();
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !tabsContainerRef.current) return;
-    e.preventDefault();
-    const x = e.touches[0].pageX - (tabsContainerRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2;
-    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-  const scrollToTab = (tabId: string) => {
-    const tabElement = document.getElementById(`tab-${tabId}`);
-    if (tabElement && tabsContainerRef.current) {
-      const container = tabsContainerRef.current;
-      const containerWidth = container.offsetWidth;
-      const tabLeft = tabElement.offsetLeft;
-      const tabWidth = tabElement.offsetWidth;
-
-      const scrollPosition = tabLeft - (containerWidth - tabWidth) / 2;
-
-      container.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
+      if (data.success) {
+        setSavedAdvertList(data.data);
+        console.log(data.data);
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
     }
   };
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const triggerFileInput = () => {
+    if (form.advert_image_type !== "static") {
+      setError("Select Static Ads option to upload static images");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    }
+    fileInputRef.current?.click();
+  };
+
+  const fileInputRef2 = useRef<HTMLInputElement>(null);
+  const triggerFileInput2 = () => {
+    if (form.advert_image_type !== "carousel") {
+      setError("Select Carousel Ads option to upload carousel images");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    }
+    if (carouselAdvertImage1 && carouselAdvertImage2 && carouselAdvertImage3) {
+      setError("You can only upload up to 3 images for carousel ads");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    }
+    fileInputRef2.current?.click();
+  };
+
+  // ========== get advert meta data
+  // get advert call to actions
+  const fetchCallToActions = async () => {
+    setLoading(true);
+    try {
+      const data = await get_all_call_to_actions();
+
+      if (data.success) {
+        setCallToActions(data.data);
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
+  // get advert regions
+  const fetchAdvertRegions = async () => {
+    setLoading(true);
+    try {
+      const data = await get_all_advert_regions();
+
+      if (data.success) {
+        setAdvertRegions(data.data);
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
+  // get advert languages
+  const fetchAdvertLanguages = async () => {
+    setLoading(true);
+    try {
+      const data = await get_all_advert_languages();
+
+      if (data.success) {
+        setAdvertLanguages(data.data);
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
+  // get advert daily budgets
+  const fetchAdvertDailyBudgets = async () => {
+    setLoading(true);
+    try {
+      const data = await get_all_advert_daily_budget_types();
+
+      if (data.success) {
+        setAdvertDailyBudgets(data.data);
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // -------- handlePreview
+  const handlePreview = async () => {
+    if (!validateForm()) {
+      return;
+    }
+  };
+
+  // -------- handleChange for input fields ---------
+  const handleInputChange = (
+    value: File | string | number | boolean | string[],
+    name: string
+  ) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const validateForm = () => {
+    // form validation for required fields
+    if (!form.category_id) {
+      setError("Please select a category");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.call_to_action) {
+      setError("Please select a call to action");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.campaign_name) {
+      setError("Please enter a campaign name");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.title) {
+      setError("Please enter a title");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.description) {
+      setError("Please enter a description");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.audience_min_age || !form.audience_max_age) {
+      setError("Please enter a valid audience age");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.gender.length === 0) {
+      setError("Please select a gender");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.region) {
+      setError("Please select a region");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.advert_location.length === 0) {
+      setError("Please select an advert location");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.language) {
+      setError("Please select a language");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.advert_placement) {
+      setError("Please select an advert placement");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.platform.length === 0) {
+      setError("Please select a platform");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.daily_budget_type) {
+      setError("Please select a daily budget type");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.daily_budget || form.daily_budget <= 0) {
+      setError("Please enter a valid daily budget");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (!form.advert_duration || form.advert_duration <= 0) {
+      setError("Please enter a valid advert duration");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    }
+
+    if (form.advert_image_type === "static" && !staticAdvertImage) {
+      setError("Please upload a static advert image");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (
+      form.advert_image_type === "carousel" &&
+      (!carouselAdvertImage1 || !carouselAdvertImage2 || !carouselAdvertImage3)
+    ) {
+      setError("Please upload all images for carousel ads");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    }
+    return true;
+  };
+
+  // submit application
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      return;
+    }
+    if (loading) return;
+    try {
+      setLoading(true);
+
+      // set advert_image_urls
+      if (form.advert_image_type === "static" && form.advert_image_url_1) {
+        const formData = new FormData();
+        formData.append("destination", "advert");
+        formData.append("advert_image", form.advert_image_url_1);
+
+        const data = await upload_advert_image(formData);
+        if (data.success) {
+          form.advert_image_url_1 = data.advert_img_url;
+        } else {
+          setError("Image upload failed, please try again");
+          setShowErrorModel(true);
+          setTimeout(() => setShowErrorModel(false), 3600);
+          return;
+        }
+      } else if (form.advert_image_type === "carousel") {
+        if (form.advert_image_url_1) {
+          const formData = new FormData();
+          formData.append("destination", "advert");
+          formData.append("advert_image", form.advert_image_url_1);
+          const data = await upload_advert_image(formData);
+          if (data.success) {
+          form.advert_image_url_1 = data.advert_img_url;
+          } else {
+            setError("Image upload failed, please try again");
+            setShowErrorModel(true);
+            setTimeout(() => setShowErrorModel(false), 3600);
+            return;
+          }
+        }
+        if (form.advert_image_url_2) {
+          const formData = new FormData();
+          formData.append("destination", "advert");
+          formData.append("advert_image", form.advert_image_url_2);
+          const data = await upload_advert_image(formData);
+          if (data.success) {
+            form.advert_image_url_2 = data.advert_img_url;
+          } else {
+            setError("Image upload failed, please try again");
+            setShowErrorModel(true);
+            setTimeout(() => setShowErrorModel(false), 3600);
+            return;
+          }
+        }
+        if (form.advert_image_url_3) {
+          const formData = new FormData();
+          formData.append("destination", "advert");
+          formData.append("advert_image", form.advert_image_url_3);
+          const data = await upload_advert_image(formData);
+          if (data.success) {
+            form.advert_image_url_3 = data.advert_img_url;
+          } else {
+            setError("Image upload failed, please try again");
+            setShowErrorModel(true);
+            setTimeout(() => setShowErrorModel(false), 3600);
+            return;
+          }
+        }
+      }
+      // set form data
+      let data = await create_advert(form);
+      if (data.success) {
+        setSuccess("Your advert has been created successfully.");
+        setShowSuccessModel(true);
+        setTimeout(() => setShowSuccessModel(false), 3600);
+        // reset form
+        setForm({
+          category_id: "",
+          advert_image_type: "static",
+          advert_image_url_1: "",
+          advert_image_url_2: "",
+          advert_image_url_3: "",
+          call_to_action: "",
+          call_to_action_link: "",
+          second_call_to_action: "",
+          second_call_to_action_link: "",
+          campaign_name: "",
+          title: "",
+          description: "",
+          audience_min_age: 18,
+          audience_max_age: 28,
+          gender: [],
+          region: "",
+          advert_location: [],
+          language: "",
+          advert_placement: "",
+          platform: [],
+          daily_budget_type: "",
+          daily_budget: 0,
+          advert_duration: 0,
+          save_template: false,
+        });
+      } else {
+        setError(data.message || "An error occurred, please try again.");
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div
       className={`overflow-y-auto max-h-screen no-scrollbar ${
@@ -206,174 +542,15 @@ const page = () => {
 
         <div className="space-y-1 mt-[130px] px-6 mb-40">
           <div>
-            <p className="font-plusJakartaSans font-normal text-[12.97px] text-app-text-primary mb-3">
-              Advert Category
-            </p>
-            <div className="mb-6 sm:mb-8 relative w-full">
-              <div
-                ref={tabsContainerRef}
-                className="flex gap-2 overflow-x-auto sm:-mx-0 sm:px-0 no-scrollbar"
-                onMouseDown={handleMouseDown}
-                onMouseLeave={handleMouseLeave}
-                onMouseUp={handleMouseUp}
-                onMouseMove={handleMouseMove}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-                style={{
-                  cursor: isDragging ? "grabbing" : "grab",
-                  scrollbarWidth: "none",
-                  msOverflowStyle: "none",
-                  WebkitOverflowScrolling: "touch",
-                }}
-              >
-                {mockInterestData.map((interest, index) => (
-                  <div className="">
-                    <InterestCard
-                      isPartnership={true}
-                      key={interest.id}
-                      interest={interest}
-                      isSelected={selectedInterestsIds.includes(interest.id)}
-                      onToggle={(id) => {
-                        // Handle interest selection logic here
-                        // push or remove interest from selectedInterestsIds
-                        const interestId = parseInt(id, 10);
-                        if (selectedInterestsIds.includes(interestId)) {
-                          setSelectedInterestsIds((prev) =>
-                            prev.filter((i) => i !== interestId)
-                          );
-                        } else if (
-                          selectedInterestsIds.length < MAX_SELECTIONS
-                        ) {
-                          setSelectedInterestsIds((prev) => [
-                            ...prev,
-                            interestId,
-                          ]);
-                        } else {
-                          alert(
-                            `You can only select up to ${MAX_SELECTIONS} interests.`
-                          );
-                        }
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="mb-[10px]">
-            <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12.97px]">
-              Advert Image
-            </p>
-            <p className="text-app-text-secondary font-plusJakartaSans font-normal text-[10.54px] mb-[10px]">
-              (Recommended size 400*400px)
-            </p>
-          </div>
-          <div className="mb-5">
-            <div className="mb-5">
-              <RadioButtonGroupComponent
-                value={addType}
-                onChange={(value) => setAddType(value)}
-                name=""
-                options={[{ id: 1, label: "Static Ads", value: "static_ads" }]}
-              />
-            </div>
-            <ImageUploadComponent />
-          </div>
-          <div className="mb-5">
-            <div className="mb-5">
-              <RadioButtonGroupComponent
-                value={addType}
-                onChange={(value) => setAddType(value)}
-                name=""
-                options={[
-                  { id: 1, label: "Carousel Ads", value: "carousel_ads" },
-                ]}
-              />
-            </div>
-            <ImageUploadComponent />
-            <div className="flex gap-1.5 items-center justify-between mt-4">
-              <ImageUploadComponent />
-              <ImageUploadComponent />
-              <ImageUploadComponent />
-            </div>
-          </div>
-          <div className="mt-10">
-            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
-              Call to Action
-            </p>
-            <DropDown
-              dataArray={[
-                { label: "Buy now", value: "Buy now" },
-                { label: "Learn more", value: "learn_more" },
-                { label: "Install now", value: "install_now" },
-                { label: "Subscribe", value: "subscribe" },
-              ]}
-              placeHolder="select"
-              // isOpen={(value: boolean) => {
-              //   setIsDropdownOpen(value);
-              // }}
-              isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
-            />
-          </div>
-          <div className="mt-4">
-            <p className="font-plusJakartaSans font-normal text-[13.89px] mb-1 text-app-text-primary ">
-              Call to Action link
-            </p>
-            <div className="space-y-4 mb-[24px]">
-              <div className="relative">
-                <InputComponent
-                  placeholder="Enter link"
-                  value={""}
-                  onChange={(e) => {}}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="mt-4">
-            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
-              2nd Call to Action Text
-            </p>
-            <div className="space-y-4 mb-[24px]">
-              <div className="relative">
-                <InputComponent
-                  placeholder="Enter text"
-                  value={""}
-                  onChange={(e) => {}}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="mt-4">
-            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
-              2nd Call to Action Link
-            </p>
-            <div className="space-y-4 mb-[24px]">
-              <div className="relative">
-                <InputComponent
-                  placeholder="Enter link"
-                  value={""}
-                  onChange={(e) => {}}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="mt-4">
+            {" "}
             <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
               Saved Campaign
             </p>
             <div className="flex items-center gap-2 justify-between">
               <div className="w-full">
                 <DropDown
-                  dataArray={[
-                    {label: "Special Offer", value: "special_offer" }, 
-                    {label: "New Year Sale", value: "new_year_sale" }, 
-                    {label: "Summer Sale", value: "summer_sale" },
-                  ]}
+                  dataArray={savedAdvertList}
                   placeHolder="Special Offer"
-                  // isOpen={(value: boolean) => {
-                  //   setIsDropdownOpen(value);
-                  // }}
                   isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
                 />
               </div>
@@ -398,12 +575,329 @@ const page = () => {
                 <div className="relative">
                   <InputComponent
                     placeholder="New Campaign"
-                    value={""}
-                    onChange={(e) => {}}
+                    required
+                    value={form.campaign_name}
+                    onChange={(e) => {
+                      handleInputChange(e.target.value, "campaign_name");
+                    }}
                   />
                 </div>
               </div>
             </div>
+          </div>
+          <div>
+            <p className="font-plusJakartaSans font-normal text-[12.97px] text-app-text-primary mb-3">
+              Advert Category
+            </p>
+
+            <VerticalHobbyScroller
+              selectedValue={form.category_id}
+              onChange={(value: ChooseInterestsProps) => {
+                handleInputChange(value.id, "category_id");
+              }}
+            />
+          </div>
+          <div className="mb-[10px]">
+            <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12.97px]">
+              Advert Image
+            </p>
+            <p className="text-app-text-secondary font-plusJakartaSans font-normal text-[10.54px] mb-[10px]">
+              (Recommended size 400*400px)
+            </p>
+          </div>
+
+          {/* ============= Static Ads ============= */}
+          <div className="mb-5">
+            <div className="mb-5">
+              <RadioButtonGroupComponent
+                value={form.advert_image_type}
+                onChange={(value) => {
+                  handleInputChange(value, "advert_image_type");
+                  setCarouselAdvertImage1(null);
+                  setCarouselAdvertImage2(null);
+                  setCarouselAdvertImage3(null);
+                }}
+                name=""
+                options={[{ id: 1, label: "Static Ads", value: "static" }]}
+              />
+            </div>
+            <div
+              onClick={triggerFileInput}
+              className={`${
+                !staticAdvertImage
+                  ? "border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
+                  : ""
+              } `}
+            >
+              {staticAdvertImage ? (
+                <div className="relative w-full h-40 rounded-md overflow-hidden">
+                  <Image
+                    src={staticAdvertImage}
+                    alt="Event preview"
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-md"
+                  />
+                </div>
+              ) : (
+                <>
+                  <div className="mx-auto h-[19.46px] w-[19.46px] text-gray-400">
+                    <UploadImageIcon />
+                  </div>
+
+                  <p className="font-plusJakartaSans font-normal text-[10.54px] text-gray-500 mt-2">
+                    Upload an image
+                  </p>
+                </>
+              )}
+              <input
+                type="file"
+                ref={fileInputRef}
+                disabled={form.advert_image_type !== "static"}
+                onChange={(e: any) => {
+                  setStaticAdvertImage(URL.createObjectURL(e.target.files[0]));
+                  handleInputChange(e.target.files[0], "advert_image_url_1");
+                }}
+                accept="image/*"
+                className="hidden"
+              />
+            </div>
+          </div>
+          {/* ============= Carousel Ads ============= */}
+          <div className="mb-5">
+            <div className="mb-5">
+              <RadioButtonGroupComponent
+                value={form.advert_image_type}
+                onChange={(value) => {
+                  handleInputChange(value, "advert_image_type");
+                  setStaticAdvertImage(null);
+                }}
+                name=""
+                options={[{ id: 1, label: "Carousel Ads", value: "carousel" }]}
+              />
+            </div>
+            <div
+              onClick={triggerFileInput2}
+              className={`border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors
+                  `}
+            >
+              <>
+                <div className="mx-auto h-[19.46px] w-[19.46px] text-gray-400">
+                  <UploadImageIcon />
+                </div>
+
+                <p className="font-plusJakartaSans font-normal text-[10.54px] text-gray-500 mt-2">
+                  Upload an image
+                </p>
+              </>
+              <input
+                type="file"
+                ref={fileInputRef2}
+                disabled={form.advert_image_type !== "carousel"}
+                onChange={(e: any) => {
+                  if (carouselAdvertImage1 === null) {
+                    setCarouselAdvertImage1(
+                      URL.createObjectURL(e.target.files[0])
+                    );
+                    handleInputChange(e.target.files[0], "advert_image_url_1");
+                  } else if (carouselAdvertImage2 === null) {
+                    setCarouselAdvertImage2(
+                      URL.createObjectURL(e.target.files[0])
+                    );
+                    handleInputChange(e.target.files[0], "advert_image_url_2");
+                  } else if (carouselAdvertImage3 === null) {
+                    setCarouselAdvertImage3(
+                      URL.createObjectURL(e.target.files[0])
+                    );
+                    handleInputChange(e.target.files[0], "advert_image_url_3");
+                  }
+                }}
+                accept="image/*"
+                className="hidden"
+              />
+            </div>
+            <div className="flex items-center justify-between gap-1.5 mt-4">
+              <div
+                className={`${
+                  !carouselAdvertImage1
+                    ? "border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
+                    : ""
+                } `}
+              >
+                {carouselAdvertImage1 ? (
+                  <div className="relative w-auto h-auto rounded-md overflow-hidden">
+                    <Image
+                      src={carouselAdvertImage1}
+                      alt="Image preview"
+                      width={100}
+                      height={100}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="mx-auto h-[19.46px] w-[19.46px] text-gray-400">
+                      <UploadImageIcon />
+                    </div>
+
+                    <p className="font-plusJakartaSans font-normal text-[10.54px] text-gray-500 mt-2">
+                      Upload an image
+                    </p>
+                  </>
+                )}
+              </div>
+              <div
+                className={`${
+                  !carouselAdvertImage2
+                    ? "border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
+                    : ""
+                } `}
+              >
+                {carouselAdvertImage2 ? (
+                  <div className="relative w-auto h-auto rounded-md overflow-hidden">
+                    <Image
+                      src={carouselAdvertImage2}
+                      alt="Image preview"
+                      width={100}
+                      height={100}
+                      // layout="fill"
+                      // objectFit="cover"
+                      // className="rounded-md"
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="mx-auto h-[19.46px] w-[19.46px] text-gray-400">
+                      <UploadImageIcon />
+                    </div>
+
+                    <p className="font-plusJakartaSans font-normal text-[10.54px] text-gray-500 mt-2">
+                      Upload an image
+                    </p>
+                  </>
+                )}
+              </div>
+              <div
+                className={`${
+                  !carouselAdvertImage3
+                    ? "border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
+                    : ""
+                } `}
+              >
+                {carouselAdvertImage3 ? (
+                  <div className="relative w-auto h-auto rounded-md overflow-hidden">
+                    <Image
+                      src={carouselAdvertImage3}
+                      alt="Image preview"
+                      width={100}
+                      height={100}
+                      // layout="fill"
+                      // objectFit="cover"
+                      // className="rounded-md"
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="mx-auto h-[19.46px] w-[19.46px] text-gray-400">
+                      <UploadImageIcon />
+                    </div>
+
+                    <p className="font-plusJakartaSans font-normal text-[10.54px] text-gray-500 mt-2">
+                      Upload an image
+                    </p>
+                  </>
+                )}
+              </div>
+              {/* <ImageUploadComponent
+                isDisabled={true}
+                value={
+                  carouselAdvertImage1
+                    ? URL.createObjectURL(carouselAdvertImage1)
+                    : ""
+                }
+              /> */}
+              {/* <ImageUploadComponent
+                isDisabled={true}
+                value={
+                  carouselAdvertImage2
+                    ? URL.createObjectURL(carouselAdvertImage2)
+                    : ""
+                }
+              />
+              <ImageUploadComponent
+                isDisabled={true}
+                value={
+                  carouselAdvertImage3
+                    ? URL.createObjectURL(carouselAdvertImage3)
+                    : ""
+                }
+              /> */}
+            </div>
+          </div>
+          <div className="mt-10">
+            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
+              Call to Action
+            </p>
+            <DropDown
+              dataArray={callToActions}
+              placeHolder="select"
+              isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
+              onChange={(value: string) => {
+                handleInputChange(value, "call_to_action");
+              }}
+            />
+          </div>
+          <div className="mt-4">
+            <p className="font-plusJakartaSans font-normal text-[13.89px] mb-1 text-app-text-primary ">
+              Call to Action link
+            </p>
+            <div className="space-y-4 mb-[24px]">
+              <div className="relative">
+                <InputComponent
+                  placeholder="Enter link"
+                  value={form.call_to_action_link}
+                  onChange={(e) => {
+                    handleInputChange(e.target.value, "call_to_action_link");
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
+            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
+              2nd Call to Action Text
+            </p>
+            <div className="space-y-4 mb-[24px]">
+              <div className="relative">
+                <InputComponent
+                  placeholder="Enter text"
+                  value={form.second_call_to_action}
+                  onChange={(e) => {
+                    handleInputChange(e.target.value, "second_call_to_action");
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
+            <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
+              2nd Call to Action Link
+            </p>
+            <div className="space-y-4 mb-[24px]">
+              <div className="relative">
+                <InputComponent
+                  placeholder="Enter link"
+                  value={form.second_call_to_action_link}
+                  onChange={(e) => {
+                    handleInputChange(
+                      e.target.value,
+                      "second_call_to_action_link"
+                    );
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
             <div className="mt-4">
               <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
                 Title
@@ -412,8 +906,10 @@ const page = () => {
                 <div className="relative">
                   <InputComponent
                     placeholder="Add a title"
-                    value={""}
-                    onChange={(e) => {}}
+                    value={form.title}
+                    onChange={(e) => {
+                      handleInputChange(e.target.value, "title");
+                    }}
                   />
                 </div>
               </div>
@@ -424,11 +920,17 @@ const page = () => {
               </p>
               <div className="space-y-4">
                 <div className="relative">
-                  <TextAreaComponent placeholder="More about the event" />
+                  <TextAreaComponent
+                    placeholder="More about the event"
+                    value={form.description}
+                    onChange={(e) =>
+                      handleInputChange(e.target.value, "description")
+                    }
+                  />
                 </div>
               </div>
               <p className="text-[10.59px] text-end mb-1 text-app-text-secondary font-plusJakartaSans-400">
-                23/1200 Max
+                {form.description.length}/1200 Max
               </p>
             </div>
           </div>
@@ -449,33 +951,39 @@ const page = () => {
                     max={100}
                     initialValues={[18, 28]} // As shown in your image
                     step={1}
-                    onValueChange={() => {}}
+                    onValueChange={(values: [number, number]) => {
+                      handleInputChange(values[0], "audience_min_age");
+                      handleInputChange(values[1], "audience_max_age");
+                    }}
                   />
                 </div>
                 <p className="mb-2 text-app-text-primary font-plusJakartaSans font-normal text-[13.45px]">
                   Gender
                 </p>
                 <RadioButtonGroupComponent
-                  onChange={(value) => setSelectedGender(value)}
-                  value={selectedGender}
+                  onChange={(value) => {
+                    handleInputChange(value, "gender");
+                  }}
+                  value={form.gender}
                   name=""
                   options={[
                     { id: 1, label: "Male", value: "male" },
                     { id: 2, label: "Female", value: "female" },
                     { id: 3, label: "Other", value: "other" },
                   ]}
+                  isMultiSelect
                 />
                 <div className="mt-4">
                   <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.45px]">
                     Region
                   </p>
                   <DropDown
-                    dataArray={[{ label: "Europe", value: "europe" }]}
+                    dataArray={advertRegions}
                     placeHolder="Europe"
-                    // isOpen={(value: boolean) => {
-                    //   setIsDropdownOpen(value);
-                    // }}
                     isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
+                    onChange={(value: string) => {
+                      handleInputChange(value, "region");
+                    }}
                   />
                 </div>
                 <div className="mt-4">
@@ -483,20 +991,15 @@ const page = () => {
                     <p className="text-app-text-primary font-plusJakartaSans font-normal text-[13.45px]">
                       Advert Location
                     </p>
-                    {/* <InformationIcon
-                      width={16}
-                      height={16}
-                      onClick={() => {
-                        setIsCreateAdvertModelOpen(true);
-                      }}
-                    /> */}
                   </div>
                   <div className="space-y-4 mb-1">
                     <div className="relative">
                       <InputComponent
                         placeholder="Enter Country, State or Town"
-                        value={""}
-                        onChange={(e) => {}}
+                        value={tempAdvertLocation}
+                        onChange={(e) => {
+                          setTempAdvertLocation(e.target.value);
+                        }}
                       />
                     </div>
                   </div>
@@ -510,20 +1013,40 @@ const page = () => {
                 <div className="pt-4">
                   <button
                     className="w-full bg-app-button-primary font-plusJakartaSans font-normal text-[16px] text-app-text-tertiary py-3 px-4 rounded-lg"
-                    onClick={() => {}}
+                    onClick={() => {
+                      if (tempAdvertLocation === "") {
+                        setError("Please enter a location");
+                        setShowErrorModel(true);
+                        setTimeout(() => setShowErrorModel(false), 3600);
+                        return;
+                      } else if (form.advert_location.length === 3) {
+                        setError("Maximum 3 locations allowed");
+                        setTempAdvertLocation("");
+                        setShowErrorModel(true);
+                        setTimeout(() => setShowErrorModel(false), 3600);
+                        return;
+                      } else {
+                        const updatedLocations = [
+                          ...form.advert_location,
+                          tempAdvertLocation,
+                        ];
+                        handleInputChange(updatedLocations, "advert_location");
+                        setTempAdvertLocation("");
+                      }
+                    }}
                   >
                     Add
                   </button>
                   <div className="flex items-center gap-[24px] mt-1">
-                    <p className="text-app-text-secondary font-plusJakartaSans font-normal text-[10px]">
-                      Vienna
-                    </p>
-                    <p className="text-app-text-secondary font-plusJakartaSans font-normal text-[10px]">
-                      Colombo
-                    </p>
-                    <p className="text-app-text-secondary font-plusJakartaSans font-normal text-[10px]">
-                      Berlin
-                    </p>
+                    {/* map through advert location */}
+                    {form.advert_location.map((location, index) => (
+                      <p
+                        key={index}
+                        className="text-app-text-secondary font-plusJakartaSans font-normal text-[10px]"
+                      >
+                        {location}
+                      </p>
+                    ))}
                   </div>
                 </div>
 
@@ -532,19 +1055,12 @@ const page = () => {
                     Language
                   </p>
                   <DropDown
-                    dataArray={[
-                      { label: "English", value: "english" },
-                      { label: "French", value: "french" },
-                      { label: "Spanish", value: "spanish" },
-                      { label: "German", value: "german" },
-                      { label: "Italian", value: "italian" },
-                      { label: "Portuguese", value: "portuguese" },
-                    ]}
+                    dataArray={advertLanguages}
                     placeHolder="All"
-                    // isOpen={(value: boolean) => {
-                    //   setIsDropdownOpen(value);
-                    // }}
                     isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
+                    onChange={(value: string) => {
+                      handleInputChange(value, "language");
+                    }}
                   />
                 </div>
               </div>
@@ -557,14 +1073,16 @@ const page = () => {
             <div className="mb-4 flex items-center justify-start gap-2">
               <div>
                 <RadioButtonGroupComponent
-                  onChange={(value) => setAdvertPlacement(value)}
-                  value={advertPlacement}
+                  onChange={(value) => {
+                    handleInputChange(value, "advert_placement");
+                  }}
+                  value={form.advert_placement}
                   name=""
                   options={[
                     {
                       id: 1,
                       label: "General advert Placement Pricing",
-                      value: "General advert Placement Pricing",
+                      value: "general",
                     },
                   ]}
                 />
@@ -580,14 +1098,16 @@ const page = () => {
             <div className="mb-4 flex items-center justify-start gap-2">
               <div>
                 <RadioButtonGroupComponent
-                  onChange={(value) => setAdvertPlacement(value)}
-                  value={advertPlacement}
+                  onChange={(value) => {
+                    handleInputChange(value, "advert_placement");
+                  }}
+                  value={form.advert_placement}
                   name=""
                   options={[
                     {
                       id: 1,
                       label: "Notification Placement Pricing",
-                      value: "Notification Placement Pricing",
+                      value: "notification",
                     },
                   ]}
                 />
@@ -602,10 +1122,12 @@ const page = () => {
             </div>
             <div className="mb-8">
               <RadioButtonGroupComponent
-                onChange={(value) => setAdvertPlacement(value)}
-                value={advertPlacement}
+                onChange={(value) => {
+                  handleInputChange(value, "advert_placement");
+                }}
+                value={form.advert_placement}
                 name=""
-                options={[{ id: 3, label: "Both", value: "Both" }]}
+                options={[{ id: 3, label: "Both", value: "both" }]}
               />
             </div>
             <div className="mt-10">
@@ -625,8 +1147,11 @@ const page = () => {
                   { id: 3, label: "Web", value: "web" },
                   { id: 4, label: "All", value: "all" },
                 ]}
-                onChange={(value) => setDeviceType(value)}
-                value={deviceType}
+                isMultiSelect
+                onChange={(value) => {
+                  handleInputChange(value, "platform");
+                }}
+                value={form.platform}
               />
             </div>
           </div>
@@ -643,53 +1168,51 @@ const page = () => {
               </p>
               <div className="mt-5 w-2/3">
                 <RadioButtonGroupComponent
-                  onChange={(value) => setBudget(value)}
-                  value={budget}
+                  onChange={(value) => {
+                    handleInputChange(value, "daily_budget_type");
+                  }}
+                  value={form.daily_budget_type}
                   name=""
-                  options={[
-                    {
-                      id: 1,
-                      label: "1$",
-                      value: "1$",
-                    },
-                    {
-                      id: 2,
-                      label: "5$",
-                      value: "5$",
-                    },
-                    { id: 3, label: "10$", value: "10$" },
-                  ]}
+                  options={advertDailyBudgets.slice(0, -1)}
                 />
               </div>
               <div className="mb-4 mt-4 flex items-center justify-start gap-2">
                 <div>
                   <RadioButtonGroupComponent
                     name=""
-                    options={[
-                      {
-                        id: 1,
-                        label: "Daily budget",
-                        value: "Daily budget",
-                      },
-                    ]}
+                    options={advertDailyBudgets.slice(-1)}
+                    onChange={(value) => {
+                      handleInputChange(value, "daily_budget_type");
+                    }}
+                    value={form.daily_budget_type}
                   />
                 </div>
-                {/* <InformationIcon
-                  width={16}
-                  height={16}
-                  onClick={() => {
-                    setIsCreateAdvertModelOpen(true);
-                  }}
-                /> */}
               </div>
               <div className="ml-8">
-                <InputComponent placeholder="Custom Amount" />
+                <InputComponent
+                  placeholder="Custom Amount"
+                  value={form.daily_budget.toString()}
+                  disabled={
+                    form.daily_budget_type !== "ADB00005" ? true : false
+                  }
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/\D/g, "");
+                    handleInputChange(Number(numericValue), "daily_budget");
+                  }}
+                />
               </div>
               <div className="ml-8 mt-4">
                 <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
                   Duration
                 </p>
-                <InputComponent placeholder="0 Days" />
+                <InputComponent
+                  placeholder="0 Days"
+                  value={form.advert_duration.toString()}
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/\D/g, "");
+                    handleInputChange(Number(numericValue), "advert_duration");
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -707,7 +1230,7 @@ const page = () => {
             <div>
               <button
                 className="w-full  bg-app-button-primary text-app-text-tertiary font-plusJakartaSans font-normal text-[14.57px] py-3 px-4 rounded-lg"
-                onClick={() => setIsCreateAdvert(true)}
+                onClick={() => handleSubmit()}
               >
                 Create Advert
               </button>
@@ -745,6 +1268,22 @@ const page = () => {
       <AdvertModel
         isOpen={isCreateAdvertModelOpen}
         onClose={() => setIsCreateAdvertModelOpen(false)}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
       />
     </div>
   );

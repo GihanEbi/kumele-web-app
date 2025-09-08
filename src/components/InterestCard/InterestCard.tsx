@@ -3,9 +3,9 @@ import React from "react";
 
 // --- Types ---
 type Interest = {
-  id: number;
+  id: string | number;
   name: string;
-  icon: React.JSX.Element;
+  icon: React.ReactNode;
 };
 
 // --- Interest Card Component ---
@@ -35,10 +35,10 @@ const InterestCard: React.FC<InterestCardProps> = ({
       
         ${
           isSelected && isPartnership
-            ? "bg-app-input-yellow text-app-text-black border border-[0.71px] border-red-600"
+            ? "bg-app-input-yellow text-app-text-black border-[0.71px] border-red-600"
             : isSelected
-            ? "bg-app-input-yellow text-app-text-black" 
-            : "bg-app-input-primary" 
+            ? "bg-app-input-yellow text-app-text-black"
+            : "bg-app-input-primary"
         }
       `}
     >

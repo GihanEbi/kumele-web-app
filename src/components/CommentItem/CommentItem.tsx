@@ -1,18 +1,17 @@
-
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import Image                   from "next/image";
+import Image from "next/image";
 import { Comment as CommentType } from "@/types/blog";
-import { DownArrowIcon }       from "../../../public/svg-icons/icons";
-import ReplyForm               from "../CommentForm/ReplyForm/ReplyForm";
+import { DownArrowIcon } from "../../../public/svg-icons/icons";
+import ReplyForm from "../CommentForm/ReplyForm/ReplyForm";
 
-const REPLY_INDENT = 72;            // avatar (56) + gap-4 (16)
+const REPLY_INDENT = 72; // avatar (56) + gap-4 (16)
 
 interface CommentItemProps {
   comment: CommentType;
   onReplyOpen: (isOpen: boolean) => void;
-  depth?: number;                   // 0 = top-level, 1 = first reply, …
+  depth?: number; // 0 = top-level, 1 = first reply, …
   autoOpen?: boolean;
   isReply?: boolean;
 }
@@ -26,24 +25,31 @@ export default function CommentItem({
 }: CommentItemProps) {
   /* ---------------------------------------------------------------- state */
   const [repliesOpen, setRepliesOpen] = useState(autoOpen);
-  const [isReplying,  setIsReplying]  = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
   const hasReplies = comment.replies && comment.replies.length > 0;
 
   useEffect(() => setRepliesOpen(autoOpen), [autoOpen]);
 
   /* --------------------------------------------------------------- refs */
-  const lineRef             = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
   const repliesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (repliesOpen && hasReplies && lineRef.current && repliesContainerRef.current) {
-      const lastReply   = repliesContainerRef.current.lastElementChild;
+    if (
+      repliesOpen &&
+      hasReplies &&
+      lineRef.current &&
+      repliesContainerRef.current
+    ) {
+      const lastReply = repliesContainerRef.current.lastElementChild;
       if (lastReply) {
-        const lastAvatar = lastReply.querySelector('img, [class*="rounded-full"]');
+        const lastAvatar = lastReply.querySelector(
+          'img, [class*="rounded-full"]'
+        );
         if (lastAvatar) {
-          const lineTop      = lineRef.current.getBoundingClientRect().top;
-          const avatarRect   = lastAvatar.getBoundingClientRect();
-          const h            = avatarRect.top - lineTop + avatarRect.height / 2;
+          const lineTop = lineRef.current.getBoundingClientRect().top;
+          const avatarRect = lastAvatar.getBoundingClientRect();
+          const h = avatarRect.top - lineTop + avatarRect.height / 2;
           lineRef.current.style.height = `${h}px`;
         }
       }
@@ -144,8 +150,10 @@ export default function CommentItem({
           </div>
 
           {/* meta row */}
-          <div className="flex items-center gap-1 text-app-search-bar-text
-                          font-plusJakartaSans text-[16px] mt-1">
+          <div
+            className="flex items-center gap-1 text-app-search-bar-text
+                          font-plusJakartaSans text-[16px] mt-1"
+          >
             <span>•</span>
             <span>{comment.date}</span>
             <span>•</span>

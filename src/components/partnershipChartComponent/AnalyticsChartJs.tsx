@@ -262,30 +262,42 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data }) => {
           font: { size: 14 },
         },
         border: {
+          display: true,
+          color: isDark ? "#E8E8E8" : "#000000",
+          width: 1,
           dash: (context: any) => {
             if (context.tick.value === 0) {
               return [];
             }
             return [4, 6];
           },
-          display: false,
         },
         grid: {
           // color: "#E8E8E8",
           color: (context: any) => {
             if (context.tick.value === 0) {
-              return isDark ? "#E8E8E8" : "#000000";
+              return isDark ? "transparent" : "transparent";
             }
 
             return isDark ? "#E8E8E8" : "#000000";
           },
           drawTicks: false,
           borderDash: [2, 6],
-          lineWidth: (context: any) => {
-            if (context.tick.value === 0) {
-              return 0.5;
-            }
-            return 1;
+          // lineWidth: (context: any) => {
+          //   if (context.tick.value === 0) {
+          //     return 0;
+          //   } else if (isDark) {
+          //     return 0.5;
+          //   }
+          //   return 0.2;
+          // },
+          //lineWidth:1,
+          lineWidth:()=>{
+              if(isDark){
+                return 0.5;
+              }else{
+                return 0.2;
+              }
           },
           borderDashOffset: 0,
         },
@@ -293,7 +305,11 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data }) => {
       x: {
         ticks: { color: isDark ? "#FFFFFF" : "#000000", font: { size: 14 } },
         grid: { display: false },
-        border: { display: false },
+        border: {
+          display: true,
+          color: isDark ? "#E8E8E8" : "#000000",
+          width: 1,
+        },
       },
     },
     plugins: {

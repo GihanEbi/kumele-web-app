@@ -10,10 +10,35 @@ import {
   RightArrowIcon,
 } from "../../../../public/svg-icons/icons";
 import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
-import { sound_Notifications } from "@/routes/profile";
+import {
+  getAllUserData,
+  setTwoFac,
+  sound_Notifications,
+} from "@/routes/profile";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import AuthenticatorModel from "@/components/Models/AuthenticatorModel/AuthenticatorModel";
 import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
+
+// ---------- interface ----------
+interface profileData {
+  id: string;
+  username: string;
+  fullname: string;
+  email: string;
+  gender: string;
+  language: string;
+  dateofbirth: string;
+  referralcode: string;
+  abovelegalage: boolean;
+  termsandconditionsaccepted: boolean;
+  subscribedtonewsletter: boolean;
+  profilepicture: string;
+  about_me: string;
+  to_tp_secret: string;
+  is_2fa_enabled: boolean;
+  my_referral_code: string;
+  qr_code_url: string;
+}
 
 const Security = () => {
   //   loading state
@@ -22,6 +47,60 @@ const Security = () => {
   const [showAuthenticatorModel, setShowAuthenticatorModel] = useState(false);
   // routing
   const router = useRouter();
+  const [userData, setUserData] = useState<profileData | null>(null);
+  // state for twoFactor boolean
+  const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(false);
+  // qrcode state
+  const [qrCode, setQrCode] = useState("");
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  // Simulate fetching user data
+  const fetchUserData = async () => {
+    setLoading(true);
+    try {
+      const data = await getAllUserData();
+
+      if (data.success) {
+        setUserData(data.data);
+        setIsTwoFactorEnabled(data.data.is_2fa_enabled);
+      } else {
+        console.error("Failed to fetch user data:", data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmitTowFactor = async (state: boolean) => {
+
+    if (loading) return;
+
+    setLoading(true);
+
+    try {
+      const data = await setTwoFac({ isEnabled: state });
+      if (data.success) {
+        if (state) {
+          setShowAuthenticatorModel(true);
+          setQrCode(data.qrCode);
+          fetchUserData();
+        } else {
+          fetchUserData();
+        }
+      } else {
+        console.log(data.message || "Failed to update about me.");
+      }
+    } catch (error) {
+      console.error("Error updating about me:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div>
       {loading && (
@@ -68,12 +147,7 @@ const Security = () => {
                   </div>
                 </div>
               </div>
-              <div
-                className="flex justify-between px-4 items-center pb-2 pt-2"
-                onClick={() => {
-                  setShowAuthenticatorModel(true);
-                }}
-              >
+              <div className="flex justify-between px-4 items-center pb-2 pt-2">
                 <div className="flex items-center space-x-3">
                   <PasswordIcon className="text-app-icon" />
                   <span
@@ -87,8 +161,10 @@ const Security = () => {
                 <CustomToggle
                   id="two-factor-authentication"
                   aria-label="Enable Two Factor Authentication"
-                  checked={false}
-                  onCheckedChange={() => {}}
+                  checked={isTwoFactorEnabled}
+                  onCheckedChange={(e: any) => {
+                    handleSubmitTowFactor(e);
+                  }}
                   singleChecked={false}
                 />
               </div>
@@ -100,6 +176,7 @@ const Security = () => {
       {/* Email Verification Model */}
       {showAuthenticatorModel && (
         <AuthenticatorModel
+          qrCode={qrCode}
           onClose={() => setShowAuthenticatorModel(false)}
           isOpen={showAuthenticatorModel}
         />

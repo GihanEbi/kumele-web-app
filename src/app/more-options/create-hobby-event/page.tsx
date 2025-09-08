@@ -1,42 +1,19 @@
 "use client";
 
 import InputComponent from "../../../components/InputComponent/InputComponent";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
 import {
   RightIcon,
-  EventCategory1,
-  EventCategory2,
-  EventCategory3,
-  EventCategory4,
   UploadImageIcon,
   BackToPageIcon,
   InformationIcon,
-  OthersIcon,
-  ArtsAndCraftIcon,
-  CameraIcon,
-  GardeningIcon,
-  CampingIcon,
-  HousePartyIcon,
-  FoodIcon,
-  CostumeIcon,
-  TechIcon,
-  FamilyActivityIcon,
-  VideoGamesIcon,
-  PetloveIcon,
-  ActivismIcon,
-  DYIIcon,
-  ClubbingIcon,
-  MusicIcon,
-  KnightIcon,
-  VanIcon,
-  FestivalIcon,
-  OutdoorsIcon,
-  VolunteerIcon,
 } from "../../../../public/svg-icons/icons";
-import TimeDurationSelector from "@/components/TimeDurationSelector/TimeDurationSelector";
+import TimeDurationSelector, {
+  TimeOption,
+} from "@/components/TimeDurationSelector/TimeDurationSelector";
 
 import DatePicker from "@/components/DatePicker/DatePickerUpdate";
 
@@ -51,35 +28,11 @@ import GuestPricesModal from "./GuestPriceModal/GuestPriceModal";
 import EventsTimeDetailsModal from "./EventsStartDetailsModal/EventStartDetails";
 import Link from "next/link";
 import { useScrollLock } from "@/utils/useScrollHook";
-
-//event category data(need to move into utils file)-------------------
-const EVENT_CATEGORIES = [
-  { id: "spirituality", label: "Spirituality", icon: <EventCategory1 /> },
-  { id: "movies", label: "Movies", icon: <EventCategory2 /> },
-  { id: "sports", label: "Sports", icon: <EventCategory3 /> },
-  { id: "pubs-bars", label: "Pubs & Bars", icon: <EventCategory4 /> },
-  { id: "music", label: "Music", icon: <MusicIcon /> },
-  { id: "foodie", label: "Foodie", icon: <FoodIcon /> },
-  { id: "arts_and_craft", label: "Arts & Craft", icon: <ArtsAndCraftIcon /> },
-  { id: "tech", label: "Tech", icon: <TechIcon /> },
-  { id: "festival", label: "Festival", icon: <FestivalIcon /> },
-  { id: "outdoors", label: "Outdoors", icon: <OutdoorsIcon /> },
-  { id: "volunteer", label: "Volunteer", icon: <VolunteerIcon /> },
-  { id: "activism", label: "Activism", icon: <ActivismIcon /> },
-  { id: "pet_love", label: "Pet Love", icon: <PetloveIcon /> },
-  { id: "video_games", label: "Video Games", icon: <VideoGamesIcon /> },
-  {
-    id: "family_activities",
-    label: "Family Activities",
-    icon: <FamilyActivityIcon />,
-  },
-  { id: "costume", label: "Costume", icon: <CostumeIcon /> },
-  { id: "house_party", label: "House Party", icon: <HousePartyIcon /> },
-  { id: "camping", label: "Camping", icon: <CampingIcon /> },
-  { id: "gardening", label: "Gardening", icon: <GardeningIcon /> },
-  { id: "photography", label: "Photography", icon: <CameraIcon /> },
-  { id: "other", label: "Other", icon: <OthersIcon /> },
-];
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
+import VerticalHobbyScroller from "@/components/VerticalHobbyScroller/VerticalHobbyScroller";
+import { createEvent } from "@/routes/Events";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 
 // Define the data for payment options directly in the parent
 interface OptionConfig {
@@ -89,6 +42,34 @@ interface OptionConfig {
   value: string;
 }
 
+type ChooseInterestsProps = {
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+};
+
+type EventCreationPayload = {
+  category_id: string;
+  destination: string;
+  event_image: string;
+  event_name: string;
+  subtitle: string;
+  description: string;
+  event_start_in: string;
+  event_date: string;
+  event_start_time: string;
+  event_end_time: string;
+  street_address: string;
+  home_number: string;
+  district: string;
+  postal_zip_code: string;
+  state: string;
+  age_range_min: string;
+  age_range_max: string;
+  max_guests: string;
+  payment_type: string;
+  price: string;
+};
 //payment option(need to move into utils file)
 const paymentOptionsConfig: OptionConfig[] = [
   {
@@ -111,63 +92,76 @@ const paymentOptionsConfig: OptionConfig[] = [
   },
 ];
 
-//main page function started--------------------------
+//maximum characters define for event description text area
+const maxCharacters = 1200;
+
 const CreateEventSection = () => {
-  // states
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  // loading
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // form data
+  const [form, setForm] = useState<EventCreationPayload>({
+    category_id: "",
+    destination: "events",
+    event_image: "",
+    event_name: "",
+    subtitle: "",
+    description: "",
+    event_start_in: "24 Hrs",
+    event_date: "",
+    event_start_time: "",
+    event_end_time: "",
+    street_address: "",
+    home_number: "",
+    district: "",
+    postal_zip_code: "",
+    state: "",
+    age_range_min: "",
+    age_range_max: "",
+    max_guests: "",
+    payment_type: "",
+    price: "0$",
+  });
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const categoriesContainerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  // Selected duration for "event_start_in"
+  const [eventStartIn, setEventStartIn] = useState<TimeOption>("24 Hrs");
 
-  // State for event details
-  const [eventName, setEventName] = useState("");
-  const [subtitle, setSubtitle] = useState("");
-  const [description, setDescription] = useState("");
-
-  // Address fields
-  const [street, setStreet] = useState<string>("");
-  const [homeNumber, setHomeNumber] = useState<string>("");
-  const [district, setDistrict] = useState<string>("");
-  const [postalCode, setPostalCode] = useState<string>("");
-  const [state, setState] = useState<string>("");
-
-  //set modal state
+  // pickers/modals
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  //state for date picker
   const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
-  //state for event start time selector modal opening
   const [isStartTimePickerOpen, setIsStartTimePickerOpen] =
     useState<boolean>(false);
-  //state for event end time selector modal opening
   const [isEndTimePickerOpen, setIsEndTimePickerOpen] =
     useState<boolean>(false);
-  //states for event start and end time
+  const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false);
+  const [isGuestPriceModalOpen, setIsGuestPriceModalOpen] =
+    useState<boolean>(false);
+  const [isEventTimePriceModalOpen, setIsEventTimePriceModalOpen] =
+    useState<boolean>(false);
+  const [isTimeDurationModalOpen, setIsTimeDurationModalOpen] =
+    useState<boolean>(false);
+
+  // times
   const [selectedStartTime, setSelectedStartTime] = useState<string>("");
   const [selectedEndTime, setSelectedEndTime] = useState<string>("");
 
   const [isAddedCartSuccess, setIsAddedCardSuccess] = useState<boolean>(false);
-
   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
-
-  //event preview main modal opening
-  const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false);
-
-  const [isGuestPriceModalOpen, setIsGuestPriceModalOpen] =
-    useState<boolean>(false);
-
-  const [isEventTimePriceModalOpen, setIsEventTimePriceModalOpen] =
-    useState<boolean>(false);
-
-  //payment selection state
   const [selectedPayment, setSelectedPayment] = useState<string>("free");
+  const [selectedDate, setSelectedDate] = useState<string>(""); // NEW (YYYY-MM-DD)
 
-  //time duration modal state
-  const [isTimeDurationModalOpen, setIsTimeDurationModalOpen] =
-    useState<boolean>(false);
+  //dark theme identification
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   //custom hook for scrolling locking when preview open custom hook calling
   useScrollLock(isPreviewOpen);
@@ -177,23 +171,56 @@ const CreateEventSection = () => {
   useScrollLock(isStartTimePickerOpen);
   useScrollLock(isModalOpen);
 
+  // -------- handleChange for input fields ---------
+  const handleInputChange = (value: string | Boolean, name: string) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
+    //load categories
+    // useEffect(() => {
+    //   fetchCategories();
+    // }, []);
+
+    // const fetchCategories = async () => {
+    //   setLoading(true);
+    //   try {
+    //     const res = await get_hobbies_list();
+    //     const mapped: EventCategoryProps[] = (res?.data ?? []).map(
+    //       (item: any) => ({
+    //         id: item.id,
+    //         name: item.name,
+    //         icon: (
+    //           <InlineSvg
+    //             svg={item.svg_code}
+    //            className="w-[35px] h-[35px]"
+    //             title={item.name}
+    //           />
+    //         ),
+    //       })
+    //     );
+    //     console.log(mapped, "catorgoris areee ");
+    //     setCategories(mapped);
+    //   } catch (error) {
+    //     console.error("Error fetching interests:", error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+  };
+
+  // -------------------- handlers --------------------
+
   //function for handle event start time
   const handleStartTimeChange = (newTime: string) => {
-    console.log("Selected Time:", newTime);
     setSelectedStartTime(newTime);
   };
 
-  console.log("gpm invide open", isInviteModalOpen);
-
-  //function for handle event end time
+  // //function for handle event end time
   const handleEndTimeChange = (newTime: string) => {
-    console.log("Selected Time:", newTime);
     setSelectedEndTime(newTime);
   };
 
-  //dark theme identification
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  // //function for handle event date
+  const handleDateChange = (newDate: string) => {
+    setSelectedDate(newDate);
+  };
 
   //modal open handle
   const openModal = () => setIsModalOpen(true);
@@ -203,10 +230,6 @@ const CreateEventSection = () => {
     }
   };
 
-  //maximum characters define for event description text area
-  const maxCharacters = 1200;
-
-  //date picker selection calendar open handling(to close time picker clocks if open)
   const handleSetDatePickerOpen = (isOpen: boolean) => {
     setDatePickerOpen(isOpen);
     if (isOpen) {
@@ -215,7 +238,6 @@ const CreateEventSection = () => {
     }
   };
 
-  //time picker selection clocks handling
   const handleSetStartTimePickerOpen = (isOpen: boolean) => {
     setIsStartTimePickerOpen(isOpen);
     if (isOpen) {
@@ -232,74 +254,9 @@ const CreateEventSection = () => {
     }
   };
 
-  //Handlers for form inputs and interactions
-  const handleDescriptionChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    if (e.target.value.length <= maxCharacters) {
-      setDescription(e.target.value);
-    }
-  };
-
-  // Image upload handler
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   // Trigger file input click
   const triggerFileInput = () => {
     fileInputRef.current?.click();
-  };
-
-  // Mobile-like drag scrolling handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setStartX(e.pageX - (categoriesContainerRef.current?.offsetLeft || 0));
-    setScrollLeft(categoriesContainerRef.current?.scrollLeft || 0);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !categoriesContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - (categoriesContainerRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2;
-    categoriesContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setStartX(
-      e.touches[0].pageX - (categoriesContainerRef.current?.offsetLeft || 0)
-    );
-    setScrollLeft(categoriesContainerRef.current?.scrollLeft || 0);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !categoriesContainerRef.current) return;
-    e.preventDefault();
-    const x =
-      e.touches[0].pageX - (categoriesContainerRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2;
-    categoriesContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
   };
 
   const handleUserAvailability = (guests: number) => {
@@ -308,11 +265,12 @@ const CreateEventSection = () => {
     // Add your API call or logic here
   };
   const handleAgeRangeChange = (values: [number, number]) => {
-    console.log("Selected age range (Radix):", values);
+    handleInputChange(values[0].toString(), "age_range_min");
+    handleInputChange(values[1].toString(), "age_range_max");
   };
 
   const handleGuestAddToCart = (guests: number) => {
-    console.log(`Adding ${guests} guests to cart.`);
+    handleInputChange(guests.toString(), "max_guests");
     setIsAddedCardSuccess(true);
     // Add your cart logic here
   };
@@ -320,7 +278,7 @@ const CreateEventSection = () => {
   const handlePaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setSelectedPayment(newValue);
-    console.log("Selected Payment Method:", newValue);
+    handleInputChange(newValue, "payment_type");
     // Update your form state or perform actions based on the selection
   };
 
@@ -359,6 +317,63 @@ const CreateEventSection = () => {
 
   const handleTimeDurationInnerModalClose = () => {
     setIsTimeDurationModalOpen(false);
+  };
+
+  //  preview open
+  const handlePreviewOpen = () => {
+    form.event_date = selectedDate;
+    form.event_start_time = selectedStartTime;
+    form.event_end_time = selectedEndTime;
+    setIsPreviewOpen(true);
+  };
+
+  const handleEventCreate = async () => {
+    if (loading) return;
+
+    setLoading(true);
+    try {
+      const data = await createEvent(form);
+      if (data.success) {
+        setSuccess("Your event has been created successfully.");
+        setShowSuccessModel(true);
+        setTimeout(() => setShowSuccessModel(false), 3600);
+        // reset form
+        setForm({
+          category_id: "",
+          destination: "events",
+          event_image: "",
+          event_name: "",
+          subtitle: "",
+          description: "",
+          event_start_in: "24 Hrs",
+          event_date: "",
+          event_start_time: "",
+          event_end_time: "",
+          street_address: "",
+          home_number: "",
+          district: "",
+          postal_zip_code: "",
+          state: "",
+          age_range_min: "",
+          age_range_max: "",
+          max_guests: "",
+          payment_type: "",
+          price: "0$",
+        });
+        setIsPreviewOpen(false);
+      } else {
+        setError(data?.message || "An error occurred");
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
+        return;
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -420,6 +435,11 @@ const CreateEventSection = () => {
       }`}
       onClick={closeModal}
     >
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
       <div className="flex flex-row gap-5 pt-[64px] -ml-3">
         <div className="mt-2">
           <Link href="/user/home">
@@ -434,74 +454,15 @@ const CreateEventSection = () => {
 
       {/* Event Category Section */}
       <div className="mb-6">
-        <label className="font-plusJakartaSans font-normal text-[13.89px]">
+        <p className="font-plusJakartaSans font-normal text-[13.89px] text-app-text-primary mb-3">
           Event Category
-        </label>
-
-        <div className="relative mt-3">
-          <div className="overflow-hidden">
-            <div
-              ref={categoriesContainerRef}
-              className="flex space-x-3 overflow-x-auto pb-3 -mx-4 px-4 no-scrollbar"
-              onMouseDown={handleMouseDown}
-              onMouseLeave={handleMouseLeave}
-              onMouseUp={handleMouseUp}
-              onMouseMove={handleMouseMove}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              style={{
-                cursor: isDragging ? "grabbing" : "grab",
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
-                WebkitOverflowScrolling: "touch",
-              }}
-            >
-              {EVENT_CATEGORIES.map((category) => (
-                <div
-                  className={`${
-                    selectedCategory === category.id
-                      ? "bg-k-secondary-color border-none"
-                      : "bg-app-background-card hover:bg-app-background"
-                  }bg-k-secondary-color border-none flex h-24 w-24 rounded-lg`}
-                >
-                  <button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={`
-            flex h-24 w-24 flex-col items-center justify-center rounded-lg p-2 text-center transition-all duration-200
-            ${
-              selectedCategory === category.id
-                ? "bg-k-secondary-color border-none"
-                : "bg-app-background-card hover:bg-app-background"
-            }
-          `}
-                  >
-                    <div
-                      className={`${
-                        selectedCategory === category.id && isDark
-                          ? "text-gray-900"
-                          : ""
-                      } mb-1 text-xl`}
-                    >
-                      {category.icon}
-                    </div>
-
-                    <span
-                      className={`font-plusJakartaSans font-medium text-[8.39px] ${
-                        selectedCategory === category.id && isDark
-                          ? "text-black"
-                          : "text"
-                      } leading-tight`}
-                    >
-                      {category.label}
-                    </span>
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        </p>
+        <VerticalHobbyScroller
+          selectedValue={form.category_id}
+          onChange={(value: ChooseInterestsProps) => {
+            handleInputChange(value.id, "category_id");
+          }}
+        />
       </div>
 
       {/* Event Image Section */}
@@ -541,7 +502,10 @@ const CreateEventSection = () => {
           <input
             type="file"
             ref={fileInputRef}
-            onChange={handleImageUpload}
+            onChange={(e: any) => {
+              setImagePreview(URL.createObjectURL(e.target.files[0]));
+              handleInputChange(e.target.files[0], "event_image");
+            }}
             accept="image/*"
             className="hidden"
           />
@@ -575,8 +539,10 @@ const CreateEventSection = () => {
           </label>
           <InputComponent
             placeholder="Add a title"
-            value={eventName}
-            onChange={(e) => setEventName(e.target.value)}
+            value={form.event_name}
+            onChange={(e) => {
+              handleInputChange(e.target.value, "event_name");
+            }}
           />
         </div>
 
@@ -587,8 +553,10 @@ const CreateEventSection = () => {
           </label>
           <InputComponent
             placeholder="Add a subtitle"
-            value={subtitle}
-            onChange={(e) => setSubtitle(e.target.value)}
+            value={form.subtitle}
+            onChange={(e) => {
+              handleInputChange(e.target.value, "subtitle");
+            }}
           />
         </div>
 
@@ -598,14 +566,16 @@ const CreateEventSection = () => {
             Description
           </label>
           <textarea
-            value={description}
-            onChange={handleDescriptionChange}
+            value={form.description}
+            onChange={(e) => {
+              handleInputChange(e.target.value, "description");
+            }}
             maxLength={maxCharacters}
             placeholder="More About the event"
             className="w-full h-32 p-3 bg-app-input-primary  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500 resize-none"
           />
           <p className="font-plusJakartaSans font-normal text-[10px] text-app-text-secondary mt-1 text-right">
-            {description.length}/{maxCharacters} Max
+            {form.description.length}/{maxCharacters} Max
           </p>
         </div>
       </div>
@@ -623,6 +593,8 @@ const CreateEventSection = () => {
           setIsitemAdded={setIsTimeDurationModalOpen}
           handleModalOpen={handleTimeDurationInnerModalOpen}
           handleCloseModal={handleTimeDurationInnerModalClose}
+          selected={eventStartIn} // NEW
+          onChange={setEventStartIn}
         />
       </div>
 
@@ -631,6 +603,7 @@ const CreateEventSection = () => {
           label="Date"
           isOpen={isDatePickerOpen}
           setIsOpen={handleSetDatePickerOpen}
+          onChange={handleDateChange}
           //currentDateDisplay="Tuesday, 25th June, 2024"
           //onClick={handleDateClick}
         />
@@ -662,15 +635,19 @@ const CreateEventSection = () => {
           <div className="border rounded-lg">
             <InputComponent
               placeholder="Street"
-              value={street}
-              onChange={(e) => setStreet(e.target.value)}
+              value={form.street_address}
+              onChange={(e) => {
+                handleInputChange(e.target.value, "street_address");
+              }}
             />
           </div>
           <div>
             <InputComponent
               placeholder="Home Number"
-              value={homeNumber}
-              onChange={(e) => setHomeNumber(e.target.value)}
+              value={form.home_number}
+              onChange={(e) => {
+                handleInputChange(e.target.value, "home_number");
+              }}
             />
           </div>
         </div>
@@ -680,15 +657,19 @@ const CreateEventSection = () => {
           <div>
             <InputComponent
               placeholder="District"
-              value={district}
-              onChange={(e) => setDistrict(e.target.value)}
+              value={form.district}
+              onChange={(e) => {
+                handleInputChange(e.target.value, "district");
+              }}
             />
           </div>
           <div>
             <InputComponent
               placeholder="Postal / Zip code"
-              value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
+              value={form.postal_zip_code}
+              onChange={(e) => {
+                handleInputChange(e.target.value, "postal_zip_code");
+              }}
             />
           </div>
         </div>
@@ -698,8 +679,10 @@ const CreateEventSection = () => {
           <div>
             <InputComponent
               placeholder="State"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
+              value={form.state}
+              onChange={(e) => {
+                handleInputChange(e.target.value, "state");
+              }}
             />
           </div>
           {/* Empty div to maintain grid alignment */}
@@ -725,7 +708,6 @@ const CreateEventSection = () => {
         <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-15">
           Age Range
         </label>
-        {/* Age Range Slider Section using Radix UI */}
         <RadixAgeRangeSlider
           //label="Age range"
           min={18}
@@ -745,7 +727,7 @@ const CreateEventSection = () => {
           </div>
         </div>
         <GuestCounter
-          initialGuests={1} // Or any number between 0-99
+          initialGuests={Number(form.max_guests)} // Or any number between 0-99
           onAddToCart={handleGuestAddToCart}
           isSuccess={isAddedCartSuccess}
           setIsSuccess={setIsAddedCardSuccess}
@@ -773,7 +755,9 @@ const CreateEventSection = () => {
 
       {/* Create Event Button */}
       <button
-        onClick={() => setIsPreviewOpen(true)}
+        onClick={() => {
+          handlePreviewOpen();
+        }}
         className="w-full mt-12 bg-app-button-primary  text-app-button-text-color py-3 px-4 rounded-lg transition-colors mb-50 "
       >
         Preview Event
@@ -781,6 +765,11 @@ const CreateEventSection = () => {
       <EventPreviewModal
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
+        eventDataObj={form}
+        tempImgUrl={imagePreview}
+        onEventCreate={() => {
+          handleEventCreate();
+        }}
       />
       <GuestPricesModal
         isOpen={isGuestPriceModalOpen}
@@ -789,6 +778,22 @@ const CreateEventSection = () => {
       <EventsTimeDetailsModal
         isOpen={isEventTimePriceModalOpen}
         onClose={() => setIsEventTimePriceModalOpen(false)}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
       />
     </div>
   );
