@@ -1,10 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
-import EventCard from "./EventCard";
+import { use, useEffect, useRef, useState } from "react";
+import EventCard, { HostData } from "./EventCard";
 import InviteModal from "./ShareModal/ShareModal";
 import ModalPortal from "../ModalPortal/ModalPortal";
 import { useScrollLock } from "@/utils/useScrollHook";
-import {RateIcon } from "../../../public/svg-icons/icons";
+import { RateIcon } from "../../../public/svg-icons/icons";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
+import { get_all_event_list } from "@/routes/Events";
 
 type Event = {
   id: number;
@@ -18,6 +20,7 @@ type Event = {
   location: string;
   subtitle: string;
   description: string;
+  hostData?: HostData;
 };
 
 const eventsData: Event[] = [
@@ -144,24 +147,89 @@ const eventsData: Event[] = [
 
 interface SwipeCardProps {
   onStackFinished: () => void;
+  loading?: boolean;
+  setLoading?: () => void;
 }
 
 export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
-  const [events, setEvents] = useState<Event[]>(eventsData);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [eventHostData, setEventHostData] = useState<HostData[]>([]);
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
   const [isStackExtended, setIsStackExtended] = useState(false); //test bug fix step 1
   const [overlayEvent, setOverlayEvent] = useState<Event | null>(null);
   console.log("events length is", events.length);
+
   const [isRatingOpen, setIsRatingOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const hasFetchedRef = useRef(false);
+
+  const API_BASE_URL = "http://localhost:5001/";
 
   //lock parent component when a modal is open
   useScrollLock(isInviteModalOpen);
 
   useEffect(() => {
-    if (events.length === 0) {
+    if (!loading && hasFetchedRef.current && events.length === 0) {
       onStackFinished();
     }
-  }, [events, onStackFinished]);
+  }, [events, onStackFinished, loading]);
+
+  const fetchEventDetails = async () => {
+    setLoading(true);
+    try {
+      const res = await get_all_event_list();
+      console.log("fetched event data:", res.data);
+      if (res && res.data) {
+        console.log(res.data.description, "use host data des isss:::");
+        const mappedEvents: Event[] = (res.data ?? []).map((item: any) => ({
+          id: item.id,
+          imageSrc:
+            `${API_BASE_URL}${item.event_image_url}` ||
+            "/bg-imgs/preview-event.jpg",
+          title: item.event_name,
+          category: item.category_id || "General",
+          price: item.price ? `$${item.price}` : "Free",
+          time: `${item.event_start_time.split(" ")[0]} - ${
+            item.event_end_time.split(" ")[0]
+          }`,
+          guests: item.max_guests ? item.max_guests.toString() : "0",
+          startsIn: item.event_start_in,
+          location: item.street_address || "Unknown",
+          subtitle: item.subtitle || "",
+          description: item.description || "",
+          hostData: {
+            name: item.user?.fullName || "Host Name",
+            avatarSrc:
+              item.user?.profilePicture !== ""
+                ? `${API_BASE_URL}${item.user?.profilePicture}`
+                : "/avatar-img/user-preview.png",
+            followers: item.host_followers || 0,
+            rating: item.host_rating || 0,
+            level: item.host_level || "",
+            levelIcon: item.host_level_icon || "25",
+            aboutTitle: item.user?.about_title || "",
+            aboutBio:
+              item.user?.about_me !== ""
+                ? item.user?.about_me
+                : "Welcome to my world of innovation and rhythm! I'm Alkesh, an engineer by profession and a connoisseur of life's eclectic experiences.",
+          },
+        }));
+        console.log("mapped event data:", mappedEvents);
+        setEvents(mappedEvents);
+      }
+    } catch (error) {
+      console.error("Error fetching event details:", error);
+      setLoading(false);
+    } finally {
+      hasFetchedRef.current = true;
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEventDetails();
+    console.log("fetching event in mount details", events);
+  }, []);
 
   const extraCount = events.length >= 4 || events.length === 1 ? 0 : 1;
 
@@ -180,6 +248,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
     isPlaceholder: true,
   }));
 
+  console.log("events to display", events);
   const displayEvents = [...placeholders, ...events];
   const handleOpenOtherEvent = (ev: Event) => {
     setOverlayEvent(ev);
@@ -189,9 +258,20 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
     setOverlayEvent(null);
   };
 
+  console.log("display details from fetching", displayEvents);
+  console.log("events to display 2", events);
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+        <LoadingComponent />
+      </div>
+    );
+  }
+
   return (
     <>
-      {!overlayEvent && (
+      {!overlayEvent && displayEvents.length > 0 && (
         <div className="relative w-full h-[464px] grid place-items-center">
           {displayEvents.map((item, idx) => {
             return (
@@ -208,12 +288,13 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
                 setIsStackExtended={setIsStackExtended}
                 onOpenOtherEvent={handleOpenOtherEvent}
                 onOpenRating={() => setIsRatingOpen(true)}
+                hostData={item.hostData}
               />
             );
           })}
         </div>
       )}
-      {overlayEvent && (
+      {overlayEvent && displayEvents.length > 0 && (
         <div className="relative w-full h-[464px] grid place-items-center">
           <EventCard
             key={overlayEvent.id}
@@ -228,6 +309,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
             isOverlay={true}
             onCloseOverlayCard={handleCloseOverlay}
             onOpenRating={() => setIsRatingOpen(true)}
+            // hostData={item.hostData}
           />
           {/* <button
             onClick={() => setOverlayEvent(null)}

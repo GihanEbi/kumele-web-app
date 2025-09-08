@@ -29,7 +29,7 @@ type Event = {
 
 type OtherEventsProps = {
   events: Event[];
-  hostName: string;
+  hostName?: string;
   onSelect: (ev: Event) => void;
 };
 

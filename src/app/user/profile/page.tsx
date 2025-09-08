@@ -213,10 +213,11 @@ const Profile = () => {
                 {/* <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24"> */}
                 {/* <img src={"/images/spotify.png"} alt="spotify" width={63} height={63} /> */}
                 <Image
-                  src={`${imgUrl}/${userData?.profilepicture.replace(
-                    /\\/g,
-                    "/"
-                  )}`}
+                  // src={`${imgUrl}/${userData?.profilepicture.replace(
+                  //   /\\/g,
+                  //   "/"
+                  // )}`}
+                  src={"/images/spotify.png"}
                   alt="spotify"
                   width={93}
                   height={63}

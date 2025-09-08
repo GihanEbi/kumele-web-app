@@ -22,7 +22,6 @@ import { get_hobbies_list } from "@/routes/permissions_and_hobbies";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { set } from "date-fns";
 
-
 const MockComments: Comment[] = [
   {
     id: 1,
@@ -94,7 +93,7 @@ const MockComments: Comment[] = [
 
 type LikeButtonProps = {
   blogId: string;
-  initiallyLiked?: boolean; 
+  initiallyLiked?: boolean;
 };
 
 export default function BlogDetailPage() {
@@ -231,7 +230,6 @@ export default function BlogDetailPage() {
             day: "2-digit",
             month: "long",
             year: "numeric",
-
           }),
           content: item.content,
           avatarUrl: "/avatar-img/user-preview.png",

@@ -42,6 +42,17 @@ type Event = {
   isPlaceholder?: boolean;
 };
 
+export type HostData = {
+  name: string;
+  avatarSrc: string;
+  followers: number;
+  rating: number;
+  level: string;
+  levelIcon: string;
+  aboutTitle: string;
+  aboutBio: string;
+};
+
 // types for card
 interface EventCardProps {
   index: number;
@@ -55,6 +66,8 @@ interface EventCardProps {
   isOverlay?: boolean;
   onCloseOverlayCard?: () => void;
   onOpenRating: () => void;
+  hostData?: HostData;
+  otherEvents?: Event[];
 }
 
 const mockOtherEvents: Event[] = [
@@ -104,8 +117,12 @@ const mockOtherEvents: Event[] = [
 ];
 
 //destructing data for hostcard and other events components
+/*
 const { hostData, otherEvents } = {
   hostData: mockHostData,
+  otherEvents: mockOtherEvents,
+};*/
+const { otherEvents } = {
   otherEvents: mockOtherEvents,
 };
 
@@ -121,6 +138,7 @@ export default function EventCard({
   onCloseOverlayCard,
   isOverlay,
   onOpenRating,
+  hostData,
 }: EventCardProps) {
   //identifying the theme
   const { resolvedTheme } = useTheme();
@@ -506,23 +524,26 @@ export default function EventCard({
 
                     {/* Event details section end */}
 
-                    <div className="mt-15 px-5">
-                      <HostInfo host={hostData} />
-                    </div>
-
+                    {hostData && (
+                      <div className="mt-15 px-5">
+                        <HostInfo host={hostData} />
+                      </div>
+                    )}
                     {isOverlay && (
                       <div className="mt-10 px-5">
                         <RatingSection />
                       </div>
                     )}
 
-                    <div className="px-5 pb-4">
-                      <OtherEvents
-                        onSelect={onOpenOtherEvent}
-                        events={otherEvents}
-                        hostName={hostData.name}
-                      />
-                    </div>
+                    {otherEvents && (
+                      <div className="px-5 pb-4">
+                        <OtherEvents
+                          onSelect={onOpenOtherEvent}
+                          events={otherEvents}
+                          hostName={hostData?.name}
+                        />
+                      </div>
+                    )}
                   </>
                 )}
               </div>
