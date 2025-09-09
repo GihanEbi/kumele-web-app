@@ -22,7 +22,6 @@ import { get_hobbies_list } from "@/routes/permissions_and_hobbies";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { set } from "date-fns";
 
-
 const MockComments: Comment[] = [
   {
     id: 1,
@@ -94,7 +93,7 @@ const MockComments: Comment[] = [
 
 type LikeButtonProps = {
   blogId: string;
-  initiallyLiked?: boolean; 
+  initiallyLiked?: boolean;
 };
 
 export default function BlogDetailPage() {
@@ -231,7 +230,6 @@ export default function BlogDetailPage() {
             day: "2-digit",
             month: "long",
             year: "numeric",
-
           }),
           content: item.content,
           avatarUrl: "/avatar-img/user-preview.png",
@@ -254,13 +252,14 @@ export default function BlogDetailPage() {
 
   if (loading) {
     return (
-      <div className="p-4 text-center text-gray-500">
+      <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
         <LoadingComponent />
       </div>
     );
   }
 
-  if (!blog) return <div className="p-4 text-red-500">Post not found.</div>;
+  if (!blog && !loading)
+    return <div className="p-4 text-gray-500">Post not found.</div>;
   console.log("Rendering post:", blog);
 
   return (

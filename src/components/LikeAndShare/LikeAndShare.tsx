@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import {
-  LikeIcon,
   BlogFacebookIcon,
   BlogInstagramIcon,
   BlogYoutbeIcon,
@@ -39,7 +38,7 @@ export default function LikeAndShare({
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  const { theme, resolvedTheme } = useTheme();
+  const {  resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   console.log("dark cehckinggg", isDark);
 
