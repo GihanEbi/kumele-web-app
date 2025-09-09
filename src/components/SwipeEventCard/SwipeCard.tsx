@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect, useRef, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import EventCard, { HostData } from "./EventCard";
 import InviteModal from "./ShareModal/ShareModal";
 import ModalPortal from "../ModalPortal/ModalPortal";
@@ -7,6 +7,8 @@ import { useScrollLock } from "@/utils/useScrollHook";
 import { RateIcon } from "../../../public/svg-icons/icons";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import { get_all_event_list } from "@/routes/Events";
+import { get_hobbies_list } from "@/routes/permissions_and_hobbies";
+import InlineSvg from "../InlineSVG/InlineSVG";
 
 type Event = {
   id: number;
@@ -21,6 +23,7 @@ type Event = {
   subtitle: string;
   description: string;
   hostData?: HostData;
+  categoryIcon?: React.ReactNode;
 };
 
 const eventsData: Event[] = [
@@ -151,12 +154,20 @@ interface SwipeCardProps {
   setLoading?: () => void;
 }
 
+export type FetchedCategory = {
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+};
+
 export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
   const [events, setEvents] = useState<Event[]>([]);
   const [eventHostData, setEventHostData] = useState<HostData[]>([]);
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
   const [isStackExtended, setIsStackExtended] = useState(false); //test bug fix step 1
   const [overlayEvent, setOverlayEvent] = useState<Event | null>(null);
+  const [matchedCategory, setMatchedCategory] =
+    useState<FetchedCategory | null>(null);
   console.log("events length is", events.length);
 
   const [isRatingOpen, setIsRatingOpen] = useState(false);
@@ -174,47 +185,86 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
     }
   }, [events, onStackFinished, loading]);
 
+  const fetchCategory = useCallback(async () => {
+    try {
+      const res = await get_hobbies_list();
+      const mapped: FetchedCategory[] = (res?.data ?? []).map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        icon: (
+          <InlineSvg
+            svg={item.svg_code}
+            title={item.name}
+            className="w-[20px] h-[20px]"
+          />
+        ),
+      }));
+      //setCategories(mapped);
+      console.log("Fetched categories:", mapped);
+      return mapped;
+    } catch (error) {
+      console.error("Error fetching interests:", error);
+      return [];
+    }
+  }, []);
+
   const fetchEventDetails = async () => {
     setLoading(true);
     try {
       const res = await get_all_event_list();
+      const fetchedCategories = await fetchCategory();
+
+      const categoryMap: Record<string, FetchedCategory> = {};
+      fetchedCategories.forEach((cat) => {
+        categoryMap[cat.id] = cat;
+      });
+
       console.log("fetched event data:", res.data);
       if (res && res.data) {
         console.log(res.data.description, "use host data des isss:::");
-        const mappedEvents: Event[] = (res.data ?? []).map((item: any) => ({
-          id: item.id,
-          imageSrc:
-            `${API_BASE_URL}${item.event_image_url}` ||
-            "/bg-imgs/preview-event.jpg",
-          title: item.event_name,
-          category: item.category_id || "General",
-          price: item.price ? `$${item.price}` : "Free",
-          time: `${item.event_start_time.split(" ")[0]} - ${
-            item.event_end_time.split(" ")[0]
-          }`,
-          guests: item.max_guests ? item.max_guests.toString() : "0",
-          startsIn: item.event_start_in,
-          location: item.street_address || "Unknown",
-          subtitle: item.subtitle || "",
-          description: item.description || "",
-          hostData: {
-            name: item.user?.fullName || "Host Name",
-            avatarSrc:
-              item.user?.profilePicture !== ""
-                ? `${API_BASE_URL}${item.user?.profilePicture}`
-                : "/avatar-img/user-preview.png",
-            followers: item.host_followers || 0,
-            rating: item.host_rating || 0,
-            level: item.host_level || "",
-            levelIcon: item.host_level_icon || "25",
-            aboutTitle: item.user?.about_title || "",
-            aboutBio:
-              item.user?.about_me !== ""
-                ? item.user?.about_me
-                : "Welcome to my world of innovation and rhythm! I'm Alkesh, an engineer by profession and a connoisseur of life's eclectic experiences.",
-          },
-        }));
+        const mappedEvents: Event[] = (res.data ?? []).map((item: any) => {
+          const categoryData = categoryMap[item.category_id] || {
+            name: "General",
+            icon: null,
+          };
+          return {
+            id: item.id,
+            imageSrc:
+              `${API_BASE_URL}${item.event_image_url}` ||
+              "/bg-imgs/preview-event.jpg",
+            title: item.event_name,
+            category: categoryData.name, // ✅ use category name
+            price: item.price ? `$${item.price}` : "Free",
+            time: `${item.event_start_time.split(" ")[0]} - ${
+              item.event_end_time.split(" ")[0]
+            }`,
+            guests: item.max_guests ? item.max_guests.toString() : "0",
+            startsIn: item.event_start_in,
+            location: `${item.home_number} ${item.street_address}` || "Unknown",
+            subtitle: item.subtitle || "",
+            description: item.description || "",
+            hostData: {
+              name: item.user?.fullName || "Host Name",
+              avatarSrc:
+                item.user?.profilePicture !== ""
+                  ? `${API_BASE_URL}${item.user?.profilePicture}`
+                  : "/avatar-img/user-preview.png",
+              followers: item.host_followers || 0,
+              rating: item.host_rating || 0,
+              level: item.host_level || "",
+              levelIcon: item.host_level_icon || "25",
+              aboutTitle: item.user?.about_title || "",
+              aboutBio:
+                item.user?.about_me !== ""
+                  ? item.user?.about_me
+                  : "Welcome to my world of innovation and rhythm! I'm Alkesh, an engineer by profession and a connoisseur of life's eclectic experiences.",
+            },
+
+            categoryIcon: categoryData.icon,
+          };
+        });
         console.log("mapped event data:", mappedEvents);
+
         setEvents(mappedEvents);
       }
     } catch (error) {
