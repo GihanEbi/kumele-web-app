@@ -25,6 +25,7 @@ import OtherEvents from "./otherEvents/OtherEvents";
 import { useAppContext } from "@/context/AppContext";
 import RatingSection from "./otherEvents/RatingSection";
 import { useRouter } from "next/navigation";
+import HobbyTagIcon from "../HobbyTagIcon/HobbyTagIcon";
 
 //types of a event
 type Event = {
@@ -32,6 +33,7 @@ type Event = {
   imageSrc: string;
   title: string;
   category: string;
+  categoryIcon?: React.ReactNode;
   price: string;
   time: string;
   guests: string;
@@ -40,6 +42,17 @@ type Event = {
   subtitle: string;
   description: string;
   isPlaceholder?: boolean;
+};
+
+export type HostData = {
+  name: string;
+  avatarSrc: string;
+  followers: number;
+  rating: number;
+  level: string;
+  levelIcon: string;
+  aboutTitle: string;
+  aboutBio: string;
 };
 
 // types for card
@@ -55,6 +68,8 @@ interface EventCardProps {
   isOverlay?: boolean;
   onCloseOverlayCard?: () => void;
   onOpenRating: () => void;
+  hostData?: HostData;
+  otherEvents?: Event[];
 }
 
 const mockOtherEvents: Event[] = [
@@ -104,8 +119,12 @@ const mockOtherEvents: Event[] = [
 ];
 
 //destructing data for hostcard and other events components
+/*
 const { hostData, otherEvents } = {
   hostData: mockHostData,
+  otherEvents: mockOtherEvents,
+};*/
+const { otherEvents } = {
   otherEvents: mockOtherEvents,
 };
 
@@ -121,6 +140,7 @@ export default function EventCard({
   onCloseOverlayCard,
   isOverlay,
   onOpenRating,
+  hostData,
 }: EventCardProps) {
   //identifying the theme
   const { resolvedTheme } = useTheme();
@@ -177,8 +197,24 @@ export default function EventCard({
     : "";
 
   //card dragging handle function
-  const handleDragEnd = () => {
+  const handleDragEnd = (
+    eventDrag?: MouseEvent | TouchEvent | PointerEvent,
+    info?: {
+      offset: { x: number; y: number };
+      velocity: { x: number; y: number };
+    }
+  ) => {
     if (event.isPlaceholder) return;
+    const swipeX = info?.offset.x ?? x.get();
+    if (Math.abs(swipeX) > 50) {
+      if (swipeX < 0) {
+        console.log("Swiped left");
+        onOpenRating();
+      } else {
+        router.push("/more-options/event-matched");
+        console.log("Swiped right");
+      }
+    }
     if (Math.abs(x.get()) > 50) {
       setIsStackExtended(false);
       setEvents((pv) => pv.filter((v) => v.id !== event.id));
@@ -254,20 +290,19 @@ export default function EventCard({
       onDragEnd={handleDragEnd}
     >
       {/* Transparent Left and Right Buttons to reveal badges */}
-      <button
+      {/* <button
         type="button"
         aria-label="Reveal close badge"
         onPointerDown={(e) => e.stopPropagation()}
         onClick={(e) => {
           e.stopPropagation();
           setShowLeftBadge((v) => !v);
-          //setShowRightBadge(false);
         }}
         className="absolute top-5 left-5 -translate-x-1/2 -translate-y-1/2
              h-16 w-16 z-[900] bg-transparent pointer-events-auto"
-      />
+      /> */}
 
-      <button
+      {/* <button
         type="button"
         aria-label="Reveal right badge"
         onPointerDown={(e) => e.stopPropagation()}
@@ -278,10 +313,10 @@ export default function EventCard({
         }}
         className="absolute top-5 right-5 translate-x-1/2 -translate-y-1/2
              h-16 w-16 z-[900] bg-transparent pointer-events-auto"
-      />
+      /> */}
 
       {/* TOP-RIGHT VERIFIED BADGE */}
-      {isFront && (
+      {/* {isFront && (
         <button
           type="button"
           aria-label="Verified"
@@ -309,7 +344,7 @@ export default function EventCard({
               viewBox="0 0 24 24"
               className="h-10 w-10"
               fill="none"
-              stroke={isDark ? "black" : "white"}
+              stroke={isDark ? "red-500" : "yellow-500"}
               strokeWidth={3}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -318,9 +353,9 @@ export default function EventCard({
             </svg>
           </span>
         </button>
-      )}
+      )} */}
       {/* TOP-LEFT CLOSE BADGE */}
-      {isFront && (
+      {/* {isFront && (
         <button
           type="button"
           aria-label="Close"
@@ -347,7 +382,7 @@ export default function EventCard({
               viewBox="0 0 24 24"
               className="h-10 w-10"
               fill="none"
-              stroke={isDark ? "black" : "white"}
+              stroke={isDark ? "red-500" : "white"}
               strokeWidth={3}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -356,7 +391,7 @@ export default function EventCard({
             </svg>
           </span>
         </button>
-      )}
+      )} */}
 
       {(depth === 0 || depth === 1) && (
         <div
@@ -410,11 +445,14 @@ export default function EventCard({
                       isOverlay ? "top-8 right-8" : "top-5 right-6"
                     }  bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1 rounded-full flex items-center space-x-1.5`}
                   >
-                    <YingyangIcon />
+                    {/* <YingyangIcon /> */}
+                    {/* <event.categoryIcon/> */}
+                    {event.categoryIcon}
                     <span className="font-plusJakartaSans text-white font-normal text-[11px]">
                       {event.category}
                     </span>
                   </div>
+                  <div>{/* <HobbyTagIcon hobbyId={event.category} /> */}</div>
                 </div>
                 <div className="flex justify-between items-start mb-4 mt-3 px-5">
                   <h1 className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[22px]">
@@ -506,23 +544,26 @@ export default function EventCard({
 
                     {/* Event details section end */}
 
-                    <div className="mt-15 px-5">
-                      <HostInfo host={hostData} />
-                    </div>
-
+                    {hostData && (
+                      <div className="mt-15 px-5">
+                        <HostInfo host={hostData} />
+                      </div>
+                    )}
                     {isOverlay && (
                       <div className="mt-10 px-5">
                         <RatingSection />
                       </div>
                     )}
 
-                    <div className="px-5 pb-4">
-                      <OtherEvents
-                        onSelect={onOpenOtherEvent}
-                        events={otherEvents}
-                        hostName={hostData.name}
-                      />
-                    </div>
+                    {otherEvents && (
+                      <div className="px-5 pb-4">
+                        <OtherEvents
+                          onSelect={onOpenOtherEvent}
+                          events={otherEvents}
+                          hostName={hostData?.name}
+                        />
+                      </div>
+                    )}
                   </>
                 )}
               </div>
