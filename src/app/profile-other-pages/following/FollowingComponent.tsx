@@ -89,7 +89,13 @@ const FollowingComponent = () => {
     "Followers"
   );
   // const source = searchParams.get("source");
-  const source = searchParams?.get("source") ?? "";
+  const [source, setSource] = useState<string | null>(null);
+  // const source = searchParams?.get("source") ?? "";
+  useEffect(() => {
+    if (searchParams) {
+      setSource(searchParams.get("source"));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (source) {

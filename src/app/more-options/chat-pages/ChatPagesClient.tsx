@@ -53,8 +53,13 @@ const followingList = [
 
 const ChatPagesClient = () => {
   const searchParams = useSearchParams();
-  // const source = searchParams.get("source");
-  const source = searchParams?.get("source") ?? "";
+  const [source, setSource] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (searchParams) {
+      setSource(searchParams.get("source"));
+    }
+  }, [searchParams]);
 
   const [loading, setLoading] = useState<boolean>(false);
   //State to track the active tab
