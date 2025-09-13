@@ -8,7 +8,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 // All provider-related logic and configuration goes here.
 const paypalOptions = {
   // Use camelCase 'clientId' as required by the React component's types.
-  clientId: "AQ0EmIh470mZaVzgNPmvzDrobJ2nwLtQcNzZlTlP5G_lLYQHijpuUTRXGztkdVK53yZZKMFz_SWOZRQ1"!,
+  clientId: "Ado106hdA9ZAjYvRgXxXJcb2CMshQgcd8NWt6D0J6AOxTNPHj5XYUOCDG9fv8xlM1nOrp1mYEl3FrKMr"!,
   currency: "USD",
   intent: "capture",
   vault: true, // Enables the ability to save cards
