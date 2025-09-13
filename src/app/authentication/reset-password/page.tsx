@@ -26,9 +26,17 @@ interface FormData {
 
 const ChangePasswordPage = () => {
   const searchParams = useSearchParams();
-  const resetPasswordToken = searchParams
-    ? searchParams.get("reset_password_token")
-    : null;
+  const router = useRouter();
+
+  const [resetPasswordToken, setResetPasswordToken] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (searchParams) {
+      setResetPasswordToken(searchParams.get("reset_password_token"));
+    }
+  }, [searchParams]);
   //   loading state
   const [loading, setLoading] = useState(false);
   // form submission
@@ -43,8 +51,6 @@ const ChangePasswordPage = () => {
   const [showErrorModel, setShowErrorModel] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  // routing
-  const router = useRouter();
 
   // -------- handleChange for input fields ---------
   const handleChange = (value: string, name: string) => {
@@ -53,6 +59,7 @@ const ChangePasswordPage = () => {
 
   // -------- handleSubmit for form submission ---------
   const handleSubmit = async () => {
+    if (!resetPasswordToken) return; 
     // check if new password is match to confirm new password
     if (formData.newPassword !== formData.confirmNewPassword) {
       console.log("Passwords do not match");
