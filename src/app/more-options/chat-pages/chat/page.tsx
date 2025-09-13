@@ -67,7 +67,14 @@ const DUMMY_AUTH_TOKEN = getToken() || "";
 
 const page = () => {
   const searchParams = useSearchParams();
-  const event_id = searchParams ? searchParams.get("event_id") : null;
+  const [event_id, setEventId] = useState<string | null>(null);
+  // const event_id = searchParams ? searchParams.get("event_id") : null;
+
+  useEffect(() => {
+    if (searchParams) {
+      setEventId(searchParams.get("event_id"));
+    }
+  }, [searchParams]);
   const [newMessageText, setNewMessageText] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null); // Ref for auto-scrolling
   //   loading state
