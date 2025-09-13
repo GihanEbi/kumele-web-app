@@ -107,7 +107,7 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
   }
 
   // -------- handleChange for input fields ---------
-  const handleInputChange = (value: string | Boolean, name: string) => {
+  const handleInputChange = (value: string | Boolean | string[], name: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
