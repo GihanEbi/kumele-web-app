@@ -41,7 +41,7 @@ interface BlogPreviewModelProps {
   tempImgUrl: string | undefined;
   userImg: string | null | undefined;
   userName: string | null | undefined;
-  onBlogCreate: Function
+  onBlogCreate: Function;
 }
 
 const BlogPreviewModel = ({
@@ -50,7 +50,8 @@ const BlogPreviewModel = ({
   blogData,
   tempImgUrl,
   userImg,
-  userName,onBlogCreate
+  userName,
+  onBlogCreate,
 }: BlogPreviewModelProps) => {
   const [isBlogCreated, setIsBlogCreated] = React.useState<boolean>(false);
   const { resolvedTheme } = useTheme();

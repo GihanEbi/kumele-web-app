@@ -16,6 +16,8 @@ import { PaymentCompleteModal } from "@/components/PaymentModal/PaymentCompleteM
 import SubscriptionExpirationModal from "./InitialPopup/Modal";
 import { useAppContext } from "@/context/AppContext";
 import { useTheme } from "next-themes";
+import StripeModel from "@/components/StripeModel/StripeModel";
+import { useRouter } from "next/navigation";
 
 type Plan = {
   id: number;
@@ -131,6 +133,7 @@ const guestTickets: Plan[] = [
 ];
 
 export default function SubscriptionsPage() {
+  const router = useRouter();
   //State to track the active tab
   const [activeTab, setActiveTab] = useState<"subscriptions" | "tickets">(
     "subscriptions"
@@ -145,12 +148,13 @@ export default function SubscriptionsPage() {
 
   //-----------initial pop up state
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isStripeModelOpen, setIsStripeModelOpen] = useState(false);
 
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
   const isMoreOptionsOpen = useAppContext().moreOption;
-    console.log("isMoreOptionsOpen is:", isMoreOptionsOpen);
+  console.log("isMoreOptionsOpen is:", isMoreOptionsOpen);
 
   //initial popup modal open handling
   useEffect(() => {
@@ -219,13 +223,15 @@ export default function SubscriptionsPage() {
 
   return (
     <>
-      <div className={`font-sans pt-[64px] pb-20 ${
-            isMoreOptionsOpen && isDark
-              ? "bg-neutral-900"
-              : isMoreOptionsOpen && !isDark
-              ? "bg-gray-200"
-              : ""
-          }`} >
+      <div
+        className={`font-sans pt-[64px] pb-20 ${
+          isMoreOptionsOpen && isDark
+            ? "bg-neutral-900"
+            : isMoreOptionsOpen && !isDark
+            ? "bg-gray-200"
+            : ""
+        }`}
+      >
         <div className="mx-auto p-4">
           {/* Segmented Control Header */}
           <div className="bg-app-range-slider-track-active p-1 rounded-lg flex items-center mt-2">
@@ -302,7 +308,9 @@ export default function SubscriptionsPage() {
                     {plan.status === "buy" ? (
                       <div className="mt-5 flex ">
                         <button
-                          onClick={handleOpenPayment}
+                          onClick={() => {
+                            setIsStripeModelOpen(true);
+                          }}
                           className="bg-app-card-button-bg-primary text-app-button-text-color font-plusJakartaSans font-normal text-[16px] py-2 px-20 rounded-lg shadow-sm"
                         >
                           Buy now
@@ -344,9 +352,14 @@ export default function SubscriptionsPage() {
         isOpen={isThankYouOpen}
         onClose={handleCloseThankYou} // This closes the modal and ends the flow
       />
-      <SubscriptionExpirationModal
+      {/* <SubscriptionExpirationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      /> */}
+      <StripeModel
+        isOpen={isStripeModelOpen}
+        onClose={() => setIsStripeModelOpen(false)}
+        amount={"15.00"}
       />
     </>
   );
