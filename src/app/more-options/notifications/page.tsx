@@ -43,29 +43,29 @@ const matchedHobbies = [
 
 const createdHobbies = [
   {
-    userImg: "/images/notification img3.jpg",
-    title: "Group meditation",
+    userImg: "/avatar-img/gihan.jpeg",
+    title: "Test Event",
     icon: <LiveMusicNotificationIcon className="text-app-icon" />,
-    time: "12.33 PM",
-    category: "Spirituality",
-    userName: "Akesh kumar",
-    description: "You are following this event host. Be the first to join.",
+    time: "05.45 PM",// set current time
+    category: "Live show",
+    userName: "Gihan",
+    description: "Your created event under review.",
     isShowCancelled: true,
     isCancelled: false,
     isJoinNow: false,
   },
-  {
-    userImg: "/images/notification img1.jpg",
-    title: "Psychedelic jazz",
-    icon: <LiveMusicNotificationIcon className="text-app-icon" />,
-    time: "12.33 PM",
-    category: "House party",
-    userName: "Riya Sharma",
-    description: "You are following this event host. Be the first to join.",
-    isCancelled: true,
-    isShowCancelled: true,
-    isJoinNow: false,
-  },
+  // {
+  //   userImg: "/images/notification img1.jpg",
+  //   title: "Psychedelic jazz",
+  //   icon: <LiveMusicNotificationIcon className="text-app-icon" />,
+  //   time: "12.33 PM",
+  //   category: "House party",
+  //   userName: "Riya Sharma",
+  //   description: "You are following this event host. Be the first to join.",
+  //   isCancelled: true,
+  //   isShowCancelled: true,
+  //   isJoinNow: false,
+  // },
 ];
 
 const otherNotifications = [
