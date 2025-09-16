@@ -476,7 +476,9 @@ const CreateEventSection = () => {
 
         <div
           onClick={triggerFileInput}
-          className="border-2 border-dashed border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
+          className={` ${
+            imagePreview ? "" : "border-2 border-dashed"
+          } border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors`}
         >
           {imagePreview ? (
             <div className="relative w-full h-40 rounded-md overflow-hidden">
