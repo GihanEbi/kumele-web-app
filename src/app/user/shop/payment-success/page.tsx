@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import { useState, Suspense } from "react";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
-import Chat from "./Chat";
+import PaymentSuccessNewPage from "./Payment";
 
-const page = () => {
+const PaymentSuccessPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   return (
@@ -15,9 +15,9 @@ const page = () => {
           <LoadingComponent />
         </div>
       )}
-      <Chat />
+      <PaymentSuccessNewPage />
     </Suspense>
   );
 };
 
-export default page;
+export default PaymentSuccessPage;
