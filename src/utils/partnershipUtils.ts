@@ -1,3 +1,5 @@
+"use client"; 
+
 export function savePartnershipToken(token: string) {
   try {
     localStorage.setItem("partnership_token", token);
