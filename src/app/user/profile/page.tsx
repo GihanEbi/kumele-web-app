@@ -214,8 +214,13 @@ const Profile = () => {
             {isPartnershipUser === "yes" && (
               <div className="flex gap-5  pb-4">
                 <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
-                <img src={"/images/spotify.png"} alt="spotify" width={63} height={63} />
-                {/* <Image
+                  <img
+                    src={"/images/spotify.png"}
+                    alt="spotify"
+                    width={63}
+                    height={63}
+                  />
+                  {/* <Image
                   src={`${imgUrl}/${userData?.profilepicture.replace(
                     /\\/g,
                     "/"
@@ -242,10 +247,10 @@ const Profile = () => {
               <>
                 <div className="flex items-start space-x-6 mb-[6px]">
                   <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
-                    {userData && userData.profilepicture && (
+                    {userData && userData.profilepicture !== "" && (
                       <Image
                         src={`${
-                          userData.profilepicture
+                          userData.profilepicture !== ""
                             ? userData.profilepicture.replace(/\\/g, "/")
                             : userData.username[0]
                         }`}

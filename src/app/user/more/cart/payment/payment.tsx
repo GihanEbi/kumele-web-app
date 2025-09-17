@@ -18,9 +18,13 @@ interface SavedCard {
   last4: string;
 }
 
-const PaymentPage = () => {
+interface PaymentPageProps {
+  amountToPay?: number;
+}
+
+const PaymentPage = ({ amountToPay }: PaymentPageProps) => {
   const [{ isPending }] = usePayPalScriptReducer();
-  const [cartTotal] = useState("10.00"); // Example amount
+  const [cartTotal] = useState(10);
   const [saveCard, setSaveCard] = useState(false);
   const [savedCards, setSavedCards] = useState<SavedCard[]>([]);
 

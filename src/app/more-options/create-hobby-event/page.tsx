@@ -4,6 +4,7 @@ import InputComponent from "../../../components/InputComponent/InputComponent";
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 import {
   RightIcon,
@@ -82,13 +83,13 @@ const paymentOptionsConfig: OptionConfig[] = [
     id: "payment-card",
     mainLabel: "Card Payment",
     valueText: "20$",
-    value: "card_20",
+    value: "card_payment",
   },
   {
     id: "payment-cash",
     mainLabel: "Cash On Entry",
     valueText: "50$",
-    value: "cash_50",
+    value: "cash_on_entry",
   },
 ];
 
@@ -98,6 +99,7 @@ const maxCharacters = 1200;
 const CreateEventSection = () => {
   // loading
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   // form data
   const [form, setForm] = useState<EventCreationPayload>({
@@ -174,35 +176,6 @@ const CreateEventSection = () => {
   // -------- handleChange for input fields ---------
   const handleInputChange = (value: string | Boolean, name: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
-    //load categories
-    // useEffect(() => {
-    //   fetchCategories();
-    // }, []);
-
-    // const fetchCategories = async () => {
-    //   setLoading(true);
-    //   try {
-    //     const res = await get_hobbies_list();
-    //     const mapped: EventCategoryProps[] = (res?.data ?? []).map(
-    //       (item: any) => ({
-    //         id: item.id,
-    //         name: item.name,
-    //         icon: (
-    //           <InlineSvg
-    //             svg={item.svg_code}
-    //            className="w-[35px] h-[35px]"
-    //             title={item.name}
-    //           />
-    //         ),
-    //       })
-    //     );
-    //     console.log(mapped, "catorgoris areee ");
-    //     setCategories(mapped);
-    //   } catch (error) {
-    //     console.error("Error fetching interests:", error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
   };
 
   // -------------------- handlers --------------------
@@ -271,7 +244,7 @@ const CreateEventSection = () => {
 
   const handleGuestAddToCart = (guests: number) => {
     handleInputChange(guests.toString(), "max_guests");
-    setIsAddedCardSuccess(true);
+    // setIsAddedCardSuccess(true);
     // Add your cart logic here
   };
 
@@ -324,6 +297,11 @@ const CreateEventSection = () => {
     form.event_date = selectedDate;
     form.event_start_time = selectedStartTime;
     form.event_end_time = selectedEndTime;
+    // validate form
+    const isValid = formValidation();
+    if (!isValid) return;
+    console.log("form data for preview:", form);
+
     setIsPreviewOpen(true);
   };
 
@@ -360,7 +338,10 @@ const CreateEventSection = () => {
           payment_type: "",
           price: "0$",
         });
+        setImagePreview(null);
         setIsPreviewOpen(false);
+        // navigate to user home after event creation
+        router.push("/user/home");
       } else {
         setError(data?.message || "An error occurred");
         setShowErrorModel(true);
@@ -375,6 +356,106 @@ const CreateEventSection = () => {
       setLoading(false);
     }
   };
+
+  // validation
+  const formValidation = () => {
+    // check if category_id is empty in form
+    if (!form.category_id) {
+      setError("Please select a category.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.event_image) {
+      setError("Please upload an event image.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.event_name) {
+      setError("Event name is required.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.subtitle) {
+      setError("Event subtitle is required.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.description) {
+      setError("Event description is required.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.event_date) {
+      setError("Please select an event date.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.event_start_time) {
+      setError("Please select an event start time.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.event_end_time) {
+      setError("Please select an event end time.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.street_address) {
+      setError("Street address is required.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.home_number) {
+      setError("Home number is required.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.district) {
+      setError("District is required.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.postal_zip_code) {
+      setError("Postal/Zip code is required.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.state) {
+      setError("State is required.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.age_range_min || !form.age_range_max) {
+      setError("Please select an age range.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.max_guests) {
+      setError("Please specify the number of guests.");
+      setShowErrorModel(true);
+      return false;
+    } else if (!form.payment_type) {
+      setError("Please select a payment method.");
+      setShowErrorModel(true);
+      return false;
+    } else if (isStartLater(form.event_start_time, form.event_end_time)) {
+      setError("Event end time must be later than start time.");
+      setShowErrorModel(true);
+      return false;
+    } else if (new Date(form.event_date) < new Date()) {
+      setError("Event date must be in the future.");
+      setShowErrorModel(true);
+      return false;
+    } else {
+      return true;
+    }
+  };
+  function isStartLater(startTime: string, endTime: string): boolean {
+    const parseTime = (timeStr: string): number => {
+      const [time, modifier] = timeStr.split(" ");
+      let [hours, minutes] = time.split(":").map(Number);
+
+      if (modifier === "PM" && hours !== 12) {
+        hours += 12;
+      }
+      if (modifier === "AM" && hours === 12) {
+        hours = 0;
+      }
+
+      return hours * 60 + minutes; // convert to total minutes
+    };
+
+    const startMinutes = parseTime(startTime);
+    const endMinutes = parseTime(endTime);
+
+    return startMinutes > endMinutes;
+  }
 
   return (
     <div
@@ -481,7 +562,7 @@ const CreateEventSection = () => {
           } border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors`}
         >
           {imagePreview ? (
-            <div className="relative w-full h-40 rounded-md overflow-hidden">
+            <div className="relative w-full h-30 rounded-md overflow-hidden">
               <Image
                 src={imagePreview}
                 alt="Event preview"

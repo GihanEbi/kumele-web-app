@@ -173,7 +173,6 @@ const page = () => {
 
       if (data.success) {
         setSavedAdvertList(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       setError("An error occurred");
