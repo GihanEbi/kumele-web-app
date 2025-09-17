@@ -14,8 +14,6 @@ type SuccessModelProps = {
 const SuccessModel = ({ isOpen, onClose, successMessage }: SuccessModelProps) => {
   if (!isOpen) return null;
 
-  console.log("SuccessModel rendered with message:", successMessage);
-
   return (
     <div
       className="fixed inset-0 bg-opacity-50 flex items-end justify-center z-1000 transition-opacity duration-300 ease-in-out"

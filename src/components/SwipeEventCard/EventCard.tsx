@@ -157,18 +157,14 @@ export default function EventCard({
   //calling app context to get the state of bottomnav bar fixed
   const setIsBottomNavBarFixed = useAppContext().setIsBottomNavBarFixed;
   const isBottomNavBarFixed = useAppContext().isBottomNavBarFixed;
-  console.log("isBottomNavBarFixed is:", isBottomNavBarFixed);
 
   const isMoreOptionsOpen = useAppContext().moreOption;
-  console.log("isMoreOptionsOpen is:", isMoreOptionsOpen);
 
   const router = useRouter();
 
   //variables for dragging animations and styles
   const x = useMotionValue(0);
-  console.log("index isss", index);
   const depth = events.length - 1 - index;
-  console.log("depth is:", depth);
   const isFront = depth === 0;
   const isHidden = depth > 3;
 
@@ -208,11 +204,9 @@ export default function EventCard({
     const swipeX = info?.offset.x ?? x.get();
     if (Math.abs(swipeX) > 50) {
       if (swipeX < 0) {
-        console.log("Swiped left");
         onOpenRating();
       } else {
-        router.push("/more-options/event-matched");
-        console.log("Swiped right");
+        // router.push("/more-options/event-matched");
       }
     }
     if (Math.abs(x.get()) > 50) {
@@ -221,13 +215,7 @@ export default function EventCard({
     }
   };
 
-  //debugging
-  useEffect(() => {
-    console.log(x);
-  }, [x]);
 
-  //debugging
-  useMotionValueEvent(x, "change", (latest) => console.log(latest));
 
   const handleToggleDownArrow = () => {
     setIsStackExtended(!isStackExtended);
@@ -289,109 +277,6 @@ export default function EventCard({
       }}
       onDragEnd={handleDragEnd}
     >
-      {/* Transparent Left and Right Buttons to reveal badges */}
-      {/* <button
-        type="button"
-        aria-label="Reveal close badge"
-        onPointerDown={(e) => e.stopPropagation()}
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowLeftBadge((v) => !v);
-        }}
-        className="absolute top-5 left-5 -translate-x-1/2 -translate-y-1/2
-             h-16 w-16 z-[900] bg-transparent pointer-events-auto"
-      /> */}
-
-      {/* <button
-        type="button"
-        aria-label="Reveal right badge"
-        onPointerDown={(e) => e.stopPropagation()}
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowRightBadge((v) => !v);
-          //setShowLeftBadge(false);
-        }}
-        className="absolute top-5 right-5 translate-x-1/2 -translate-y-1/2
-             h-16 w-16 z-[900] bg-transparent pointer-events-auto"
-      /> */}
-
-      {/* TOP-RIGHT VERIFIED BADGE */}
-      {/* {isFront && (
-        <button
-          type="button"
-          aria-label="Verified"
-          onPointerDown={(e) => e.stopPropagation()}
-          onClick={(e) => {
-            e.stopPropagation();
-            //setShowRightBadge((v) => !v);
-            router.push("/more-options/event-matched");
-            console.log("Right badge clicked");
-          }}
-          className={`absolute top-5 right-5 translate-x-1/2 -translate-y-1/2 z-[1000]
-              transition-opacity transition-transform duration-200
-              ${
-                showRightBadge && !showLeftBadge
-                  ? "opacity-100 scale-100 pointer-events-auto"
-                  : "opacity-0 scale-95 pointer-events-none"
-              }`}
-        >
-          <span
-            className={`h-12 w-12 rounded-full bg-[#F7B500] ring-4 ${
-              isDark ? "ring-black" : "ring-white"
-            }  shadow-md grid place-items-center`}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-10 w-10"
-              fill="none"
-              stroke={isDark ? "red-500" : "yellow-500"}
-              strokeWidth={3}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M20 6L9 17l-5-5" />
-            </svg>
-          </span>
-        </button>
-      )} */}
-      {/* TOP-LEFT CLOSE BADGE */}
-      {/* {isFront && (
-        <button
-          type="button"
-          aria-label="Close"
-          onPointerDown={(e) => e.stopPropagation()}
-          onClick={(e) => {
-            setShowLeftBadge((v) => !v);
-            e.stopPropagation();
-            onOpenRating();
-          }}
-          className={`absolute top-5 left-5 -translate-x-1/2 -translate-y-1/2 z-[1000]
-              transition-opacity transition-transform duration-200
-              ${
-                showLeftBadge
-                  ? "opacity-100 scale-100 pointer-events-auto"
-                  : "opacity-0 scale-95 pointer-events-none"
-              }`}
-        >
-          <span
-            className={`h-12 w-12 rounded-full bg-[#FF6B6B] ring-4 ${
-              isDark ? "ring-black" : "ring-white"
-            } shadow-md grid place-items-center`}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-10 w-10"
-              fill="none"
-              stroke={isDark ? "red-500" : "white"}
-              strokeWidth={3}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M6 6l12 12M6 18L18 6" />
-            </svg>
-          </span>
-        </button>
-      )} */}
 
       {(depth === 0 || depth === 1) && (
         <div

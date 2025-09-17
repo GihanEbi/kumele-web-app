@@ -25,6 +25,11 @@ import { CoinbasePaymentModal } from "@/components/PaymentModal/CoinBasePaymentM
 import { PaymentCompleteModal } from "@/components/PaymentModal/PaymentCompleteModal/PaymentCompleteModal";
 import InviteModal from "./ShareModal/ShareModal";
 import HobbyTagIcon from "@/components/HobbyTagIcon/HobbyTagIcon";
+import { EventPaymentModal } from "@/components/Models/EventPymentModel/EventPymentModel";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import { add_to_cart, get_user_cart } from "@/routes/cart";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 
 type EventCreationPayload = {
   category_id: string;
@@ -57,6 +62,15 @@ type EventPreviewModalProps = {
   onEventCreate: Function;
 };
 
+interface userCart {
+  id: string;
+  quantity: number;
+  product_id: string;
+  name: string;
+  price: number;
+  description: string;
+}
+
 const EventPreviewModal = ({
   isOpen,
   onClose,
@@ -64,6 +78,21 @@ const EventPreviewModal = ({
   tempImgUrl,
   onEventCreate,
 }: EventPreviewModalProps) => {
+  //   loading state
+  const [loading, setLoading] = useState(false);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  //   state to store user cart data
+  const [cartData, setCartData] = useState<userCart[]>([]);
+  //   state to amount to pay
+  const [amountToPay, setAmountToPay] = useState(0);
+
   const [isExtendedPreviewOpen, setIsExtentedPreviewOpen] =
     useState<boolean>(false);
   const [isPaymentModalOpen, setPaymentModalOpen] = useState<boolean>(false);
@@ -72,6 +101,8 @@ const EventPreviewModal = ({
   const [isCoinbaseOpen, setCoinbaseOpen] = useState<boolean>(false);
   const [isThankYouOpen, setThankYouOpen] = useState<boolean>(false);
   const [isInviteModalOpen, setInviteModalOpen] = useState<boolean>(false);
+  const [eventPaymentModelOpen, setEventPaymentModalOpen] =
+    useState<boolean>(false);
   if (!isOpen) return null;
 
   const { resolvedTheme } = useTheme();
@@ -154,9 +185,54 @@ const EventPreviewModal = ({
     return Math.floor(diffHours);
   }
 
+  // fetch products from backend
+  const fetchCartProducts = async () => {
+    setLoading(true);
+    try {
+      const data = await get_user_cart();
+
+      if (data.success) {
+        // filter the type of product and only get the EVENT_START_TIME, NO_OF_GESTURES type and add it to cart data
+        const filteredData = data.data.filter((item: userCart) =>
+          ["EVENT_START_TIME", "NO_OF_GUESTS"].includes(item.name)
+        );
+        setCartData(filteredData);
+        const totalAmount = filteredData.reduce(
+          (acc: number, item: userCart) => acc + item.price * item.quantity,
+          0
+        );
+        setAmountToPay(totalAmount);
+        if (totalAmount === 0) {
+          // no items to pay then create the event
+          onEventCreate();
+          onClose();
+        } else {
+          setEventPaymentModalOpen(true);
+        }
+      } else {
+        setCartData([]);
+        setError("No products found");
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
+      }
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+      setError("Error fetching cart");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
+      {/* Loading spinner */}
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
       <div
         onClick={onClose}
         className="fixed inset-0 z-50 flex justify-center items-center p-4" //
@@ -288,14 +364,18 @@ const EventPreviewModal = ({
               <OtherEvents events={otherEvents} hostName={hostData.name} />
             ) : ( */}
             <div className="flex flex-row gap-3 mt-6 mb-10">
-              <button
+              {/* <button
                 onClick={handleOpenPayment}
                 className="w-full bg-app-button-primary text-app-button-text-color py-3 px-4 rounded-lg transition-colors"
               >
                 Pay Now
-              </button>
-              <button className="w-full bg-app-button-primary text-app-button-text-color py-3 px-4 rounded-lg transition-colors cursor-not-allowed opacity-50"
-              onClick={()=>{onEventCreate()}}>
+              </button> */}
+              <button
+                className="w-full bg-app-button-primary text-app-button-text-color py-3 px-4 rounded-lg"
+                onClick={() => {
+                  fetchCartProducts();
+                }}
+              >
                 Create Event
               </button>
             </div>
@@ -307,11 +387,13 @@ const EventPreviewModal = ({
           </div>
         </div>
       </div>
-      <PaymentModal
-        onAddNewCardClick={handleNavigateToAddCard}
-        isOpen={isPaymentModalOpen}
-        onClose={handleClosePayment}
+      <EventPaymentModal
+        isOpen={eventPaymentModelOpen}
+        onClose={() => setEventPaymentModalOpen(false)}
         onPayWithWalletClick={handleNavigateToSendPayment}
+        amountToPay={amountToPay}
+        cartData={cartData}
+        onEventCreate={onEventCreate}
       />
       <AddCardModal isOpen={isAddCardModalOpen} onClose={handleCloseAddCard} />
       <SendPaymentModal

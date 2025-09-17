@@ -69,7 +69,19 @@ export default function RootLayout({
           Wrap the children with the 'Providers' component.
           This creates a "client boundary" where all client-side logic lives.
         */}
-        <Providers>{children}</Providers>
+        <Providers>
+          <>
+            {/* Mobile view */}
+            <div className="sm:hidden">{children}</div>
+
+            {/* Tablet/Desktop view */}
+            <div className="hidden sm:block">
+              <p className="text-center text-red-600 font-semibold">
+                Desktop view under maintenance, please switch to mobile view.
+              </p>
+            </div>
+          </>
+        </Providers>
       </body>
     </html>
   );
