@@ -13,6 +13,11 @@ import { TwoTicketsIcon, BuyIcon } from "../../../../../public/svg-icons/icons";
 import GuestInviteModal from "./GuestInviteModal/GuestInviteModal";
 import { PayPalPayModal } from "@/components/PaymentModal/PayPalModal/PayPalPayModal";
 import { AddCardModal } from "@/components/PaymentModal/AddNewCard/AddNewCard";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import { get_all_product_types, get_products_by_type } from "@/routes/products";
+import { add_to_cart } from "@/routes/cart";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 
 interface GuestCounterProps {
   label?: string;
@@ -24,6 +29,13 @@ interface GuestCounterProps {
   setIsInviteModalOpen: (value: boolean) => void;
 }
 
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+}
+
 const GuestCounter: React.FC<GuestCounterProps> = ({
   initialGuests = 1,
   onAddToCart,
@@ -32,6 +44,16 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
   isInviteModalOpen,
   setIsInviteModalOpen,
 }) => {
+  //   loading state
+  const [loading, setLoading] = useState(false);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const [digit1, setDigit1] = useState<string>("");
   const [digit2, setDigit2] = useState<string>("");
   const [digit3, setDigit3] = useState<string>("");
@@ -43,6 +65,9 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
   const [guestCount, setGuestCount] = useState(initialGuests);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isCardAddModalOpen, setIsCardAddModalOpen] = useState(false);
+
+  // state for product store
+  const [productStore, setProductStore] = useState<Product[]>([]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -56,6 +81,34 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
       clearTimeout(timer);
     };
   }, [isSuccess]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  // fetch products from backend
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const data = await get_products_by_type("NO_OF_GESTURES");
+
+      if (data.success) {
+        setProductStore(data.data);
+      } else {
+        setProductStore([]);
+        setError("No products found");
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setError("Error fetching products");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const updateDigitsFromCount = (count: number) => {
     const paddedStr = count.toString().padStart(3, "0");
@@ -103,18 +156,62 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
     }
   };
 
-  const handleAddToCartClick = () => {
+  const handleAddToCartClick = async () => {
     const guests = parseGuests();
+    if (guests < 1 || guests > 150) {
+      setError("Please enter a number between 1 and 150.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    }
     if (onAddToCart) {
       onAddToCart(guests);
     }
-    // Set isSuccess to true to show the modal
-    setIsPaymentModalOpen(true);
-    console.log("Adding to cart, guests:", guests);
-  };
+    if (guests < 6) {
+      return;
+    }
+    console.log("Adding to cart for guests:", guests);
+    
+    let selectedProduct: Product | null = null;
 
-  const handleCloseModal = () => {
-    setIsSuccess(false);
+    // get the min amount and max amount of the guests using name in productStore
+    for (const product of productStore) {
+      const nameParts = product.name.split("-");
+      if (nameParts.length === 2) {
+        const minGuests = parseInt(nameParts[0], 10);
+        const maxGuests = parseInt(nameParts[1], 10);
+        if (guests >= minGuests && guests <= maxGuests) {
+          selectedProduct = product;
+          break;
+        }
+      }
+    }
+
+    setLoading(true);
+    try {
+      const data = await add_to_cart({
+        product_id: selectedProduct ? selectedProduct.id : "",
+        quantity: 1,
+      });
+      if (data.success) {
+        setSuccess("Item added to cart.");
+        setShowSuccessModel(true);
+        setTimeout(() => setShowSuccessModel(false), 3600);
+      } else {
+        setError(data.message || "Failed to add item to cart");
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
+        return;
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      setError("Error adding to cart");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleModalClose = (finalCount: number) => {
@@ -127,6 +224,12 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
   return (
     <div className="w-full max-w-xs">
       {" "}
+      {/* Loading spinner */}
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
       <div className="flex items-stretch">
         <button
           onClick={() => setIsInviteModalOpen(true)}
@@ -197,6 +300,22 @@ const GuestCounter: React.FC<GuestCounterProps> = ({
       <AddCardModal
         isOpen={isCardAddModalOpen}
         onClose={() => setIsCardAddModalOpen(false)}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
       />
     </div>
   );

@@ -10,7 +10,7 @@ type DropDownProps = {
   placeHolder: string | React.ReactNode;
   itemSelected?: string | null | React.ReactNode;
   bgColor?: string;
-  onChange?: Function
+  onChange?: Function;
 };
 // Define a more specific type for the items in the data array
 type DataItem = {
@@ -58,15 +58,15 @@ const DropDown: React.FC<DropDownProps> = ({
 
   useEffect(() => {
     if (itemSelected) {
-      const selected = dataArray.find(item => item.value === itemSelected);
+      const selected = dataArray.find((item) => item.value === itemSelected);
       if (selected) {
         setSelectedLabel(selected.label);
       }
     } else {
-        setSelectedLabel(null);
+      setSelectedLabel(null);
     }
   }, [itemSelected, dataArray]);
-  
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -104,14 +104,14 @@ const DropDown: React.FC<DropDownProps> = ({
             toggleList();
           }}
           className={`text-[14.23px] ${
-            selectedItem ? "text-app-text-primary" : "text-app-text-primary"
+            selectedItem ? "text-app-text-primary" : "text-app-text-secondary"
           } flex items-center justify-between`}
           aria-haspopup="listbox"
           aria-expanded={isListOpen}
           aria-controls="dropdown"
         >
           {/* <span>{selectedItem ? selectedItem : placeHolder}</span> */}
- <span>{selectedLabel ? selectedLabel : placeHolder}</span>
+          <span>{selectedLabel ? selectedLabel : placeHolder}</span>
           <DownArrow className="text-app-icon w-[20px] h-[20px] ml-3" />
         </div>
 

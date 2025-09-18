@@ -26,127 +26,6 @@ type Event = {
   categoryIcon?: React.ReactNode;
 };
 
-const eventsData: Event[] = [
-  {
-    id: 1,
-    category: "House Party",
-    imageSrc: "/bg-imgs/preview-event.jpg",
-    title: "90's Hip-Hop",
-    price: "Free",
-    time: "7:45-9:30",
-    guests: "12",
-    startsIn: "Starts in 7 hrs",
-    location: "22414 Indore",
-    subtitle: "🌟 Step Back into the Golden Era: 90 Hip-Hop Extravaganza!",
-    description:
-      "Dust off those sneakers and get ready to groove at our 90's Hip-Hop House Party! Join us for a night of nostalgia, where the beats are fresh, the vibes are electric, and the memories come flooding back. Whether you were breakdancing in your living room or rocking out to your favorite mixtapes, this is the ultimate throwback experience. Bring your friends, your best dance moves, and let's make this a night to remember!",
-  },
-  {
-    id: 2,
-    category: "Spirituality",
-    imageSrc: "/bg-imgs/preview-event.jpg",
-    title: "Birthday Celebration",
-    price: "Free",
-    time: "7:45-9:30",
-    guests: "15",
-    startsIn: "Starts in 09 hrs",
-    location: "45960 India",
-    subtitle:
-      "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
-    description:
-      "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
-  },
-  {
-    id: 3,
-    category: "family party",
-    imageSrc: "/bg-imgs/preview-event.jpg",
-    title: "Group meditation",
-    price: "Free",
-    time: "7:45-9:30",
-    guests: "10",
-    startsIn: "Starts in 3 hrs",
-    location: "22414 Indore",
-    subtitle:
-      "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
-    description:
-      "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
-  },
-  {
-    id: 4,
-    category: "party",
-    imageSrc: "/bg-imgs/preview-event.jpg",
-    title: "Friends Gathering",
-    price: "Free",
-    time: "7:45-9:30",
-    guests: "12",
-    startsIn: "Starts in 7 hrs",
-    location: "22414 Indore",
-    subtitle:
-      "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
-    description:
-      "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
-  },
-  {
-    id: 5,
-    category: "Spirituality",
-    imageSrc: "/bg-imgs/preview-event.jpg",
-    title: "Family Party",
-    price: "Free",
-    time: "7:45-9:30",
-    guests: "12",
-    startsIn: "Starts in 0000 hrs",
-    location: "22414 Indore",
-    subtitle:
-      "🌟Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
-    description:
-      "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
-  },
-  {
-    id: 6,
-    category: "first event",
-    imageSrc: "/bg-imgs/preview-event.jpg",
-    title: "First event",
-    price: "Free",
-    time: "7:45-9:30",
-    guests: "12",
-    startsIn: "Starts in 5 hrs",
-    location: "New York",
-    subtitle:
-      "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
-    description:
-      "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
-  },
-  {
-    id: 7,
-    category: "party",
-    imageSrc: "/bg-imgs/preview-event.jpg",
-    title: "Friends Gathering",
-    price: "Free",
-    time: "7:45-9:30",
-    guests: "12",
-    startsIn: "Starts in 7 hrs",
-    location: "22414 Indore",
-    subtitle:
-      "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
-    description:
-      "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
-  },
-  {
-    id: 8,
-    category: "Spirituality",
-    imageSrc: "/bg-imgs/preview-event.jpg",
-    title: "Birthday Celebration",
-    price: "Free",
-    time: "7:45-9:30",
-    guests: "15",
-    startsIn: "Starts in 09 hrs",
-    location: "45960 India",
-    subtitle:
-      "🌟 Invitation to a Transformative Yoga Experience: Kundalini Awakening Gathering",
-    description:
-      "Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakeninwith our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This Embark on a profound journey of self-discovery and inner transformation with our exclusive Kundalini Awakening Yoga event! We invite you to join us for a harmonious gathering where ten individuals will come together to explore the ancient practice of Kundalini yoga. This",
-  },
-];
 
 interface SwipeCardProps {
   onStackFinished: () => void;
@@ -168,13 +47,13 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
   const [overlayEvent, setOverlayEvent] = useState<Event | null>(null);
   const [matchedCategory, setMatchedCategory] =
     useState<FetchedCategory | null>(null);
-  console.log("events length is", events.length);
 
   const [isRatingOpen, setIsRatingOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const hasFetchedRef = useRef(false);
 
-  const API_BASE_URL = "http://localhost:5001/";
+  const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 
   //lock parent component when a modal is open
   useScrollLock(isInviteModalOpen);
@@ -200,7 +79,6 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
         ),
       }));
       //setCategories(mapped);
-      console.log("Fetched categories:", mapped);
       return mapped;
     } catch (error) {
       console.error("Error fetching interests:", error);
@@ -219,9 +97,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
         categoryMap[cat.id] = cat;
       });
 
-      console.log("fetched event data:", res.data);
       if (res && res.data) {
-        console.log(res.data.description, "use host data des isss:::");
         const mappedEvents: Event[] = (res.data ?? []).map((item: any) => {
           const categoryData = categoryMap[item.category_id] || {
             name: "General",
@@ -263,7 +139,6 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
             categoryIcon: categoryData.icon,
           };
         });
-        console.log("mapped event data:", mappedEvents);
 
         setEvents(mappedEvents);
       }
@@ -298,7 +173,6 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
     isPlaceholder: true,
   }));
 
-  console.log("events to display", events);
   const displayEvents = [...placeholders, ...events];
   const handleOpenOtherEvent = (ev: Event) => {
     setOverlayEvent(ev);
@@ -307,9 +181,6 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
   const handleCloseOverlay = () => {
     setOverlayEvent(null);
   };
-
-  console.log("display details from fetching", displayEvents);
-  console.log("events to display 2", events);
 
   if (loading) {
     return (

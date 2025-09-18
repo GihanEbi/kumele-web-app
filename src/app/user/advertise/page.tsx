@@ -22,6 +22,8 @@ import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 import {
   create_advert,
+  get_advert_by_id,
+  get_advert_placement_pricing,
   get_advert_saved_list,
   get_all_advert_daily_budget_types,
   get_all_advert_languages,
@@ -30,6 +32,7 @@ import {
   upload_advert_image,
 } from "@/routes/advert";
 import Image from "next/image";
+import SavedAdvertTemplateModel from "@/components/Models/SavedAdvertTemplateModel/SavedAdvertTemplateModel";
 
 // types
 type ChooseInterestsProps = {
@@ -75,6 +78,10 @@ type MetaDataProps = {
   value: string;
 };
 
+// daily budget people per unit from env
+const peoplePerUnit =
+  Number(process.env.NEXT_PUBLIC_DAILY_BUDGET_PEOPLE_PER_UNIT) || 0;
+
 const page = () => {
   //   loading state
   const [loading, setLoading] = useState(false);
@@ -93,15 +100,6 @@ const page = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateAdvert, setIsCreateAdvert] = useState(false);
 
-  // STATES FOR RADIO BUTTONS----------//
-  const [selectedGender, setSelectedGender] = useState("male");
-  const [deviceType, setDeviceType] = useState("ios");
-  const [budget, setBudget] = useState("1$");
-  const [advertPlacement, setAdvertPlacement] = useState(
-    "General advert Placement Pricing"
-  );
-  const [addType, setAddType] = useState("static_ads");
-
   // states for meta data
   const [savedAdvertList, setSavedAdvertList] = useState<SavedAdvertList[]>([]);
   const [advertRegions, setAdvertRegions] = useState<MetaDataProps[]>([]);
@@ -110,6 +108,7 @@ const page = () => {
     []
   );
   const [callToActions, setCallToActions] = useState<MetaDataProps[]>([]);
+  const [placementPricing, setPlacementPricing] = useState<MetaDataProps[]>([]);
 
   // tempAdvertLocation
   const [tempAdvertLocation, setTempAdvertLocation] = useState<string>("");
@@ -127,6 +126,10 @@ const page = () => {
   const [carouselAdvertImage3, setCarouselAdvertImage3] = useState<
     string | null
   >(null);
+
+  // template saved model
+  const [isSavedTemplateModelOpen, setIsSavedTemplateModelOpen] =
+    useState(false);
 
   // form data state
   const [form, setForm] = useState<AdvertProps>({
@@ -156,6 +159,9 @@ const page = () => {
     save_template: false,
   });
 
+  // preview advert form state
+  const [previewForm, setPreviewForm] = useState<AdvertProps>();
+
   // first get saved advert list
   useEffect(() => {
     fetchSavedAdvertByUser();
@@ -164,6 +170,7 @@ const page = () => {
     fetchAdvertRegions();
     fetchAdvertLanguages();
     fetchAdvertDailyBudgets();
+    fetchAdvertPlacementPricing();
   }, []);
 
   const fetchSavedAdvertByUser = async () => {
@@ -173,7 +180,6 @@ const page = () => {
 
       if (data.success) {
         setSavedAdvertList(data.data);
-        console.log(data.data);
       }
     } catch (error) {
       setError("An error occurred");
@@ -184,6 +190,60 @@ const page = () => {
       setLoading(false);
     }
   };
+
+  // get advert data by advert id
+
+  const fetchAdvertByAdvertId = async (advertId: string) => {
+    setLoading(true);
+    try {
+      const data = await get_advert_by_id(advertId);
+
+      if (data.success) {
+        setForm({
+          category_id: data.data.category_id,
+          advert_image_type: data.data.advert_image_type,
+          advert_image_url_1: data.data.advert_image_url_1,
+          advert_image_url_2: data.data.advert_image_url_2,
+          advert_image_url_3: data.data.advert_image_url_3,
+          call_to_action: data.data.call_to_action,
+          call_to_action_link: data.data.call_to_action_link,
+          second_call_to_action: data.data.second_call_to_action,
+          second_call_to_action_link: data.data.second_call_to_action_link,
+          campaign_name: data.data.campaign_name,
+          title: data.data.title,
+          description: data.data.description,
+          audience_min_age: data.data.audience_min_age,
+          audience_max_age: data.data.audience_max_age,
+          gender: data.data.gender,
+          region: data.data.region,
+          advert_location: data.data.advert_location,
+          language: data.data.language,
+          advert_placement: data.data.advert_placement,
+          platform: data.data.platform,
+          daily_budget_type: data.data.daily_budget_type,
+          daily_budget: data.data.daily_budget,
+          advert_duration: data.data.advert_duration,
+          save_template: data.data.save_template,
+        });
+        if (data.data.advert_image_type === "static") {
+          setStaticAdvertImage(data.data.advert_image_url_1 || null);
+        } else {
+          setCarouselAdvertImage1(data.data.advert_image_url_1 || null);
+        }
+        setCarouselAdvertImage2(data.data.advert_image_url_2 || null);
+        setCarouselAdvertImage3(data.data.advert_image_url_3 || null);
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // static ads file input
   const fileInputRef = useRef<HTMLInputElement>(null);
   const triggerFileInput = () => {
     if (form.advert_image_type !== "static") {
@@ -195,6 +255,7 @@ const page = () => {
     fileInputRef.current?.click();
   };
 
+  // carousel ads file input 1
   const fileInputRef2 = useRef<HTMLInputElement>(null);
   const triggerFileInput2 = () => {
     if (form.advert_image_type !== "carousel") {
@@ -203,13 +264,31 @@ const page = () => {
       setTimeout(() => setShowErrorModel(false), 3600);
       return;
     }
-    if (carouselAdvertImage1 && carouselAdvertImage2 && carouselAdvertImage3) {
-      setError("You can only upload up to 3 images for carousel ads");
+    fileInputRef2.current?.click();
+  };
+
+  // carousel ads file input 2
+  const fileInputRef3 = useRef<HTMLInputElement>(null);
+  const triggerFileInput3 = () => {
+    if (form.advert_image_type !== "carousel") {
+      setError("Select Carousel Ads option to upload carousel images");
       setShowErrorModel(true);
       setTimeout(() => setShowErrorModel(false), 3600);
       return;
     }
-    fileInputRef2.current?.click();
+    fileInputRef3.current?.click();
+  };
+
+  // carousel ads file input 3
+  const fileInputRef4 = useRef<HTMLInputElement>(null);
+  const triggerFileInput4 = () => {
+    if (form.advert_image_type !== "carousel") {
+      setError("Select Carousel Ads option to upload carousel images");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    }
+    fileInputRef4.current?.click();
   };
 
   // ========== get advert meta data
@@ -285,12 +364,40 @@ const page = () => {
       setLoading(false);
     }
   };
+  // get advert placement pricing
+  const fetchAdvertPlacementPricing = async () => {
+    setLoading(true);
+    try {
+      const data = await get_advert_placement_pricing();
+
+      if (data.success) {
+        setPlacementPricing(data.data);
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // -------- handlePreview
   const handlePreview = async () => {
     if (!validateForm()) {
       return;
     }
+    let previewForm = { ...form };
+    // set label of form.call_to_action to previewForm.call_to_action
+    const callToAction = callToActions.find(
+      (item) => item.value === form.call_to_action
+    );
+    if (callToAction) {
+      previewForm.call_to_action = callToAction.label;
+    }
+    setPreviewForm(previewForm);
+    setIsModalOpen(true);
   };
 
   // -------- handleChange for input fields ---------
@@ -428,7 +535,7 @@ const page = () => {
           formData.append("advert_image", form.advert_image_url_1);
           const data = await upload_advert_image(formData);
           if (data.success) {
-          form.advert_image_url_1 = data.advert_img_url;
+            form.advert_image_url_1 = data.advert_img_url;
           } else {
             setError("Image upload failed, please try again");
             setShowErrorModel(true);
@@ -498,6 +605,11 @@ const page = () => {
           advert_duration: 0,
           save_template: false,
         });
+        // reset all preview images
+        setStaticAdvertImage(null);
+        setCarouselAdvertImage1(null);
+        setCarouselAdvertImage2(null);
+        setCarouselAdvertImage3(null);
       } else {
         setError(data.message || "An error occurred, please try again.");
         setShowErrorModel(true);
@@ -520,6 +632,12 @@ const page = () => {
           : "bg-k-background-primary"
       } `}
     >
+      {/* Loading spinner */}
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
       <div className={`min-h-screen flex flex-col`}>
         <div className={`w-full max-w-md px-4 top-0 left-0 right-0 `}>
           {/* Header */}
@@ -550,8 +668,11 @@ const page = () => {
               <div className="w-full">
                 <DropDown
                   dataArray={savedAdvertList}
-                  placeHolder="Special Offer"
+                  placeHolder="Select a saved campaign"
                   isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
+                  onChange={(value: string) => {
+                    fetchAdvertByAdvertId(value);
+                  }}
                 />
               </div>
               <div
@@ -676,56 +797,15 @@ const page = () => {
                 options={[{ id: 1, label: "Carousel Ads", value: "carousel" }]}
               />
             </div>
-            <div
-              onClick={triggerFileInput2}
-              className={`border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors
-                  `}
-            >
-              <>
-                <div className="mx-auto h-[19.46px] w-[19.46px] text-gray-400">
-                  <UploadImageIcon />
-                </div>
-
-                <p className="font-plusJakartaSans font-normal text-[10.54px] text-gray-500 mt-2">
-                  Upload an image
-                </p>
-              </>
-              <input
-                type="file"
-                ref={fileInputRef2}
-                disabled={form.advert_image_type !== "carousel"}
-                onChange={(e: any) => {
-                  if (carouselAdvertImage1 === null) {
-                    setCarouselAdvertImage1(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    handleInputChange(e.target.files[0], "advert_image_url_1");
-                  } else if (carouselAdvertImage2 === null) {
-                    setCarouselAdvertImage2(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    handleInputChange(e.target.files[0], "advert_image_url_2");
-                  } else if (carouselAdvertImage3 === null) {
-                    setCarouselAdvertImage3(
-                      URL.createObjectURL(e.target.files[0])
-                    );
-                    handleInputChange(e.target.files[0], "advert_image_url_3");
-                  }
-                }}
-                accept="image/*"
-                className="hidden"
-              />
-            </div>
             <div className="flex items-center justify-between gap-1.5 mt-4">
               <div
-                className={`${
-                  !carouselAdvertImage1
-                    ? "border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
-                    : ""
-                } `}
+                onClick={triggerFileInput2}
+                className={
+                  "w-1/3 h-[100px] border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
+                }
               >
                 {carouselAdvertImage1 ? (
-                  <div className="relative w-auto h-auto rounded-md overflow-hidden">
+                  <div className="relative w-1/3 h-[100px] rounded-md overflow-hidden">
                     <Image
                       src={carouselAdvertImage1}
                       alt="Image preview"
@@ -744,24 +824,33 @@ const page = () => {
                     </p>
                   </>
                 )}
+                <input
+                  type="file"
+                  ref={fileInputRef2}
+                  disabled={form.advert_image_type !== "carousel"}
+                  onChange={(e: any) => {
+                    setCarouselAdvertImage1(
+                      URL.createObjectURL(e.target.files[0])
+                    );
+                    handleInputChange(e.target.files[0], "advert_image_url_1");
+                  }}
+                  accept="image/*"
+                  className="hidden"
+                />
               </div>
               <div
-                className={`${
-                  !carouselAdvertImage2
-                    ? "border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
-                    : ""
-                } `}
+                onClick={triggerFileInput3}
+                className={
+                  "w-1/3 h-[100px] border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
+                }
               >
                 {carouselAdvertImage2 ? (
-                  <div className="relative w-auto h-auto rounded-md overflow-hidden">
+                  <div className="relative w-1/3 h-[100px] rounded-md overflow-hidden">
                     <Image
                       src={carouselAdvertImage2}
                       alt="Image preview"
                       width={100}
                       height={100}
-                      // layout="fill"
-                      // objectFit="cover"
-                      // className="rounded-md"
                     />
                   </div>
                 ) : (
@@ -775,24 +864,33 @@ const page = () => {
                     </p>
                   </>
                 )}
+                <input
+                  type="file"
+                  ref={fileInputRef3}
+                  disabled={form.advert_image_type !== "carousel"}
+                  onChange={(e: any) => {
+                    setCarouselAdvertImage2(
+                      URL.createObjectURL(e.target.files[0])
+                    );
+                    handleInputChange(e.target.files[0], "advert_image_url_2");
+                  }}
+                  accept="image/*"
+                  className="hidden"
+                />
               </div>
               <div
-                className={`${
-                  !carouselAdvertImage3
-                    ? "border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
-                    : ""
-                } `}
+                onClick={triggerFileInput4}
+                className={
+                  "w-1/3 h-[100px] border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
+                }
               >
                 {carouselAdvertImage3 ? (
-                  <div className="relative w-auto h-auto rounded-md overflow-hidden">
+                  <div className="relative w-1/3 h-[100px] rounded-md overflow-hidden">
                     <Image
                       src={carouselAdvertImage3}
                       alt="Image preview"
                       width={100}
                       height={100}
-                      // layout="fill"
-                      // objectFit="cover"
-                      // className="rounded-md"
                     />
                   </div>
                 ) : (
@@ -806,31 +904,20 @@ const page = () => {
                     </p>
                   </>
                 )}
+                <input
+                  type="file"
+                  ref={fileInputRef4}
+                  disabled={form.advert_image_type !== "carousel"}
+                  onChange={(e: any) => {
+                    setCarouselAdvertImage3(
+                      URL.createObjectURL(e.target.files[0])
+                    );
+                    handleInputChange(e.target.files[0], "advert_image_url_3");
+                  }}
+                  accept="image/*"
+                  className="hidden"
+                />
               </div>
-              {/* <ImageUploadComponent
-                isDisabled={true}
-                value={
-                  carouselAdvertImage1
-                    ? URL.createObjectURL(carouselAdvertImage1)
-                    : ""
-                }
-              /> */}
-              {/* <ImageUploadComponent
-                isDisabled={true}
-                value={
-                  carouselAdvertImage2
-                    ? URL.createObjectURL(carouselAdvertImage2)
-                    : ""
-                }
-              />
-              <ImageUploadComponent
-                isDisabled={true}
-                value={
-                  carouselAdvertImage3
-                    ? URL.createObjectURL(carouselAdvertImage3)
-                    : ""
-                }
-              /> */}
             </div>
           </div>
           <div className="mt-10">
@@ -839,6 +926,7 @@ const page = () => {
             </p>
             <DropDown
               dataArray={callToActions}
+              itemSelected={form.call_to_action}
               placeHolder="select"
               isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
               onChange={(value: string) => {
@@ -949,7 +1037,10 @@ const page = () => {
                     //label="Age range"
                     min={0}
                     max={100}
-                    initialValues={[18, 28]} // As shown in your image
+                    initialValues={[
+                      form.audience_min_age,
+                      form.audience_max_age,
+                    ]} // As shown in your image
                     step={1}
                     onValueChange={(values: [number, number]) => {
                       handleInputChange(values[0], "audience_min_age");
@@ -979,6 +1070,7 @@ const page = () => {
                   </p>
                   <DropDown
                     dataArray={advertRegions}
+                    itemSelected={form.region}
                     placeHolder="Europe"
                     isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
                     onChange={(value: string) => {
@@ -1057,6 +1149,7 @@ const page = () => {
                   <DropDown
                     dataArray={advertLanguages}
                     placeHolder="All"
+                    itemSelected={form.language}
                     isOpen={() => setIsDropdownOpen(!isDropdownOpen)}
                     onChange={(value: string) => {
                       handleInputChange(value, "language");
@@ -1070,7 +1163,7 @@ const page = () => {
             <p className="font-plusJakartaSans font-normal text-[13.89px] text-app-text-primary mb-3 mt-3">
               Advert Placement
             </p>
-            <div className="mb-4 flex items-center justify-start gap-2">
+            <div className="mb-4 flex items-start justify-start gap-2">
               <div>
                 <RadioButtonGroupComponent
                   onChange={(value) => {
@@ -1078,58 +1171,28 @@ const page = () => {
                   }}
                   value={form.advert_placement}
                   name=""
-                  options={[
-                    {
-                      id: 1,
-                      label: "General advert Placement Pricing",
-                      value: "general",
-                    },
-                  ]}
+                  options={placementPricing}
+                  isColumn
                 />
               </div>
-              <InformationIcon
-                width={16}
-                height={16}
-                onClick={() => {
-                  setIsCreateAdvertModelOpen(true);
-                }}
-              />
-            </div>
-            <div className="mb-4 flex items-center justify-start gap-2">
-              <div>
-                <RadioButtonGroupComponent
-                  onChange={(value) => {
-                    handleInputChange(value, "advert_placement");
+              <div className="flex flex-col gap-6">
+                <InformationIcon
+                  width={16}
+                  height={16}
+                  onClick={() => {
+                    setIsCreateAdvertModelOpen(true);
                   }}
-                  value={form.advert_placement}
-                  name=""
-                  options={[
-                    {
-                      id: 1,
-                      label: "Notification Placement Pricing",
-                      value: "notification",
-                    },
-                  ]}
+                />
+                <InformationIcon
+                  width={16}
+                  height={16}
+                  onClick={() => {
+                    setIsCreateAdvertModelOpen(true);
+                  }}
                 />
               </div>
-              <InformationIcon
-                width={16}
-                height={16}
-                onClick={() => {
-                  setIsCreateAdvertModelOpen(true);
-                }}
-              />
             </div>
-            <div className="mb-8">
-              <RadioButtonGroupComponent
-                onChange={(value) => {
-                  handleInputChange(value, "advert_placement");
-                }}
-                value={form.advert_placement}
-                name=""
-                options={[{ id: 3, label: "Both", value: "both" }]}
-              />
-            </div>
+
             <div className="mt-10">
               <RadioButtonGroupComponent
                 name=""
@@ -1164,12 +1227,28 @@ const page = () => {
                 className="mb-1 font-plusJakartaSans font-normal text-[12px]"
                 style={{ color: "#808080" }}
               >
-                Est.Reach 200-200 people per day
+                Est.Reach {peoplePerUnit * form.daily_budget} people per day
               </p>
               <div className="mt-5 w-2/3">
                 <RadioButtonGroupComponent
                   onChange={(value) => {
                     handleInputChange(value, "daily_budget_type");
+
+                    // get the label of the selected option
+                    const selectedOption = advertDailyBudgets.find(
+                      (option) => option.value === value
+                    );
+
+                    let strValue = "";
+                    if (selectedOption && selectedOption.label) {
+                      strValue = Array.isArray(selectedOption.label)
+                        ? selectedOption.label[0]
+                        : selectedOption.label;
+                      handleInputChange(
+                        Number(strValue.replace(/\$/g, "")),
+                        "daily_budget"
+                      );
+                    }
                   }}
                   value={form.daily_budget_type}
                   name=""
@@ -1191,9 +1270,13 @@ const page = () => {
               <div className="ml-8">
                 <InputComponent
                   placeholder="Custom Amount"
-                  value={form.daily_budget.toString()}
+                  value={
+                    form.daily_budget_type === "ADB00004"
+                      ? form.daily_budget.toString()
+                      : ""
+                  }
                   disabled={
-                    form.daily_budget_type !== "ADB00005" ? true : false
+                    form.daily_budget_type !== "ADB00004" ? true : false
                   }
                   onChange={(e) => {
                     const numericValue = e.target.value.replace(/\D/g, "");
@@ -1221,7 +1304,7 @@ const page = () => {
               <button
                 className="w-full font-plusJakartaSans font-normal text-[14.57px] bg-app-button-primary text-app-text-tertiary py-3 px-4 rounded-lg"
                 onClick={() => {
-                  setIsModalOpen(true);
+                  handlePreview();
                 }}
               >
                 Preview Advert
@@ -1230,7 +1313,9 @@ const page = () => {
             <div>
               <button
                 className="w-full  bg-app-button-primary text-app-text-tertiary font-plusJakartaSans font-normal text-[14.57px] py-3 px-4 rounded-lg"
-                onClick={() => handleSubmit()}
+                onClick={() => {
+                  setIsSavedTemplateModelOpen(true);
+                }}
               >
                 Create Advert
               </button>
@@ -1241,6 +1326,7 @@ const page = () => {
       <PreviewAdvertise
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        advertData={previewForm}
       />
       {/* verification complete */}
       {isCreateAdvert && (
@@ -1284,6 +1370,17 @@ const page = () => {
           setError("");
         }}
         errorMessage={error || ""}
+      />
+      <SavedAdvertTemplateModel
+        isOpen={isSavedTemplateModelOpen}
+        onClose={() => {
+          setIsSavedTemplateModelOpen(false);
+        }}
+        onChange={(value: boolean) => {
+          handleInputChange(value, "save_template");
+          setIsSavedTemplateModelOpen(false);
+          handleSubmit();
+        }}
       />
     </div>
   );

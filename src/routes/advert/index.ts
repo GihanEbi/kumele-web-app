@@ -172,3 +172,37 @@ export async function get_advert_by_id(advertId: string) {
     return error;
   }
 }
+
+// get advert placement pricing
+export async function get_advert_placement_pricing() {
+  try {
+    const res = await fetch(`${commonUrl}/get-all-advert-placement-prices`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `${getToken()}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+// get saved advert list
+export async function get_saved_advert_list() {
+  try {
+    const res = await fetch(`${commonUrl}/get-saved-advert-list`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `${getToken()}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}

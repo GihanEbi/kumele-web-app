@@ -7,9 +7,37 @@ import {
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
+type AdvertProps = {
+  category_id: string;
+  advert_image_type: string;
+  advert_image_url_1: File | string;
+  advert_image_url_2?: File | string;
+  advert_image_url_3?: File | string;
+  call_to_action: string;
+  call_to_action_link: string;
+  second_call_to_action: string;
+  second_call_to_action_link: string;
+  campaign_name: string;
+  title: string;
+  description: string;
+  audience_min_age: number;
+  audience_max_age: number;
+  gender: string[];
+  region: string;
+  advert_location: string[];
+  language: string;
+  advert_placement: string;
+  platform: string[];
+  daily_budget_type: string;
+  daily_budget: number;
+  advert_duration: number;
+  save_template?: boolean;
+};
+
 type AdvertisePreviewModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  advertData: AdvertProps | undefined;
 };
 
 const slides = [
@@ -20,7 +48,11 @@ const slides = [
   { type: "image", src: "/images/advert-preview-3.png" },
 ];
 
-const PreviewAdvertise = ({ isOpen, onClose }: AdvertisePreviewModalProps) => {
+const PreviewAdvertise = ({
+  isOpen,
+  onClose,
+  advertData,
+}: AdvertisePreviewModalProps) => {
   const [isExtendedPreviewOpen, setIsExtentedPreviewOpen] =
     useState<boolean>(false);
 
@@ -108,33 +140,47 @@ const PreviewAdvertise = ({ isOpen, onClose }: AdvertisePreviewModalProps) => {
           <div className="mt-4">
             <div className="flex justify-between items-center">
               <h1 className="font-plusJakartaSans font-bold text-[19px]">
-                Get spotify for free
+                {advertData?.campaign_name || "Advert name"}
               </h1>
-              <button className="bg-app-button-primary text-app-button-text-color font-plusJakartaSans font-semibold py-[8px] px-[16px] rounded-[5px] text-[14px]">
-                Install Now
+              {/* <button className="bg-app-button-primary text-app-button-text-color font-plusJakartaSans font-semibold py-[8px] px-[16px] rounded-[5px] text-[14px]">
+                {advertData.call_to_action || "Call to action"}
+              </button> */}
+              <button
+                onClick={() =>
+                  window.open(advertData?.call_to_action_link || "#", "_blank")
+                }
+                className="bg-app-button-primary text-app-button-text-color font-plusJakartaSans font-semibold py-[8px] px-[16px] rounded-[5px] text-[14px]"
+              >
+                {advertData?.call_to_action || "Call to action"}
               </button>
             </div>
 
             {!isExtendedPreviewOpen ? (
               <p className="mt-2 font-plusJakartaSans text-app-button-model-text-color font-normal text-[14px]  text-sm">
-                Get spotify premium for just 9,99 USD
+                {advertData?.title || "Advert title"}
               </p>
             ) : (
               <div className="mt-4 overflow-y-auto max-h-32 pr-2 text-sm leading-relaxed [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 <p className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px]">
-                  Spotify makes it easy to find the right music or podcast for
-                  every moment - on your phone, computer, tablet and other
-                  devices. You can find millions of songs and episodes on
-                  Spotify. Whether you're behind the wheel, working out, going
-                  out or just relaxing, you'll find just the right music or
-                  podcast in no time.
+                  {advertData?.description ||
+                    "This is a detailed description of the advertisement. It provides more information about the product or service being advertised, its features, benefits, and any other relevant details that might interest potential customers."}
                 </p>
-                <p
+                {/* <p
                   style={{ color: "#004DFF" }}
                   className="font-plusJakartaSans font-bold text-[13px] underline mt-2"
                 >
-                  Get spotify now
-                </p>
+                  {advertData.second_call_to_action || "Second call to action"}
+                </p> */}
+                <a
+                  href={advertData?.second_call_to_action_link || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#004DFF" }}
+                  className="font-plusJakartaSans font-bold text-[13px] underline mt-2"
+                >
+                  {advertData?.second_call_to_action || "Second call to action"}
+                </a>
+
                 {/* <div className="h-8 flex-shrink-0" /> */}
               </div>
             )}
