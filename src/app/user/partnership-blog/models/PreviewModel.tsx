@@ -148,7 +148,10 @@ const BlogPreviewModel = ({
             </div>
             <div className="font-plusJakartaSans font-normal text-[14.57px] flex items-center justify-center mt-6">
               <button
-                onClick={() => onBlogCreate()}
+                onClick={() => {
+                  onBlogCreate();
+                  onClose();
+                }}
                 className="w-[150.74px] h-[43.72px] bg-app-button-primary text-app-button-text-color py-[6.38px] px-[10.93px] rounded-[8px] transition-colors"
               >
                 Create Blog

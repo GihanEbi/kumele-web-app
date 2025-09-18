@@ -4,33 +4,22 @@ import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import React, { useEffect, useRef, useState } from "react";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import {
-  AdvertiseIcon,
   BoldIcon,
   BulletedListIcon,
   HeaderOneIcon,
   ImageIcon,
-  InstagramIcon,
   ItalicIcon,
   LinkIcon,
-  MovieIcon,
   NewYoutubeIcon,
   NumberListIcon,
   OkayGreenIcon,
   OkayIcon,
-  PictureIcon,
-  PubIcon,
-  SportsIcon,
-  TwitterIcon,
-  YoutubeIcon,
   BlogFacebookIcon,
   BlogInstagramIcon,
   BlogPinterestIcon,
   BlogTwitterIcon,
-  InsertBannerImageIcon,
   Header3Icon,
   Header2Icon,
-  DeleteIcon,
-  OkayRedIcon,
 } from "../../../../public/svg-icons/icons";
 import DropDown from "@/components/DropDown/DropDown";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
@@ -40,7 +29,7 @@ import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 import { create_banner_image, create_blog } from "@/routes/Blogs APIs";
 import VerticalHobbyScroller from "@/components/VerticalHobbyScroller/VerticalHobbyScroller";
-import { fetch_profile, getAllUserData } from "@/routes/profile";
+import { getAllUserData } from "@/routes/profile";
 
 type createUpdateBlogForm = {
   event_category_id: string;
@@ -232,6 +221,68 @@ const page = () => {
       setTimeout(() => setShowErrorModel(false), 3600);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // validation
+  const formValidation = () => {
+    if (form.event_category_id === "") {
+      setError("Please select a category");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.blog_name === "") {
+      setError("Please enter blog name");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.banner_img_url === "") {
+      setError("Please upload a banner image");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.blog_img_url === "") {
+      setError("Please upload a blog image");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.blog_video_link === "") {
+      setError("Please enter a video link");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.youtube_link === "") {
+      setError("Please enter a YouTube link");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.facebook_link === "") {
+      setError("Please enter a Facebook link");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.instagram_link === "") {
+      setError("Please enter an Instagram link");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.pinterest_link === "") {
+      setError("Please enter a Pinterest link");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.twitter_link === "") {
+      setError("Please enter a Twitter link");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else if (form.blog_content === "") {
+      setError("Please write your blog content");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return false;
+    } else {
+      return true;
     }
   };
 
@@ -490,7 +541,9 @@ const page = () => {
             <button
               className="w-1/2 bg-app-button-primary text-app-text-tertiary font-plusJakartaSans font-normal text-[14.57px] py-3 px-2 rounded-lg"
               onClick={() => {
-                setPreviewBlog(true);
+                if (formValidation()) {
+                  setPreviewBlog(true);
+                }
               }}
             >
               Preview Blog
