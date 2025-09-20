@@ -171,7 +171,7 @@ const page = () => {
           >
             {userData && userData.profilepicture ? (
               <Image
-                src={`${imgUrl}/${userData.profilepicture.replace(/\\/g, "/")}`}
+                src={`${userData.profilepicture.replace(/\\/g, "/")}`}
                 alt="Alkesh Kumar"
                 width={76}
                 height={76}

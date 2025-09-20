@@ -9,6 +9,9 @@ import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { paddings } from "@/constants/layout-constants";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import { getFollowers, getFollowing } from "@/routes/following_follower";
 
 const followerList = [
   {
@@ -79,11 +82,27 @@ const followingList = [
   },
 ];
 
+type followers = {
+  id: string;
+  username: string;
+  followedAt: string;
+  profilePicture: string;
+};
+
 const FollowingComponent = () => {
   // state for loading state
   const searchParams = useSearchParams();
 
   const [loading, setLoading] = useState<boolean>(false);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [followerListData, setFollowerListData] = useState<followers[]>([]);
+  const [followingListData, setFollowingListData] = useState<followers[]>([]);
   //State to track the active tab
   const [activeTab, setActiveTab] = useState<"Followers" | "Following">(
     "Followers"
@@ -103,7 +122,51 @@ const FollowingComponent = () => {
     } else {
       setActiveTab("Following");
     }
+    getFollowingList();
+    getFollowerList();
   }, [source]);
+
+  // function to get following list
+  const getFollowingList = async () => {
+    try {
+      setLoading(true);
+      const data = await getFollowing();
+      if (data.success) {
+        setFollowingListData(data.data.following);
+      }
+    } catch (error) {
+      console.error("Error fetching following list:", error);
+      setError("Error fetching following list");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // function to get follower list
+  const getFollowerList = async () => {
+    try {
+      setLoading(true);
+      const data = await getFollowers();
+      if (data.success) {
+        setFollowerListData(data.data.followers);
+      }
+    } catch (error) {
+      console.error("Error fetching follower list:", error);
+      setError("Error fetching follower list");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // styles for active and inactive tabs to keep the JSX clean
   const activeTabStyles =
@@ -111,6 +174,12 @@ const FollowingComponent = () => {
   const inactiveTabStyles = "bg-transparent text-app-search-bar-text";
   return (
     <div>
+      {/* Loading spinner */}
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
       <div className="px-6 min-h-screen bg-app-background-primary flex flex-col pt-6">
         <div className={`w-full max-w-md ${paddings.topMargin}`}>
           <header className="">
@@ -136,7 +205,7 @@ const FollowingComponent = () => {
                 Followers
               </button>
               <div className="rounded-full bg-app-input-yellow text-app-text-black py-[2px] px-2 absolute top-[1px] right-[1px]">
-                <p className="text-[10.52px]">8</p>
+                <p className="text-[10.52px]">{followerListData.length}</p>
               </div>
               {/* <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
                 <p className="text-[7.52px]">8</p>
@@ -152,7 +221,7 @@ const FollowingComponent = () => {
                 Following
               </button>
               <div className="rounded-full bg-app-input-yellow text-app-text-black py-[2px] px-2 absolute top-[1px] right-[1px]">
-                <p className="text-[10.52px]">4</p>
+                <p className="text-[10.52px]">{followingListData.length}</p>
               </div>
               {/* <div className="rounded-full bg-app-input-yellow text-app-text-black py-1 px-2 absolute top-[1px] right-[1px]">
                 <p className="text-[7.52px]">8</p>
@@ -161,20 +230,20 @@ const FollowingComponent = () => {
           </div>
           {activeTab === "Followers" && (
             <div className="mt-[25px]">
-              {followerList.map((follower, index) => (
+              {followerListData.map((follower, index) => (
                 <div
                   key={index}
                   className="flex items-center space-x-3 mb-[24px]"
                 >
                   <Image
-                    src={follower.img}
-                    alt={follower.name}
+                    src={follower.profilePicture}
+                    alt={follower.username}
                     width={44}
                     height={44}
                     className="rounded-full"
                   />
                   <span className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
-                    {follower.name}
+                    {follower.username}
                   </span>
                 </div>
               ))}
@@ -182,20 +251,20 @@ const FollowingComponent = () => {
           )}
           {activeTab === "Following" && (
             <div className="mt-[25px]">
-              {followingList.map((follower, index) => (
+              {followingListData.map((follower, index) => (
                 <div
                   key={index}
                   className="flex items-center space-x-3 mb-[24px]"
                 >
                   <Image
-                    src={follower.img}
-                    alt={follower.name}
+                    src={follower.profilePicture}
+                    alt={follower.username}
                     width={44}
                     height={44}
                     className="rounded-full"
                   />
                   <span className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
-                    {follower.name}
+                    {follower.username}
                   </span>
                 </div>
               ))}
@@ -203,6 +272,22 @@ const FollowingComponent = () => {
           )}
         </main>
       </div>
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
     </div>
   );
 };

@@ -24,6 +24,8 @@ const HobbyTagIcon = ({ hobbyId }: HobbyProps) => {
     ChooseInterestsProps[]
   >([]);
   useEffect(() => {
+    console.log(hobbyId);
+    
     fetchInterests();
   }, []);
 
@@ -44,6 +46,8 @@ const HobbyTagIcon = ({ hobbyId }: HobbyProps) => {
           ),
         })
       );
+      console.log(mapped);
+      
       setAdvertCategories(mapped);
     } catch (error) {
       console.error("Error fetching interests:", error);
@@ -54,11 +58,11 @@ const HobbyTagIcon = ({ hobbyId }: HobbyProps) => {
 
   return (
     <div className="absolute top-5 right-6 bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1.5">
-      {loading && (
+      {/* {loading && (
         <div className="flex items-center justify-center min-h-screen">
           <LoadingComponent />
         </div>
-      )}
+      )} */}
       {advertCategories.map((item) =>
         item.id === hobbyId ? (
           <div key={item.id} className="flex items-center space-x-1">

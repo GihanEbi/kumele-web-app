@@ -83,3 +83,23 @@ export async function deactivate_user_subscription(subscriptionId: string) {
     return error;
   }
 }
+
+// get all subscribe and unsubscribed data
+export async function get_all_subscribe_and_unsubscribed_data() {
+  try {
+    const res = await fetch(
+      `${commonUrl}/get-all-user-subscriptions-and-unsubscribes`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `${getToken()}`, // Ensure getToken() returns a valid token
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}

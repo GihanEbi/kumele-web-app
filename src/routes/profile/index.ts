@@ -201,3 +201,22 @@ export async function customerSupport(dataObj: customerSupport) {
     return error;
   }
 }
+// get user data by user id
+export async function get_user_event_by_user_id(user_id: string) {
+  try {
+    const res = await fetch(
+      `${commonUrl}/users/get-user-by-id/${user_id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `${getToken()}`,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
