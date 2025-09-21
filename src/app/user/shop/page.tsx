@@ -298,10 +298,10 @@ export default function SubscriptionsPage() {
         isOpen={isThankYouOpen}
         onClose={handleCloseThankYou} // This closes the modal and ends the flow
       />
-      {/* <SubscriptionExpirationModal
+      <SubscriptionExpirationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-      /> */}
+      />
       <StripeModel
         isOpen={isStripeModelOpen}
         onClose={() => setIsStripeModelOpen(false)}

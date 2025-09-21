@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 type MoreModelProps = {
   isOpen: boolean;
   onClose: () => void;
+  notificationCount: number;
 };
 
 export function ChatNotificationIcon() {
@@ -41,7 +42,11 @@ export function CartnewIcon() {
   );
 }
 
-const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
+const MoreOptionModel: React.FC<MoreModelProps> = ({
+  isOpen,
+  onClose,
+  notificationCount,
+}) => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -149,8 +154,11 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                   onClose();
                 }}
               >
-                <div className="">
+                <div className="relative inline-block">
                   <NotificationIcon width={40} height={40} />
+                  <span className="absolute -top-1 -right-1 bg-yellow-600 text-black text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {notificationCount}
+                  </span>
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">
                   Notifications
@@ -178,7 +186,6 @@ const MoreOptionModel: React.FC<MoreModelProps> = ({ isOpen, onClose }) => {
                 className="flex flex-col items-center gap-2 group"
               >
                 <div className="">
-
                   <CartIcon className="" width={40} height={40} />
                 </div>
                 <span className="text-xs text-app-text-primary text-center font-plusJakartaSans">

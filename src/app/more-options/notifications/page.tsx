@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import {
   BackArrow,
@@ -13,6 +13,11 @@ import {
 import { useRouter } from "next/navigation";
 import NotificationCard from "@/components/NotificationCard/NotificationCard";
 import Image from "next/image";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import { getAllCreateHobbiesNotifications } from "@/routes/notifications";
+import CreatedHobbiesNotificationCard from "@/components/NotificationCard/CreatedHobbiesNotificationCard";
+import EventNotificationCard from "@/components/NotificationCard/EventNotificationCard";
 
 const matchedHobbies = [
   {
@@ -46,7 +51,7 @@ const createdHobbies = [
     userImg: "/avatar-img/gihan.jpeg",
     title: "Test Event",
     icon: <LiveMusicNotificationIcon className="text-app-icon" />,
-    time: "05.45 PM",// set current time
+    time: "05.45 PM", // set current time
     category: "Live show",
     userName: "Gihan",
     description: "Your created event under review.",
@@ -131,22 +136,70 @@ const imageList = [
   "/images/notification img3.jpg",
 ];
 
+interface eventData {
+  id: string;
+  user_id: string;
+  category_id: string;
+  event_image_url: string;
+  event_name: string;
+  subtitle: string;
+  description: string;
+  event_start_in: string;
+  event_date: string;
+  event_start_time: string;
+  event_end_time: string;
+  street_address: string;
+  home_number: string;
+  district: string;
+  postal_zip_code: string;
+  state: string;
+  age_range_min: string;
+  age_range_max: string;
+  max_guests: string;
+  payment_type: string;
+  price: string;
+  created_at: string;
+  host: {
+    username: string;
+    profilePicture: string;
+  };
+}
+
+interface hobbyNotification {
+  notification_id: string;
+  user_id: string;
+  status: string;
+  type: string;
+  title: string;
+  message: string;
+  event_id: string;
+  event: eventData;
+  notification_created_at: string;
+}
+
 const page = () => {
+  // routing
+  const router = useRouter();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  const handleScroll = (direction: "left" | "right") => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = direction === "left" ? -158 : 158;
-      scrollContainerRef.current.scrollBy({
-        left: scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
+  const [openEventCard, setOpenEventCard] = useState(false);
+  const [activeEventId, setActiveEventId] = useState<string | null>(null);
+
+  const [createNotificationList, setCreateNotificationList] = useState<
+    hobbyNotification[]
+  >([]);
 
   const onMouseDown = (e: React.MouseEvent) => {
     if (!scrollContainerRef.current) return;
@@ -176,10 +229,29 @@ const page = () => {
     scrollContainerRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  //   loading state
-  const [loading, setLoading] = useState(false);
-  // routing
-  const router = useRouter();
+  useEffect(() => {
+    getCreateHobbiesNotificationList();
+  }, []);
+
+  const getCreateHobbiesNotificationList = async () => {
+    try {
+      setLoading(true);
+      const data = await getAllCreateHobbiesNotifications();
+      if (data.success) {
+        setCreateNotificationList(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching following list:", error);
+      setError("Error fetching following list");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="overflow-y-auto max-h-screen no-scrollbar">
       {loading && (
@@ -238,19 +310,23 @@ const page = () => {
               Created Hobby(ies)
             </h1>
             <div>
-              {createdHobbies.map((item, index) => (
-                <div key={index} className="border-b border-app-border">
-                  <NotificationCard
-                    userImage={item.userImg}
+              {createNotificationList.map((item, index) => (
+                <div
+                  key={index}
+                  className="border-b border-app-border"
+                  onClick={() => {
+                    setActiveEventId(item.event.id);
+                    setOpenEventCard(true);
+                  }}
+                >
+                  <CreatedHobbiesNotificationCard
+                    hostImage={item.event.host.profilePicture}
+                    hostName={item.event.host.username}
                     title={item.title}
-                    icon={item.icon}
-                    time={item.time}
-                    category={item.category}
-                    userName={item.userName}
-                    description={item.description}
-                    isCancelled={item.isCancelled}
-                    isShowCancelled={item.isShowCancelled}
-                    isJoinNow={item.isJoinNow}
+                    category_id={item.event.category_id}
+                    notification_created_at={item.notification_created_at}
+                    message={item.message}
+                    eventStatus={"ACTIVE"}
                   />
                 </div>
               ))}
@@ -306,6 +382,27 @@ const page = () => {
           </div>
         </div>
       </div>
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
+      <EventNotificationCard
+        event_id={activeEventId ?? ""}
+        isOpen={openEventCard}
+        onClose={() => setOpenEventCard(false)}
+      />
     </div>
   );
 };
