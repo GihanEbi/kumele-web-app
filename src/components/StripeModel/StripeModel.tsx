@@ -17,12 +17,18 @@ type ContactModelProps = {
   isOpen: boolean;
   onClose: () => void;
   amount: string;
+  subscription_id: string;
 };
 
-const StripeModel = ({ isOpen, onClose, amount }: ContactModelProps) => {
+const StripeModel = ({
+  isOpen,
+  onClose,
+  amount,
+  subscription_id,
+}: ContactModelProps) => {
   const { theme } = useTheme();
   const [clientSecret, setClientSecret] = useState("");
-  
+
   // States for models
   const [showSuccessModel, setShowSuccessModel] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
@@ -57,12 +63,11 @@ const StripeModel = ({ isOpen, onClose, amount }: ContactModelProps) => {
     }
   }, [isOpen, amount]); // 3. The dependency array correctly triggers the effect.
 
-
   // 4. The conditional return is now *after* all hooks have been called.
   if (!isOpen) {
     return null;
   }
-  
+
   const options: StripeElementsOptions = {
     clientSecret,
     appearance: {
@@ -85,7 +90,11 @@ const StripeModel = ({ isOpen, onClose, amount }: ContactModelProps) => {
           {/* We show a loader while waiting for the clientSecret */}
           {clientSecret ? (
             <Elements options={options} stripe={stripePromise}>
-              <CheckoutModel amount={amount} />
+              <CheckoutModel
+                amount={amount}
+                subscription_id={subscription_id}
+                onClose={onClose}
+              />
             </Elements>
           ) : (
             <div className="flex items-center justify-center h-40">
@@ -94,7 +103,7 @@ const StripeModel = ({ isOpen, onClose, amount }: ContactModelProps) => {
           )}
         </div>
       </div>
-      
+
       <SuccessModel
         isOpen={showSuccessModel}
         onClose={() => setShowSuccessModel(false)}
