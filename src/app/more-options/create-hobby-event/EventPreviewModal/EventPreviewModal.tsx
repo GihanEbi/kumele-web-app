@@ -69,6 +69,7 @@ interface userCart {
   name: string;
   price: number;
   description: string;
+  type: string;
 }
 
 const EventPreviewModal = ({
@@ -192,16 +193,18 @@ const EventPreviewModal = ({
       const data = await get_user_cart();
 
       if (data.success) {
-        // filter the type of product and only get the EVENT_START_TIME, NO_OF_GESTURES type and add it to cart data
+        // filter the type of product and only get the EVENT_START_TIME, NO_OF_GUESTS type and add it to cart data
         const filteredData = data.data.filter((item: userCart) =>
-          ["EVENT_START_TIME", "NO_OF_GUESTS"].includes(item.name)
+          ["EVENT_START_TIME", "NO_OF_GESTURES"].includes(item.type)
         );
+
         setCartData(filteredData);
         const totalAmount = filteredData.reduce(
           (acc: number, item: userCart) => acc + item.price * item.quantity,
           0
         );
         setAmountToPay(totalAmount);
+
         if (totalAmount === 0) {
           // no items to pay then create the event
           onEventCreate();

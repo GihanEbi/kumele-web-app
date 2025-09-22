@@ -790,6 +790,7 @@ const page = () => {
         onClose={() => {
           setIsCardPreviewOpen(false);
         }}
+        advertData={undefined}
       />
 
       {deleteBlogModelOpen && (

@@ -18,6 +18,7 @@ type HostInfoProps = {
 const SealIcon = ({ className }: { className?: string }) => ({});
 
 const HostInfo = ({ host }: HostInfoProps) => {
+  
   return (
     <div className="relative bg-app-bg-color-modal rounded-2xl p-4 pt-12 mt-10">
       <div className="absolute -top-12 left-[-3px] flex items-start space-x-3">
@@ -66,12 +67,12 @@ const HostInfo = ({ host }: HostInfoProps) => {
                         [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           <p className="font-plusJakartaSans text-left text-app-button-model-text-color font-bold text-[13px]">
-            About {host.name}: <span className="font-plusJakartaSans text-left text-app-button-model-text-color font-normal text-[13px]">{host.aboutTitle} </span> 
+            About {host.name}: <span className="font-plusJakartaSans text-left text-app-button-model-text-color font-normal text-[13px]">{host.aboutBio}</span> 
           </p>
           <p></p>
-          <p className="mt-4  text-left font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px]  leading-relaxed">
+          {/* <p className="mt-4  text-left font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px]  leading-relaxed">
             {host.aboutBio}
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

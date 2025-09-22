@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, FormEvent } from "react";
-import { io, Socket } from "socket.io-client";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
@@ -12,36 +11,46 @@ import {
   TwoTicketsIcon,
 } from "../../../../../public/svg-icons/icons";
 import InboxMessageCard from "@/components/InboxMessageCard/InboxMessageCard";
-import SentMessageCard from "@/components/SentMessageCard/SentMessageCard";
 import ChatInput from "@/components/ChatInput/ChatInput";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useChat } from "@/hooks/useChat";
 import { getToken } from "@/utils/authUtils";
 import { getAllUserData } from "@/routes/profile";
+import { userConfirmedEvent } from "@/routes/user events";
+import { get_event_by_event_id } from "@/routes/Events";
 // mock data for avatars
 // should be replaced with actual user data
-const profilePics = [
-  {
-    name: "James",
-    src: "/avatar-img/avatar-1.jpg",
-    borderColor: "border-yellow-400",
-  },
-  {
-    name: "Jermy",
-    src: "/avatar-img/avatar-2.jpg",
-    borderColor: "border-blue-500",
-  },
-  {
-    name: "Linda",
-    src: "/avatar-img/avatar-3.png",
-    borderColor: "border-blue-500",
-  },
-  {
-    name: "Olivia",
-    src: "/avatar-img/avatar-4.jpg",
-    borderColor: "border-blue-500",
-  },
-];
+
+type user_data = {
+  id: string;
+  username: string;
+  profilePicture: string;
+};
+
+type event = {
+  id: string;
+  price: string;
+  state: string;
+  user_id: string;
+  district: string;
+  subtitle: string;
+  event_date: string;
+  event_name: string;
+  max_guests: string;
+  category_id: string;
+  description: string;
+  home_number: string;
+  payment_type: string;
+  age_range_max: string;
+  age_range_min: string;
+  event_end_time: string;
+  event_start_time: string;
+  street_address: string;
+  event_image_url: string;
+  postal_zip_code: string;
+  host: user_data;
+  participants: user_data[];
+};
 
 // ---------- interface ----------
 interface profileData {
@@ -64,17 +73,13 @@ interface profileData {
   qr_code_url: string;
 }
 const DUMMY_AUTH_TOKEN = getToken() || "";
+const imgUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const Chat = () => {
   const searchParams = useSearchParams();
+  //   loading state
+  const [pageLoading, setPageLoading] = useState(false);
   const [event_id, setEventId] = useState<string | null>(null);
-  // const event_id = searchParams ? searchParams.get("event_id") : null;
-
-  useEffect(() => {
-    if (searchParams) {
-      setEventId(searchParams.get("event_id"));
-    }
-  }, [searchParams]);
   const [newMessageText, setNewMessageText] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null); // Ref for auto-scrolling
   //   loading state
@@ -88,7 +93,14 @@ const Chat = () => {
     eventId: event_id as string, // Cast eventId to string
     token: DUMMY_AUTH_TOKEN,
   });
+  // state for store the chat data
+  const [eventData, setEventData] = useState<event | null>(null);
 
+  useEffect(() => {
+    if (searchParams) {
+      setEventId(searchParams.get("event_id"));
+    }
+  }, [searchParams]);
   // Scroll to the bottom of the chat whenever messages update
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -96,7 +108,30 @@ const Chat = () => {
 
   useEffect(() => {
     fetchUserData();
+    fetchEventData();
   }, []);
+
+  // function to fetch event data
+  const fetchEventData = async () => {
+    setPageLoading(true);
+
+    try {
+      if (searchParams) {
+        const data = await get_event_by_event_id(searchParams.get("event_id")!); // Non-null assertion since we check above
+
+        if (data.success) {
+          console.log("Fetched event data successfully:", data.data);
+          setEventData(data.data);
+        } else {
+          console.error("Failed to fetch event data:", data.message);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching event data:", error);
+    } finally {
+      setPageLoading(false);
+    }
+  };
 
   // Simulate fetching user data
   const fetchUserData = async () => {
@@ -148,7 +183,7 @@ const Chat = () => {
 
   return (
     <div className="overflow-y-auto max-h-screen no-scrollbar">
-      {loading && (
+      {(loading || pageLoading) && (
         <div className="flex items-center justify-center min-h-screen">
           <LoadingComponent />
         </div>
@@ -167,13 +202,20 @@ const Chat = () => {
                   <BackArrow className="text-app-icon" />
                 </button>
                 <h1 className="mt-4 text-[23px] font-semibold text-app-text-primary font-plusJakartaSans-700">
-                  Group Meditation
+                  {eventData ? eventData.event_name : "Event Name"}
                 </h1>
               </div>
               <div
                 className="mr-10"
                 onClick={() => {
-                  router.push("/more-options/chat-pages/scan-qr");
+                  router.push(
+                    "/more-options/chat-pages/scan-qr?event_id=" +
+                      eventData?.id +
+                      "&eventCategoryId=" +
+                      eventData?.category_id +
+                      "&host_id=" +
+                      eventData?.user_id
+                  );
                   console.log("Scan QR clicked");
                 }}
               >
@@ -183,31 +225,33 @@ const Chat = () => {
 
             <div className="space-y-1 mt-[0px] px-6">
               <p className="text-[13px] text-app-text-profile-tabs font-plusJakartaSans-400">
-                10 Guests
+                {eventData ? eventData.participants.length : 0} Guests
               </p>
               <div className="w-full">
                 <div className="flex">
-                  {profilePics.slice(0, 4).map((pic, index) => (
-                    <div
-                      key={pic.name}
-                      className="flex flex-col items-center mx-[-6px]"
-                    >
+                  {eventData &&
+                    eventData.participants.map((pic, index) => (
                       <div
-                        className={`relative w-[31px] h-[31px] rounded-full ${pic.borderColor} border-2 overflow-hidden`}
-                        style={{ zIndex: 4 - 1 - index }}
+                        key={pic.id}
+                        className="flex flex-col items-center mx-[-6px]"
                       >
-                        <Image
-                          src={pic.src}
-                          alt={pic.name}
-                          fill
-                          className="object-cover rounded-full"
-                        />
+                        <div
+                          className={`relative w-[31px] h-[31px] rounded-full ${"border-blue-500"} border-2 overflow-hidden`}
+                          style={{ zIndex: 4 - 1 - index }}
+                        >
+                          {/* <div>{pic.username}</div> */}
+                          <Image
+                            src={`${pic.profilePicture}`}
+                            alt={pic.username}
+                            fill
+                            className="object-cover rounded-full"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                   <div className="flex flex-col items-center ml-[-6px]">
                     <div className="bg-app-background-card-secondary text-app-text-tertiary text-[14px] px-3 rounded-full font-plusJakartaSans-700 flex items-center h-7">
-                      10 Guests
+                      {eventData ? eventData.participants.length : 0} Guests
                     </div>
                   </div>
                 </div>
@@ -219,7 +263,8 @@ const Chat = () => {
                   height={17}
                 />
                 <p className="text-[13px] text-app-text-profile-tabs font-plusJakartaSans-400">
-                  Price: Cash on entry 20 USD
+                  Price: {eventData ? eventData.payment_type : ""}{" "}
+                  {eventData ? eventData.price : 0} USD
                 </p>
               </div>
               <div className="flex mt-[10px ] items-center gap-1">
@@ -229,7 +274,10 @@ const Chat = () => {
                   height={17}
                 />
                 <p className="text-[13px] text-app-text-profile-tabs font-plusJakartaSans-400">
-                  Event Address: United Kingdom, 39495, kentucky
+                  Event Address:{" "}
+                  {eventData
+                    ? eventData.home_number + " " + eventData.street_address
+                    : ""}
                 </p>
               </div>
               <div className="my-2">
