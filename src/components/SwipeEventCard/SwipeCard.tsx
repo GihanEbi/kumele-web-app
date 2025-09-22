@@ -106,7 +106,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
           return {
             id: item.id,
             imageSrc:
-              `${API_BASE_URL}${item.event_image_url}` ||
+              `${API_BASE_URL}/${item.event_image_url}` ||
               "/bg-imgs/preview-event.jpg",
             title: item.event_name,
             category: categoryData.name, // ✅ use category name
@@ -123,7 +123,7 @@ export default function SwipeEventCards({ onStackFinished }: SwipeCardProps) {
               name: item.user?.fullName || "Host Name",
               avatarSrc:
                 item.user?.profilePicture !== ""
-                  ? `${API_BASE_URL}${item.user?.profilePicture}`
+                  ? `${API_BASE_URL}/${item.user?.profilePicture}`
                   : "/avatar-img/user-preview.png",
               followers: item.host_followers || 0,
               rating: item.host_rating || 0,

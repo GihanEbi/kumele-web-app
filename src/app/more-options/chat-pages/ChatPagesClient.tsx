@@ -497,13 +497,14 @@ const ChatPagesClient = () => {
                     setShowMemberDetailModel(true);
                   }}
                 >
-                  <Image
-                    src={`${follower.profilePicture}`}
-                    alt={follower.username}
-                    width={44}
-                    height={44}
-                    className="rounded-full"
-                  />
+                  <div className="relative w-[44px] h-[44px] ">
+                    <Image
+                      src={`${follower.profilePicture}`}
+                      alt={follower.username}
+                      fill
+                      className="rounded-full object-cover"
+                    />
+                  </div>
                   <span className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
                     {follower.username}
                   </span>

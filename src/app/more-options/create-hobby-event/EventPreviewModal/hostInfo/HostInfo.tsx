@@ -69,13 +69,14 @@ const HostInfo = ({ host }: HostInfoProps) => {
         </div>
       )}
       <div className="absolute -top-12 left-[-3px] flex items-start space-x-3">
-        <Image
-          src={userData?.profilepicture || ""}
-          alt={userData?.username || ""}
-          width={88}
-          height={88}
-          className="relative z-10 rounded-full object-cover flex-shrink-0"
-        />
+        <div className="relative w-[88px] h-[88px]">
+          <Image
+            src={userData?.profilepicture || ""}
+            alt={userData?.username || ""}
+            fill
+            className="z-10 rounded-full object-cover flex-shrink-0"
+          />
+        </div>
         <div className="flex flex-col items-start space-y-1.5 pt-2">
           <div className="bg-app-blog-selected-tabs-background text-black rounded-lg px-3 py-1.5 shadow-md -ml-7 mt-4 pl-6">
             <p className="font-plusJakartaSans text-black font-semibold text-[12px] leading-tight">
