@@ -42,7 +42,7 @@ type event = {
   street_address: string;
   event_image_url: string;
   postal_zip_code: string;
-  host: user_data;
+  host_details: user_data;
   participants: user_data[];
 };
 
@@ -163,7 +163,7 @@ const ChatPagesClient = () => {
       setLoading(true);
       const data = await createEventHostRating({
         eventId: eventData?.id || "",
-        hostId: eventData?.user_id || "",
+        hostId: eventData?.host_details.id || "",
         event_rating: eventRatings,
         host_rating: hostRatings,
         review: ratingComment,
