@@ -64,6 +64,12 @@ const nextConfig = {
         // port: "5001", // allow your backend server
         // pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "kumele-backend.duckdns.org",
+        port: "",
+        pathname: "/uploads/**",
+      },
     ],
   },
 };
