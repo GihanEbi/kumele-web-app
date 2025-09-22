@@ -263,16 +263,11 @@ const Profile = () => {
               <>
                 <div className="flex items-start space-x-6 mb-[6px]">
                   <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
-                    {userData && userData.profilepicture && (
+                    {userData?.profilepicture && (
                       <Image
-                        src={`${
-                          userData.profilepicture
-                            ? userData.profilepicture.replace(/\\/g, "/")
-                            : userData.username[0]
-                        }`}
+                        src={userData.profilepicture.replace(/\\/g, "/")}
                         alt={userData.username}
-                        width={76}
-                        height={76}
+                        fill
                         className="rounded-full object-cover"
                       />
                     )}
@@ -291,13 +286,12 @@ const Profile = () => {
                       Edit hobbies
                     </button>
                   </div>
-                  <div className="w-[50px] h-[50px] sm:w-20 sm:h-20">
+                  <div className="relative w-[50px] h-[50px] sm:w-20 sm:h-20">
                     {userData?.qr_code_url && (
                       <Image
                         src={userData.qr_code_url}
                         alt="QR Code"
-                        width={50}
-                        height={50}
+                        fill
                         className="object-contain"
                       />
                     )}

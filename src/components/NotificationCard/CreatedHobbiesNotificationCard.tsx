@@ -2,6 +2,7 @@ import React from "react";
 import HobbyTagIcon from "../HobbyTagIcon/HobbyTagIcon";
 import { DeleteIcon } from "../../../public/svg-icons/icons";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type NotificationCardProps = {
   // Define any props you need here
@@ -53,14 +54,19 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
   return (
     <div>
       <div className="flex items-start space-x-4 pt-4 pb-4 rounded-lg">
-        <img
-          src={hostImage ? hostImage : hostName[0]}
-          alt={`${hostName}'s profile`}
-          className={`w-12 h-12 rounded-full bg-app-text-blue ${
-            eventStatus === "CANCELED" &&
-            "pointer-events-none opacity-50 select-none"
-          }`}
-        />
+        <div className="relative w-[48px] h-[48px] sm:w-24 sm:h-24">
+          {hostImage && (
+            <Image
+              src={hostImage ? hostImage : hostName[0]}
+              alt={`${hostName}'s profile`}
+              fill
+              className={`rounded-full object-cover ${
+                eventStatus === "CANCELED" &&
+                "pointer-events-none opacity-50 select-none"
+              }`}
+            />
+          )}
+        </div>
 
         <div className="flex-1">
           <h3
@@ -95,7 +101,9 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
                     "pointer-events-none opacity-50 select-none"
                   }`}
                   onClick={() => {
-                    router.push(`/more-options/event-matched?event_id=${event_id}`);
+                    router.push(
+                      `/more-options/event-matched?event_id=${event_id}`
+                    );
                   }}
                 >
                   Join now
@@ -108,7 +116,9 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
                     "pointer-events-none opacity-50 select-none"
                   }`}
                   onClick={() => {
-                    router.push(`/more-options/event-matched?event_id=${event_id}`);
+                    router.push(
+                      `/more-options/event-matched?event_id=${event_id}`
+                    );
                   }}
                 >
                   Matched

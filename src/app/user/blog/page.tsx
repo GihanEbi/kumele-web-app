@@ -47,82 +47,6 @@ export type FetchedCategory = {
   icon: React.ReactNode;
 };
 
-const TABS = [
-  { id: "all", label: "All" },
-  { id: "pubs-bars", label: "Pubs & Bars" },
-  { id: "video-games", label: "Video Games" },
-  { id: "sports", label: "Sports" },
-  { id: "music", label: "Music" },
-  { id: "travel", label: "Travel" },
-];
-
-const ALL_BLOG_POSTS: BlogCardProps[] = [
-  {
-    id: "1",
-    imageUrl: "/images/blog-demo.jpg",
-    title: "Singleton of Glen Ord 38-year old and the Singleton range.",
-    categoryName: "House Party",
-    author: "Steve Austin",
-    date: "23 August, 2022",
-    showIndicator: true,
-    tags: ["all", "pubs-bars", "house-party"],
-  },
-  {
-    id: "2",
-    imageUrl: "/images/blog-demo.jpg",
-    title: "Exploring the latest indie video game hits of the year.",
-    categoryName: "Video Games",
-    author: "Jane Doe",
-    date: "15 September, 2022",
-    tags: ["all", "video-games"],
-  },
-  {
-    id: "3",
-    imageUrl: "/images/blog-demo.jpg",
-    title: "Top 5 Sports Moments You Might Have Missed This Month.",
-    categoryName: "Sports Highlights",
-    author: "John Smith",
-    date: "02 October, 2022",
-    tags: ["all", "sports"],
-  },
-  {
-    id: "4",
-    imageUrl: "/images/blog-demo.jpg",
-    title: "A guide to the best craft beer pubs in downtown.",
-    categoryName: "Pubs & Bars",
-    author: "Alice Brown",
-    date: "28 August, 2022",
-    tags: ["all", "pubs-bars"],
-  },
-  {
-    id: "5",
-    imageUrl: "/images/blog-demo.jpg",
-    title: "Upcoming AAA Video Game Releases for Q4.",
-    categoryName: "Gaming News",
-    author: "Mike Lee",
-    date: "10 September, 2022",
-    tags: ["all", "video-games"],
-  },
-  {
-    id: "6",
-    imageUrl: "/images/blog-demo.jpg",
-    title: "Music Festivals to Look Forward To Next Summer.",
-    categoryName: "Music",
-    author: "Clara Ray",
-    date: "11 November, 2022",
-    tags: ["all", "music"],
-  },
-  {
-    id: "7",
-    imageUrl: "/images/blog-demo.jpg",
-    title: "Backpacking Through Southeast Asia: A Travelogue.",
-    categoryName: "Travel",
-    author: "Derek Green",
-    date: "05 December, 2022",
-    tags: ["all", "travel"],
-  },
-];
-
 const Blog: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -137,7 +61,7 @@ const Blog: React.FC = () => {
 
   // use the appContext to get the more option state
   const { moreOption, setIsBottomNavBarFixed } = useAppContext();
-  const API_BASE_URL = "http://localhost:5001/";
+  const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const filteredPosts = blogs.filter((post) => {
     const matchesTab = activeTab === "all" || post.tags.includes(activeTab);
@@ -262,11 +186,10 @@ const Blog: React.FC = () => {
       name: "Unknown",
       icon: null,
     };
-    console.log("Mapping blog:", apiBlog, "to category:", category);
     return {
       id: apiBlog.id,
       imageUrl: apiBlog.blog_img_url
-        ? `${API_BASE_URL}${apiBlog.blog_img_url}`
+        ? `${API_BASE_URL}/${apiBlog.blog_img_url}`
         : "/images/blog-demo.jpg",
       title: apiBlog.blog_name,
       categoryName: category.name,
