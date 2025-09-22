@@ -21,3 +21,26 @@ export async function create_payment_intent(amount: string) {
     return error;
   }
 }
+
+type verify = {
+  paymentIntentId: string;
+};
+
+// create payment intent
+export async function verify_payment_intent(dataObj: verify) {
+  try {
+    const res = await fetch(`${commonUrl}/verify-payment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `${getToken()}`,
+      },
+      body: JSON.stringify(dataObj), // Hardcoded amount for testing
+    });
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}

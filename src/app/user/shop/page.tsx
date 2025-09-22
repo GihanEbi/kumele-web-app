@@ -51,7 +51,7 @@ export default function SubscriptionsPage() {
   const [error, setError] = useState<string | null>(null);
 
   // amount to pay in stripe
-  const [stripeAmount, setStripeAmount] = useState(0)
+  const [stripeAmount, setStripeAmount] = useState(0);
 
   // state for subscription data
   const [subscriptionData, setSubscriptionData] = useState<Plan[]>([]);
@@ -71,6 +71,9 @@ export default function SubscriptionsPage() {
   const isDark = resolvedTheme === "dark";
 
   const isMoreOptionsOpen = useAppContext().moreOption;
+  const [selectedSubscriptionID, setSelectedSubscriptionID] = useState<
+    string | null
+  >(null);
 
   // styles for active and inactive tabs to keep the JSX clean
   const activeTabStyles =
@@ -254,7 +257,8 @@ export default function SubscriptionsPage() {
                       <div className="mt-5 flex ">
                         <button
                           onClick={() => {
-                            setStripeAmount(Number(plan.price))
+                            setSelectedSubscriptionID(plan.id);
+                            setStripeAmount(Number(plan.price));
                             setIsStripeModelOpen(true);
                           }}
                           className="bg-app-card-button-bg-primary text-app-button-text-color font-plusJakartaSans font-normal text-[16px] py-2 px-20 rounded-lg shadow-sm"
@@ -304,8 +308,12 @@ export default function SubscriptionsPage() {
       />
       <StripeModel
         isOpen={isStripeModelOpen}
-        onClose={() => setIsStripeModelOpen(false)}
+        onClose={() => {
+          setIsStripeModelOpen(false);
+          fetchSubscriptionAndUnSubscriptionByUser();
+        }}
         amount={stripeAmount.toString()}
+        subscription_id={selectedSubscriptionID ?? ""}
       />
       <SuccessModel
         isOpen={showSuccessModel}

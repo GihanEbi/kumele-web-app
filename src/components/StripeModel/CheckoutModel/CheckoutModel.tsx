@@ -8,12 +8,17 @@ import {
 import React, { useState } from "react";
 import ErrorModel from "../../Models/ErrorModel/ErrorModel";
 import SuccessModel from "../../Models/SuccessModel/SuccessModel";
+import { createUserSubscription } from "@/routes/subscription";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
+import { verify_payment_intent } from "@/routes/stripe_payments";
 
 type Props = {
   amount: string;
+  subscription_id: string;
+  onClose: Function;
 };
 
-const CheckoutModel = ({ amount }: Props) => {
+const CheckoutModel = ({ amount, subscription_id, onClose }: Props) => {
   // stripe and elements hooks are used to interact with the Stripe API
   const stripe = useStripe();
   const elements = useElements();
@@ -36,33 +41,75 @@ const CheckoutModel = ({ amount }: Props) => {
     try {
       setIsLoading(true);
       // Trigger form validation and wallet collection
-      const { error } = await stripe.confirmPayment({
+      const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
           // This is the URL the user will be redirected to after payment.
           // You can create a dedicated page for this.
-          return_url: `${window.location.origin}/user/shop/payment-success`,
+          // return_url: `${window.location.origin}/user/shop/payment-success`,
         },
+        redirect: "if_required",
       });
 
-      // This point will only be reached if there is an immediate error when
-      // confirming the payment. Otherwise, your customer will be redirected to
-      // your `return_url`. For example, this could be a card error.
-      if (error.type === "card_error" || error.type === "validation_error") {
-        setError(error.message || "An unexpected error occurred.");
-        setShowErrorModel(true);
-        setTimeout(() => setShowErrorModel(false), 3600);
-        return;
-      } else {
-        setError("An unexpected error occurred.");
+      if (error) {
+        if (error.type === "card_error" || error.type === "validation_error") {
+          setError(error.message || "An unexpected error occurred.");
+        } else {
+          setError("An unexpected error occurred.");
+        }
         setShowErrorModel(true);
         setTimeout(() => setShowErrorModel(false), 3600);
         return;
       }
+
+      // ✅ Payment successful
+      if (paymentIntent && paymentIntent.status === "succeeded") {
+        console.log("Payment succeeded:", paymentIntent.id);
+
+        let verifyData = await verify_payment_intent({
+          paymentIntentId: paymentIntent.id,
+        });
+
+        if (verifyData.success) {
+          // 👉 Call your function here with paymentIntent.id
+          let data = await createUserSubscription({
+            subscription_id: subscription_id,
+            stripe_payment_intent_id: paymentIntent.id,
+          });
+
+          if (data.success) {
+            setSuccess(data.message);
+            setShowSuccessModel(true); // or show toast/snackbar
+            setTimeout(() => {
+              setShowSuccessModel(false);
+              onClose();
+            }, 3600);
+          } else {
+            setError("Error");
+            setShowErrorModel(true);
+            setTimeout(() => {
+              setShowErrorModel(false);
+              onClose();
+            }, 3600);
+          }
+        } else {
+          setError("Payment not verified");
+          setShowErrorModel(true);
+          setTimeout(() => {
+            setShowErrorModel(false);
+            onClose();
+          }, 3600);
+        }
+
+        setError(""); // clear any old error
+      }
     } catch (error) {
       setError("An unexpected error occurred.");
       setShowErrorModel(true);
-      setTimeout(() => setShowErrorModel(false), 3600);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        onClose();
+      }, 3600);
       return;
     } finally {
       setIsLoading(false);
@@ -71,6 +118,12 @@ const CheckoutModel = ({ amount }: Props) => {
 
   return (
     <div className="flex flex-col max-h-[80vh]">
+      {/* Loading spinner */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
       <div className="flex-grow overflow-y-auto no-scrollbar">
         {/* Amount */}
         <div className="mt-8">

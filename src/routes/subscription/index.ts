@@ -14,7 +14,7 @@ export const createUserSubscription = async (
   dataObj: createSubscriptionForm
 ) => {
   try {
-    const res = await fetch(`${commonUrl}`, {
+    const res = await fetch(`${commonUrl}/create-user-subscription`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
