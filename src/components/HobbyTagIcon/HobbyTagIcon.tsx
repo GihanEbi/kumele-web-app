@@ -25,8 +25,6 @@ const HobbyTagIcon = ({ hobbyId, isNormalComponent }: HobbyProps) => {
     ChooseInterestsProps[]
   >([]);
   useEffect(() => {
-    console.log(hobbyId);
-
     fetchInterests();
   }, []);
 

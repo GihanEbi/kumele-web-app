@@ -35,3 +35,37 @@ export async function getAllCreateHobbiesNotifications() {
     throw error;
   }
 }
+
+// get all follower event creation notification
+export async function getAllFollowerEventCreationHobbiesNotifications() {
+  try {
+    const res = await fetch(`${commonUrl}/get-follower-event-notifications`, {
+      method: "GET",
+      headers: {
+        authorization: `${getToken()}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching all created hobbies notifications:", error);
+    throw error;
+  }
+}
+
+// get all match hobbies notifications
+export async function getAllMatchHobbiesNotifications() {
+  try {
+    const res = await fetch(`${commonUrl}/get-match-hobbies-notifications`, {
+      method: "GET",
+      headers: {
+        authorization: `${getToken()}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching all match hobbies notifications:", error);
+    throw error;
+  }
+}

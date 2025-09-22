@@ -15,7 +15,11 @@ import NotificationCard from "@/components/NotificationCard/NotificationCard";
 import Image from "next/image";
 import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
-import { getAllCreateHobbiesNotifications } from "@/routes/notifications";
+import {
+  getAllCreateHobbiesNotifications,
+  getAllFollowerEventCreationHobbiesNotifications,
+  getAllMatchHobbiesNotifications,
+} from "@/routes/notifications";
 import CreatedHobbiesNotificationCard from "@/components/NotificationCard/CreatedHobbiesNotificationCard";
 import EventNotificationCard from "@/components/NotificationCard/EventNotificationCard";
 
@@ -200,6 +204,13 @@ const page = () => {
   const [createNotificationList, setCreateNotificationList] = useState<
     hobbyNotification[]
   >([]);
+  const [
+    followerEventCreationNotificationList,
+    setFollowerEventCreateNotificationList,
+  ] = useState<hobbyNotification[]>([]);
+  const [matchNotificationList, setMatchNotificationList] = useState<
+    hobbyNotification[]
+  >([]);
 
   const onMouseDown = (e: React.MouseEvent) => {
     if (!scrollContainerRef.current) return;
@@ -230,7 +241,9 @@ const page = () => {
   };
 
   useEffect(() => {
+    getAllMatchHobbiesNotificationsList();
     getCreateHobbiesNotificationList();
+    getFollowerEventCreationHobbiesNotificationList();
   }, []);
 
   const getCreateHobbiesNotificationList = async () => {
@@ -252,6 +265,47 @@ const page = () => {
       setLoading(false);
     }
   };
+
+  const getFollowerEventCreationHobbiesNotificationList = async () => {
+    try {
+      setLoading(true);
+      const data = await getAllFollowerEventCreationHobbiesNotifications();
+      if (data.success) {
+        setFollowerEventCreateNotificationList(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching following list:", error);
+      setError("Error fetching following list");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getAllMatchHobbiesNotificationsList = async () => {
+    try {
+      setLoading(true);
+      const data = await getAllMatchHobbiesNotifications();
+      if (data.success) {
+        setMatchNotificationList(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching following list:", error);
+      setError("Error fetching following list");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="overflow-y-auto max-h-screen no-scrollbar">
       {loading && (
@@ -277,61 +331,69 @@ const page = () => {
           <div className="border-t border-0.5 border-app-border space-y-1 mt-[130px]">
             {/* Notification items go here */}
           </div>
-          <div className="mt-[12px]">
-            <h1 className="text-[16px] font-semibold text-app-text-primary font-plusJakartaSans-400">
-              Matched Hobby(ies)
-            </h1>
-            <div>
-              {matchedHobbies.map((item, index) => (
-                <div
-                  key={index}
-                  className=" mb-[12px] border-b border-app-border"
-                  onClick={() => {
-                    router.push("/user/shop");
-                  }}
-                >
-                  <NotificationCard
-                    userImage={item.userImg}
-                    title={item.title}
-                    icon={item.icon}
-                    time={item.time}
-                    category={item.category}
-                    userName={item.userName}
-                    description={item.description}
-                    isCancelled={item.isCancelled}
-                    isShowCancelled={item.isShowCancelled}
-                  />
-                </div>
-              ))}
+          {matchNotificationList.length !== 0 && (
+            <div className="mt-[12px]">
+              <h1 className="text-[16px] font-semibold text-app-text-primary font-plusJakartaSans-400">
+                Matched Hobby(ies)
+              </h1>
+              <div>
+                {matchNotificationList.map((item, index) => (
+                  <div key={index} className="border-b border-app-border">
+                    <CreatedHobbiesNotificationCard
+                      hostImage={item.event.host.profilePicture}
+                      hostName={item.event.host.username}
+                      title={item.title}
+                      category_id={item.event.category_id}
+                      notification_created_at={item.notification_created_at}
+                      message={item.message}
+                      eventStatus={"ACTIVE"}
+                      notificationType={item.type}
+                      viewEvent={() => {
+                        setActiveEventId(item.event.id);
+                        setOpenEventCard(true);
+                      }}
+                      event_id={item.event.id}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="mt-3">
-            <h1 className="text-sm font-semibold text-app-text-primary font-plusJakartaSans">
-              Created Hobby(ies)
-            </h1>
-            <div>
-              {createNotificationList.map((item, index) => (
-                <div
-                  key={index}
-                  className="border-b border-app-border"
-                  onClick={() => {
-                    setActiveEventId(item.event.id);
-                    setOpenEventCard(true);
-                  }}
-                >
-                  <CreatedHobbiesNotificationCard
-                    hostImage={item.event.host.profilePicture}
-                    hostName={item.event.host.username}
-                    title={item.title}
-                    category_id={item.event.category_id}
-                    notification_created_at={item.notification_created_at}
-                    message={item.message}
-                    eventStatus={"ACTIVE"}
-                  />
-                </div>
-              ))}
+          )}
+          {createNotificationList.length !== 0 && (
+            <div className="mt-3">
+              <h1 className="text-sm font-semibold text-app-text-primary font-plusJakartaSans">
+                Created Hobby(ies)
+              </h1>
+              <div>
+                {createNotificationList.map((item, index) => (
+                  <div
+                    key={index}
+                    className="border-b border-app-border"
+                    onClick={() => {
+                      setActiveEventId(item.event.id);
+                      setOpenEventCard(true);
+                    }}
+                  >
+                    <CreatedHobbiesNotificationCard
+                      hostImage={item.event.host.profilePicture}
+                      hostName={item.event.host.username}
+                      title={item.title}
+                      category_id={item.event.category_id}
+                      notification_created_at={item.notification_created_at}
+                      message={item.message}
+                      eventStatus={"ACTIVE"}
+                      notificationType={item.type}
+                      viewEvent={() => {
+                        setActiveEventId(item.event.id);
+                        setOpenEventCard(true);
+                      }}
+                      event_id={item.event.id}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
           <div className="flex items-center justify-center">
             <div className="mt-[12px] mb-[12px] rounded-xl bg-app-background-add w-full h-[240px] flex items-center justify-center">
               <div
@@ -355,31 +417,34 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className="mt-3">
-            <h1 className="text-sm font-semibold text-app-text-primary font-plusJakartaSans">
-              Other Notifications
-            </h1>
-            <div>
-              {otherNotifications.map((item, index) => (
-                <div key={index} className="border-b border-app-border">
-                  <NotificationCard
-                    userImage={item.userImg}
-                    title={item.title}
-                    icon={item.icon}
-                    time={item.time}
-                    category={item.category}
-                    userName={item.userName}
-                    description={item.description}
-                    isCancelled={item.isCancelled}
-                    isShowCancelled={item.isShowCancelled}
-                    isJoinNow={item.isJoinNow}
-                    isBlogComment={item.isBlogComment}
-                    isEventCancelled={item.isEventCancelled}
-                  />
-                </div>
-              ))}
+          {followerEventCreationNotificationList.length !== 0 && (
+            <div className="mt-3">
+              <h1 className="text-sm font-semibold text-app-text-primary font-plusJakartaSans">
+                Other Notifications
+              </h1>
+              <div>
+                {followerEventCreationNotificationList.map((item, index) => (
+                  <div key={index} className="border-b border-app-border">
+                    <CreatedHobbiesNotificationCard
+                      hostImage={item.event.host.profilePicture}
+                      hostName={item.event.host.username}
+                      title={item.title}
+                      category_id={item.event.category_id}
+                      notification_created_at={item.notification_created_at}
+                      message={item.message}
+                      eventStatus={"ACTIVE"}
+                      notificationType={item.type}
+                      viewEvent={() => {
+                        setActiveEventId(item.event.id);
+                        setOpenEventCard(true);
+                      }}
+                      event_id={item.event.id}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       <SuccessModel

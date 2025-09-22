@@ -1,6 +1,7 @@
 import React from "react";
 import HobbyTagIcon from "../HobbyTagIcon/HobbyTagIcon";
 import { DeleteIcon } from "../../../public/svg-icons/icons";
+import { useRouter } from "next/navigation";
 
 type NotificationCardProps = {
   // Define any props you need here
@@ -11,6 +12,9 @@ type NotificationCardProps = {
   notification_created_at: string;
   message: string;
   eventStatus: string;
+  notificationType: string;
+  viewEvent: Function;
+  event_id: string;
 };
 
 const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
@@ -21,8 +25,11 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
   notification_created_at,
   message,
   eventStatus,
+  notificationType,
+  viewEvent,
+  event_id,
 }) => {
-    
+  const router = useRouter();
   function formatTo12HourTime(dateString: string): string {
     const date = new Date(dateString);
 
@@ -61,25 +68,62 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
               eventStatus === "CANCELED" &&
               "pointer-events-none opacity-50 select-none"
             }`}
+            onClick={() => {
+              viewEvent();
+            }}
           >
             {title}
           </h3>
           {category_id && (
             <div
-              className={`w-auto flex gap-2 ${
+              className={`w-auto mt-2 flex gap-2 ${
                 eventStatus === "CANCELED" &&
                 "pointer-events-none opacity-50 select-none"
               }`}
             >
-              <HobbyTagIcon hobbyId={category_id} isNormalComponent={true} />
+              <div
+                onClick={() => {
+                  viewEvent();
+                }}
+              >
+                <HobbyTagIcon hobbyId={category_id} isNormalComponent={true} />
+              </div>
+              {notificationType === "FOLLOWERS_EVENT_CREATION" && (
+                <div
+                  className={`inline-flex text-[10px] bg-app-text-blue rounded-full pt-1.5 px-2 text-app-text-secondary font-plusJakartaSans w-auto ${
+                    eventStatus === "CANCELED" &&
+                    "pointer-events-none opacity-50 select-none"
+                  }`}
+                  onClick={() => {
+                    router.push(`/more-options/event-matched?event_id=${event_id}`);
+                  }}
+                >
+                  Join now
+                </div>
+              )}
+              {notificationType === "MATCH_HOBBIES" && (
+                <div
+                  className={`inline-flex text-[10px] bg-app-text-blue rounded-full pt-1.5 px-2 text-app-text-secondary font-plusJakartaSans w-auto ${
+                    eventStatus === "CANCELED" &&
+                    "pointer-events-none opacity-50 select-none"
+                  }`}
+                  onClick={() => {
+                    router.push(`/more-options/event-matched?event_id=${event_id}`);
+                  }}
+                >
+                  Matched
+                </div>
+              )}
             </div>
           )}
-
           <p
             className={`mt-1 text-[10px] text-app-text-secondary font-plusJakartaSans ${
               eventStatus === "CANCELED" &&
               "pointer-events-none opacity-50 select-none"
             }`}
+            onClick={() => {
+              viewEvent();
+            }}
           >
             <span className="text-[11.33px] text-app-text-blue font-plusJakartaSans">
               {hostName}{" "}
@@ -87,20 +131,25 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
             {message}
           </p>
         </div>
-        <div>
+        <div
+          onClick={() => {
+            viewEvent();
+          }}
+        >
           <p className="flex flex-col items-end text-[11.33px] font-plusJakartaSans-600">
             <div className="flex-end text-app-text-blue">
               {formatTo12HourTime(notification_created_at)}
             </div>
-
-            <div
-              className={`mt-2 inline-flex text-[10px] bg-app-text-blue rounded-full py-1 px-2 text-app-text-secondary font-plusJakartaSans w-auto ${
-                eventStatus === "CANCELED" &&
-                "pointer-events-none opacity-50 select-none"
-              }`}
-            >
-              <div>{eventStatus === "CANCELED" ? "Canceled" : "Cancel"}</div>
-            </div>
+            {notificationType === "MATCH_HOBBIES" && (
+              <div
+                className={`mt-2 inline-flex text-[10px] bg-app-text-blue rounded-full py-1 px-2 text-app-text-secondary font-plusJakartaSans w-auto ${
+                  eventStatus === "CANCELED" &&
+                  "pointer-events-none opacity-50 select-none"
+                }`}
+              >
+                <div>{eventStatus === "CANCELED" ? "Canceled" : "Cancel"}</div>
+              </div>
+            )}
             {eventStatus === "CANCELED" && (
               <div className="mt-5">
                 <DeleteIcon width={20} height={20} />
@@ -114,6 +163,3 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
 };
 
 export default CreatedHobbiesNotificationCard;
-
-
-      
