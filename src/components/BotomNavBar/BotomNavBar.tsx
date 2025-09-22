@@ -20,9 +20,20 @@ import Profile from "@/app/user/profile/page";
 import MoreOptionModel from "@/components/Models/MoreOptionModel/MoreOptionModel";
 import { useAppContext } from "@/context/AppContext";
 import { getPartnershipToken } from "@/utils/partnershipUtils";
+import { getUnreadNotificationCount } from "@/routes/notifications";
+import SuccessModel from "../Models/SuccessModel/SuccessModel";
+import ErrorModel from "../Models/ErrorModel/ErrorModel";
 
 const BottomNavBar = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { theme, setTheme, systemTheme } = useTheme();
   const [selectedColor, setSelectedColor] = useState("");
   // set active page
@@ -35,13 +46,36 @@ const BottomNavBar = () => {
 
   const isPartnershipUser = getPartnershipToken();
 
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
+
   useEffect(() => {
     if (theme === "light") {
       setSelectedColor("text-black");
     } else if (theme === "dark") {
       setSelectedColor("text-white");
     }
+    fetchUnreadNotificationCount();
   }, [activePageIndex]);
+
+  const fetchUnreadNotificationCount = async () => {
+    try {
+      setLoading(true);
+      const data = await getUnreadNotificationCount();
+      if (data.success) {
+        setUnreadNotificationCount(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching unread notification count:", error);
+      setError("Error fetching unread notification count");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="overflow-y-auto max-h-screen no-scrollbar">
@@ -59,9 +93,11 @@ const BottomNavBar = () => {
             }
           }}
           className={`flex flex-col items-center text-app-text-primary ${
-            activePageIndex === 0 ? "border-t-3 border-app-text-blue pt-2" : "pt-2"
+            activePageIndex === 0
+              ? "border-t-3 border-app-text-blue pt-2"
+              : "pt-2"
           }`}
-        > 
+        >
           {/* <div
             className={`rounded-4xl p-2 text-app-text-primary ${
               activePageIndex === 0 ? "bg-app-button-blue" : ""
@@ -219,6 +255,7 @@ const BottomNavBar = () => {
           <div
             onClick={() => {
               setActivePageIndex(3);
+
               setShowMoreOptionModel(true);
               setMoreOption(true);
             }}
@@ -256,7 +293,9 @@ const BottomNavBar = () => {
             router.push("/user/profile");
           }}
           className={`flex flex-col items-center text-app-text-primary ${
-            activePageIndex === 4 ? "border-t-3 border-app-text-blue pt-2" : "pt-2"
+            activePageIndex === 4
+              ? "border-t-3 border-app-text-blue pt-2"
+              : "pt-2"
           }`}
         >
           {/* <div
@@ -288,6 +327,23 @@ const BottomNavBar = () => {
           setShowMoreOptionModel(false);
           setMoreOption(false);
         }}
+        notificationCount={unreadNotificationCount}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
       />
     </div>
   );
