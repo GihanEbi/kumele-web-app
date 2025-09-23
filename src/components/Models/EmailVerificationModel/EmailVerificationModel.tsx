@@ -32,6 +32,7 @@ interface FormData {
   aboveLegalAge: boolean;
   termsAndConditionsAccepted: boolean;
   subscribedToNewsletter: boolean;
+  beta_code: string;
 }
 
 // props types

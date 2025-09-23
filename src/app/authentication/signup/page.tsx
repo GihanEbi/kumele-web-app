@@ -81,6 +81,7 @@ const Signup = () => {
     aboveLegalAge: false,
     termsAndConditionsAccepted: false,
     subscribedToNewsletter: false,
+    beta_code:""
   });
 
   // set separate birthday component value together
@@ -530,9 +531,9 @@ const Signup = () => {
             <InputComponent
               placeholder="e.g. DF3R435"
               onChange={(e) => {
-                // handleInputChange(e.target.value, "referralCode");
+                handleInputChange(e.target.value, "beta_code");
               }}
-              value={""}
+              value={form.beta_code}
             />
           </div>
         </div>
