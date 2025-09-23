@@ -5,9 +5,14 @@ import { SignOutIcon, UserIcon } from "../../../../public/svg-icons/icons";
 type ModelProps = {
   isOpen: boolean;
   onClose: () => void;
+  onChange: Function;
 };
 
-const FollowHostModel: React.FC<ModelProps> = ({ isOpen, onClose }) => {
+const FollowHostModel: React.FC<ModelProps> = ({
+  isOpen,
+  onClose,
+  onChange,
+}) => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
   return (
@@ -52,7 +57,9 @@ const FollowHostModel: React.FC<ModelProps> = ({ isOpen, onClose }) => {
                   </button>
                   <button
                     className="text-[16px] flex-1 py-3 px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans-400"
-                    onClick={() => {}}
+                    onClick={() => {
+                      onChange();
+                    }}
                   >
                     Follow host
                   </button>

@@ -14,13 +14,12 @@ export default function BlogCard(props: BlogCardProps) {
           <div className="absolute top-3 right-3 w-3 h-3 bg-yellow-500 rounded-full z-10"></div>
         )}
         <div className="flex space-x-4">
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 relative w-[100px] h-[100px]">
             <Image
               src={props.imageUrl}
               alt={props.title}
-              width={100}
-              height={100}
-              className="rounded-lg object-cover w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]"
+              fill
+              className="rounded-lg object-cover"
             />
           </div>
           <div className="flex flex-col flex-grow justify-start py-1">

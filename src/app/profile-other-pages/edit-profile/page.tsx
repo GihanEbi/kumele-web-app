@@ -20,8 +20,6 @@ import Image from "next/image";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 import { useRouter } from "next/navigation";
 
-const imgUrl = "http://localhost:5001";
-
 // ---------- interface ----------
 interface profileData {
   id: string;
@@ -166,15 +164,16 @@ const page = () => {
           <div
             onClick={handleClick}
             className={`${
-              userData && userData.profilepicture ? "bg-app-input-yellow" : "bg-app-input-yellow"
-            } rounded-full w-[80px] h-[80px] flex items-center justify-center mb-3 cursor-pointer hover:opacity-80`}
+              userData && userData.profilepicture
+                ? "bg-app-input-yellow"
+                : "bg-app-input-yellow"
+            } relative rounded-full w-[80px] h-[80px] flex items-center justify-center mb-3 cursor-pointer hover:opacity-80`}
           >
             {userData && userData.profilepicture ? (
               <Image
-                src={`${imgUrl}/${userData.profilepicture.replace(/\\/g, "/")}`}
+                src={`${userData.profilepicture.replace(/\\/g, "/")}`}
                 alt="Alkesh Kumar"
-                width={76}
-                height={76}
+                fill
                 className="rounded-full object-cover"
               />
             ) : (

@@ -1,6 +1,6 @@
 import { config } from "@/config";
 import { getToken } from "@/utils/authUtils";
-const commonUrl = `${"http://localhost:5001/api"}/chat`;
+const commonUrl = `${config.baseUrl}/chat`;
 
 // Define the message structure, matching the backend model
 interface Message {

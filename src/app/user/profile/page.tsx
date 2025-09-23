@@ -4,8 +4,6 @@ import Head from "next/head";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
-const imgUrl = "http://localhost:5001";
-
 import {
   ContactIcon,
   DeleteAccountIcon,
@@ -33,6 +31,7 @@ import { paddings } from "@/constants/layout-constants";
 import { Separator } from "@/components/ui/separator";
 import { useAppContext } from "@/context/AppContext";
 import { getPartnershipToken } from "@/utils/partnershipUtils";
+import { getFollowingFollowerCount } from "@/routes/following_follower";
 const settingsGroup1 = [
   {
     icon: <SoundIcon className="text-app-icon" width={28} height={28} />,
@@ -141,8 +140,8 @@ const Profile = () => {
 
   const isPartnershipUser = getPartnershipToken();
 
-  // state for profile picture
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [followingCount, setFollowingCount] = useState<number | null>(null);
+  const [followerCount, setFollowerCount] = useState<number | null>(null);
 
   useEffect(() => {
     setIsBottomNavBarFixed(true);
@@ -150,6 +149,7 @@ const Profile = () => {
       console.log("///");
     }
     fetchUserData();
+    fetchFollowingFollowerCount();
   }, []);
 
   // Simulate fetching user data
@@ -165,6 +165,22 @@ const Profile = () => {
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // fetch following follower count
+  const fetchFollowingFollowerCount = async () => {
+    try {
+      setLoading(true);
+      const data = await getFollowingFollowerCount();
+      if (data.success) {
+        setFollowingCount(data.data.following_count);
+        setFollowerCount(data.data.followers_count);
+      }
+    } catch (error) {
+      console.error("Error fetching following follower count:", error);
     } finally {
       setLoading(false);
     }
@@ -214,8 +230,13 @@ const Profile = () => {
             {isPartnershipUser === "yes" && (
               <div className="flex gap-5  pb-4">
                 <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
-                <img src={"/images/spotify.png"} alt="spotify" width={63} height={63} />
-                {/* <Image
+                  <img
+                    src={"/images/spotify.png"}
+                    alt="spotify"
+                    width={63}
+                    height={63}
+                  />
+                  {/* <Image
                   src={`${imgUrl}/${userData?.profilepicture.replace(
                     /\\/g,
                     "/"
@@ -242,16 +263,11 @@ const Profile = () => {
               <>
                 <div className="flex items-start space-x-6 mb-[6px]">
                   <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
-                    {userData && userData.profilepicture && (
+                    {userData?.profilepicture && (
                       <Image
-                        src={`${
-                          userData.profilepicture
-                            ? userData.profilepicture.replace(/\\/g, "/")
-                            : userData.username[0]
-                        }`}
+                        src={userData.profilepicture.replace(/\\/g, "/")}
                         alt={userData.username}
-                        width={76}
-                        height={76}
+                        fill
                         className="rounded-full object-cover"
                       />
                     )}
@@ -270,13 +286,12 @@ const Profile = () => {
                       Edit hobbies
                     </button>
                   </div>
-                  <div className="w-[50px] h-[50px] sm:w-20 sm:h-20">
+                  <div className="relative w-[50px] h-[50px] sm:w-20 sm:h-20">
                     {userData?.qr_code_url && (
                       <Image
                         src={userData.qr_code_url}
                         alt="QR Code"
-                        width={50}
-                        height={50}
+                        fill
                         className="object-contain"
                       />
                     )}
@@ -308,7 +323,7 @@ const Profile = () => {
                   Following
                 </p>
                 <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
-                  {8}
+                  {followingCount !== null ? followingCount : 0}
                 </p>
               </div>
               <div
@@ -323,7 +338,7 @@ const Profile = () => {
                   Followers
                 </p>
                 <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
-                  {23}
+                  {followerCount !== null ? followerCount : 0}
                 </p>
               </div>
               <div className="flex flex-col items-center p-2">

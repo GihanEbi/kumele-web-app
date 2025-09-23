@@ -28,8 +28,10 @@ const TimePickerWithModal: React.FC<TimePickerDisplayProps> = ({
   label,
   currentTimeDisplay,
   onChange,
-  isOpen, setIsOpen
+  isOpen,
+  setIsOpen,
 }) => {
+  const timePickerRef = useRef<HTMLDivElement>(null);
   // Function to get the current time, used for initialization
   const getCurrentTime = () => {
     const now = new Date();
@@ -53,6 +55,19 @@ const TimePickerWithModal: React.FC<TimePickerDisplayProps> = ({
     currentTimeDisplay ||
       `${initialTime.hour}:${initialTime.minute} ${initialTime.period}`
   );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        timePickerRef.current &&
+        !timePickerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [setIsOpen]);
 
   // Effect to sync with external changes to currentTimeDisplay prop
   useEffect(() => {
@@ -138,15 +153,17 @@ const TimePickerWithModal: React.FC<TimePickerDisplayProps> = ({
   };
 
   return (
-    <div className="relative w-full">
-      <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-3 mb-1">{label}</label>
+    <div className="relative w-full" ref={timePickerRef}>
+      <label className="block font-plusJakartaSans font-normal text-[13.89px] mb-3 mb-1">
+        {label}
+      </label>
       <button
         type="button"
         className="w-full flex items-center justify-between px-3 py-2.5 bg-app-input-primary  rounded-md"
         onClick={handleToggle}
       >
         <div className="flex items-center space-x-2.5">
-          <ClockIcon  />
+          <ClockIcon />
           <span className="font-plusJakartaSans font-normal text-[13.89px]">
             {displayTime}
           </span>
@@ -159,7 +176,9 @@ const TimePickerWithModal: React.FC<TimePickerDisplayProps> = ({
 
       {isOpen && (
         <div className="absolute z-50 mt-0 bg-app-background-tertiary shadow-lg rounded-xl p-4 w-full max-w-xs">
-          <h2 className="model-texts mb-4 text-app-button-model-text-color">Set time</h2>
+          <h2 className="model-texts mb-4 text-app-button-model-text-color">
+            Set time
+          </h2>
           <div className="relative flex justify-evenly items-center h-[150px]">
             {/* Highlight bar for the selected time */}
             <div className="absolute top-1/2 left-1 right-1 h-14 -translate-y-1/2 border border-gray-500 rounded-lg pointer-events-none" />
@@ -170,7 +189,9 @@ const TimePickerWithModal: React.FC<TimePickerDisplayProps> = ({
               setValue={setHour}
               className="w-20 text-[15px] model-texts"
             />
-            <span className="model-texts text-app-button-model-text-color pb-1">:</span>
+            <span className="model-texts text-app-button-model-text-color pb-1">
+              :
+            </span>
             <TimeScroller
               items={minutes}
               value={minute}

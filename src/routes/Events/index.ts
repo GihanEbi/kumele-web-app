@@ -102,6 +102,7 @@ export async function get_all_event_list() {
       },
     });
     const data = await res.json();
+    return data
   } catch (error) {
     return error;
   }

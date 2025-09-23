@@ -590,6 +590,17 @@
   display: none;
 }
 
+/* For Webkit-based browsers (Chrome, Safari, Edge) */
+/* .no-scrollbar::-webkit-scrollbar {
+  display: none;
+} */
+
+/* For IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .custom-dotted-border {
   /* This creates a dashed border using an SVG background.
      It scales perfectly and respects the border-radius. */

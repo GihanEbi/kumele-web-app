@@ -11,6 +11,7 @@ type RadioButtonGroupComponentProps = {
   disabled?: boolean;
   error?: string;
   isMultiSelect?: boolean;
+  isColumn?: boolean;
 };
 
 const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
@@ -22,6 +23,7 @@ const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
   disabled,
   error,
   isMultiSelect = false,
+  isColumn = false,
 }) => {
   // Normalize value
   const selectedValues = Array.isArray(value) ? value : value ? [value] : [];
@@ -47,7 +49,13 @@ const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
           {name}
         </p>
       )}
-      <div className="flex justify-between items-center space-x-6">
+      <div
+        className={`flex ${
+          isColumn
+            ? "flex-col justify-start space-y-4"
+            : "flex-row justify-between items-center space-x-6"
+        }`}
+      >
         {options.map((opt, idx) => {
           const isSelected = selectedValues.includes(opt.value);
 
@@ -71,7 +79,9 @@ const RadioButtonGroupComponent: React.FC<RadioButtonGroupComponentProps> = ({
               {/* Custom circle style */}
               <div
                 className={`w-5 h-5 rounded-full border-2 ${
-                  isSelected ? "border-app-button-blue" : "border-app-button-radio"
+                  isSelected
+                    ? "border-app-button-blue"
+                    : "border-app-button-radio"
                 } flex items-center justify-center`}
               >
                 <div

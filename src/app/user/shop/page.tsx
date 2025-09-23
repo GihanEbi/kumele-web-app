@@ -16,125 +16,45 @@ import { PaymentCompleteModal } from "@/components/PaymentModal/PaymentCompleteM
 import SubscriptionExpirationModal from "./InitialPopup/Modal";
 import { useAppContext } from "@/context/AppContext";
 import { useTheme } from "next-themes";
+import StripeModel from "@/components/StripeModel/StripeModel";
+import { useRouter } from "next/navigation";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import { get_all_subscribe_and_unsubscribed_data } from "@/routes/subscription";
+import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
+import InlineSvg from "@/components/InlineSVG/InlineSVG";
 
 type Plan = {
-  id: number;
-  Icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  id: string;
+  icon_code: string;
   title: string;
   price: string;
   description: string;
-  status: "buy" | "active";
-  isHighlighted?: boolean;
-  priceColor: "yellow" | "blue";
+  validity_period: { days?: number; months?: number; years?: number };
+  isActive: boolean;
 };
 
-const subscriptionPlans: Plan[] = [
-  {
-    id: 1,
-    Icon: Confetti2Icon,
-    title: "Event ads",
-    price: "$7.07",
-    description: "Purchase 7 days pre-event AD",
-    status: "buy",
-    priceColor: "yellow",
-  },
-  {
-    id: 2,
-    Icon: AirCraftIcon,
-    title: "Location change",
-    price: "$8.25",
-    description: "Unlimited location change, valid for 30 days",
-    status: "active",
-    isHighlighted: true,
-    priceColor: "blue",
-  },
-  {
-    id: 3,
-    Icon: CrownIcon,
-    title: "Monthly Silver",
-    price: "$15.00",
-    description:
-      "Get 30 days ADs free experience. Cancel anytime but before the new month starts.",
-    status: "buy",
-    priceColor: "yellow",
-  },
-  {
-    id: 4,
-    Icon: CrownIcon,
-    title: "Monthly Gold",
-    price: "$18.87",
-    description:
-      "Get 30 days ADs free experience. One time free (6-20 guest invite), additional purchase needed for more guest. Cancel anytime but before the new month starts.",
-    status: "buy",
-    priceColor: "yellow",
-  },
-  {
-    id: 5,
-    Icon: CrownIcon,
-    title: "Yearly Gold",
-    price: "$120.00",
-    description:
-      "Get 365 days ADs free experience. One time free (6-20 guest invite). Unlimited location change",
-    status: "buy",
-    priceColor: "yellow",
-  },
-];
-
-// Data for the "Guest tickets" tab
-const guestTickets: Plan[] = [
-  {
-    id: 1,
-    Icon: TwoTicketsIcon,
-    title: "6-20 guests",
-    price: "$7.07",
-    description: "Number of guests valid only for this event",
-    status: "active",
-    isHighlighted: true,
-    priceColor: "blue",
-  },
-  {
-    id: 2,
-    Icon: TwoTicketsIcon,
-    title: "21-40 guests",
-    price: "$10.61",
-    description: "Number of guests valid only for this event",
-    status: "buy",
-    priceColor: "yellow",
-  },
-  {
-    id: 3,
-    Icon: TwoTicketsIcon,
-    title: "41-60 guests",
-    price: "$14.15",
-    description: "Number of guests valid only for this event",
-    status: "buy",
-    priceColor: "yellow",
-  },
-  {
-    id: 4,
-    Icon: TwoTicketsIcon,
-    title: "61-80 guests",
-    price: "$17.69",
-    description: "Number of guests valid only for this event",
-    status: "buy",
-    priceColor: "yellow",
-  },
-  {
-    id: 5,
-    Icon: TwoTicketsIcon,
-    title: "81-150 guests",
-    price: "$21.23",
-    description: "Number of guests valid only for this event",
-    status: "buy",
-    priceColor: "yellow",
-  },
-];
-
 export default function SubscriptionsPage() {
+  const router = useRouter();
   //State to track the active tab
   const [activeTab, setActiveTab] = useState<"subscriptions" | "tickets">(
     "subscriptions"
   );
+  //   loading state
+  const [loading, setLoading] = useState(false);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // amount to pay in stripe
+  const [stripeAmount, setStripeAmount] = useState(0);
+
+  // state for subscription data
+  const [subscriptionData, setSubscriptionData] = useState<Plan[]>([]);
 
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
   const [isAddCardModalOpen, setAddCardModalOpen] = useState(false);
@@ -145,15 +65,24 @@ export default function SubscriptionsPage() {
 
   //-----------initial pop up state
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isStripeModelOpen, setIsStripeModelOpen] = useState(false);
 
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
   const isMoreOptionsOpen = useAppContext().moreOption;
-    console.log("isMoreOptionsOpen is:", isMoreOptionsOpen);
+  const [selectedSubscriptionID, setSelectedSubscriptionID] = useState<
+    string | null
+  >(null);
+
+  // styles for active and inactive tabs to keep the JSX clean
+  const activeTabStyles =
+    "bg-app-background-primary shadow text-app-blog-card-author-text";
+  const inactiveTabStyles = "bg-transparent text-app-search-bar-text";
 
   //initial popup modal open handling
   useEffect(() => {
+    fetchSubscriptionAndUnSubscriptionByUser();
     setIsBottomNavBarFixed(true);
     const timer = setTimeout(() => {
       setIsModalOpen(true);
@@ -170,14 +99,6 @@ export default function SubscriptionsPage() {
       document.body.style.overflow = "unset";
     }
   }, [isModalOpen]);
-  // Determine which data to show based on the active tab
-  const currentData =
-    activeTab === "subscriptions" ? subscriptionPlans : guestTickets;
-
-  // styles for active and inactive tabs to keep the JSX clean
-  const activeTabStyles =
-    "bg-app-background-primary shadow text-app-blog-card-author-text";
-  const inactiveTabStyles = "bg-transparent text-app-search-bar-text";
 
   const handleOpenPayment = () => setPaymentModalOpen(true);
   const handleClosePayment = () => setPaymentModalOpen(false);
@@ -217,15 +138,41 @@ export default function SubscriptionsPage() {
     setPaymentModalOpen(true); // Close the final screen, ending the flow
   };
 
+  const fetchSubscriptionAndUnSubscriptionByUser = async () => {
+    setLoading(true);
+    try {
+      const data = await get_all_subscribe_and_unsubscribed_data();
+
+      if (data.success) {
+        setSubscriptionData(data.subscriptions);
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
-      <div className={`font-sans pt-[64px] pb-20 ${
-            isMoreOptionsOpen && isDark
-              ? "bg-neutral-900"
-              : isMoreOptionsOpen && !isDark
-              ? "bg-gray-200"
-              : ""
-          }`} >
+      <div
+        className={`font-sans pt-[64px] pb-20 ${
+          isMoreOptionsOpen && isDark
+            ? "bg-neutral-900"
+            : isMoreOptionsOpen && !isDark
+            ? "bg-gray-200"
+            : ""
+        }`}
+      >
+        {/* Loading spinner */}
+        {loading && (
+          <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+            <LoadingComponent />
+          </div>
+        )}
         <div className="mx-auto p-4">
           {/* Segmented Control Header */}
           <div className="bg-app-range-slider-track-active p-1 rounded-lg flex items-center mt-2">
@@ -254,26 +201,33 @@ export default function SubscriptionsPage() {
 
           {/* This list now dynamically renders the correct data */}
           <div className="mt-8 space-y-4 pb-8">
-            {currentData.map((plan) => (
+            {subscriptionData.map((plan) => (
               <div
                 key={`${activeTab}-${plan.id}`} // Using a unique key for each item
                 className={`rounded-2xl p-5 ${
-                  plan.isHighlighted
+                  plan.isActive
                     ? "bg-app-blog-selected-tabs-background"
                     : "bg-app-blog-card-background"
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <plan.Icon
+                  {/* <plan.Icon
                     className={`w-8 h-8 flex-shrink-0 mt-1 ${
                       plan.isHighlighted ? "text-gray-900" : ""
                     }`}
+                  /> */}
+                  <InlineSvg
+                    svg={plan.icon_code}
+                    className={`w-8 h-8 ${
+                      plan.isActive ? "text-gray-900" : ""
+                    }`}
+                    // title={category}
                   />
                   <div className="flex flex-col w-full">
                     <div className="flex justify-between items-start">
                       <h2
                         className={`font-bold text-lg ${
-                          plan.isHighlighted
+                          plan.isActive
                             ? "text-black font-plusJakartaSans font-700 text-[19px]"
                             : "text-app-blog-card-heading font-plusJakartaSans font-bold text-[19px]"
                         }`}
@@ -282,7 +236,7 @@ export default function SubscriptionsPage() {
                       </h2>
                       <p
                         className={`font-plusJakartaSans font-bold text-[19px] whitespace-nowrap ${
-                          plan.priceColor === "yellow"
+                          !plan.isActive
                             ? "text-app-text-yellow"
                             : "text-blue-600"
                         }`}
@@ -292,17 +246,21 @@ export default function SubscriptionsPage() {
                     </div>
                     <p
                       className={`mt-2 font-plusJakartaSans font-normal text-[16px] ${
-                        plan.isHighlighted
+                        plan.isActive
                           ? "text-gray-800"
                           : "text-app-blog-card-author-text"
                       }`}
                     >
                       {plan.description}
                     </p>
-                    {plan.status === "buy" ? (
+                    {!plan.isActive ? (
                       <div className="mt-5 flex ">
                         <button
-                          onClick={handleOpenPayment}
+                          onClick={() => {
+                            setSelectedSubscriptionID(plan.id);
+                            setStripeAmount(Number(plan.price));
+                            setIsStripeModelOpen(true);
+                          }}
                           className="bg-app-card-button-bg-primary text-app-button-text-color font-plusJakartaSans font-normal text-[16px] py-2 px-20 rounded-lg shadow-sm"
                         >
                           Buy now
@@ -347,6 +305,31 @@ export default function SubscriptionsPage() {
       <SubscriptionExpirationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+      <StripeModel
+        isOpen={isStripeModelOpen}
+        onClose={() => {
+          setIsStripeModelOpen(false);
+          fetchSubscriptionAndUnSubscriptionByUser();
+        }}
+        amount={stripeAmount.toString()}
+        subscription_id={selectedSubscriptionID ?? ""}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
       />
     </>
   );

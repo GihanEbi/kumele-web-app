@@ -52,25 +52,27 @@ const InboxMessageCard: React.FC<props> = ({
       >
         <div className="flex items-start space-x-2 pt-4 pb-4">
           {!isLoggedInUser ? (
-            <Image
-              src={img ? `${img.replace(/\\/g, "/")}` : name[0]}
-              alt={name}
-              width={76}
-              height={76}
-              className="rounded-full object-cover"
-            />
+            <div className="relative w-[76px] h-[76px]">
+              <Image
+                src={img ? `${img.replace(/\\/g, "/")}` : name[0]}
+                alt={name}
+                fill
+                className="rounded-full object-cover"
+              />
+            </div>
           ) : (
-            <Image
-              src={
-                sentUserProfilePic
-                  ? `${(sentUserProfilePic ?? "").replace(/\\/g, "/")}`
-                  : name[0]
-              }
-              alt={name}
-              width={76}
-              height={76}
-              className="rounded-full object-cover"
-            />
+            <div className="relative w-[76px] h-[76px]">
+              <Image
+                src={
+                  sentUserProfilePic
+                    ? `${(sentUserProfilePic ?? "").replace(/\\/g, "/")}`
+                    : name[0]
+                }
+                alt={name}
+                fill
+                className="rounded-full object-cover"
+              />
+            </div>
           )}
           <div>
             <div className="flex space-x-1 w-full">

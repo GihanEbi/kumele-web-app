@@ -8,74 +8,118 @@ import { paddings } from "@/constants/layout-constants";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
 import Image from "next/image";
 import MemberModel from "@/components/Models/MemberModel/MemberModel";
+import { get_event_by_event_id } from "@/routes/Events";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import { createEventHostRating } from "@/routes/event_and_host_rating";
+import { fi } from "date-fns/locale";
+import { createEventReport, getReportReasons } from "@/routes/event_report";
 
-const reportReasons = [
-  { id: 1, label: "Racist", value: "Racist" },
-  { id: 2, label: "Scam", value: "Scam" },
-  { id: 3, label: "Physical assault", value: "Physical assault" },
-  { id: 4, label: "Other", value: "Other" },
-];
+type user_data = {
+  id: string;
+  username: string;
+  profilePicture: string;
+};
 
-const followingList = [
-  {
-    name: "Franklin",
-    img: "/followers/9.png",
-  },
-  {
-    name: "Peppermint Patty",
-    img: "/followers/8.png",
-  },
-  {
-    name: "Franklin",
-    img: "/followers/6.png",
-  },
-  {
-    name: "Marcie",
-    img: "/followers/10.png",
-  },
-  {
-    name: "Linus van Pelt",
-    img: "/followers/3.png",
-  },
-  {
-    name: "Snoopy",
-    img: "/followers/4.png",
-  },
-  {
-    name: "Peppermint Patty",
-    img: "/followers/5.png",
-  },
-  {
-    name: "Marcie",
-    img: "/followers/7.png",
-  },
-];
+type event = {
+  id: string;
+  price: string;
+  state: string;
+  user_id: string;
+  district: string;
+  subtitle: string;
+  event_date: string;
+  event_name: string;
+  max_guests: string;
+  category_id: string;
+  description: string;
+  home_number: string;
+  payment_type: string;
+  age_range_max: string;
+  age_range_min: string;
+  event_end_time: string;
+  event_start_time: string;
+  street_address: string;
+  event_image_url: string;
+  postal_zip_code: string;
+  host_details: user_data;
+  participants: user_data[];
+};
 
 const ChatPagesClient = () => {
   const searchParams = useSearchParams();
-  // const source = searchParams.get("source");
-  const source = searchParams?.get("source") ?? "";
-
+  const [source, setSource] = useState<string | null>(null);
+  // state for store the chat data
+  const [eventData, setEventData] = useState<event | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const [selectedReportReason, setSelectedReportReason] = useState("");
+  const [reportComment, setReportComment] = useState("");
+  // --------- show member model ----------
+  const [showMemberDetailModel, setShowMemberDetailModel] = useState(false);
+  // state to store the event ratings
+  const [eventRatings, setEventRatings] = useState<number>(0);
+  // state to store the host ratings
+  const [hostRatings, setHostRatings] = useState<number>(0);
+  const [ratingComment, setRatingComment] = useState<string>("");
+  const [reportReason, setReportReason] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (searchParams) {
+      setSource(searchParams.get("source"));
+    }
+    fetchEventData();
+    getEventReportReasons();
+  }, [searchParams]);
+
+  // get event report reasons
+  const getEventReportReasons = async () => {
+    try {
+      setLoading(true);
+      const data = await getReportReasons();
+      if (data.success) {
+        setReportReason(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching report reasons:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // function to fetch event data
+  const fetchEventData = async () => {
+    setLoading(true);
+
+    try {
+      if (searchParams) {
+        const data = await get_event_by_event_id(
+          searchParams!.get("event_id")!
+        ); // Non-null assertion since we check above
+
+        if (data.success) {
+          setEventData(data.data);
+        } else {
+          console.error("Failed to fetch event data:", data.message);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching event data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   //State to track the active tab
   const [activeTab, setActiveTab] = useState<"Ratings" | "Report" | "GestScan">(
     "Ratings"
   );
-
-  const [rateEvent1, setRateEvent1] = useState<boolean>(true);
-  const [rateEvent2, setRateEvent2] = useState<boolean>(true);
-  const [rateEvent3, setRateEvent3] = useState<boolean>(true);
-  const [rateEvent4, setRateEvent4] = useState<boolean>(false);
-  const [rateEvent5, setRateEvent5] = useState<boolean>(false);
-
-  const [rateHost1, setRateHost1] = useState<boolean>(true);
-  const [rateHost2, setRateHost2] = useState<boolean>(true);
-  const [rateHost3, setRateHost3] = useState<boolean>(true);
-  const [rateHost4, setRateHost4] = useState<boolean>(false);
-  const [rateHost5, setRateHost5] = useState<boolean>(false);
-  const [value, setValue] = useState("");
-  // --------- show member model ----------
-  const [showMemberDetailModel, setShowMemberDetailModel] = useState(false);
 
   // styles for active and inactive tabs to keep the JSX clean
   const activeTabStyles =
@@ -91,8 +135,128 @@ const ChatPagesClient = () => {
       setActiveTab("GestScan");
     }
   }, [source]);
+
+  const handleSubmitRating = async () => {
+    if (loading) return;
+
+    // Validations
+    if (eventRatings === 0) {
+      setError("Please provide a rating for the event.");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+      return;
+    }
+    if (hostRatings === 0) {
+      setError("Please provide a rating for the host.");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const data = await createEventHostRating({
+        eventId: eventData?.id || "",
+        hostId: eventData?.host_details.id || "",
+        event_rating: eventRatings,
+        host_rating: hostRatings,
+        review: ratingComment,
+      });
+      if (data.success) {
+        setSuccess("Rating submitted successfully");
+        setShowSuccessModel(true);
+        setTimeout(() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }, 3600);
+        // reset form
+        setEventRatings(0);
+        setHostRatings(0);
+        setRatingComment("");
+      } else {
+        setError(data.message || "Failed to submit rating");
+        setShowErrorModel(true);
+        setTimeout(() => {
+          setShowErrorModel(false);
+          setError("");
+        }, 3600);
+      }
+    } catch (error) {
+      console.error("Error submitting rating:", error);
+      setError("Error submitting rating");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleSubmitReport = async () => {
+    if (loading) return;
+    // Validations
+    if (selectedReportReason === "") {
+      setError("Please select a reason for reporting.");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const data = await createEventReport({
+        event_id: eventData?.id || "",
+        reason: selectedReportReason,
+        comments: reportComment,
+      });
+      if (data.success) {
+        setSuccess("Report submitted successfully");
+        setShowSuccessModel(true);
+        setTimeout(() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }, 3600);
+        // reset form
+        setSelectedReportReason("");
+        setReportComment("");
+      } else {
+        setError(data.message || "Failed to submit report");
+        setShowErrorModel(true);
+        setTimeout(() => {
+          setShowErrorModel(false);
+          setError("");
+        }, 3600);
+      }
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      setError("Error submitting report");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div>
+      {/* Loading spinner */}
+      {loading && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+          <LoadingComponent />
+        </div>
+      )}
       <div className="px-6 min-h-screen bg-app-background-primary flex flex-col pt-6">
         <div className={`w-full max-w-md ${paddings.topMargin}`}>
           <header className="">
@@ -115,9 +279,6 @@ const ChatPagesClient = () => {
               }`}
             >
               <button onClick={() => setActiveTab("Ratings")}>Ratings</button>
-              {/* <div className="mr-10 rounded-2xl bg-app-input-yellow text-app-text-black py-1 px-2">
-                      <p className="text-[7.52px]">8</p>
-                    </div> */}
             </div>
 
             {/* Guest Tickets Button */}
@@ -147,42 +308,52 @@ const ChatPagesClient = () => {
                 <div className="flex gap-2 mt-[19px]">
                   <RateEventIcon
                     className={`${
-                      rateEvent1 ? "text-app-icon" : "text-app-icon-muted"
+                      eventRatings >= 1
+                        ? "text-app-icon"
+                        : "text-app-icon-muted"
                     }`}
                     onClick={() => {
-                      setRateEvent1(!rateEvent1);
+                      setEventRatings(1);
                     }}
                   />
                   <RateEventIcon
                     className={`${
-                      rateEvent2 ? "text-app-icon" : "text-app-icon-muted"
+                      eventRatings >= 2
+                        ? "text-app-icon"
+                        : "text-app-icon-muted"
                     }`}
                     onClick={() => {
-                      setRateEvent2(!rateEvent2);
+                      setEventRatings(2);
                     }}
                   />
                   <RateEventIcon
                     className={`${
-                      rateEvent3 ? "text-app-icon" : "text-app-icon-muted"
+                      eventRatings >= 3
+                        ? "text-app-icon"
+                        : "text-app-icon-muted"
                     }`}
                     onClick={() => {
-                      setRateEvent3(!rateEvent3);
+                      setEventRatings(3);
                     }}
                   />
                   <RateEventIcon
                     className={`${
-                      rateEvent4 ? "text-app-icon" : "text-app-icon-muted"
+                      eventRatings >= 4
+                        ? "text-app-icon"
+                        : "text-app-icon-muted"
                     }`}
                     onClick={() => {
-                      setRateEvent4(!rateEvent4);
+                      setEventRatings(4);
                     }}
                   />
                   <RateEventIcon
                     className={`${
-                      rateEvent5 ? "text-app-icon" : "text-app-icon-muted"
+                      eventRatings >= 5
+                        ? "text-app-icon"
+                        : "text-app-icon-muted"
                     }`}
                     onClick={() => {
-                      setRateEvent5(!rateEvent5);
+                      setEventRatings(5);
                     }}
                   />
                 </div>
@@ -192,52 +363,58 @@ const ChatPagesClient = () => {
                 <div className="flex gap-2 mt-[19px]">
                   <RateEventIcon
                     className={`${
-                      rateHost1 ? "text-app-icon" : "text-app-icon-muted"
+                      hostRatings >= 1 ? "text-app-icon" : "text-app-icon-muted"
                     }`}
                     onClick={() => {
-                      setRateHost1(!rateHost1);
+                      setHostRatings(1);
                     }}
                   />
                   <RateEventIcon
                     className={`${
-                      rateHost2 ? "text-app-icon" : "text-app-icon-muted"
+                      hostRatings >= 2 ? "text-app-icon" : "text-app-icon-muted"
                     }`}
                     onClick={() => {
-                      setRateHost2(!rateHost2);
+                      setHostRatings(2);
                     }}
                   />
                   <RateEventIcon
                     className={`${
-                      rateHost3 ? "text-app-icon" : "text-app-icon-muted"
+                      hostRatings >= 3 ? "text-app-icon" : "text-app-icon-muted"
                     }`}
                     onClick={() => {
-                      setRateHost3(!rateHost3);
+                      setHostRatings(3);
                     }}
                   />
                   <RateEventIcon
                     className={`${
-                      rateHost4 ? "text-app-icon" : "text-app-icon-muted"
+                      hostRatings >= 4 ? "text-app-icon" : "text-app-icon-muted"
                     }`}
                     onClick={() => {
-                      setRateHost4(!rateHost4);
+                      setHostRatings(4);
                     }}
                   />
                   <RateEventIcon
                     className={`${
-                      rateHost5 ? "text-app-icon" : "text-app-icon-muted"
+                      hostRatings >= 5 ? "text-app-icon" : "text-app-icon-muted"
                     }`}
                     onClick={() => {
-                      setRateHost5(!rateHost5);
+                      setHostRatings(5);
                     }}
                   />
                 </div>
                 <h2 className="text-primary font-plusJakartaSans-700 font-bold text-[19px] mt-[40px]">
                   Comment
                 </h2>
-                <TextAreaComponent placeholder="Your comment" />
+                <TextAreaComponent
+                  placeholder="Your comment"
+                  value={ratingComment}
+                  onChange={(e) => setRatingComment(e.target.value)}
+                />
                 <div className=" w-full mt-[40px]">
                   <button
-                    onClick={() => {}}
+                    onClick={() => {
+                      handleSubmitRating();
+                    }}
                     className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                   >
                     Send
@@ -253,32 +430,33 @@ const ChatPagesClient = () => {
                   Choose a reason
                 </p>
                 <div>
-                  {reportReasons.map((item, index) => (
+                  {reportReason.map((item, index) => (
                     <label
                       key={index}
                       className="flex items-center space-x-2 cursor-pointer mb-3"
                       onClick={() => {
-                        setValue(item.value);
-                        console.log("Selectedsss value:", item.value);
+                        setSelectedReportReason(item.value);
                       }}
                     >
                       <input
                         type="radio"
                         name={""}
-                        value={value}
+                        value={item.value}
                         className="peer hidden"
                       />
 
                       <div
                         className={`w-5 h-5 rounded-full border-2 ${
-                          item.value !== value
+                          item.value !== selectedReportReason
                             ? "border-app-button-radio"
                             : "border-app-button-blue"
                         } flex items-center justify-center`}
                       >
                         <div
                           className={`w-2.5 h-2.5 rounded-full ${
-                            item.value !== value ? "" : "bg-app-button-blue"
+                            item.value !== selectedReportReason
+                              ? ""
+                              : "bg-app-button-blue"
                           } transition-all`}
                         />
                       </div>
@@ -291,10 +469,16 @@ const ChatPagesClient = () => {
                 <h2 className="text-primary font-plusJakartaSans-700 font-bold text-[19px] mt-[40px]">
                   Comment
                 </h2>
-                <TextAreaComponent placeholder="Your comment" />
+                <TextAreaComponent
+                  placeholder="Your comment"
+                  value={reportComment}
+                  onChange={(e) => setReportComment(e.target.value)}
+                />
                 <div className=" w-full mt-[40px]">
                   <button
-                    onClick={() => {}}
+                    onClick={() => {
+                      handleSubmitReport();
+                    }}
                     className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                   >
                     Send
@@ -305,7 +489,7 @@ const ChatPagesClient = () => {
           )}
           {activeTab === "GestScan" && (
             <div className="mt-[25px]">
-              {followingList.map((follower, index) => (
+              {eventData?.participants.map((follower, index) => (
                 <div
                   key={index}
                   className="flex items-center space-x-3 mb-[24px]"
@@ -313,15 +497,16 @@ const ChatPagesClient = () => {
                     setShowMemberDetailModel(true);
                   }}
                 >
-                  <Image
-                    src={follower.img}
-                    alt={follower.name}
-                    width={44}
-                    height={44}
-                    className="rounded-full"
-                  />
+                  <div className="relative w-[44px] h-[44px] ">
+                    <Image
+                      src={`${follower.profilePicture}`}
+                      alt={follower.username}
+                      fill
+                      className="rounded-full object-cover"
+                    />
+                  </div>
                   <span className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
-                    {follower.name}
+                    {follower.username}
                   </span>
                 </div>
               ))}
@@ -332,6 +517,22 @@ const ChatPagesClient = () => {
       <MemberModel
         isOpen={showMemberDetailModel}
         onClose={() => setShowMemberDetailModel(false)}
+      />
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
       />
     </div>
   );
