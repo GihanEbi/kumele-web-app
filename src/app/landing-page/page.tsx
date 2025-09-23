@@ -23,6 +23,7 @@ import AboutUsModel from "@/components/Models/AboutUsModel/AboutUsModel";
 import ContactModel from "@/components/Models/ContactModel/ContactModel";
 import GuidelinesModel from "@/components/Models/GuidelinesModel/GuidelinesModel";
 import { savePartnershipToken } from "@/utils/partnershipUtils";
+import SubscribeModal from "@/components/SubscribePopup/SubscribePopup";
 
 // Helper component for the multi-colored "Hobbies" text
 const MultiColorText = ({
@@ -139,6 +140,7 @@ const LandingPge = () => {
   const [aboutUs, setAboutUs] = React.useState(false);
   const [contactModel, setContactModel] = React.useState(false);
   const [guidelinesModel, setGuidelinesModel] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const totalSlides = 5;
   // Auto-play carousel every 5 seconds
@@ -148,6 +150,14 @@ const LandingPge = () => {
     // }, 10000);
     savePartnershipToken("no"); // Reset partnership token on landing page load
     // return () => clearInterval(interval); // cleanup on unmount
+
+    setTimeout(() => {
+      setOpen(true);
+    }, 2000);
+
+    setTimeout(() => {
+      setOpen(false);
+    }, 6000);
   }, []);
 
   const touchStartX = React.useRef<number | null>(null);
@@ -414,6 +424,14 @@ const LandingPge = () => {
         isOpen={guidelinesModel}
         onClose={() => {
           setGuidelinesModel(false);
+        }}
+      />
+
+      <SubscribeModal
+        open={open}
+        onClose={() => setOpen(false)}
+        onSubmit={(data) => {
+          console.log("subscribe payload", data);
         }}
       />
     </div>
