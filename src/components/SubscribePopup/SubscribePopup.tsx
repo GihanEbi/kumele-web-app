@@ -7,6 +7,9 @@ import {
   NewUserIcon,
 } from "../../../public/svg-icons/icons";
 import CheckBoxComponent from "../CheckBoxComponent/CheckBoxComponent";
+import InputComponent from "../InputComponent/InputComponent";
+import { send_beta_code } from "@/routes/signup_and_signin";
+import { useRouter } from "next/navigation";
 
 // ---------- Types ----------
 export type SubscribeModalProps = {
@@ -29,6 +32,7 @@ export default function SubscribeModal({
   images = DEFAULT_IMAGES,
   brand = <DefaultBrand />,
 }: SubscribeModalProps) {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -62,6 +66,8 @@ export default function SubscribeModal({
     }));
   }
 
+  const [email, setEmail] = useState("");
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     onSubmit?.(formData);
@@ -71,6 +77,23 @@ export default function SubscribeModal({
   }
 
   if (!open) return null;
+
+  // function to get beta code
+  const handleGetBetaCode = async () => {
+    try {
+      let data = await send_beta_code(email);
+      if (data.success) {
+        alert("Beta code sent to your email");
+        onClose();
+        router.push("/authentication/signup");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Error sending beta code:", error);
+      alert("An error occurred. Please try again later.");
+    }
+  };
 
   return (
     <div
@@ -152,11 +175,18 @@ export default function SubscribeModal({
               name="email"
               required
               placeholder="Enter email"
-              value={formData.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full h-[32.88px] rounded-[7.47px] outline-none placeholder-gray-800 placeholder-font-plusJakartaSans placeholder:font-normal placeholder:text-[13.77px]"
             />
           </label>
+
+          {/* <InputComponent
+              icon={<NewEmailIcon />}
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            /> */}
 
           {/* Checkboxes */}
           <div className="space-y-2 pb-2">
@@ -198,7 +228,7 @@ export default function SubscribeModal({
 
             {/* Agree */}
             <label className="flex cursor-pointer items-center gap-3 text-sm">
-               {/* <div>
+              {/* <div>
                 <CheckBoxComponent
                   label=" I agree to the Terms & Conditions"
                   onChange={handleChange}
@@ -257,11 +287,13 @@ export default function SubscribeModal({
           </div>
 
           <button
+            onClick={handleGetBetaCode}
             style={{ backgroundColor: "#FFC533", color: "#0D0D0D" }}
             type="submit"
             className="w-full rounded-[10.33px] bg-amber-400 px-4 py-3 text-center text-base font-plusJakartaSans text-[13.77px] font-normal"
           >
-            Subscribe Now
+            {/* Subscribe Now */}
+            Get Beta Code
           </button>
         </form>
       </div>

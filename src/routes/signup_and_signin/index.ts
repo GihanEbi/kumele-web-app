@@ -64,6 +64,22 @@ export async function verification_email(dataObj: verificationEmailForm) {
   }
 }
 
+export async function send_beta_code(email: string) {
+  try {
+    const res = await fetch(`${commonUrl}/otp/create-user-beta-code`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({email:email}),
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
 export async function google_sign_in(dataObj: googleSignInForm) {
   try {
     const res = await fetch(`${commonUrl}/users/google-signin/`, {

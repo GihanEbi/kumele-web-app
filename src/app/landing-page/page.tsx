@@ -155,9 +155,9 @@ const LandingPge = () => {
       setOpen(true);
     }, 2000);
 
-    setTimeout(() => {
-      setOpen(false);
-    }, 6000);
+    // setTimeout(() => {
+    //   setOpen(false);
+    // }, 6000);
   }, []);
 
   const touchStartX = React.useRef<number | null>(null);
