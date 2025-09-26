@@ -172,7 +172,7 @@ const page = () => {
             {userData && userData.profilepicture ? (
               <Image
                 src={`${userData.profilepicture.replace(/\\/g, "/")}`}
-                alt="Alkesh Kumar"
+                alt="profile picture"
                 fill
                 className="rounded-full object-cover"
               />

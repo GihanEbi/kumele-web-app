@@ -8,57 +8,21 @@ import {
   set_user_name,
   user_permissions,
 } from "@/routes/permissions_and_hobbies";
-import {
-  BackArrow,
-  DownArrow,
-  EmoryIcon,
-} from "../../../../public/svg-icons/icons";
+import { BackArrow } from "../../../../public/svg-icons/icons";
 import InterestCard from "@/components/InterestCard/InterestCard";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import Notifications from "@/components/Models/PermissionModels/Notifications";
 import Photos from "@/components/Models/PermissionModels/Photos";
 import Location from "@/components/Models/PermissionModels/Location";
 import ChooseUserNameModel from "@/components/Models/ChooseUserNameModel/ChooseUserNameModel";
-import {
-  SvgIcon1,
-  SvgIcon10,
-  SvgIcon11,
-  SvgIcon12,
-  SvgIcon13,
-  SvgIcon14,
-  SvgIcon15,
-  SvgIcon16,
-  SvgIcon17,
-  SvgIcon18,
-  SvgIcon19,
-  SvgIcon2,
-  SvgIcon20,
-  SvgIcon21,
-  SvgIcon22,
-  SvgIcon23,
-  SvgIcon24,
-  SvgIcon25,
-  SvgIcon3,
-  SvgIcon4,
-  SvgIcon5,
-  SvgIcon6,
-  SvgIcon7,
-  SvgIcon8,
-  SvgIcon9,
-} from "../../../../public/svg-icons/newInterestIcons";
 import InlineSvg from "@/components/InlineSVG/InlineSVG";
-
-// types
-// type ChooseInterestsProps = {
-//   id: number;
-//   name: string;
-//   icon: string;
-// };
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 
 type ChooseInterestsProps = {
-  id: string | number; 
+  id: string | number;
   name: string;
-  icon: React.ReactNode; 
+  icon: React.ReactNode;
 };
 
 type PhotosChoice = "non" | "selected" | "all";
@@ -75,19 +39,15 @@ const MAX_SELECTIONS = 5;
 
 const ChooseInterests = () => {
   const router = useRouter();
-  //   ------ state for interests selection ------
-  const [selectedInterests, setSelectedInterests] = useState<
-    ChooseInterestsProps[]
-  >([]);
-  //   ------ loading state for interests ------
-  const [loading, setLoading] = useState<boolean>(false);
+  //   loading state
+  const [loading, setLoading] = useState(false);
 
-  //  ------ get interest data from backend ------
-  // This effect runs once when the component mounts to fetch interests
-  useEffect(() => {
-    // fetchInterests();
-  }, []);
-  //  ------ states for permissions ------
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   // ------- state for notification permissions ------
   const [notificationPermission, setNotificationPermission] =
     useState<boolean>(false);
@@ -110,69 +70,12 @@ const ChooseInterests = () => {
   // ------- state to hold the selected interests ------
   const [selectedInterestsIds, setSelectedInterestsIds] = useState<any[]>([]);
 
-  useEffect(() => {
-    fetchInterests();
-  }, []);
-
   // This effect runs once when the component mounts to set notification permission
   // You can replace this with actual permission request logic if needed
   useEffect(() => {
+    fetchInterests();
     setNotificationPermission(true);
   }, []);
-
-  //   Function to fetch interests from the backend
-  // const fetchInterests = async () => {
-  //   setLoading(true); // Set loading state to true while fetching
-  //   try {
-  //     const data = await get_hobbies_list();
-  //     // Assuming data is an array of interests
-  //     setSelectedInterests(data.data);
-  //   } catch (error) {
-  //     console.error("Error fetching interests:", error);
-  //   } finally {
-  //     setLoading(false); // Reset loading state after fetching
-  //   }
-  // };
-
-  // Function to submit the permissions form
-  const handleSubmitPermission = async (locationVal: string) => {
-    setLoading(true);
-    setLocationPermission(false);
-    setUserNamePermission(true); // Show username permission after location
-    setLoading(false);
-    // try {
-    //   // Here you would typically send the form data to your backend
-    //   console.log("Submitting form with data:", form);
-
-    //   // Update the form with the location value
-    //   let dataObj = {
-    //     allow_notifications: form.allow_notifications,
-    //     allow_photos: form.allow_photos,
-    //     allow_location: locationVal, // Use the passed location value
-    //   };
-
-    //   const data = await user_permissions(dataObj);
-    //   console.log("Form submission response:", data);
-
-    //   if (data.success) {
-    //     setLocationPermission(false);
-    //     setUserNamePermission(true); // Show username permission after location
-    //     setLoading(false); // Reset loading state after submission
-    //   } else {
-    //     console.error("Failed to submit form:", data);
-    //     setLoading(false); // Reset loading state on failure
-    //   }
-    // } catch (error) {
-    //   console.error("Error submitting form:", error);
-    //   setLoading(false);
-    // } finally {
-    //   // Reset permissions states after submission
-    //   setNotificationPermission(false);
-    //   setPhotosPermission(false);
-    //   setLocationPermission(false);
-    //   setLoading(false);
-    // }
-  };
 
   const submitPermissions = async () => {
     setLoading(true);
@@ -186,8 +89,10 @@ const ChooseInterests = () => {
     try {
       const response = await user_permissions(payload);
       if (!response.success) {
-        const text = await response.text();
-        throw new Error(text || `HTTP ${response.status}`);
+        setError("Failed to update permissions: " + response.message);
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
+        return;
       }
       setLocationPermission(false);
       setUserNamePermission(true);
@@ -198,32 +103,11 @@ const ChooseInterests = () => {
     }
   };
 
-  // function to submit the interests
-  const handleSubmitInterests = async () => {
-    setLoading(true);
-    console.log(selectedInterestsIds);
-
-    try {
-      router.push("/authentication/earnMedals");
-      // const data = await select_hobbies_for_users({
-      //   hobbies: selectedInterestsIds,
-      // });
-      // if (data.success) {
-      //   // redirect to earnMedals page
-      //   router.push("/authentication/earnMedals");
-      // } else {
-      //   console.error("Failed to submit interests:", data);
-      // }
-    } catch (error) {
-      console.error("Error submitting interests:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSubmitSelectInterests = async () => {
-    if (selectedInterestsIds.length === 0) {
-      alert("Please select at least one interest.");
+    if (selectedInterestsIds.length < 3) {
+      setError("Please select at least three interests.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
       return;
     }
     setLoading(true);
@@ -236,11 +120,14 @@ const ChooseInterests = () => {
         // redirect to earnMedals page
         router.push("/authentication/earnMedals");
       } else {
-        console.error("Failed to submit interests:", data);
+        setError("Failed to submit interests: " + data.message);
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
       }
     } catch (error) {
-      console.error("Error submitting interests:", error);
-      alert("An unexpected error occurred. Please try again.");
+      setError("An unexpected error occurred. Please try again.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
     } finally {
       setLoading(false);
     }
@@ -248,15 +135,15 @@ const ChooseInterests = () => {
   const fetchInterests = async () => {
     setLoading(true);
     try {
-      const res = await get_hobbies_list(); 
+      const res = await get_hobbies_list();
       const mapped: ChooseInterestsProps[] = (res?.data ?? []).map(
         (item: any) => ({
-          id: item.id, 
-          name: item.name, 
+          id: item.id,
+          name: item.name,
           icon: (
             <InlineSvg
-              svg={item.svg_code} 
-              className="w-[35px] h-[35px]" 
+              svg={item.svg_code}
+              className="w-[35px] h-[35px]"
               title={item.name}
             />
           ),
@@ -264,7 +151,9 @@ const ChooseInterests = () => {
       );
       setInterests(mapped);
     } catch (error) {
-      console.error("Error fetching interests:", error);
+      setError("Failed to fetch interests. Please try again.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
     } finally {
       setLoading(false);
     }
@@ -282,8 +171,12 @@ const ChooseInterests = () => {
             : "bg-app-background-primary"
         } flex flex-col items-center p-4 pt-6 sm:p-8`}
       >
-        {/* Loading Spinner */}
-        {loading && <LoadingComponent />}
+        {/* Loading spinner */}
+        {loading && (
+          <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+            <LoadingComponent />
+          </div>
+        )}
         <div className="w-full max-w-md ">
           {/* Header */}
           <div
@@ -388,6 +281,22 @@ const ChooseInterests = () => {
           }}
         />
       )}
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
     </div>
   );
 };
