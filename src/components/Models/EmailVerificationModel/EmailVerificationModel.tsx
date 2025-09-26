@@ -19,6 +19,8 @@ import {
   removeNewPartnershipUser,
   saveNewPartnershipUser,
 } from "@/utils/partnershipUtils";
+import SuccessModel from "../SuccessModel/SuccessModel";
+import ErrorModel from "../ErrorModel/ErrorModel";
 
 interface FormData {
   email: string;
@@ -57,8 +59,15 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
   const [showVerificationFailed, setShowVerificationFailed] =
     useState<boolean>(false);
 
-  // --------- state for loading spinner ---------
+  //   loading state
   const [loading, setLoading] = useState(false);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   // state for open
   const [modelOpen, setModelOpen] = useState<boolean>(isOpen);
   const isPartnerShipAccount = getPartnershipToken();
@@ -81,53 +90,6 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
       setShowVerificationFailed(false);
     }, 2000);
   };
-  /*
-  const handleVerify = async () => {
-    // Prevent multiple clicks while loading
-    if (loading) return;
-    setLoading(true);
-    // Check if verification code is not empty
-    // if (verificationCode.trim() !== "") {
-    //   const dataObj = {
-    //     email: email,
-    //     code: verificationCode.trim(),
-    //   };
-    try {
-      setIsVerified(true);
-      setShowVerificationFailed(false);
-      setModelOpen(false);
-      // const data = await verification_email(dataObj);
-      // if (data.success) {
-      //   setIsVerified(true);
-      //   setShowVerificationFailed(false);
-      //   console.log(data.data.user_token);
-      //   saveToken(data.data.user_token);
-      setTimeout(() => {
-        if (isPartnerShipAccount === "yes") {
-          saveNewPartnershipUser("yes");
-          // Redirect to partnership home page
-          router.push("/user/partnership-home");
-        } else {
-          router.push("/authentication/chooseInterests");
-        }
-      }, 1000);
-      // } else {
-      //   setIsVerified(false);
-      //   setShowVerificationFailed(true);
-      //   console.log(data);
-      // }
-    } catch (error) {
-      console.error("Error during verification:", error);
-    } finally {
-      setLoading(false); // Stop loading spinner after verification attempt
-    }
-    // } else {
-    //   // alert("Please enter a verification code.");
-    //   setIsVerified(false);
-    //   setShowVerificationFailed(true);
-    // }
-  };
-  */
 
   const userLogin = async () => {
     try {
@@ -137,15 +99,18 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
       };
       if (dataObj.password) {
         const data = await login(dataObj);
-        console.log("Login data:", data);
         if (data.success && data.data.token) {
           saveToken(data.data.token);
         } else {
-          console.error("Login failed after registration:", data.message);
+          setError("Login failed after registration: " + data.message);
+          setShowErrorModel(true);
+          setTimeout(() => setShowErrorModel(false), 3600);
         }
       }
     } catch (error) {
-      console.log("Error during login:", error);
+      setError("An unexpected error occurred during login.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
     }
   };
 
@@ -155,45 +120,12 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
       const registrationResponse = await register(formDataWithoutConfirm);
       return registrationResponse;
     } catch (error) {
-      console.log("Error during registration:", error);
+      setError("An unexpected error occurred during registration.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
       return { success: false, message: "An unexpected error occurred." };
     }
   };
-
-  // const handle_otp_verification = async () => {
-  //   // Prevent multiple clicks while loading
-  //   if (loading) return;
-  //   setLoading(true);
-  //   try {
-  //     const dataObj = {
-  //       email: formData.email,
-  //       otp: verificationCode.trim(),
-  //     };
-  //     const data = await verification_email(dataObj);
-  //     if (data.success) {
-  //       setIsVerified(true);
-  //       setShowVerificationFailed(false);
-  //       setModelOpen(false);
-  //       userLogin()
-  //       //console.log(data.data.user_token);
-  //       //saveToken(data.data.user_token);
-  //       console.log(isPartnerShipAccount, "ispartnershipAccount");
-  //       if (isPartnerShipAccount === "yes") {
-  //         saveNewPartnershipUser("yes");
-  //         // Redirect to partnership home page
-  //         router.push("/user/partnership-home");
-  //       } else {
-  //         router.push("/authentication/chooseInterests");
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during verification:", error);
-  //   } finally {
-  //     setLoading(false);
-  //     setIsVerified(true);
-  //   }
-  // };
-  // No changes needed, this code already performs the requested sequence.
 
   const handle_otp_verification = async () => {
     if (loading || !verificationCode.trim()) return;
@@ -214,7 +146,6 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
 
         if (registerResponse.success) {
           await userLogin();
-          console.log("User registered and logged in successfully");
           setIsVerified(true);
           setModelOpen(false);
 
@@ -227,19 +158,19 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
             }
           }, 1000);
         } else {
-          console.error("Registration failed:", registerResponse.message);
-          setShowVerificationFailed(true);
+          setError("Registration failed: " + registerResponse.message);
+          setShowErrorModel(true);
+          setTimeout(() => setShowErrorModel(false), 3600);
         }
       } else {
-        console.error("OTP verification failed:", otpResponse.message);
-        setShowVerificationFailed(true);
+        setError("OTP verification failed: " + otpResponse.message);
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
       }
     } catch (error) {
-      console.error(
-        "An error occurred during the verification process:",
-        error
-      );
-      setShowVerificationFailed(true);
+      setError("An unexpected error occurred during verification.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
     } finally {
       setLoading(false);
     }
@@ -355,7 +286,7 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
                     className="flex-1 py-3 text-sm px-4 bg-app-button-primary text-app-text-tertiary rounded-lg font-plusJakartaSans"
                     onClick={() => {
                       //router.push("/authentication/chooseInterests")
-                      
+
                       handle_otp_verification();
                     }}
                   >
@@ -367,6 +298,22 @@ const EmailVerificationModel: React.FC<EmailVerificationModelProps> = ({
           </div>
         </div>
       )}
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
     </div>
   );
 };

@@ -11,6 +11,7 @@ import {
   GuidelinesIcon,
   NightModeIcon,
   PaymentIcon,
+  ProfileIcon,
   ReferIcon,
   RightArrowIcon,
   SecurityIcon,
@@ -19,16 +20,13 @@ import {
   TermsAndConditionsIcon,
 } from "../../../../public/svg-icons/icons";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
-import { fetch_profile, getAllUserData } from "@/routes/profile";
+import { getAllUserData } from "@/routes/profile";
 import { useRouter } from "next/navigation";
-import SwitchComponent from "@/components/SwitchComponent/SwitchComponent";
 import ContactModel from "@/components/Models/ContactModel/ContactModel";
 import ReferralModel from "@/components/Models/ReferralModel/ReferralModel";
 import DeleteAccountModel from "@/components/Models/DeleteAccountModel/DeleteAccountModel";
 import SignoutModel from "@/components/Models/SignoutModel/SignoutModel";
 import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
-import { paddings } from "@/constants/layout-constants";
-import { Separator } from "@/components/ui/separator";
 import { useAppContext } from "@/context/AppContext";
 import { getPartnershipToken } from "@/utils/partnershipUtils";
 import { getFollowingFollowerCount } from "@/routes/following_follower";
@@ -133,7 +131,7 @@ const Profile = () => {
   // --------- show sign out model ----------
   const [showSignOutModel, setShowSignOutModel] = useState(false);
 
-  const { theme, setTheme, systemTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   // use the appContext to get the more option state
   const { moreOption, setIsBottomNavBarFixed } = useAppContext();
@@ -262,19 +260,23 @@ const Profile = () => {
             {isPartnershipUser === "no" && (
               <>
                 <div className="flex items-start space-x-6 mb-[6px]">
-                  <div className="relative w-[76px] h-[76px] sm:w-24 sm:h-24">
-                    {userData?.profilepicture && (
+                  <div className="rounded-full bg-app-input-yellow relative w-[76px] h-[76px] sm:w-24 sm:h-24">
+                    {userData && userData.profilepicture ? (
                       <Image
                         src={userData.profilepicture.replace(/\\/g, "/")}
                         alt={userData.username}
                         fill
                         className="rounded-full object-cover"
                       />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <ProfileIcon className="text-app-text-black w-12 h-12" />
+                      </div>
                     )}
                   </div>
                   <div className="mt-1">
                     <h2 className="font-plusJakartaSans font-bold text-[19px] text-app-text-primary">
-                      {userData?.username ? userData.username : "User NAme"}
+                      {userData?.username ? userData.username : "User Name"}
                     </h2>
                     <button
                       style={{ backgroundColor: "#004DFF" }}

@@ -50,7 +50,7 @@ const footerNavItems = [
   { icon: <PartnershipIcon />, label: "Partnership" },
   { icon: <BlogIcon />, label: "Blog" }, // Changed from Blog icon as FileText is more common
   { icon: <GuidelineIcon />, label: "Guideline" }, // Changed from list icon
-  { icon: <AndroidAppIcon />, label: "Android app" },
+  { icon: <AndroidAppIcon />, label: "Android" },
   { icon: <IosAppIcon />, label: "iOS" },
 ];
 
@@ -145,19 +145,11 @@ const LandingPge = () => {
   const totalSlides = 5;
   // Auto-play carousel every 5 seconds
   React.useEffect(() => {
-    // const interval = setInterval(() => {
-    //   setCarouselIndex((prevIndex) => (prevIndex + 1) % totalSlides);
-    // }, 10000);
     savePartnershipToken("no"); // Reset partnership token on landing page load
-    // return () => clearInterval(interval); // cleanup on unmount
 
     setTimeout(() => {
       setOpen(true);
     }, 2000);
-
-    // setTimeout(() => {
-    //   setOpen(false);
-    // }, 6000);
   }, []);
 
   const touchStartX = React.useRef<number | null>(null);
@@ -202,16 +194,7 @@ const LandingPge = () => {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div
-        className="fixed inset-0 z-0"
-        // style={{
-        //   backgroundImage: !isVideo
-        //     ? `url(${backgroundImageData[carouselIndex].src})`
-        //     : "none",
-        // }} // Replace with your actual background
-        // onTouchStart={handleTouchStart}
-        // onTouchEnd={handleTouchEnd}
-      >
+      <div className="fixed inset-0 z-0">
         {!isVideo && (
           <Image
             key={backgroundImageData[carouselIndex].src} // Key ensures re-render on change
@@ -241,7 +224,7 @@ const LandingPge = () => {
       {/* Main Content - make it scrollable if content exceeds screen height */}
       <main className="relative z-10 flex-grow flex flex-col items-center pt-2 overflow-y-auto">
         {/* Header Section */}
-        <header className="w-full px-4 pt-2">
+        <header className="w-full px-4 pt-4">
           {/* Top Row: Logo & Header Text */}
           <div className="relative flex justify-between mb-4">
             <div className="flex-1/4">
@@ -254,7 +237,7 @@ const LandingPge = () => {
               />
             </div>
             {carouselIndex !== 0 && (
-              <h1 className="flex-3/4 text-white font-bold text-2xl font-fredoka">
+              <h1 className="flex-3/4 text-white font-bold text-3xl font-fredoka">
                 {backgroundImageData[carouselIndex].name}
               </h1>
             )}
@@ -296,61 +279,65 @@ const LandingPge = () => {
 
         {/* Hobby Meetups Section */}
 
-        {carouselIndex !== 0 && (
-          <section className="flex flex-col items-center mt-[-30px]">
-            <div>
-              <GifCarousel width={40} height={40} />
-            </div>
-            <p className="text-lg mt-1 font-fredoka">Hobby Meetups</p>
-          </section>
-        )}
+        <div  className="flex flex-col items-center">
+          {carouselIndex !== 0 && (
+            <section className="flex flex-col items-center mt-[-30px]">
+              <div>
+                <GifCarousel width={40} height={40} />
+              </div>
+              <p className="text-xl mt-1 font-fredoka">Hobby Meetups</p>
+            </section>
+          )}
 
-        {/* Quote Section */}
+          {/* Quote Section */}
 
-        {carouselIndex !== 0 && (
-          <section className="max-w-md mt-2 flex flex-col items-center text-center">
-            <p className="font-bold font-fredoka text-lg">
-              “Let your <MultiColorText text="Hobbies" colors={hobbyColors} />{" "}
-              define your
-            </p>
-            <div className="flex flex-row ml-5">
-              <p className="font-bold font-fredoka text-center  text-lg">
-                character”
+          {carouselIndex !== 0 && (
+            <section className="max-w-md mt-2 flex flex-col items-center text-center">
+              <p className="font-bold font-fredoka text-xl">
+                “Let your <MultiColorText text="Hobbies" colors={hobbyColors} /> define your
+              {/* <MultiColorText text="Hobbies" colors={hobbyColors} />{" "}
+              define your */}
+                {/* “Let your Hobbies define your */}
               </p>
-              <p className="text-[10px] text-gray-300 mt-2 mx-1">- G. Baku</p>
-            </div>
-          </section>
-        )}
+              <div className="flex flex-row ml-5">
+                <p className="font-bold font-fredoka text-center text-xl">
+                  character”
+                </p>
+                <p className="text-[10px] text-gray-300 mt-2 mx-1">- G. Baku</p>
+              </div>
+            </section>
+          )}
 
-        {/* Slogan Section */}
-        {carouselIndex !== 0 && (
-          <p className="text-center my-4 font-fredoka text-sm">
-            We play. We overcome. We experience.
-          </p>
-        )}
+          {/* Slogan Section */}
+          {carouselIndex !== 0 && (
+            <p className="text-center my-4 font-fredoka text-md">
+              We play. We overcome. We experience.
+            </p>
+          )}
 
-        {/* Auth Buttons Section */}
+          {/* Auth Buttons Section */}
 
-        {carouselIndex !== 0 && (
-          <section className="w-4/6 max-w-sm">
-            <div className="flex rounded-full overflow-hidden">
-              <button
-                className="flex-1 bg-k-secondary-color text-black py-2 text-center font-fredoka text-xs"
-                onClick={() => router.push("/authentication/signin")}
-              >
-                Sign in
-              </button>
-              <button
-                className="flex-1 bg-k-blue text-black py-2 text-center font-fredoka text-xs"
-                onClick={() => router.push("/authentication/signup")}
-              >
-                Signup
-              </button>
-            </div>
-          </section>
-        )}
+          {carouselIndex !== 0 && (
+            <section className="w-4/6 max-w-sm">
+              <div className="flex rounded-full overflow-hidden">
+                <button
+                  className="flex-1 bg-k-secondary-color text-black py-2 text-center font-fredoka text-xs"
+                  onClick={() => router.push("/authentication/signin")}
+                >
+                  Sign in
+                </button>
+                <button
+                  className="flex-1 bg-k-blue text-black py-2 text-center font-fredoka text-xs"
+                  onClick={() => router.push("/authentication/signup")}
+                >
+                  Signup
+                </button>
+              </div>
+            </section>
+          )}
+        </div>
 
-        <div className={`${carouselIndex === 0 ? "fixed bottom-0" : ""}`}>
+        <div className={`fixed bottom-0`}>
           {/* Carousel Dots */}
           <div className="flex justify-center space-x-10 mt-10 mb-5 ">
             {[...Array(6)].map((_, i) => (
