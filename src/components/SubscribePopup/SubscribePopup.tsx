@@ -80,6 +80,10 @@ export default function SubscribeModal({
 
   // function to get beta code
   const handleGetBetaCode = async () => {
+    if (!email) {
+      alert("Please enter your email");
+      return;
+    }
     try {
       let data = await send_beta_code(email);
       if (data.success) {
@@ -156,11 +160,10 @@ export default function SubscribeModal({
             <input
               type="text"
               name="name"
-              required
               placeholder="Enter name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full h-[32.88px] bg-transparent placeholder-gray-800 placeholder-font-plusJakartaSans placeholder:font-normal placeholder:text-[13.77px] outline-none"
+              className="w-full text-black h-[32.88px] bg-transparent placeholder-gray-800 placeholder-font-plusJakartaSans placeholder:font-normal placeholder:text-[13.77px] outline-none"
             />
           </label>
 
@@ -177,7 +180,7 @@ export default function SubscribeModal({
               placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-[32.88px] rounded-[7.47px] outline-none placeholder-gray-800 placeholder-font-plusJakartaSans placeholder:font-normal placeholder:text-[13.77px]"
+              className="w-full text-black h-[32.88px] rounded-[7.47px] outline-none placeholder-gray-800 placeholder-font-plusJakartaSans placeholder:font-normal placeholder:text-[13.77px]"
             />
           </label>
 
