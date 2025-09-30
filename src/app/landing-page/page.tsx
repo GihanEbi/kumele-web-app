@@ -72,17 +72,17 @@ const profilePics = [
   {
     name: "Jermy",
     src: "/avatar-img/avatar-2.jpg",
-    borderColor: "border-blue-500",
+    borderColor: "border-app-new-blue",
   },
   {
     name: "Linda",
     src: "/avatar-img/avatar-3.png",
-    borderColor: "border-blue-500",
+    borderColor: "border-app-new-blue",
   },
   {
     name: "Olivia",
     src: "/avatar-img/avatar-4.jpg",
-    borderColor: "border-blue-500",
+    borderColor: "border-app-new-blue",
   },
 ];
 
@@ -119,17 +119,6 @@ const backgroundImageData = [
     name: "Volunteers",
     src: "/bg-imgs/landing-bg-img5.jpg",
   },
-];
-
-// colors for hobbies text
-const hobbyColors = [
-  "#FF0000",
-  "#FF9900",
-  "#FFF500",
-  "#00FF1A",
-  "#0047FF",
-  "#EB07FF",
-  "#FF1485",
 ];
 
 const LandingPge = () => {
@@ -236,6 +225,9 @@ const LandingPge = () => {
                 height={50}
               />
             </div>
+          </div>
+
+          <div className="text-center  mt-20">
             {carouselIndex !== 0 && (
               <h1 className="flex-3/4 text-white font-bold text-3xl font-fredoka">
                 {backgroundImageData[carouselIndex].name}
@@ -246,7 +238,7 @@ const LandingPge = () => {
           {/* Avatar Section: Faces and guest count and names */}
 
           {carouselIndex !== 0 && (
-            <div className="flex justify-center items-center flex-col w-full mt-[-20px] mb-4">
+            <div className="flex justify-center items-center flex-col w-full mb-4 mt-5">
               <div className="flex items-end gap-0">
                 {profilePics.slice(0, 4).map((pic, index) => (
                   <div
@@ -264,12 +256,15 @@ const LandingPge = () => {
                         className="object-cover rounded-full"
                       />
                     </div>
-                    <span className="text-white text-xs mt-1">{pic.name}</span>
+                    <span className="text-white text-sm mt-1">{pic.name}</span>
                   </div>
                 ))}
-                <div className="flex flex-col items-center ml-[-8px] h-15">
-                  <div className="bg-white text-black text-xs px-3 rounded-full font-semibold flex items-center h-7 pl-4">
-                    +20 Guest <LandingPageIcon1 />
+                <div className="flex flex-col items-center ml-[-8px] h-15 mb-1">
+                  <div className="bg-white text-black text-md px-3 rounded-full font-semibold flex items-center h-7 pl-4">
+                    +20 Guest{" "}
+                    <span className="pl-2">
+                      <LandingPageIcon1 />
+                    </span>
                   </div>
                 </div>
               </div>
@@ -279,7 +274,7 @@ const LandingPge = () => {
 
         {/* Hobby Meetups Section */}
 
-        <div  className="flex flex-col items-center">
+        <div className="flex flex-col items-center pt-2">
           {carouselIndex !== 0 && (
             <section className="flex flex-col items-center mt-[-30px]">
               <div>
@@ -292,25 +287,25 @@ const LandingPge = () => {
           {/* Quote Section */}
 
           {carouselIndex !== 0 && (
-            <section className="max-w-md mt-2 flex flex-col items-center text-center">
+            <section className="max-w-md mt-4 flex flex-col items-center text-center">
               <p className="font-bold font-fredoka text-xl">
-                “Let your <MultiColorText text="Hobbies" colors={hobbyColors} /> define your
-              {/* <MultiColorText text="Hobbies" colors={hobbyColors} />{" "}
+                {/* “Let your <MultiColorText text="Hobbies" colors={hobbyColors} /> define your */}
+                {/* <MultiColorText text="Hobbies" colors={hobbyColors} />{" "}
               define your */}
-                {/* “Let your Hobbies define your */}
+                “Let your Hobbies define your
               </p>
               <div className="flex flex-row ml-5">
                 <p className="font-bold font-fredoka text-center text-xl">
                   character”
                 </p>
-                <p className="text-[10px] text-gray-300 mt-2 mx-1">- G. Baku</p>
+                <p className="text-sm text-white mt-2 mx-1">- G. Baku</p>
               </div>
             </section>
           )}
 
           {/* Slogan Section */}
           {carouselIndex !== 0 && (
-            <p className="text-center my-4 font-fredoka text-md">
+            <p className="text-center my-4 font-fredoka text-lg">
               We play. We overcome. We experience.
             </p>
           )}
@@ -321,13 +316,13 @@ const LandingPge = () => {
             <section className="w-4/6 max-w-sm">
               <div className="flex rounded-full overflow-hidden">
                 <button
-                  className="flex-1 bg-k-secondary-color text-black py-2 text-center font-fredoka text-xs"
+                  className="flex-1 bg-k-secondary-color text-black py-2 text-center font-fredoka text-md"
                   onClick={() => router.push("/authentication/signin")}
                 >
                   Sign in
                 </button>
                 <button
-                  className="flex-1 bg-k-blue text-black py-2 text-center font-fredoka text-xs"
+                  className="flex-1 bg-app-new-blue text-black py-2 text-center font-fredoka text-md"
                   onClick={() => router.push("/authentication/signup")}
                 >
                   Signup
@@ -367,6 +362,8 @@ const LandingPge = () => {
                       setContactModel(true);
                     } else if (item.label === "Guideline") {
                       setGuidelinesModel(true);
+                    }else if (item.label === "Blog") {
+                      router.push("/user/blog");
                     } else if (item.label === "Partnership") {
                       savePartnershipToken("yes");
                       router.push("/authentication/signup");
@@ -374,7 +371,7 @@ const LandingPge = () => {
                   }}
                 >
                   <div className="">{item.icon}</div>
-                  <span className="text-[10px">{item.label}</span>
+                  <span className="text-[11px]">{item.label}</span>
                 </span>
               ))}
             </div>

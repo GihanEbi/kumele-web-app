@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
-import { BackArrow, RateEventIcon } from "../../../../public/svg-icons/icons";
+import { BackArrow, RateEventIcon, SpeakerIcon } from "../../../../public/svg-icons/icons";
 import { paddings } from "@/constants/layout-constants";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
 import Image from "next/image";
@@ -357,50 +357,64 @@ const ChatPagesClient = () => {
                     }}
                   />
                 </div>
-                <h2 className="text-primary font-plusJakartaSans-700 font-bold text-[19px] mt-[40px]">
+                {/* <h2 className="text-primary font-plusJakartaSans-700 font-bold text-[19px] mt-[40px]">
                   Rate Host
-                </h2>
-                <div className="flex gap-2 mt-[19px]">
-                  <RateEventIcon
-                    className={`${
-                      hostRatings >= 1 ? "text-app-icon" : "text-app-icon-muted"
-                    }`}
-                    onClick={() => {
-                      setHostRatings(1);
-                    }}
-                  />
-                  <RateEventIcon
-                    className={`${
-                      hostRatings >= 2 ? "text-app-icon" : "text-app-icon-muted"
-                    }`}
-                    onClick={() => {
-                      setHostRatings(2);
-                    }}
-                  />
-                  <RateEventIcon
-                    className={`${
-                      hostRatings >= 3 ? "text-app-icon" : "text-app-icon-muted"
-                    }`}
-                    onClick={() => {
-                      setHostRatings(3);
-                    }}
-                  />
-                  <RateEventIcon
-                    className={`${
-                      hostRatings >= 4 ? "text-app-icon" : "text-app-icon-muted"
-                    }`}
-                    onClick={() => {
-                      setHostRatings(4);
-                    }}
-                  />
-                  <RateEventIcon
-                    className={`${
-                      hostRatings >= 5 ? "text-app-icon" : "text-app-icon-muted"
-                    }`}
-                    onClick={() => {
-                      setHostRatings(5);
-                    }}
-                  />
+                </h2> */}
+                <div className="flex items-center">
+                  <SpeakerIcon/>
+                  <p>Communication</p>
+                  <div className="flex gap-2 mt-[19px]">
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 1
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      }`}
+                      onClick={() => {
+                        setHostRatings(1);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 2
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      }`}
+                      onClick={() => {
+                        setHostRatings(2);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 3
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      }`}
+                      onClick={() => {
+                        setHostRatings(3);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 4
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      }`}
+                      onClick={() => {
+                        setHostRatings(4);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 5
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      }`}
+                      onClick={() => {
+                        setHostRatings(5);
+                      }}
+                    />
+                  </div>
                 </div>
                 <h2 className="text-primary font-plusJakartaSans-700 font-bold text-[19px] mt-[40px]">
                   Comment
