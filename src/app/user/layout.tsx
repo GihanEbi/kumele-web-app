@@ -4,6 +4,7 @@
 import BottomNavBar from "@/components/BotomNavBar/BotomNavBar";
 import React from "react";
 import { useAppContext } from "@/context/AppContext";
+import { getToken } from "@/utils/authUtils";
 
 export default function DashboardLayout({
   children,
@@ -13,7 +14,7 @@ export default function DashboardLayout({
   // use the appContext to get the more option state
   const { isBottomNavBarFixed } = useAppContext();
   // check the login token
-  const isLoggedIn = !!localStorage.getItem("token");
+    const isLoggedIn = getToken() ? true : false;
 
   return (
     <div className="">
