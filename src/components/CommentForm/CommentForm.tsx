@@ -2,6 +2,7 @@
 
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { getToken } from "@/utils/authUtils";
 
 interface CommentFormProps {
   onSubmit: (comment: string, replyTo?: string) => void;
@@ -17,7 +18,7 @@ export default function CommentForm({ onSubmit, replyTo }: CommentFormProps) {
   };*/
   const router = useRouter();
   // check the login token
-  const isLoggedIn = !!localStorage.getItem("token");
+  const isLoggedIn = getToken() ? true : false;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
