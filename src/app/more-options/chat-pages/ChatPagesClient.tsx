@@ -3,7 +3,16 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
-import { BackArrow, RateEventIcon, SpeakerIcon } from "../../../../public/svg-icons/icons";
+import {
+  AtmosphereIcon,
+  BackArrow,
+  MicrophoneIcon,
+  RateEventIcon,
+  SparkingIcon,
+  SpeakerIcon,
+  TypingIconNew,
+  WalletIcon,
+} from "../../../../public/svg-icons/icons";
 import { paddings } from "@/constants/layout-constants";
 import TextAreaComponent from "@/components/TextAreaComponent/TextAreaComponent";
 import Image from "next/image";
@@ -14,6 +23,7 @@ import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 import { createEventHostRating } from "@/routes/event_and_host_rating";
 import { fi } from "date-fns/locale";
 import { createEventReport, getReportReasons } from "@/routes/event_report";
+import { useRouter } from "next/navigation";
 
 type user_data = {
   id: string;
@@ -47,6 +57,7 @@ type event = {
 };
 
 const ChatPagesClient = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [source, setSource] = useState<string | null>(null);
   // state for store the chat data
@@ -305,7 +316,7 @@ const ChatPagesClient = () => {
                 <h2 className="text-primary font-plusJakartaSans-700 font-bold text-[19px]">
                   Rate Event
                 </h2>
-                <div className="flex gap-2 mt-[19px]">
+                {/* <div className="flex gap-2 mt-[19px]">
                   <RateEventIcon
                     className={`${
                       eventRatings >= 1
@@ -356,20 +367,23 @@ const ChatPagesClient = () => {
                       setEventRatings(5);
                     }}
                   />
-                </div>
+                </div> */}
                 {/* <h2 className="text-primary font-plusJakartaSans-700 font-bold text-[19px] mt-[40px]">
                   Rate Host
                 </h2> */}
-                <div className="flex items-center">
-                  <SpeakerIcon/>
-                  <p>Communication</p>
-                  <div className="flex gap-2 mt-[19px]">
+                <div className="mt-5">
+                  <p className="text-xs font-bold">Attendee Ratings (70%)</p>
+                </div>
+                <div className="flex items-center gap-2 mt-5">
+                  <TypingIconNew className="text-app-icon w-[20px] h-[20px]" />
+                  <p className="text-xs">Communication</p>
+                  <div className="flex gap-2 ">
                     <RateEventIcon
                       className={`${
                         hostRatings >= 1
                           ? "text-app-icon"
                           : "text-app-icon-muted"
-                      }`}
+                      } w-[20px] h-[20px]`}
                       onClick={() => {
                         setHostRatings(1);
                       }}
@@ -379,7 +393,7 @@ const ChatPagesClient = () => {
                         hostRatings >= 2
                           ? "text-app-icon"
                           : "text-app-icon-muted"
-                      }`}
+                      } w-[20px] h-[20px]`}
                       onClick={() => {
                         setHostRatings(2);
                       }}
@@ -389,7 +403,7 @@ const ChatPagesClient = () => {
                         hostRatings >= 3
                           ? "text-app-icon"
                           : "text-app-icon-muted"
-                      }`}
+                      } w-[20px] h-[20px]`}
                       onClick={() => {
                         setHostRatings(3);
                       }}
@@ -399,7 +413,7 @@ const ChatPagesClient = () => {
                         hostRatings >= 4
                           ? "text-app-icon"
                           : "text-app-icon-muted"
-                      }`}
+                      } w-[20px] h-[20px]`}
                       onClick={() => {
                         setHostRatings(4);
                       }}
@@ -409,12 +423,241 @@ const ChatPagesClient = () => {
                         hostRatings >= 5
                           ? "text-app-icon"
                           : "text-app-icon-muted"
-                      }`}
+                      } w-[20px] h-[20px]`}
                       onClick={() => {
                         setHostRatings(5);
                       }}
                     />
                   </div>
+                  <p className="text-xs">( 4.8 )</p>
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <SparkingIcon className="text-app-icon w-[20px] h-[20px]" />
+                  <p className="text-xs">Respect</p>
+                  <div className="flex gap-2 ">
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 1
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(1);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 2
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(2);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 3
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(3);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 4
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(4);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 5
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(5);
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs">( 4.2 )</p>
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <MicrophoneIcon className="text-app-icon w-[20px] h-[20px]" />
+                  <p className="text-xs">Professionalism</p>
+                  <div className="flex gap-2 ">
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 1
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(1);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 2
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(2);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 3
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(3);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 4
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(4);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 5
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(5);
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs">( 5.0 )</p>
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <AtmosphereIcon className="text-app-icon w-[20px] h-[20px]" />
+                  <p className="text-xs">Atmosphere</p>
+                  <div className="flex gap-2 ">
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 1
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(1);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 2
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(2);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 3
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(3);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 4
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(4);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 5
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(5);
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs">( 5.0 )</p>
+                </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <WalletIcon className="text-app-icon w-[20px] h-[20px]" />
+                  <p className="text-xs">Value for money</p>
+                  <div className="flex gap-2 ">
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 1
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(1);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 2
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(2);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 3
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(3);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 4
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(4);
+                      }}
+                    />
+                    <RateEventIcon
+                      className={`${
+                        hostRatings >= 5
+                          ? "text-app-icon"
+                          : "text-app-icon-muted"
+                      } w-[20px] h-[20px]`}
+                      onClick={() => {
+                        setHostRatings(5);
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs">( 5.0 )</p>
                 </div>
                 <h2 className="text-primary font-plusJakartaSans-700 font-bold text-[19px] mt-[40px]">
                   Comment
@@ -506,22 +749,44 @@ const ChatPagesClient = () => {
               {eventData?.participants.map((follower, index) => (
                 <div
                   key={index}
-                  className="flex items-center space-x-3 mb-[24px]"
+                  className="flex items-center justify-between space-x-3 mb-[24px]"
                   onClick={() => {
-                    setShowMemberDetailModel(true);
+                    // setShowMemberDetailModel(true);
                   }}
                 >
-                  <div className="relative w-[44px] h-[44px] ">
-                    <Image
-                      src={`${follower.profilePicture}`}
-                      alt={follower.username}
-                      fill
-                      className="rounded-full object-cover"
-                    />
+                  <div className="flex items-center gap-3">
+                    <div className="relative w-[44px] h-[44px] ">
+                      <Image
+                        src={`${follower.profilePicture}`}
+                        alt={follower.username}
+                        fill
+                        className="rounded-full object-cover"
+                      />
+                    </div>
+                    <span className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
+                      {follower.username}
+                    </span>
                   </div>
-                  <span className="text-[16px] text-app-text-primary font-plusJakartaSans-400">
-                    {follower.username}
-                  </span>
+                  <div>
+                    <button
+                      onClick={() => {
+                        // handleSubmitReport();
+
+                        router.push(
+                          "/more-options/chat-pages/scan-qr?event_id=" +
+                            eventData?.id +
+                            "&eventCategoryId=" +
+                            eventData?.category_id +
+                            "&host_id=US00002" 
+                            // +
+                            // eventData?.host_details.id
+                        );
+                      }}
+                      className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                    >
+                      Self check
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

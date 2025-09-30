@@ -21,7 +21,6 @@ const Home = () => {
   //const [isRatePopOpen, setIsRatePopOpen] = useState(true);
 
   const handleStackFinished = useCallback(() => {
-    console.log("HomePage knows the stack is finished!");
     setAllEventsCompleted(true);
   }, []);
 
