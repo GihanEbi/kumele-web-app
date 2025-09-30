@@ -71,7 +71,7 @@ const HobbyTagIcon = ({ hobbyId, isNormalComponent }: HobbyProps) => {
         item.id === hobbyId ? (
           <div key={item.id} className="flex items-center space-x-1">
             {item.icon}
-            <span className="font-plusJakartaSans text-white font-normal text-[9.91px]">
+            <span className="font-plusJakartaSans text-white font-normal text-[11px]">
               {item.name}
             </span>
           </div>

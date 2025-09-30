@@ -160,7 +160,7 @@ const ScanQR = () => {
 
         <div className="flex flex-col items-center group space-y-1 mt-[130px] px-6 mb-10">
           <p className="text-[16px] font-plusJakartaSans-400 text-center text-app-text-primary">
-            Host
+            Guest
           </p>
           {hostData && (
             <div className="bg-app-input-yellow rounded-full w-[60px] h-[60px] flex items-center justify-center mb-3">
@@ -219,7 +219,7 @@ const ScanQR = () => {
             </div>
           )}
           <p className="text-[16px] font-plusJakartaSans-400 text-center text-app-text-primary mt-1">
-            Host QR
+            Guest QR
           </p>
         </div>
       </div>

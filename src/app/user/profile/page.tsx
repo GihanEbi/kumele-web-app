@@ -279,7 +279,7 @@ const Profile = () => {
                       {userData?.username ? userData.username : "User Name"}
                     </h2>
                     <button
-                      style={{ backgroundColor: "#004DFF" }}
+                      style={{ backgroundColor: "#7697EA" }}
                       className="font-plusJakartaSans font-medium text-[9.95px] text-app-text-white py-1 px-3 rounded-r-sm mt-[6px]"
                       onClick={() => {
                         router.push("/profile-other-pages/edit-interest");
@@ -324,7 +324,7 @@ const Profile = () => {
                 <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12px]">
                   Following
                 </p>
-                <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
+                <p className="text-[18px] font-bold text-app-new-blue font-plusJakartaSans-700">
                   {followingCount !== null ? followingCount : 0}
                 </p>
               </div>
@@ -339,7 +339,7 @@ const Profile = () => {
                 <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12px]">
                   Followers
                 </p>
-                <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
+                <p className="text-[18px] font-bold text-app-new-blue font-plusJakartaSans-700">
                   {followerCount !== null ? followerCount : 0}
                 </p>
               </div>
@@ -347,7 +347,7 @@ const Profile = () => {
                 <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12px]">
                   Gold status
                 </p>
-                <p className="text-[18px] font-bold text-app-text-blue font-plusJakartaSans-700">
+                <p className="text-[18px] font-bold text-app-new-blue font-plusJakartaSans-700">
                   {23}
                 </p>
               </div>

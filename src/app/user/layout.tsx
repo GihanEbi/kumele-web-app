@@ -12,6 +12,9 @@ export default function DashboardLayout({
 }) {
   // use the appContext to get the more option state
   const { isBottomNavBarFixed } = useAppContext();
+  // check the login token
+  const isLoggedIn = !!localStorage.getItem("token");
+
   return (
     <div className="">
       <main className="overflow-y-scroll hide-scrollbar h-screen bg-k-background-secondary">
@@ -20,13 +23,15 @@ export default function DashboardLayout({
       {/* <footer className="fixed z-11 bottom-0 left-0 right-0">
         <BottomNavBar />
       </footer> */}
-      <footer
-        className={`${
-          isBottomNavBarFixed ? "fixed" : ""
-        } z-40 bottom-0 left-0 right-0`}
-      >
-        <BottomNavBar />
-      </footer>
+      {isLoggedIn && (
+        <footer
+          className={`${
+            isBottomNavBarFixed ? "fixed" : ""
+          } z-40 bottom-0 left-0 right-0`}
+        >
+          <BottomNavBar />
+        </footer>
+      )}
     </div>
   );
 }

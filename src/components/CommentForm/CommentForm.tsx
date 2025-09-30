@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 interface CommentFormProps {
   onSubmit: (comment: string, replyTo?: string) => void;
@@ -14,9 +15,11 @@ export default function CommentForm({ onSubmit, replyTo }: CommentFormProps) {
     const formData = new FormData(e.currentTarget);
     onSubmit(formData.get('comment') as string);
   };*/
+  const router = useRouter();
+  // check the login token
+  const isLoggedIn = !!localStorage.getItem("token");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    console.log("submit called");
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const comment = formData.get("comment") as string;
@@ -35,15 +38,25 @@ export default function CommentForm({ onSubmit, replyTo }: CommentFormProps) {
           className="w-full p-3  rounded-md bg-app-input-primary placeholder:text-text-app-blog-card-heading placeholder:font-plusJakartaSans placeholder:font-normal placeholder:text-[13.89px] text-text-app-blog-card-heading resize-none"
           rows={4}
           placeholder="Add your comment..."
-          required
+          // required
         />
         <div className="text-right">
-          <button
-            type="submit"
-            className="mt-2 px-4 py-2 bg-app-button-primary text-app-text-blackandwhite rounded-md font-plusJakartaSans font-normal text-[14.57px]"
-          >
-            Publish Comment
-          </button>
+          {isLoggedIn ? (
+            <button
+              type="submit"
+              className="mt-2 px-4 py-2 bg-app-button-primary text-app-text-blackandwhite rounded-md font-plusJakartaSans font-normal text-[14.57px]"
+            >
+              Publish Comment
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="mt-2 px-4 py-2 bg-app-button-primary text-app-text-blackandwhite rounded-md font-plusJakartaSans font-normal text-[14.57px]"
+              onClick={() => router.push("/authentication/signin")}
+            >
+              Login to Comment
+            </button>
+          )}
         </div>
       </form>
     </div>
