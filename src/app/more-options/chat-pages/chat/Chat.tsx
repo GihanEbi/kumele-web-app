@@ -48,7 +48,7 @@ type event = {
   street_address: string;
   event_image_url: string;
   postal_zip_code: string;
-  host: user_data;
+  host_details: user_data;
   participants: user_data[];
 };
 
@@ -214,7 +214,7 @@ const Chat = () => {
                       "&eventCategoryId=" +
                       eventData?.category_id +
                       "&host_id=" +
-                      eventData?.user_id
+                      eventData?.host_details.id
                   );
                   console.log("Scan QR clicked");
                 }}

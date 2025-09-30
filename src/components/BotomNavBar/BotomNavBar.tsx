@@ -105,7 +105,7 @@ const BottomNavBar = () => {
           > */}
           {activePageIndex === 0 ? (
             <HomeIcon
-              className={`text-app-button-blue`}
+              className={`text-app-new-blue`}
               width={30}
               height={30}
             />
@@ -137,7 +137,7 @@ const BottomNavBar = () => {
           > */}
             {activePageIndex === 5 ? (
               <AdvertiseIcon
-                className={`text-app-button-blue`}
+                className={`text-app-new-blue`}
                 width={38}
                 height={38}
               />
@@ -170,7 +170,7 @@ const BottomNavBar = () => {
           > */}
             {activePageIndex === 6 ? (
               <PartnershipBlogIcon
-                className={`text-app-button-blue`}
+                className={`text-app-new-blue`}
                 width={30}
                 height={30}
               />
@@ -203,7 +203,7 @@ const BottomNavBar = () => {
           > */}
             {activePageIndex === 1 ? (
               <BlogHomeIcon
-                className={`text-app-button-blue`}
+                className={`text-app-new-blue`}
                 width={30}
                 height={30}
               />
@@ -236,7 +236,7 @@ const BottomNavBar = () => {
           > */}
             {activePageIndex === 2 ? (
               <ShopIcon
-                className={`text-app-button-blue`}
+                className={`text-app-new-blue`}
                 // className={`${theme === "light" ? "text-white" : "text-black"}`}
                 width={30}
                 height={30}
@@ -272,7 +272,7 @@ const BottomNavBar = () => {
           > */}
             {activePageIndex === 3 ? (
               <MoreIcon
-                className={`text-app-button-blue`}
+                className={`text-app-new-blue`}
                 // className={`${theme === "light" ? "text-white" : "text-black"}`}
                 width={30}
                 height={30}
@@ -305,7 +305,7 @@ const BottomNavBar = () => {
           > */}
           {activePageIndex === 4 ? (
             <ProfileIcon
-              className={`text-app-button-blue`}
+              className={`text-app-new-blue`}
               // className={`${theme === "light" ? "text-white" : "text-black"}`}
               width={30}
               height={30}

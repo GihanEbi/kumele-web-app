@@ -70,7 +70,7 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
 
         <div className="flex-1">
           <h3
-            className={`text-[14px] font-semibold text-app-text-primary font-plusJakartaSans-600 ${
+            className={`text-[16px] font-semibold text-app-text-primary font-plusJakartaSans-600 ${
               eventStatus === "CANCELED" &&
               "pointer-events-none opacity-50 select-none"
             }`}
@@ -96,7 +96,7 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
               </div>
               {notificationType === "FOLLOWERS_EVENT_CREATION" && (
                 <div
-                  className={`inline-flex text-[10px] bg-app-new-blue rounded-full pt-1.5 px-2 text-white font-plusJakartaSans w-auto ${
+                  className={`inline-flex text-[11px] bg-app-new-blue rounded-full py-2 px-2 text-white font-plusJakartaSans w-auto ${
                     eventStatus === "CANCELED" &&
                     "pointer-events-none opacity-50 select-none"
                   }`}
@@ -111,7 +111,7 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
               )}
               {notificationType === "MATCH_HOBBIES" && (
                 <div
-                  className={`inline-flex text-[10px] bg-app-new-blue rounded-full pt-1.5 px-2 text-white font-plusJakartaSans w-auto ${
+                  className={`inline-flex text-[11px] bg-app-new-blue rounded-full py-2 px-3 text-white font-plusJakartaSans w-auto ${
                     eventStatus === "CANCELED" &&
                     "pointer-events-none opacity-50 select-none"
                   }`}
@@ -127,7 +127,7 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
             </div>
           )}
           <p
-            className={`mt-1 text-[10px] text-app-text-secondary font-plusJakartaSans ${
+            className={`mt-1 text-[12.33px] text-app-text-secondary font-plusJakartaSans ${
               eventStatus === "CANCELED" &&
               "pointer-events-none opacity-50 select-none"
             }`}
@@ -135,7 +135,7 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
               viewEvent();
             }}
           >
-            <span className="text-[11.33px] text-app-new-blue font-plusJakartaSans">
+            <span className="text-[12.33px] text-app-new-blue font-plusJakartaSans">
               {hostName}{" "}
             </span>
             {message}
@@ -152,7 +152,7 @@ const CreatedHobbiesNotificationCard: React.FC<NotificationCardProps> = ({
             </div>
             {notificationType === "MATCH_HOBBIES" && (
               <div
-                className={`mt-2 inline-flex text-[10px] bg-app-new-blue rounded-full py-1 px-2 text-white font-plusJakartaSans w-auto ${
+                className={`mt-2 inline-flex text-[11px] bg-app-new-blue rounded-full py-2 px-3 text-white font-plusJakartaSans w-auto ${
                   eventStatus === "CANCELED" &&
                   "pointer-events-none opacity-50 select-none"
                 }`}

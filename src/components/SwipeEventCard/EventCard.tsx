@@ -7,14 +7,20 @@ import {
 } from "framer-motion";
 import { Dispatch, SetStateAction, use, useEffect, useState } from "react";
 import {
+  AtmosphereIcon,
   ClockIcon,
   CloseIcon,
   DownArrowIcon,
   LocationIcon,
+  MicrophoneIcon,
+  RateEventIcon,
   RateIcon,
   ShareIcon,
+  SparkingIcon,
   TwoTicketsIcon,
+  TypingIconNew,
   UsersIcon,
+  WalletIcon,
   YingyangIcon,
 } from "../../../public/svg-icons/icons";
 import ClockGif from "../GifComponents/ClockGif/ClockGif";
@@ -215,8 +221,6 @@ export default function EventCard({
     }
   };
 
-
-
   const handleToggleDownArrow = () => {
     setIsStackExtended(!isStackExtended);
     setIsBottomNavBarFixed(!isBottomNavBarFixed);
@@ -277,7 +281,6 @@ export default function EventCard({
       }}
       onDragEnd={handleDragEnd}
     >
-
       {(depth === 0 || depth === 1) && (
         <div
           className={` ${
@@ -439,6 +442,155 @@ export default function EventCard({
                         <RatingSection />
                       </div>
                     )}
+
+                    <div className="px-5 pb-4 mt-4">
+                      <div className="flex items-center gap-5">
+                        <p className="text-md font-bold text-app-new-blue">
+                          90's Hip-Hop
+                        </p>
+                        <div>
+                          {/* <HobbyTagIcon hobbyId={"EC00001"} /> */}{" "}
+                          <div
+                            className={`bg-app-bg-preview-category-tag-bg text-white text-xs px-3 py-1 rounded-full flex items-center space-x-1.5`}
+                          >
+                            {/* <YingyangIcon /> */}
+                            {/* <event.categoryIcon/> */}
+                            {event.categoryIcon}
+                            <span className="font-plusJakartaSans text-white font-normal text-[11px]">
+                              {event.category}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center mt-3 gap-2">
+                        <RateEventIcon className={"text-app-icon"} />
+                        <RateEventIcon className={"text-app-icon"} />
+                        <RateEventIcon className={"text-app-icon"} />
+                        <RateEventIcon className={"text-app-icon"} />
+                        <RateEventIcon className={"text-app-icon"} />
+                      </div>
+                      <p className="mt-3 text-md font-bold text-secondary text-start">
+                        3.6 out of 5
+                      </p>
+                      <p className="mt-3 text-md font-semibold text-primary text-start">
+                        6 Guest ratings
+                      </p>
+                      <div className="mt-3">
+                        <p className="text-xs font-bold text-start">
+                          Attendee Ratings (70%)
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 mt-5">
+                        <TypingIconNew className="text-app-icon w-[20px] h-[20px]" />
+                        <p className="text-xs">Communication</p>
+                        <div className="flex gap-2 ">
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                        </div>
+                        <p className="text-xs">( 4.8 )</p>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <SparkingIcon className="text-app-icon w-[20px] h-[20px]" />
+                        <p className="text-xs">Respect</p>
+                        <div className="flex gap-2 ">
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                        </div>
+                        <p className="text-xs">( 4.2 )</p>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <MicrophoneIcon className="text-app-icon w-[20px] h-[20px]" />
+                        <p className="text-xs">Professionalism</p>
+                        <div className="flex gap-2 ">
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                        </div>
+                        <p className="text-xs">( 5.0 )</p>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <AtmosphereIcon className="text-app-icon w-[20px] h-[20px]" />
+                        <p className="text-xs">Atmosphere</p>
+                        <div className="flex gap-2 ">
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                        </div>
+                        <p className="text-xs">( 5.0 )</p>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <WalletIcon className="text-app-icon w-[20px] h-[20px]" />
+                        <p className="text-xs">Value for money</p>
+                        <div className="flex gap-2 ">
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                          <RateEventIcon
+                            className={"text-app-icon w-[20px] h-[20px]"}
+                          />
+                        </div>
+                        <p className="text-xs">( 5.0 )</p>
+                      </div>
+                    </div>
 
                     {otherEvents && (
                       <div className="px-5 pb-4">

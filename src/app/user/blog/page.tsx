@@ -188,9 +188,7 @@ const Blog: React.FC = () => {
     };
     return {
       id: apiBlog.id,
-      imageUrl: apiBlog.blog_img_url
-        ? `${API_BASE_URL}/${apiBlog.blog_img_url}`
-        : "/images/blog-demo.jpg",
+      imageUrl: apiBlog.blog_img_url,
       title: apiBlog.blog_name,
       categoryName: category.name,
       categoryIcon: category.icon,
@@ -230,7 +228,7 @@ const Blog: React.FC = () => {
 
   return (
     <div
-      className={`max-w-full mx-auto rounded-lg pt-[64px] pb-50 ${
+      className={`max-w-full h-screen mx-auto rounded-lg pt-[64px] pb-50 ${
         moreOption ? "bg-k-background-secondary" : "bg-k-background-primary"
       }`}
     >
