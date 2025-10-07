@@ -784,7 +784,7 @@ const ChatPagesClient = () => {
                       }}
                       className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
                     >
-                      Self check
+                      Self-check
                     </button>
                   </div>
                 </div>

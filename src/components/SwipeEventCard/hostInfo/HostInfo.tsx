@@ -23,29 +23,36 @@ const HostInfo = ({ host }: HostInfoProps) => {
       <div className="absolute -top-12 left-[-3px] flex items-start space-x-3">
         <div className="relative w-[88px] h-[88px]">
           <Image
-            src={host.avatarSrc}
+            // src={host.avatarSrc}
+            src={"/avatar-img/alkesh.png"}
             alt={host.name}
             fill
             className="relative z-10 rounded-full object-cover flex-shrink-0"
           />
         </div>
         <div className="flex flex-col items-start space-y-1.5 pt-2">
-          <div className="bg-app-blog-selected-tabs-background text-left text-black rounded-lg px-3 py-1.5 shadow-md -ml-7 mt-4 pl-6">
+          <div className="bg-app-blog-selected-tabs-background text-left text-black rounded-t-lg rounded-br-lg px-3 py-1 shadow-md -ml-7 mt-4 pl-6">
             <p className="font-plusJakartaSans text-black font-extrabold text-[12px] leading-tight">
               {host.followers}{" "}
               <span className="font-plusJakartaSans text-black font-semibold text-[12px] leading-tight">
                 followers{" "}
               </span>
             </p>
-            <div className="flex items-center space-x-1 mt-0.5">
+            <div className="flex items-center space-x-1">
               <RatingIcon />
               <span
                 style={{ color: "#464646" }}
                 className="font-plusJakartaSans font-medium text-[11px]"
               >
-                {host.rating} Overall Ratings
+                4.3/5 from 120 reviews
               </span>
             </div>
+            <p
+              style={{ color: "#464646" }}
+              className="font-plusJakartaSans font-medium text-[11px]"
+            >
+              92% Event Completion
+            </p>
           </div>
         </div>
       </div>
@@ -59,8 +66,12 @@ const HostInfo = ({ host }: HostInfoProps) => {
           <div className="ml-3 relative flex items-center">
             {/* <Image alt="medal" src="/images/medal.png" width={19.96} height={19.96} /> */}
             <MedalGif width={19.96} height={19.96} />
-            <div className="absolute -top-4 -right-4 bg-app-blog-selected-tabs-background text-black text-[10.98px] font-extrabold w-[21.95px] h-[21.95px] rounded-full flex items-center justify-center  dark:border-zinc-800">
+            {/* <div className="absolute -top-4 -right-4 bg-app-blog-selected-tabs-background text-black text-[10.98px] font-extrabold w-[21.95px] h-[21.95px] rounded-full flex items-center justify-center  dark:border-zinc-800">
               {host.levelIcon}
+            </div> */}
+
+            <div className="absolute -top-3 -right-4 rounded-full bg-app-input-yellow text-black py-[2px] w-[21.95px] h-[21.95px]">
+              <p className="text-[10.52px]">25</p>
             </div>
           </div>
           <span className="ml-0 mt-2 font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px]">
