@@ -17,6 +17,8 @@ import { get_event_by_event_id } from "@/routes/Events";
 import { get_user_event_by_user_id } from "@/routes/profile";
 import HobbyTagIcon from "@/components/HobbyTagIcon/HobbyTagIcon";
 
+import QRCode from "qrcode";
+
 type user_data = {
   id: string;
   username: string;
@@ -76,10 +78,28 @@ const ScanQR = () => {
   // state for store the chat data
   const [eventData, setEventData] = useState<event | null>(null);
   const [hostData, setHostData] = useState<profileData | null>(null);
+  const [qrUrl, setQrUrl] = useState<string | null>(null);
 
   useEffect(() => {
     fetchEventData();
-    fetchHostData();
+    fetchUserData();
+    const generateQR = async () => {
+      try {
+        setLoading(true);
+        const BaseURL = process.env.NEXT_PUBLIC_ORIGIN; // ✅ use NEXT_PUBLIC_ prefix
+        const eventId = searchParams!.get("event_id")!;
+        const userId = searchParams!.get("user_id")!;
+        const qrData = `${BaseURL}/more-options/chat-pages?source=guest-scan&event_id=${eventId}&user_id=${userId}`;
+
+        const url = await QRCode.toDataURL(qrData);
+        setQrUrl(url);
+      } catch (err) {
+        console.error("Failed to generate QR code", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    generateQR();
   }, []);
 
   // function to fetch event data
@@ -108,14 +128,14 @@ const ScanQR = () => {
 
   //   function to get host data
 
-  // function to fetch event data
-  const fetchHostData = async () => {
+  // function to fetch user data
+  const fetchUserData = async () => {
     setLoading(true);
 
     try {
       if (searchParams) {
         const data = await get_user_event_by_user_id(
-          searchParams!.get("host_id")!
+          searchParams!.get("user_id")!
         ); // Non-null assertion since we check above
 
         if (data.success) {
@@ -211,7 +231,7 @@ const ScanQR = () => {
           {hostData && (
             <div className="mt-[60px]">
               <Image
-                src={`${hostData?.qr_code_url}`}
+                src={qrUrl ? qrUrl : ""}
                 alt="QR Code"
                 width={200}
                 height={200}

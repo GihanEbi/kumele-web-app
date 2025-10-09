@@ -24,11 +24,13 @@ import { createEventHostRating } from "@/routes/event_and_host_rating";
 import { fi } from "date-fns/locale";
 import { createEventReport, getReportReasons } from "@/routes/event_report";
 import { useRouter } from "next/navigation";
+import { get_user_event_by_user_id } from "@/routes/profile";
 
 type user_data = {
   id: string;
   username: string;
   profilePicture: string;
+  status: string;
 };
 
 type event = {
@@ -53,8 +55,31 @@ type event = {
   event_image_url: string;
   postal_zip_code: string;
   host_details: user_data;
+  logged_in_user_id: string;
   participants: user_data[];
+  host: user_data; // Add this property to match the expected type in MemberModel
 };
+
+// ---------- interface ----------
+interface profileData {
+  id: string;
+  username: string;
+  fullname: string;
+  email: string;
+  gender: string;
+  language: string;
+  dateofbirth: string;
+  referralcode: string;
+  abovelegalage: boolean;
+  termsandconditionsaccepted: boolean;
+  subscribedtonewsletter: boolean;
+  profilepicture: string;
+  about_me: string;
+  to_tp_secret: string;
+  is_2fa_enabled: boolean;
+  my_referral_code: string;
+  qr_code_url: string;
+}
 
 const ChatPagesClient = () => {
   const router = useRouter();
@@ -82,9 +107,23 @@ const ChatPagesClient = () => {
   const [ratingComment, setRatingComment] = useState<string>("");
   const [reportReason, setReportReason] = useState<any[]>([]);
 
+  // host id
+  const [hostId, setHostId] = useState<string | null>(null);
+  // logged in user id
+  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
+  // guest id
+  const [guestId, setGuestId] = useState<string | null>(null);
+  // state for store the fetched user data
+  const [userData, setUserData] = useState<profileData | null>(null);
+
   useEffect(() => {
     if (searchParams) {
       setSource(searchParams.get("source"));
+    }
+    if (searchParams?.get("user_id")) {
+      setGuestId(searchParams.get("user_id"));
+
+      fetchUserData();
     }
     fetchEventData();
     getEventReportReasons();
@@ -105,6 +144,29 @@ const ChatPagesClient = () => {
     }
   };
 
+  // function to fetch user data
+  const fetchUserData = async () => {
+    setLoading(true);
+
+    try {
+      if (searchParams) {
+        const data = await get_user_event_by_user_id(
+          searchParams!.get("user_id")!
+        ); // Non-null assertion since we check above
+
+        if (data.success) {
+          setUserData(data.data);
+        } else {
+          console.error("Failed to fetch host data:", data.message);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching host data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // function to fetch event data
   const fetchEventData = async () => {
     setLoading(true);
@@ -117,6 +179,8 @@ const ChatPagesClient = () => {
 
         if (data.success) {
           setEventData(data.data);
+          setHostId(data.data.host_details.id);
+          setLoggedInUserId(data.data.logged_in_user_id);
         } else {
           console.error("Failed to fetch event data:", data.message);
         }
@@ -749,10 +813,12 @@ const ChatPagesClient = () => {
               {eventData?.participants.map((follower, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between space-x-3 mb-[24px]"
-                  onClick={() => {
-                    // setShowMemberDetailModel(true);
-                  }}
+                  className={`flex items-center justify-between space-x-3 mb-[24px] ${
+                    hostId === loggedInUserId ||
+                    follower.status === "CHECKED_IN"
+                      ? ""
+                      : "opacity-50 cursor-not-allowed"
+                  }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="relative w-[44px] h-[44px] ">
@@ -769,22 +835,37 @@ const ChatPagesClient = () => {
                   </div>
                   <div>
                     <button
-                      onClick={() => {
-                        // handleSubmitReport();
+                      // onClick={() => {
+                      //   // handleSubmitReport();
 
-                        router.push(
-                          "/more-options/chat-pages/scan-qr?event_id=" +
-                            eventData?.id +
-                            "&eventCategoryId=" +
-                            eventData?.category_id +
-                            "&host_id=US00002" 
-                            // +
-                            // eventData?.host_details.id
-                        );
+                      //   router.push(
+                      //     "/more-options/chat-pages/scan-qr?event_id=" +
+                      //       eventData?.id +
+                      //       "&eventCategoryId=" +
+                      //       eventData?.category_id +
+                      //       "&host_id=US00002"
+                      //       // +
+                      //       // eventData?.host_details.id
+                      //   );
+                      // }}
+
+                      onClick={() => {
+                        setGuestId(follower.id);
+                        setShowMemberDetailModel(true);
                       }}
-                      className="w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
+                      className={`w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg ${
+                        follower.status !== "CHECKED_IN"
+                          ? ""
+                          : "opacity-50 cursor-not-allowed"
+                      }`}
+                      disabled={
+                        hostId === loggedInUserId ||
+                        follower.status !== "CHECKED_IN"
+                          ? false
+                          : true
+                      }
                     >
-                      Self check
+                      Self-check
                     </button>
                   </div>
                 </div>
@@ -794,6 +875,8 @@ const ChatPagesClient = () => {
         </main>
       </div>
       <MemberModel
+        userId={guestId || ""}
+        eventData={eventData}
         isOpen={showMemberDetailModel}
         onClose={() => setShowMemberDetailModel(false)}
       />

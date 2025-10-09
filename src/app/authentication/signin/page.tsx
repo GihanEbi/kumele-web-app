@@ -29,6 +29,7 @@ import PadLockGif from "@/components/GifComponents/PadLockGif/PadLockGif";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 import ForgotPasswordModel from "@/components/Models/ForgotPasswordModel/ForgotPasswordModel";
+import GooglePasskeyLogin from "@/components/GooglePasskeyLogin/GooglePasskeyLogin";
 
 const languages = [
   {
@@ -53,6 +54,8 @@ const languages = [
   },
 ];
 
+type FormErrors = Record<string, string>;
+
 const Signin = () => {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -68,6 +71,8 @@ const Signin = () => {
     email: "",
     password: "",
   });
+  // form errors
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   // ---------- show success model -----------
   const [showSuccessModel, setShowSuccessModel] = useState(false);
@@ -96,6 +101,14 @@ const Signin = () => {
   const [showForgotPasswordModel, setShowForgotPasswordModel] = useState(false);
   // -------- handleChange for input fields ---------
   const handleInputChange = (value: string | Boolean, name: string) => {
+    if (name === "email") {
+      // Clear email error when user starts typing
+      setFormErrors((prev) => ({ ...prev, email: "" }));
+    }
+    if (name === "password") {
+      // Clear password error when user starts typing
+      setFormErrors((prev) => ({ ...prev, password: "" }));
+    }
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -149,8 +162,29 @@ const Signin = () => {
     setError("Google Sign-In failed. Please try again.");
   };
 
+  // check form data is not empty and valid
+  const validateForm = () => {
+    const errors: FormErrors = {};
+    if (!form.email.trim()) {
+      errors.email = "Email is required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email.trim())
+    ) {
+      errors.email = "Invalid email address";
+    }
+    if (!form.password) {
+      errors.password = "Password is required";
+    } else if (form.password.length < 6) {
+      errors.password = "Password must be at least 6 characters";
+    }
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   // handle form submit
   const handleSubmit = async () => {
+    // validate form
+    if (!validateForm()) return;
     if (loading) return;
     if (!form.email?.trim() || !form.password) {
       setError("Email and password are required.");
@@ -321,6 +355,21 @@ const Signin = () => {
           <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
             Sign in
           </h1>
+          {/* <div className="mt-4">
+            <GooglePasskeyLogin
+              onSuccess={async (token) => {
+                try {
+                  const data = await google_sign_in({ token });
+                  if (data.success) {
+                    saveToken(data.data.token);
+                    router.push("/user/home");
+                  }
+                } catch (err) {
+                  console.error(err);
+                }
+              }}
+            />
+          </div> */}
           <div>
             <div onClick={handleGoogleIconClick} style={{ cursor: "pointer" }}>
               <GoogleIcon />
@@ -331,6 +380,7 @@ const Signin = () => {
                 onError={handleGoogleSignInError}
                 theme="outline"
                 size="large"
+                use_fedcm_for_prompt={true}
               />
             </div>
           </div>
@@ -397,11 +447,13 @@ const Signin = () => {
           <div className="relative">
             <InputComponent
               icon={<UserIcon />}
+              required
               placeholder="Enter email | Nick name"
               value={form.email}
               onChange={(e) => {
                 handleInputChange(e.target.value, "email");
               }}
+              error={formErrors.email}
             />
           </div>
         </div>
@@ -416,6 +468,7 @@ const Signin = () => {
             value={form.password}
             type={passwordVisible ? "text" : "password"}
             required
+            error={formErrors.password}
           />
           <button
             type="button"
