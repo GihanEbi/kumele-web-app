@@ -214,9 +214,10 @@ const Chat = () => {
                       "&eventCategoryId=" +
                       eventData?.category_id +
                       "&host_id=" +
-                      eventData?.host_details.id
+                      eventData?.host_details.id +
+                      "&user_id=" +
+                      userData?.id
                   );
-                  console.log("Scan QR clicked");
                 }}
               >
                 <GestScanIcon className="text-app-icon mt-4" />

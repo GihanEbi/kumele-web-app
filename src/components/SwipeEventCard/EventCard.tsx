@@ -11,6 +11,7 @@ import {
   ClockIcon,
   CloseIcon,
   DownArrowIcon,
+  HandShakeIcon,
   LocationIcon,
   MicrophoneIcon,
   RateEventIcon,
@@ -462,12 +463,19 @@ export default function EventCard({
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center mt-3 gap-2">
-                        <RateEventIcon className={"text-app-icon"} />
-                        <RateEventIcon className={"text-app-icon"} />
-                        <RateEventIcon className={"text-app-icon"} />
-                        <RateEventIcon className={"text-app-icon"} />
-                        <RateEventIcon className={"text-app-icon"} />
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center mt-3 gap-2">
+                          <RateEventIcon className={"text-app-icon"} />
+                          <RateEventIcon className={"text-app-icon"} />
+                          <RateEventIcon className={"text-app-icon"} />
+                          <RateEventIcon className={"text-app-icon"} />
+                          <RateEventIcon className={"text-app-icon-muted"} />
+                        </div>
+                        <div className="flex items-center">
+                          <p className="text-md mt-2 font-bold text-primary text-start">
+                            4.0
+                          </p>
+                        </div>
                       </div>
                       <p className="mt-3 text-md font-bold text-secondary text-start">
                         3.6 out of 5
@@ -503,7 +511,7 @@ export default function EventCard({
                         <p className="text-xs">( 4.8 )</p>
                       </div>
                       <div className="flex items-center gap-2 mt-2">
-                        <SparkingIcon className="text-app-icon w-[20px] h-[20px]" />
+                        <HandShakeIcon className="text-app-icon w-[20px] h-[20px]" />
                         <p className="text-xs">Respect</p>
                         <div className="flex gap-2 ">
                           <RateEventIcon
