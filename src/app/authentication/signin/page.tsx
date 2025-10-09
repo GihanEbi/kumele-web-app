@@ -29,6 +29,7 @@ import PadLockGif from "@/components/GifComponents/PadLockGif/PadLockGif";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 import ForgotPasswordModel from "@/components/Models/ForgotPasswordModel/ForgotPasswordModel";
+import GooglePasskeyLogin from "@/components/GooglePasskeyLogin/GooglePasskeyLogin";
 
 const languages = [
   {
@@ -354,6 +355,21 @@ const Signin = () => {
           <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
             Sign in
           </h1>
+          {/* <div className="mt-4">
+            <GooglePasskeyLogin
+              onSuccess={async (token) => {
+                try {
+                  const data = await google_sign_in({ token });
+                  if (data.success) {
+                    saveToken(data.data.token);
+                    router.push("/user/home");
+                  }
+                } catch (err) {
+                  console.error(err);
+                }
+              }}
+            />
+          </div> */}
           <div>
             <div onClick={handleGoogleIconClick} style={{ cursor: "pointer" }}>
               <GoogleIcon />
