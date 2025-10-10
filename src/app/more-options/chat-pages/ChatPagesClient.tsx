@@ -825,6 +825,10 @@ const ChatPagesClient = () => {
                 >
                   <div className="flex items-center gap-3">
                     <div className="relative w-[44px] h-[44px] ">
+                      {follower.id === confirmUserId && (
+                        <span className="z-1000 absolute top-0 right-0 bg-green-600 text-black text-[10px] font-bold rounded-full w-3 h-3 flex items-center justify-center"></span>
+                      )}
+
                       <Image
                         src={`${follower.profilePicture}`}
                         alt={follower.username}
@@ -836,7 +840,11 @@ const ChatPagesClient = () => {
                       {follower.username}
                     </span>
                   </div>
-                  <div className={`${follower.id === confirmUserId ? "hidden" : ""}`}>
+                  <div
+                    className={`${
+                      follower.id === confirmUserId ? "hidden" : ""
+                    }`}
+                  >
                     <button
                       // onClick={() => {
                       //   // handleSubmitReport();
