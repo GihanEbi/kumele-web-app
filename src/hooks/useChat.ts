@@ -9,7 +9,7 @@ import {
 import axios from "axios"; // For HTTP requests to your Express API
 
 // Define the base URL for your backend API
-const API_BASE_URL = process.env.BASE_URL || "http://localhost:5001/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:5001/api";
 
 interface UseChatOptions {
   eventId: string;
