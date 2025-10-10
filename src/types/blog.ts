@@ -4,6 +4,7 @@ export interface BlogCardProps {
   title: string;
   categoryName: string;
   author: string;
+  author_name: string;
   date: string;
   showIndicator?: boolean;
   categoryIcon?: React.ReactNode;
