@@ -116,9 +116,13 @@ const ChatPagesClient = () => {
   // state for store the fetched user data
   const [userData, setUserData] = useState<profileData | null>(null);
 
+  // confirm user
+  const [confirmUserId, setConfirmUserId] = useState<string | null>(null);
+
   useEffect(() => {
     if (searchParams) {
       setSource(searchParams.get("source"));
+      setShowMemberDetailModel(true);
     }
     if (searchParams?.get("user_id")) {
       setGuestId(searchParams.get("user_id"));
@@ -814,8 +818,7 @@ const ChatPagesClient = () => {
                 <div
                   key={index}
                   className={`flex items-center justify-between space-x-3 mb-[24px] ${
-                    hostId === loggedInUserId ||
-                    follower.status === "CHECKED_IN"
+                    follower.id === confirmUserId
                       ? ""
                       : "opacity-50 cursor-not-allowed"
                   }`}
@@ -833,7 +836,7 @@ const ChatPagesClient = () => {
                       {follower.username}
                     </span>
                   </div>
-                  <div>
+                  <div className={`${follower.id === confirmUserId ? "hidden" : ""}`}>
                     <button
                       // onClick={() => {
                       //   // handleSubmitReport();
@@ -851,7 +854,7 @@ const ChatPagesClient = () => {
 
                       onClick={() => {
                         setGuestId(follower.id);
-                        setShowMemberDetailModel(true);
+                        // setShowMemberDetailModel(true);
                       }}
                       className={`w-full text-[16px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg ${
                         follower.status !== "CHECKED_IN"
@@ -879,6 +882,16 @@ const ChatPagesClient = () => {
         eventData={eventData}
         isOpen={showMemberDetailModel}
         onClose={() => setShowMemberDetailModel(false)}
+        onConfirm={() => {
+          setConfirmUserId(guestId);
+          setShowMemberDetailModel(false);
+          setSuccess("User confirmed successfully");
+          setShowSuccessModel(true);
+          setTimeout(() => {
+            setShowSuccessModel(false);
+            setSuccess("");
+          }, 3600);
+        }}
       />
       <SuccessModel
         isOpen={showSuccessModel}
