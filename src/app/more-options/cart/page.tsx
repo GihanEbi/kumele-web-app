@@ -9,6 +9,7 @@ import { AddCardModal } from "@/components/PaymentModal/AddNewCard/AddNewCard";
 import { SendPaymentModal } from "@/components/PaymentModal/SendPayment/SendPayment";
 import { CoinbasePaymentModal } from "@/components/PaymentModal/CoinBasePaymentModal/CoinBasePaymentModal";
 import { PaymentCompleteModal } from "@/components/PaymentModal/PaymentCompleteModal/PaymentCompleteModal";
+import CryptoPaymentButton from "@/components/CryptoPaymentButton/CryptoPaymentButton";
 
 import {
   BackToPageIcon,
@@ -37,6 +38,13 @@ const PlusIcon = (props: React.SVGProps<SVGSVGElement>) => (
     />
   </svg>
 );
+
+const product = {
+  id: "PROD123",
+  name: "My Awesome Product",
+  description: "This product will change your life.",
+  price: 10.0, // in USD
+};
 
 const PaymentPage = () => {
   const router = useRouter();
@@ -162,15 +170,22 @@ const PaymentPage = () => {
             </div>
 
             <div
-              onClick={() => setSendPaymentOpen(true)}
+              // onClick={() => setSendPaymentOpen(true)}
               className="flex justify-between items-center p-4 border-t border border-app-range-slider-track-active cursor-pointer"
             >
               <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">
                 Pay with
               </p>
               <div className="flex items-center gap-3">
-                <CryptoIcon className="" />
-                <CreditCardIcon className="" />
+                {/* <CryptoIcon className="" />
+                <CreditCardIcon className="" /> */}
+                {/* The component is self-contained and handles its own logic */}
+                <CryptoPaymentButton
+                  productId={product.id}
+                  productName={product.name}
+                  description={product.description}
+                  amount={product.price}
+                />
               </div>
             </div>
           </div>
