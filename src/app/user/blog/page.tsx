@@ -18,6 +18,7 @@ interface BlogCardProps {
   title: string;
   categoryName: string;
   author: string;
+  author_name: string;
   date: string;
   showIndicator?: boolean;
   tags: string[];
@@ -38,6 +39,7 @@ type ApiBlog = {
   twitter_link?: string;
   blog_content: string;
   author_id: string;
+  author_name:string;
   created_at: string;
 };
 
@@ -193,6 +195,7 @@ const Blog: React.FC = () => {
       categoryName: category.name,
       categoryIcon: category.icon,
       author: apiBlog.author_id,
+      author_name: apiBlog.author_name,
       date: new Date(apiBlog.created_at).toLocaleDateString("en-US", {
         day: "2-digit",
         month: "long",

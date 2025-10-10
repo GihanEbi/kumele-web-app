@@ -36,7 +36,7 @@ export default function BlogCard(props: BlogCardProps) {
               <span>{props.categoryName}</span>
             </div>
             <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[13px] pt-3 mt-[-5px]">
-              {props.author} • {props.date}
+              {props.author_name} • {props.date}
             </p>
           </div>
         </div>
