@@ -65,12 +65,14 @@ type ModelProps = {
   userId: string | null;
   eventData: event | null;
   onClose: () => void;
+  onConfirm: () => void;
 };
 const MemberModel: React.FC<ModelProps> = ({
   isOpen,
   onClose,
   userId,
   eventData,
+  onConfirm,
 }) => {
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
@@ -79,7 +81,7 @@ const MemberModel: React.FC<ModelProps> = ({
 
   useEffect(() => {
     console.log("eventData in model:", eventData);
-    
+
     if (userId) {
       fetchUserData();
     }
@@ -156,7 +158,7 @@ const MemberModel: React.FC<ModelProps> = ({
               </p>
               <button
                 className="w-full mt-[64px] text-[16px] mb-[12px] bg-app-button-primary text-app-text-tertiary font-plusJakartaSans-400 py-3 px-4 rounded-lg"
-                onClick={() => () => {}}
+                onClick={onConfirm}
               >
                 Confirm
               </button>
