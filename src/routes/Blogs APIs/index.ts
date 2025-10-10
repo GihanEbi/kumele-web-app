@@ -101,7 +101,7 @@ export async function get_all_blogs() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        authorization: `${getToken()}`, // Ensure getToken() returns a valid token
+        // authorization: `${getToken()}`, // Ensure getToken() returns a valid token
       },
     });
 

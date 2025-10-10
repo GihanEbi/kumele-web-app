@@ -83,7 +83,7 @@ export async function get_hobbies_list() {
       method: "GET",
        headers: {
         "Content-Type": "application/json",
-        "Authorization": `${getToken()}`, // Uncomment if you need to send a token
+        // "Authorization": `${getToken()}`, // Uncomment if you need to send a token
       },
     });
     const data = await res.json();
