@@ -153,10 +153,14 @@ const ChatPagesClient = () => {
   };
 
   // checked in user to event
-  const checkInUserToEvent = async (eventID: string) => {
+  const checkInUserToEvent = async (guestID: string) => {
+    // get user event id using guestID
+    const userEventId = eventData?.participants.find(
+      (participant) => participant.id === guestID
+    )?.id;
     setLoading(true);
     try {
-      const data = await userCheckInEvent(eventID);
+      const data = await userCheckInEvent(userEventId || "");
       if (data.success) {
         setSuccess("User checked in successfully");
         setShowSuccessModel(true);
@@ -923,7 +927,7 @@ const ChatPagesClient = () => {
         onClose={() => setShowMemberDetailModel(false)}
         onConfirm={() => {
           setConfirmUserId(guestId);
-          checkInUserToEvent(eventId || "");
+          checkInUserToEvent(guestId || "");
           setShowMemberDetailModel(false);
           setSuccess("User confirmed successfully");
           setShowSuccessModel(true);
