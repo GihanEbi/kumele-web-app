@@ -55,3 +55,19 @@ export async function userAcceptEvent(eventId: string) {
     return error;
   }
 }
+
+export async function userCheckInEvent(eventId: string) {
+  try {
+    const res = await fetch(`${commonUrl}/check-in-user-event/${eventId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `${getToken()}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}

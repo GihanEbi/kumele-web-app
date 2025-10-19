@@ -114,7 +114,7 @@ const Payment = () => {
         </div>
         {/* body section - added cards */}
         <div className="space-y-1 mt-[130px]">
-          <div className="items-center">
+          {/* <div className="items-center">
             <RadioGroup name="card-selection">
               {cardDetails.map((option, index) => (
                 <div className="flex ml-5 items-center justify-between gap-4">
@@ -170,11 +170,11 @@ const Payment = () => {
                 </div>
               ))}
             </RadioGroup>
-          </div>
+          </div> */}
 
-          <div className="mx-4 my-8">
+          {/* <div className="mx-4 my-8">
             <Separator className="bg-app-text-secondary p-0.4" />
-          </div>
+          </div> */}
 
           {/* Escrow Account Section */}
           <div className="space-y-4 flex flex-col items-center mb-8">

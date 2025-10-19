@@ -14,7 +14,11 @@ import InputComponent from "@/components/InputComponent/InputComponent";
 import CheckBoxComponent from "@/components/CheckBoxComponent/CheckBoxComponent";
 import { google_sign_in, login } from "@/routes/signup_and_signin";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
-import { saveToken } from "@/utils/authUtils";
+import {
+  getUserNamePassword,
+  saveToken,
+  saveUserNamePassword,
+} from "@/utils/authUtils";
 import SignInPasskey from "./passkey-models/SignInPasskey";
 import SigninPasskeyFaceId from "./passkey-models/SigninPasskeyFaceId";
 import CreatePasskeyText from "./passkey-models/CreatePasskeyText";
@@ -115,10 +119,19 @@ const Signin = () => {
   // const isPartnerShipAccount = getPartnershipToken();
 
   useEffect(() => {
-    // 2 seconds time out
-    const timeout = setTimeout(() => {
-      setShowPasskeyModel(true);
-    }, 2000); // Hide after 2 seconds
+    const userCredentials = getUserNamePassword();
+    if (userCredentials) {
+      setForm({
+        email: userCredentials.username,
+        password: userCredentials.password,
+      });
+      handleSubmit(userCredentials.username, userCredentials.password, true);
+    } else {
+      // 2 seconds time out
+      const timeout = setTimeout(() => {
+        setShowPasskeyModel(true);
+      }, 2000); // Hide after 2 seconds
+    }
   }, []);
 
   const handleGoogleSignInSuccess = async (
@@ -163,18 +176,16 @@ const Signin = () => {
   };
 
   // check form data is not empty and valid
-  const validateForm = () => {
+  const validateForm = (email: string, password: string) => {
     const errors: FormErrors = {};
-    if (!form.email.trim()) {
+    if (!email.trim()) {
       errors.email = "Email is required";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email.trim())
-    ) {
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email.trim())) {
       errors.email = "Invalid email address";
     }
-    if (!form.password) {
+    if (!password) {
       errors.password = "Password is required";
-    } else if (form.password.length < 6) {
+    } else if (password.length < 6) {
       errors.password = "Password must be at least 6 characters";
     }
     setFormErrors(errors);
@@ -182,21 +193,40 @@ const Signin = () => {
   };
 
   // handle form submit
-  const handleSubmit = async () => {
+  const handleSubmit = async (
+    email: string,
+    password: string,
+    robot: boolean
+  ) => {
     // validate form
-    if (!validateForm()) return;
+    if (!validateForm(email, password)) return;
     if (loading) return;
-    if (!form.email?.trim() || !form.password) {
+    if (!email?.trim() || !password) {
       setError("Email and password are required.");
       setShowErrorModel(true); // you can render a simple error modal/toast if desired
       setTimeout(() => setShowErrorModel(false), 3600);
       return;
     }
+
+    // check not a robot
+    if (!robot) {
+      setError("Please confirm you are not a robot.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    }
+    // if remember me is checked, save username and password to local storage
+    if (rememberMe) {
+      saveUserNamePassword({
+        username: email.trim(),
+        password: password,
+      });
+    }
     setLoading(true);
     try {
       const payload = {
-        email: form.email.trim(),
-        password: form.password,
+        email: email.trim(),
+        password: password,
       };
       const json = await login(payload);
 
@@ -212,7 +242,10 @@ const Signin = () => {
       }
 
       saveToken(token);
+      // --------- show success model ---------
+      setSuccessMessage("Login successful");
       setShowSuccessModel(true);
+
       setTimeout(() => {
         setShowSuccessModel(false);
         const isPartner = getPartnershipToken(); // "yes" | "no" | null
@@ -517,7 +550,9 @@ const Signin = () => {
         <div className="pt-4">
           <button
             className="w-full bg-app-button-primary text-app-text-tertiary py-3.5 rounded-lg font-plusJakartaSans text-sm"
-            onClick={() => handleSubmit()}
+            onClick={() =>
+              handleSubmit(form.email.trim(), form.password, notRobot)
+            }
             disabled={loading} // Disable button if loading
           >
             Sign in

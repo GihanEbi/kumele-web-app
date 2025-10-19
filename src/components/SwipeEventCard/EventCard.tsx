@@ -18,6 +18,7 @@ import {
   RateIcon,
   ShareIcon,
   SparkingIcon,
+  TranslateIcon,
   TwoTicketsIcon,
   TypingIconNew,
   UsersIcon,
@@ -33,6 +34,9 @@ import { useAppContext } from "@/context/AppContext";
 import RatingSection from "./otherEvents/RatingSection";
 import { useRouter } from "next/navigation";
 import HobbyTagIcon from "../HobbyTagIcon/HobbyTagIcon";
+import CommentList from "../CommentList/CommentList";
+import StarRating from "../StarRating/StarRating";
+import { PercentageRateIcon } from "../PercentageRateIcon/PercentageRateIcon";
 
 //types of a event
 type Event = {
@@ -135,6 +139,76 @@ const { otherEvents } = {
   otherEvents: mockOtherEvents,
 };
 
+// Removed ': Comment[]' to avoid conflict with DOM 'Comment' interface.
+const MockComments = [
+  {
+    id: 1,
+    author: "Josh Durrant",
+    date: "25 April 2022",
+    content:
+      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+    isOwner: true,
+    avatarUrl: "/avatar-img/joshdurrant.png",
+    replies: [
+      {
+        id: 101,
+        author: "Alkesh Sharma",
+        date: "23 August 2022",
+        content: "What a display dsn cdn zxnc",
+        avatarUrl: "/avatar-img/user-preview.png",
+        replies: [
+          {
+            id: 103,
+            author: "Josh Durrant",
+            date: "23 August 2022",
+            content: "I also agree with this assessment.",
+            avatarUrl: "/avatar-img/joshdurrant.png",
+          },
+          {
+            id: 104,
+            author: "Simon Pears",
+            date: "23 August 2022",
+            content: "I also agree with this assessment.",
+            avatarUrl: "/avatar-img/simon.png",
+          },
+        ],
+      },
+      {
+        id: 102,
+        author: "Josh Durrant",
+        date: "23 August 2022",
+        content: "Replying to Alkesh, great point!",
+        isOwner: true,
+        avatarUrl: "/avatar-img/joshdurrant.png",
+      },
+      {
+        id: 103,
+        author: "Simon Pears",
+        date: "23 August 2022",
+        content: "I also agree with this assessment.",
+        avatarUrl: "/avatar-img/simon.png",
+      },
+    ],
+  },
+  {
+    id: 2,
+    author: "Jakob Hoffman",
+    date: "23 August 2022",
+    content:
+      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+    avatarUrl: "/avatar-img/jakob.png",
+    replies: [
+      {
+        id: 101,
+        author: "Alkesh Sharma",
+        date: "23 August 2022",
+        content: "What a display dsn cdn zxnc",
+        avatarUrl: "/avatar-img/user-preview.png", // Use different avatar for clarity
+      },
+    ],
+  },
+];
+
 export default function EventCard({
   event,
   events,
@@ -166,6 +240,7 @@ export default function EventCard({
   const isBottomNavBarFixed = useAppContext().isBottomNavBarFixed;
 
   const isMoreOptionsOpen = useAppContext().moreOption;
+  const [isReplyOpen, setIsReplyOpen] = useState(false);
 
   const router = useRouter();
 
@@ -225,6 +300,11 @@ export default function EventCard({
   const handleToggleDownArrow = () => {
     setIsStackExtended(!isStackExtended);
     setIsBottomNavBarFixed(!isBottomNavBarFixed);
+  };
+
+  // Callback function to update the state
+  const handleReplyOpen = (isOpen: boolean) => {
+    setIsReplyOpen(isOpen);
   };
 
   return (
@@ -422,9 +502,12 @@ export default function EventCard({
                     <div className="mt-6 overflow-y-auto max-h-24 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                       {/* Inner container for padding AND explicit left alignment */}
                       <div className="px-6 text-left">
-                        <p className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[13px]">
-                          {event.subtitle}
-                        </p>
+                        <div className="flex items-center justify-between">
+                          <p className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[13px]">
+                            {event.subtitle}
+                          </p>
+                          <TranslateIcon />
+                        </div>
                         <p className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px] mt-1">
                           {event.description}
                         </p>
@@ -463,17 +546,21 @@ export default function EventCard({
                           </div>
                         </div>
                       </div>
+
+                      {/* <StarRating label="Communication" rating={4} /> */}
                       <div className="flex items-center gap-2">
                         <div className="flex items-center mt-3 gap-2">
                           <RateEventIcon className={"text-app-icon"} />
                           <RateEventIcon className={"text-app-icon"} />
                           <RateEventIcon className={"text-app-icon"} />
                           <RateEventIcon className={"text-app-icon"} />
-                          <RateEventIcon className={"text-app-icon-muted"} />
+                          {/* <RateEventIcon className={"text-app-icon-muted"} /> */}
+
+                          <PercentageRateIcon percentage={70} />
                         </div>
                         <div className="flex items-center">
                           <p className="text-md mt-2 font-bold text-primary text-start">
-                            4.0
+                            4.5
                           </p>
                         </div>
                       </div>
@@ -599,7 +686,12 @@ export default function EventCard({
                         <p className="text-xs">( 5.0 )</p>
                       </div>
                     </div>
-
+                    <div className="px-5">
+                      <CommentList
+                        comments={MockComments}
+                        onReplyOpen={handleReplyOpen}
+                      />
+                    </div>
                     {otherEvents && (
                       <div className="px-5 pb-4">
                         <OtherEvents
