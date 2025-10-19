@@ -6,8 +6,8 @@ import {
   NewEmailIcon,
   NewUserIcon,
 } from "../../../public/svg-icons/icons";
-import CheckBoxComponent from "../CheckBoxComponent/CheckBoxComponent";
-import InputComponent from "../InputComponent/InputComponent";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 import { send_beta_code } from "@/routes/signup_and_signin";
 import { useRouter } from "next/navigation";
 
@@ -38,6 +38,25 @@ export default function SubscribeModal({
     email: "",
     newsletter: false,
     agree: false,
+  });
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // ---------- show success model -----------
+  const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  // ---------- show error model -----------
+  const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const [formErrors, setFormErrors] = useState<{
+    name?: string;
+    email?: string;
+    agree?: string;
+  }>({
+    name: "",
+    email: "",
+    agree: "",
   });
 
   useEffect(() => {
@@ -80,12 +99,27 @@ export default function SubscribeModal({
 
   // function to get beta code
   const handleGetBetaCode = async () => {
-    if (!email) {
-      alert("Please enter your email");
+    console.log(formData);
+    const { name, email, newsletter, agree } = formData;
+
+    if (!email || !name) {
+      setFormErrors({
+        name: !name ? "Name is required" : "",
+        email: !email ? "Email is required" : "",
+      });
+      return;
+    }
+    if (!agree) {
+      setError("You must agree to the terms and conditions");
+      setShowErrorModel(true);
+      setTimeout(() => {
+        setShowErrorModel(false);
+        setError("");
+      }, 3600);
       return;
     }
     try {
-      let data = await send_beta_code(email);
+      let data = await send_beta_code(formData.email);
       if (data.success) {
         alert("Beta code sent to your email");
         onClose();
@@ -154,7 +188,9 @@ export default function SubscribeModal({
           {/* Name */}
           <label
             style={{ backgroundColor: "#F4F4F4" }}
-            className="mb-3 flex items-center gap-2 rounded-[7.47px] bg-white/10 px-3 py-[2px] ring-1 ring-white/10 focus-within:ring-2 focus-within:ring-amber-400"
+            className={`${
+              formErrors.name ? "border-2 border-red-500" : ""
+            } mb-3 flex items-center gap-2 rounded-[7.47px] bg-white/10 px-3 py-0.5 ring-1 ring-white/10 focus-within:ring-2 focus-within:ring-amber-400`}
           >
             <NewUserIcon className="w-[25.58px] h-[33.66px]" />
             <input
@@ -162,7 +198,10 @@ export default function SubscribeModal({
               name="name"
               placeholder="Enter name"
               value={formData.name}
-              onChange={handleChange}
+              onChange={(e) => {
+                setFormData((prev) => ({ ...prev, name: e.target.value }));
+                setFormErrors((prev) => ({ ...prev, name: "" }));
+              }}
               className="w-full text-black h-[32.88px] bg-transparent placeholder-gray-800 placeholder-font-plusJakartaSans placeholder:font-normal placeholder:text-[13.77px] outline-none"
             />
           </label>
@@ -170,16 +209,22 @@ export default function SubscribeModal({
           {/* Email */}
           <label
             style={{ backgroundColor: "#F4F4F4" }}
-            className="mb-3 flex items-center gap-2 rounded-[7.47px] bg-white/10 px-3 py-0.5 ring-1 ring-white/10 focus-within:ring-2 focus-within:ring-amber-400"
+            className={`${
+              formErrors.email ? "border-2 border-red-500" : ""
+            } mb-3 flex items-center gap-2 rounded-[7.47px] bg-white/10 px-3 py-0.5 ring-1 ring-white/10 focus-within:ring-2 focus-within:ring-amber-400`}
           >
             <NewEmailIcon className="w-[28.58px] h-[38.66px] -mb-1" />
+
             <input
               type="email"
               name="email"
-              required
+              // required
               placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={(e) => {
+                setFormData((prev) => ({ ...prev, email: e.target.value }));
+                setFormErrors((prev) => ({ ...prev, email: "" }));
+              }}
               className="w-full text-black h-[32.88px] rounded-[7.47px] outline-none placeholder-gray-800 placeholder-font-plusJakartaSans placeholder:font-normal placeholder:text-[13.77px]"
             />
           </label>
@@ -300,6 +345,22 @@ export default function SubscribeModal({
           </button>
         </form>
       </div>
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
     </div>
   );
 }

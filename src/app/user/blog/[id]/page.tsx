@@ -8,7 +8,10 @@ import CommentList from "@/components/CommentList/CommentList";
 import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { useParams } from "next/navigation";
-import { Confetti2Icon } from "../../../../../public/svg-icons/icons";
+import {
+  Confetti2Icon,
+  TranslateIcon,
+} from "../../../../../public/svg-icons/icons";
 import {
   comment_on_blog,
   get_blog_by_id,
@@ -310,17 +313,21 @@ export default function BlogDetailPage() {
           })}
         </p>
 
-        {/* Like and Social Media Icons */}
-        <LikeAndShare
-          initiallyLiked={false}
-          blogId={id}
-          initialLikes={3}
-          youtube_link={blog.youtube_link}
-          facebook_link={blog.facebook_link}
-          instagram_link={blog.instagram_link}
-          pinterest_link={blog.pinterest_link}
-          twitter_link={blog.twitter_link}
-        />
+        <div className="flex items-center gap-1">
+          <TranslateIcon />
+
+          {/* Like and Social Media Icons */}
+          <LikeAndShare
+            initiallyLiked={false}
+            blogId={id}
+            initialLikes={3}
+            youtube_link={blog.youtube_link}
+            facebook_link={blog.facebook_link}
+            instagram_link={blog.instagram_link}
+            pinterest_link={blog.pinterest_link}
+            twitter_link={blog.twitter_link}
+          />
+        </div>
       </div>
 
       {/* Blog Content Section (using blog.blog_content directly) */}

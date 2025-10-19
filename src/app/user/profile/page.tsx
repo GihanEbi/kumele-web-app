@@ -30,6 +30,11 @@ import CustomToggle from "@/components/TogglrButtonComponent/TogglrButton";
 import { useAppContext } from "@/context/AppContext";
 import { getPartnershipToken } from "@/utils/partnershipUtils";
 import { getFollowingFollowerCount } from "@/routes/following_follower";
+import { get_profile_page_contents } from "@/routes/LanguageContents/lnguageContents";
+import {
+  translateText,
+  translateToEnglish,
+} from "@/routes/translate/translate";
 const settingsGroup1 = [
   {
     icon: <SoundIcon className="text-app-icon" width={28} height={28} />,
@@ -114,6 +119,25 @@ interface profileData {
   qr_code_url: string;
 }
 
+interface profilePageContents {
+  title: string;
+  editHobbies: string;
+  following: string;
+  followers: string;
+  GoldStatus: string;
+  settings: string;
+  notifications: string;
+  paymentSubscriptions: string;
+  security: string;
+  contact: string;
+  guidelines: string;
+  refererFriend: string;
+  termsConditions: string;
+  nightMode: string;
+  deleteAccount: string;
+  signOut: string;
+}
+
 const Profile = () => {
   // routing
   const router = useRouter();
@@ -140,12 +164,17 @@ const Profile = () => {
 
   const [followingCount, setFollowingCount] = useState<number | null>(null);
   const [followerCount, setFollowerCount] = useState<number | null>(null);
+  // state for profile page content
+  const [profilePageContent, setProfilePageContent] = useState<
+    profilePageContents | undefined
+  >(undefined);
 
   useEffect(() => {
     setIsBottomNavBarFixed(true);
     if (!isPartnershipUser) {
       console.log("///");
     }
+    fetchProfilePageContents();
     fetchUserData();
     fetchFollowingFollowerCount();
   }, []);
@@ -163,6 +192,23 @@ const Profile = () => {
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchProfilePageContents = async () => {
+    setLoading(true);
+    try {
+      const data = await get_profile_page_contents();
+
+      if (data.success) {
+        setProfilePageContent(data.data);
+      } else {
+        console.error("Failed to fetch profile page contents:", data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching profile page contents:", error);
     } finally {
       setLoading(false);
     }
@@ -208,7 +254,7 @@ const Profile = () => {
       >
         <header className={`mb-4 pt-[36px]`}>
           <h1 className="text-[23px] font-bold text-app-text-primary font-plusJakartaSans-700">
-            Profile
+            {profilePageContent ? profilePageContent.title : "Profile"}
           </h1>
         </header>
 
@@ -285,7 +331,9 @@ const Profile = () => {
                         router.push("/profile-other-pages/edit-interest");
                       }}
                     >
-                      Edit hobbies
+                      {profilePageContent
+                        ? profilePageContent.editHobbies
+                        : "Edit Hobbies"}
                     </button>
                   </div>
                   <div className="relative w-[50px] h-[50px] sm:w-20 sm:h-20">
@@ -298,6 +346,45 @@ const Profile = () => {
                       />
                     )}
                   </div>
+                  {/* translator button */}
+                  <button
+                    className="absolute top-4 right-4 bg-app-input-primary p-2 rounded-lg"
+                    onClick={async () => {
+
+                      const res = await fetch("/api/translate", {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          text: userData?.about_me
+                            ? userData.about_me
+                            : "This is the about me section. You can write a brief description about yourself here.",
+                        }),
+                      });
+
+                      const data = await res.json();
+
+                      if (data.error) throw new Error(data.error);
+
+                      return data.translated;
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-app-icon"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                      />
+                    </svg>
+                  </button>
                 </div>
 
                 <div className="mt-6 overflow-y-auto max-h-32 pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
@@ -322,7 +409,9 @@ const Profile = () => {
                 }
               >
                 <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12px]">
-                  Following
+                  {profilePageContent
+                    ? profilePageContent.following
+                    : "Following"}
                 </p>
                 <p className="text-[18px] font-bold text-app-new-blue font-plusJakartaSans-700">
                   {followingCount !== null ? followingCount : 0}
@@ -337,7 +426,9 @@ const Profile = () => {
                 }
               >
                 <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12px]">
-                  Followers
+                  {profilePageContent
+                    ? profilePageContent.followers
+                    : "Followers"}
                 </p>
                 <p className="text-[18px] font-bold text-app-new-blue font-plusJakartaSans-700">
                   {followerCount !== null ? followerCount : 0}
@@ -345,7 +436,9 @@ const Profile = () => {
               </div>
               <div className="flex flex-col items-center p-2">
                 <p className="text-app-text-primary font-plusJakartaSans font-normal text-[12px]">
-                  Gold status
+                  {profilePageContent
+                    ? profilePageContent.GoldStatus
+                    : "Gold Status"}
                 </p>
                 <p className="text-[18px] font-bold text-app-new-blue font-plusJakartaSans-700">
                   {23}
@@ -358,7 +451,7 @@ const Profile = () => {
         {/* Settings */}
         <div className="mb-[22px]">
           <h3 className="font-plusJakartaSans font-bold text-[19px] mb-[22px] text-app-text-primary">
-            Settings
+            {profilePageContent ? profilePageContent.settings : "Settings"}
           </h3>{" "}
           {/* Settings Group 1 */}
           <div className="bg-app-input-primary rounded-lg overflow-hidden mb-6">
@@ -379,7 +472,19 @@ const Profile = () => {
                 <div className="flex items-center space-x-3">
                   {item.icon}
                   <span className="text-app-text-profile-tabs font-plusJakartaSans font-normal text-[16px]">
-                    {item.text}
+                    {item.text === "Notifications"
+                      ? profilePageContent
+                        ? profilePageContent.notifications
+                        : "Notifications"
+                      : item.text === "Payments & Subscriptions"
+                      ? profilePageContent
+                        ? profilePageContent.paymentSubscriptions
+                        : "Payment & Subscriptions"
+                      : item.text === "Security"
+                      ? profilePageContent
+                        ? profilePageContent.security
+                        : "Security"
+                      : item.text}
                   </span>
                 </div>
                 <RightArrowIcon
@@ -423,7 +528,35 @@ const Profile = () => {
                 <div className="flex items-center space-x-3">
                   {item.icon}
                   <span className="text-[16px] text-app-text-profile-tabs font-plusJakartaSans-400">
-                    {item.text}
+                    {item.text === "Contact"
+                      ? profilePageContent
+                        ? profilePageContent.contact
+                        : "Contact"
+                      : item.text === "Guidelines"
+                      ? profilePageContent
+                        ? profilePageContent.guidelines
+                        : "Guidelines"
+                      : item.text === "Refer a Friend"
+                      ? profilePageContent
+                        ? profilePageContent.refererFriend
+                        : "Refer a Friend"
+                      : item.text === "Terms and Conditions"
+                      ? profilePageContent
+                        ? profilePageContent.termsConditions
+                        : "Terms and Conditions"
+                      : item.text === "Night Mode"
+                      ? profilePageContent
+                        ? profilePageContent.nightMode
+                        : "Night Mode"
+                      : item.text === "Delete Account"
+                      ? profilePageContent
+                        ? profilePageContent.deleteAccount
+                        : "Delete Account"
+                      : item.text === "Sign Out"
+                      ? profilePageContent
+                        ? profilePageContent.signOut
+                        : "Sign Out"
+                      : item.text}
                   </span>
                 </div>
                 {item.text !== "Night Mode" ? (

@@ -32,6 +32,8 @@ import { saveToken } from "@/utils/authUtils";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 
+type FormErrors = Record<string, string>;
+
 const languages = [
   {
     id: "English",
@@ -81,8 +83,10 @@ const Signup = () => {
     aboveLegalAge: false,
     termsAndConditionsAccepted: false,
     subscribedToNewsletter: false,
-    beta_code:""
+    beta_code: "",
   });
+  // form errors
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   // set separate birthday component value together
   const [birthDay, setBirthday] = useState({
@@ -93,7 +97,6 @@ const Signup = () => {
   // state for store data of i am not robot
   const [isRobot, setIsRobot] = useState(false);
   // --------- form errors for user group details ----------
-  const [formErrors, setFormErrors] = useState<any>({});
   // --------- show email verification model ----------
   const [showEmailVerificationModel, setShowEmailVerificationModel] =
     useState(false);
@@ -109,8 +112,64 @@ const Signup = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // -------- handleChange for input fields ---------
-  const handleInputChange = (value: string | Boolean | string[], name: string) => {
+  const handleInputChange = (
+    value: string | Boolean | string[],
+    name: string
+  ) => {
+    setFormErrors((prev) => {
+      const updatedErrors = { ...prev };
+      delete updatedErrors[name];
+      return updatedErrors;
+    });
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // check form data is not empty and valid
+  const validateForm = () => {
+    const errors: FormErrors = {};
+    if (!form.email.trim()) {
+      errors.email = "Email is required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email.trim())
+    ) {
+      errors.email = "Invalid email address";
+    }
+    if (!form.password) {
+      errors.password = "Password is required";
+    } else if (form.password.length < 6) {
+      errors.password = "Password must be at least 6 characters";
+    }
+    // Confirm password validation
+    if (!form.confirm_password) {
+      errors.confirm_password = "Confirm password is required";
+    } else if (form.confirm_password !== form.password) {
+      errors.confirm_password = "Passwords do not match";
+    }
+    // Full name validation
+    if (!form.fullName.trim()) {
+      errors.fullName = "Full name is required";
+    }
+    // Gender validation
+    if (!form.gender) {
+      errors.gender = "Gender is required";
+    }
+    // Language validation
+    if (!form.language) {
+      errors.language = "Language is required";
+    }
+    // beta code validation
+    if (!form.beta_code) {
+      errors.beta_code = "Beta code is required";
+    }
+
+    // date of birth validation
+    if (!birthDay.DD || !birthDay.MM || !birthDay.YYYY) {
+      errors.dateOfBirth = "Complete date of birth is required";
+    }
+    setFormErrors(errors);
+    console.log(errors);
+
+    return Object.keys(errors).length === 0;
   };
 
   // states for year dropdown
@@ -125,7 +184,38 @@ const Signup = () => {
   // Handle send OTP for email verification
   const handleSubmit = async () => {
     if (loading) return;
+    if (!validateForm()) {
+      return;
+    }
+    
     setLoading(true);
+    
+    // check if user is robot
+    if (!isRobot) {
+      setError("Please verify that you are not a robot.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      setLoading(false);
+      return;
+    }
+
+    // check if terms and conditions accepted
+    if (!form.termsAndConditionsAccepted) {
+      setError("You must accept the Terms & Conditions to proceed.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      setLoading(false);
+      return;
+    }
+
+    // check legal age
+    if (!form.aboveLegalAge) {
+      setError("You must be above legal age to proceed.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      setLoading(false);
+      return;
+    }
 
     try {
       const email = form.email;
@@ -137,9 +227,17 @@ const Signup = () => {
         setShowEmailVerificationModel(true);
       } else {
         console.log(data?.message || "Failed to send OTP. Please try again.");
+        setError(data?.message || "Failed to send OTP. Please try again.");
+        setShowErrorModel(true);
+        setTimeout(() => setShowErrorModel(false), 3600);
+        return;
       }
     } catch (error) {
       console.error("Error sending OTP:", error);
+      setError("Could not connect to the server. Please try again.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
     } finally {
       setLoading(false);
     }
@@ -183,6 +281,11 @@ const Signup = () => {
   // LANGUAGE SELECTION
 
   const handleTabClick = (tabId: string) => {
+    setFormErrors((prev) => {
+      const updatedErrors = { ...prev };
+      delete updatedErrors.language;
+      return updatedErrors;
+    });
     setActiveTab(tabId);
     handleInputChange(tabId, "language");
     scrollToTab(tabId);
@@ -345,7 +448,13 @@ const Signup = () => {
           <p className="text-xs font-plusJakartaSans text-app-text-primary mb-5">
             Language choice:
           </p>
-          <div className="mb-6 sm:mb-8 relative w-full">
+          <div
+            className={`${
+              formErrors.language
+                ? "border-1 border-red-500 pt-2 px-2 rounded-2xl"
+                : ""
+            } mb-6 sm:mb-8 relative w-full`}
+          >
             <div
               ref={tabsContainerRef}
               className="flex gap-5 space-x-2 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-0 sm:px-0 no-scrollbar"
@@ -382,7 +491,11 @@ const Signup = () => {
           </div>
         </div>
         {/* form */}
-        <div className="space-y-4 mb-5">
+        <div
+          className={`${
+            formErrors.fullName ? "border-2 border-red-500 rounded-md" : ""
+          } space-y-4 mb-5`}
+        >
           <div className="relative">
             <InputComponent
               icon={<UserIcon className="text-app-icon" />}
@@ -395,7 +508,11 @@ const Signup = () => {
             />
           </div>
         </div>
-        <div className="space-y-4  mb-5">
+        <div
+          className={`${
+            formErrors.email ? "border-2 border-red-500 rounded-md" : ""
+          } space-y-4 mb-5`}
+        >
           <div className="relative">
             <InputComponent
               icon={<MailIcon className="text-app-icon" />}
@@ -407,7 +524,11 @@ const Signup = () => {
             />
           </div>
         </div>
-        <div className="pt-1">
+        <div
+          className={`${
+            formErrors.gender ? "border-2 border-red-500 rounded-md p-2" : ""
+          } pt-1`}
+        >
           <RadioButtonGroupComponent
             name="Gender"
             options={authConstants.gender}
@@ -417,7 +538,13 @@ const Signup = () => {
             }}
           />
         </div>
-        <div className="pt-5">
+        <div
+          className={`${
+            formErrors.dateOfBirth
+              ? "mt-2 border-2 border-red-500 rounded-md p-2"
+              : ""
+          } pt-5`}
+        >
           <p className="text-sm font-plusJakartaSans text-app-text-primary mb-2">
             Date of Birth
           </p>
@@ -459,7 +586,11 @@ const Signup = () => {
           </div>
         </div>
         {/* enter password */}
-        <div className="relative mt-5">
+        <div
+          className={`${
+            formErrors.password ? "border-2 border-red-500 rounded-md" : ""
+          } relative mt-5`}
+        >
           <InputComponent
             icon={<PasswordIcon className="text-app-icon" />}
             placeholder="Enter Password"
@@ -482,7 +613,13 @@ const Signup = () => {
           </button>
         </div>
         {/* confirm password */}
-        <div className="relative mt-5">
+        <div
+          className={`${
+            formErrors.confirm_password
+              ? "border-2 border-red-500 rounded-md"
+              : ""
+          } relative mt-5`}
+        >
           <InputComponent
             icon={<PasswordIcon />}
             placeholder="Confirm Password"
@@ -521,7 +658,13 @@ const Signup = () => {
               value={form.referralCode}
             />
           </div>
-          <div className="pt-5">
+          <div
+            className={`${
+              formErrors.beta_code
+                ? "border-2 border-red-500 rounded-md p-2"
+                : ""
+            } mt-5`}
+          >
             <p className="text-sm font-plusJakartaSans text-app-text-primary mb-1">
               Beta code{" "}
               {/* <span className="font-plusJakartaSans text-app-text-primary">

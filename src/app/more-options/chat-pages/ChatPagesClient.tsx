@@ -25,6 +25,7 @@ import { fi } from "date-fns/locale";
 import { createEventReport, getReportReasons } from "@/routes/event_report";
 import { useRouter } from "next/navigation";
 import { get_user_event_by_user_id } from "@/routes/profile";
+import { userCheckInEvent } from "@/routes/user events";
 
 type user_data = {
   id: string;
@@ -115,6 +116,8 @@ const ChatPagesClient = () => {
   const [guestId, setGuestId] = useState<string | null>(null);
   // state for store the fetched user data
   const [userData, setUserData] = useState<profileData | null>(null);
+  // event id
+  const [eventId, setEventId] = useState<string | null>(null);
 
   // confirm user
   const [confirmUserId, setConfirmUserId] = useState<string | null>(null);
@@ -122,12 +125,13 @@ const ChatPagesClient = () => {
   useEffect(() => {
     if (searchParams) {
       setSource(searchParams.get("source"));
-      setShowMemberDetailModel(true);
+      setEventId(searchParams.get("event_id"));
     }
+    // check user in near location
     if (searchParams?.get("user_id")) {
       setGuestId(searchParams.get("user_id"));
-
       fetchUserData();
+      setShowMemberDetailModel(true);
     }
     fetchEventData();
     getEventReportReasons();
@@ -143,6 +147,33 @@ const ChatPagesClient = () => {
       }
     } catch (error) {
       console.error("Error fetching report reasons:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // checked in user to event
+  const checkInUserToEvent = async (eventID: string) => {
+    setLoading(true);
+    try {
+      const data = await userCheckInEvent(eventID);
+      if (data.success) {
+        setSuccess("User checked in successfully");
+        setShowSuccessModel(true);
+        setTimeout(() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }, 3600);
+      } else {
+        setError("Failed to check in user");
+        setShowErrorModel(true);
+        setTimeout(() => {
+          setShowErrorModel(false);
+          setError("");
+        }, 3600);
+      }
+    } catch (error) {
+      console.error("Error checking in user:", error);
     } finally {
       setLoading(false);
     }
@@ -497,7 +528,7 @@ const ChatPagesClient = () => {
                       }}
                     />
                   </div>
-                  <p className="text-xs">( 4.8 )</p>
+                  {/* <p className="text-xs">( 4.8 )</p> */}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <SparkingIcon className="text-app-icon w-[20px] h-[20px]" />
@@ -554,7 +585,7 @@ const ChatPagesClient = () => {
                       }}
                     />
                   </div>
-                  <p className="text-xs">( 4.2 )</p>
+                  {/* <p className="text-xs">( 4.2 )</p> */}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <MicrophoneIcon className="text-app-icon w-[20px] h-[20px]" />
@@ -611,7 +642,7 @@ const ChatPagesClient = () => {
                       }}
                     />
                   </div>
-                  <p className="text-xs">( 5.0 )</p>
+                  {/* <p className="text-xs">( 5.0 )</p> */}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <AtmosphereIcon className="text-app-icon w-[20px] h-[20px]" />
@@ -668,7 +699,7 @@ const ChatPagesClient = () => {
                       }}
                     />
                   </div>
-                  <p className="text-xs">( 5.0 )</p>
+                  {/* <p className="text-xs">( 5.0 )</p> */}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <WalletIcon className="text-app-icon w-[20px] h-[20px]" />
@@ -725,7 +756,7 @@ const ChatPagesClient = () => {
                       }}
                     />
                   </div>
-                  <p className="text-xs">( 5.0 )</p>
+                  {/* <p className="text-xs">( 5.0 )</p> */}
                 </div>
                 <h2 className="text-primary font-plusJakartaSans-700 font-bold text-[19px] mt-[40px]">
                   Comment
@@ -818,14 +849,14 @@ const ChatPagesClient = () => {
                 <div
                   key={index}
                   className={`flex items-center justify-between space-x-3 mb-[24px] ${
-                    follower.id === confirmUserId
+                    follower.status === "CHECKED_IN"
                       ? ""
                       : "opacity-50 cursor-not-allowed"
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="relative w-[44px] h-[44px] ">
-                      {follower.id === confirmUserId && (
+                      {follower.status === "CHECKED_IN" && (
                         <span className="z-1000 absolute top-0 right-0 bg-green-600 text-black text-[10px] font-bold rounded-full w-3 h-3 flex items-center justify-center"></span>
                       )}
 
@@ -842,7 +873,7 @@ const ChatPagesClient = () => {
                   </div>
                   <div
                     className={`${
-                      follower.id === confirmUserId ? "hidden" : ""
+                      follower.status === "CHECKED_IN" ? "hidden" : ""
                     }`}
                   >
                     <button
@@ -892,6 +923,7 @@ const ChatPagesClient = () => {
         onClose={() => setShowMemberDetailModel(false)}
         onConfirm={() => {
           setConfirmUserId(guestId);
+          checkInUserToEvent(eventId || "");
           setShowMemberDetailModel(false);
           setSuccess("User confirmed successfully");
           setShowSuccessModel(true);
