@@ -20,6 +20,7 @@ import {
 } from "../../../../public/svg-icons/icons";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
 import InputComponent from "@/components/InputComponent/InputComponent";
+import { create_plisio_payment } from "@/routes/pisio_Apis/plisio";
 
 // --- Inlined PlusIcon from your original component ---
 const PlusIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -65,6 +66,22 @@ const PaymentPage = () => {
       setIsPaymentSuccess(false); // Hide the GIF overlay
       //setThankYouOpen(true); // Open the final "Payment Complete" modal
     }, 5000); // Wait for 3 seconds
+  };
+
+  const handleCripto = async () => {
+    try {
+      const response = await create_plisio_payment({
+        amount: 23.07,
+        currency: "USD",
+        order_id: "001",
+      });
+      console.log("Payment response:", response);
+      if (response.data.invoice_url) {
+        window.location.href = response.data.invoice_url; // redirect to Plisio checkout
+      }
+    } catch (error) {
+      console.error("Error creating payment:", error);
+    }
   };
 
   return (
@@ -176,16 +193,21 @@ const PaymentPage = () => {
               <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">
                 Pay with
               </p>
-              <div className="flex items-center gap-3">
-                {/* <CryptoIcon className="" />
-                <CreditCardIcon className="" /> */}
+              <div
+                className="flex items-center gap-3"
+                onClick={() => {
+                  handleCripto();
+                }}
+              >
+                <CryptoIcon className="" />
+                <CreditCardIcon className="" />
                 {/* The component is self-contained and handles its own logic */}
-                <CryptoPaymentButton
+                {/* <CryptoPaymentButton
                   productId={product.id}
                   productName={product.name}
                   description={product.description}
                   amount={product.price}
-                />
+                /> */}
               </div>
             </div>
           </div>

@@ -125,15 +125,15 @@ export default function CommentItem({
 
           {/* header row */}
           <div className="flex items-center gap-4 flex-wrap">
-            <h4 className="font-plusJakartaSans font-bold text-[18px] text-app-blog-card-heading">
+            <h4 className="font-plusJakartaSans font-bold text-[15px] text-app-blog-card-heading">
               {comment.author}
             </h4>
 
             {/* Replies toggle chip only on top-level comments */}
-            {depth === 0 && hasReplies && (
+            {/* {depth === 0 && hasReplies && (
               <button
                 onClick={() => setRepliesOpen(!repliesOpen)}
-                className="inline-flex items-center px-3 py-1 rounded-full
+                className="inline-flex items-center px-2 py-1 rounded-full
                            bg-app-blog-selected-tabs-background
                            font-plusJakartaSans text-[11.81px] text-black space-x-2"
               >
@@ -146,7 +146,7 @@ export default function CommentItem({
                   <DownArrowIcon className="h-6 w-6" />
                 </span>
               </button>
-            )}
+            )} */}
           </div>
 
           {/* meta row */}
@@ -156,17 +156,17 @@ export default function CommentItem({
           >
             <span>•</span>
             <span>{comment.date}</span>
-            <span>•</span>
-            <button
+            <div></div>
+            {/* <button
               onClick={toggleReplyForm}
               className="text-blue-500 hover:underline"
             >
               Reply
-            </button>
+            </button> */}
           </div>
 
           {/* body */}
-          <p className="mt-2 text-app-blog-card-heading font-plusJakartaSans text-[14px]">
+          <p className="mt-2 text-start text-app-blog-card-heading font-plusJakartaSans text-[14px]">
             {comment.content}
           </p>
 
