@@ -5,6 +5,7 @@ import BottomNavBar from "@/components/BotomNavBar/BotomNavBar";
 import React from "react";
 import { useAppContext } from "@/context/AppContext";
 import { getToken } from "@/utils/authUtils";
+import CurrentLocation from "@/components/CurrentLocation/CurrentLocation";
 
 export default function DashboardLayout({
   children,
@@ -30,6 +31,7 @@ export default function DashboardLayout({
             isBottomNavBarFixed ? "fixed" : ""
           } z-40 bottom-0 left-0 right-0`}
         >
+          <CurrentLocation />
           <BottomNavBar />
         </footer>
       )}

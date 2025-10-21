@@ -37,6 +37,7 @@ import HobbyTagIcon from "../HobbyTagIcon/HobbyTagIcon";
 import CommentList from "../CommentList/CommentList";
 import StarRating from "../StarRating/StarRating";
 import { PercentageRateIcon } from "../PercentageRateIcon/PercentageRateIcon";
+import Head from "next/head";
 
 //types of a event
 type Event = {
@@ -307,6 +308,61 @@ export default function EventCard({
     setIsReplyOpen(isOpen);
   };
 
+  // useEffect(() => {
+  //   // Create the global callback for Google Translate
+  //   (window as any).googleTranslateElementInit = function () {
+  //     new (window as any).google.translate.TranslateElement(
+  //       {
+  //         pageLanguage: "gr", // your page's original language
+  //         includedLanguages: "en", // optional: restrict available languages
+  //         layout: (window as any).google.translate.TranslateElement.InlineLayout
+  //           .SIMPLE,
+  //       },
+  //       "google_translate_element"
+  //     );
+  //   };
+
+  //   // Dynamically load the Google Translate script
+  //   const script = document.createElement("script");
+  //   script.src =
+  //     "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  //   document.body.appendChild(script);
+
+  //   return () => {
+  //     // Cleanup if the component unmounts
+  //     document.body.removeChild(script);
+  //   };
+  // }, []);
+
+  const handleTranslate = () => {
+    const url = `https://translate.google.com/?sl=auto&tl=en&text=${encodeURIComponent(
+      event.description
+    )}&op=translate`;
+    window.open(url, "_blank");
+  };
+  const handleTranslateOld = () => {
+    // Trigger Google Translate dropdown manually
+    const gtEl = document.querySelector(".goog-te-combo") as HTMLSelectElement;
+    if (gtEl) {
+      gtEl.value = "en"; // change to English
+      gtEl.dispatchEvent(new Event("change"));
+    }
+  };
+
+  // useEffect(() => {
+  //   (window as any).googleTranslateElementInit = function () {
+  //     new (window as any).google.translate.TranslateElement(
+  //       { pageLanguage: "auto" },
+  //       "google_translate_element"
+  //     );
+  //   };
+
+  //   const script = document.createElement("script");
+  //   script.src =
+  //     "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  //   document.body.appendChild(script);
+  // }, []);
+
   return (
     <motion.div
       style={{
@@ -506,9 +562,32 @@ export default function EventCard({
                           <p className="font-plusJakartaSans text-app-button-model-text-color font-bold text-[13px]">
                             {event.subtitle}
                           </p>
-                          <TranslateIcon />
+                          {/* <div id="google_translate_element" className="mb-5">
+                            {" "}
+                          </div> */}
+                          {/* <div
+                            id="google_translate_element"
+                            className=""
+                          ></div> */}
+                          <TranslateIcon
+                            onClick={() => {
+                              handleTranslate();
+                            }}
+                          />
+
+                          {/* 🟢 Icon to trigger translation */}
+                          {/* <button
+                            onClick={handleTranslateOld}
+                            className="cursor-pointer hover:opacity-80"
+                            title="Translate to English"
+                          >
+                            <TranslateIcon />
+                          </button> */}
                         </div>
-                        <p className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px] mt-1">
+                        <p
+                          className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px] mt-1"
+                          // lang="gr"
+                        >
                           {event.description}
                         </p>
                       </div>

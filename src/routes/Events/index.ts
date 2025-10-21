@@ -102,7 +102,7 @@ export async function get_all_event_list() {
       },
     });
     const data = await res.json();
-    return data
+    return data;
   } catch (error) {
     return error;
   }
@@ -125,6 +125,35 @@ export async function get_all_events_by_user_id(user_id: string) {
     return data;
   } catch (error) {
     console.error("Error fetching events by user ID:", error);
+    return error;
+  }
+}
+
+type locationData = {
+  longitude: string;
+  latitude: string;
+};
+
+// check-user-availability
+export async function check_user_availability(dataObj: {
+  latitude: number;
+  longitude: number;
+}) {
+  console.log(dataObj);
+
+  try {
+    const res = await fetch(`${commonUrl}/events/check-user-availability`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `${getToken()}`, // Ensure getToken() returns a valid token
+      },
+      body: JSON.stringify(dataObj),
+    });
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
     return error;
   }
 }
