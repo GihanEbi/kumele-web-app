@@ -34,6 +34,7 @@ import VerticalHobbyScroller from "@/components/VerticalHobbyScroller/VerticalHo
 import { createEvent } from "@/routes/Events";
 import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import axios from "axios";
 
 // Define the data for payment options directly in the parent
 interface OptionConfig {
@@ -124,6 +125,8 @@ const CreateEventSection = () => {
     payment_type: "",
     price: "0$",
   });
+
+  const [isAvailable, setIsAvailable] = useState<boolean>(false);
 
   // ---------- show success model -----------
   const [showSuccessModel, setShowSuccessModel] = useState(false);
@@ -232,8 +235,8 @@ const CreateEventSection = () => {
     fileInputRef.current?.click();
   };
 
-  const handleUserAvailability = (guests: number) => {
-    console.log(`Checking availability for ${guests} guests.`);
+  const handleUserAvailability = (available: boolean) => {
+    setIsAvailable(available);
     openModal();
     // Add your API call or logic here
   };
@@ -776,14 +779,25 @@ const CreateEventSection = () => {
       {/* User Availability Check Section */}
       <div className="mt-8">
         <UserAvailabilityCheck
-          onCheckAvailability={handleUserAvailability}
-          initialGuestCount={50} // Example: override initial guest count
+          onCheckAvailability={(isAvailable) => {
+            handleUserAvailability(isAvailable);
+          }}
+          initialGuestCount={1} // Example: override initial guest count
+          street_address={form.street_address}
+          home_number={form.home_number}
+          district={form.district}
+          postal_zip_code={form.postal_zip_code}
+          state={form.state}
         />
 
-        <UsersAroundModal isOpen={isModalOpen} onClose={closeModal} />
-        {/* <UserStatusModal 
-              isOpen={isModalOpen} 
-              onClose={closeModal} 
+        <UsersAroundModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          isAvailable={isAvailable}
+        />
+        {/* <UserStatusModal
+              isOpen={isModalOpen}
+              onClose={closeModal}
             /> */}
       </div>
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -18,6 +18,7 @@ import ChooseUserNameModel from "@/components/Models/ChooseUserNameModel/ChooseU
 import InlineSvg from "@/components/InlineSVG/InlineSVG";
 import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import { updateLocation } from "@/routes/signup_and_signin";
 
 type ChooseInterestsProps = {
   id: string | number;
@@ -159,6 +160,44 @@ const ChooseInterests = () => {
     }
   };
 
+  const locationIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Function to get the current location
+  const getCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const newLocation = {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          };
+          await updateLocation(newLocation);
+          console.log("logg");
+          
+        } catch (error) {
+          console.error("❌ Error updating location:", error);
+        }
+      },
+      (err) => {
+        console.error("❌ Error getting location:", err);
+      }
+    );
+  };
+
+  const handleAllow = () => {
+    getCurrentLocation();
+
+    // Start periodic updates after permission granted
+    if (locationIntervalRef.current) clearInterval(locationIntervalRef.current);
+    getCurrentLocation();
+    // locationIntervalRef.current = setInterval(() => {
+    // }, 15 * 60 * 1000);
+  };
+
+  const handleDeny = () => {
+    // setShowPopup(false);
+  };
+
   return (
     <div className="overflow-y-auto max-h-screen no-scrollbar">
       <div
@@ -265,9 +304,21 @@ const ChooseInterests = () => {
         />
       )}
       {locationPermission && !photosPermission && (
+        // <Location
+        //   isOpen={locationPermission}
+        //   onClose={(value: LocationChoice) => {
+        //     setForm((prev) => ({ ...prev, allow_location: value }));
+        //     submitPermissions(); // <-- send all three values here
+        //   }}
+        // />
         <Location
           isOpen={locationPermission}
           onClose={(value: LocationChoice) => {
+            if (value === "once" || value === "while_using") {
+              handleAllow();
+            } else {
+              handleDeny();
+            }
             setForm((prev) => ({ ...prev, allow_location: value }));
             submitPermissions(); // <-- send all three values here
           }}

@@ -71,7 +71,7 @@ export async function send_beta_code(email: string) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({email:email}),
+      body: JSON.stringify({ email: email }),
     });
     const data = await res.json();
     return data;
@@ -142,6 +142,24 @@ export async function login(dataObj: loginForm) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataObj),
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+// update location
+export async function updateLocation(dataObj: { latitude: number; longitude: number }) {
+  try {
+    const res = await fetch(`${commonUrl}/users/update-location/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `${getToken()}`,
       },
       body: JSON.stringify(dataObj),
     });
