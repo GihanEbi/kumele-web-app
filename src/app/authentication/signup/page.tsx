@@ -68,7 +68,7 @@ const Signup = () => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const isPartnerShipAccount = getPartnershipToken();
   const [showGoogleVerificationModel, setShowGoogleVerificationModel] =
-    useState(false);
+    useState(true);
 
   // ------------ from for user details -----------
   const [form, setForm] = useState({
@@ -187,9 +187,9 @@ const Signup = () => {
     if (!validateForm()) {
       return;
     }
-    
+
     setLoading(true);
-    
+
     // check if user is robot
     if (!isRobot) {
       setError("Please verify that you are not a robot.");
@@ -437,6 +437,7 @@ const Signup = () => {
       <div
         className={`${
           showEmailVerificationModel ||
+          showGoogleVerificationModel ||
           isYearDropdownOpen ||
           isMonthDropdownOpen ||
           isDayDropdownOpen
