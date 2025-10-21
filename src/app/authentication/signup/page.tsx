@@ -187,9 +187,9 @@ const Signup = () => {
     if (!validateForm()) {
       return;
     }
-    
+
     setLoading(true);
-    
+
     // check if user is robot
     if (!isRobot) {
       setError("Please verify that you are not a robot.");
@@ -437,6 +437,7 @@ const Signup = () => {
       <div
         className={`${
           showEmailVerificationModel ||
+          showGoogleVerificationModel ||
           isYearDropdownOpen ||
           isMonthDropdownOpen ||
           isDayDropdownOpen
