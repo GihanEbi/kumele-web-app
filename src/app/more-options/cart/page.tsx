@@ -71,7 +71,7 @@ const PaymentPage = () => {
   const handleCripto = async () => {
     try {
       const response = await create_plisio_payment({
-        amount: 23.07,
+        amount: 1.00,
         currency: "USD",
         order_id: "001",
       });
@@ -113,7 +113,7 @@ const PaymentPage = () => {
               Amount to pay
             </p>
             <p className="text-app-text-blue font-plusJakartaSans font-bold text-[23px] mt-1">
-              $23.07
+              $1.00
             </p>
           </div>
 
@@ -163,7 +163,7 @@ const PaymentPage = () => {
                 </p>
               </div>
               <p className="text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">
-                10 USD
+                0.5 USD
               </p>
             </div>
 
@@ -182,7 +182,7 @@ const PaymentPage = () => {
                 </div>
               </div>
               <p className=" text-app-blog-card-author-text font-plusJakartaSans font-normal text-[16px]">
-                13.7 USD
+                0.5 USD
               </p>
             </div>
 
