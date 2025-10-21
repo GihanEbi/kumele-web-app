@@ -31,6 +31,7 @@ type user_data = {
   id: string;
   username: string;
   profilePicture: string;
+  user_event_id: string;
   status: string;
 };
 
@@ -127,13 +128,20 @@ const ChatPagesClient = () => {
       setSource(searchParams.get("source"));
       setEventId(searchParams.get("event_id"));
     }
+    fetchEventData();
     // check user in near location
     if (searchParams?.get("user_id")) {
       setGuestId(searchParams.get("user_id"));
       fetchUserData();
-      setShowMemberDetailModel(true);
+      const status = eventData?.participants.find(
+        (participant) => participant.id === searchParams.get("user_id")
+      )?.status;
+      console.log(status);
+      
+      if (eventData && status !== "CHECKED_IN") {
+        setShowMemberDetailModel(true);
+      }
     }
-    fetchEventData();
     getEventReportReasons();
   }, [searchParams]);
 
@@ -157,7 +165,8 @@ const ChatPagesClient = () => {
     // get user event id using guestID
     const userEventId = eventData?.participants.find(
       (participant) => participant.id === guestID
-    )?.id;
+    )?.user_event_id;
+
     setLoading(true);
     try {
       const data = await userCheckInEvent(userEventId || "");
@@ -168,6 +177,8 @@ const ChatPagesClient = () => {
           setShowSuccessModel(false);
           setSuccess("");
         }, 3600);
+        fetchUserData();
+        fetchEventData();
       } else {
         setError("Failed to check in user");
         setShowErrorModel(true);
@@ -195,6 +206,7 @@ const ChatPagesClient = () => {
 
         if (data.success) {
           setUserData(data.data);
+          console.log("user data", data.data);
         } else {
           console.error("Failed to fetch host data:", data.message);
         }

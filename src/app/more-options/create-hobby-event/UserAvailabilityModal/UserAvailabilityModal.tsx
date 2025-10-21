@@ -6,11 +6,13 @@ import React, { useEffect, useState } from "react";
 interface UsersAroundModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isAvailable: boolean;
 }
 
 const UsersAroundModal: React.FC<UsersAroundModalProps> = ({
   isOpen,
   onClose,
+  isAvailable,
 }) => {
   const [showAlternateText, setShowAlternateText] = useState(false);
 
@@ -45,11 +47,11 @@ const UsersAroundModal: React.FC<UsersAroundModalProps> = ({
 
         <div className="min-h-[140px]">
           <h2 className="mb-3 font-plusJakartaSans font-bold text-[19px] text-black dark:text-white">
-            {showAlternateText ? "Users around" : "No users around"}
+            {isAvailable ? "Users around" : "No users around"}
           </h2>
 
           <p className="font-plusJakartaSans font-normal text-[16px] text-app-search-bar-text leading-relaxed">
-            {showAlternateText ? (
+            {isAvailable ? (
               <>
                 Potential matches matching your <br />
                 criteria found currently.
