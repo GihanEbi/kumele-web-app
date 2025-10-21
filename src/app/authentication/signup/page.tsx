@@ -68,7 +68,7 @@ const Signup = () => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const isPartnerShipAccount = getPartnershipToken();
   const [showGoogleVerificationModel, setShowGoogleVerificationModel] =
-    useState(true);
+    useState(false);
 
   // ------------ from for user details -----------
   const [form, setForm] = useState({
