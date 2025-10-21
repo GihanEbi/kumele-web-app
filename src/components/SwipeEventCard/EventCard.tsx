@@ -334,10 +334,26 @@ export default function EventCard({
   //   };
   // }, []);
 
-  const handleTranslate = () => {
-    const url = `https://translate.google.com/?sl=auto&tl=en&text=${encodeURIComponent(
-      event.description
-    )}&op=translate`;
+  const handleTranslate = async () => {
+    // const url = `https://translate.google.com/?sl=auto&tl=en&text=${encodeURIComponent(
+    //   event.description
+    // )}&op=translate`;
+    // window.open(url, "_blank");
+    // const res = await fetch("https://libretranslate.com/translate", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({
+    //     q: event.description,
+    //     source: "auto",
+    //     target: "en",
+    //   }),
+    // });
+    // const data = await res.json();
+    // console.log(data.translatedText);
+    
+
+    const text = encodeURIComponent(event.description);
+    const url = `https://translate.google.com/m/translate?sl=auto&tl=en&q=${text}`;
     window.open(url, "_blank");
   };
   const handleTranslateOld = () => {
