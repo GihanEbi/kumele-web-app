@@ -6,7 +6,7 @@ import Image from "next/image";
 type ReferralModelProps = {
   isOpen: boolean;
   onClose: () => void;
-  refCode: string;
+  refCode?: string;
 };
 
 const ReferralModel: React.FC<ReferralModelProps> = ({ isOpen, onClose, refCode }) => {
