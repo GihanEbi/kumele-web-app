@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -110,6 +110,15 @@ const Signup = () => {
   const [showErrorModel, setShowErrorModel] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    // get ref from params and set to form referral code
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get("ref");
+    if (refCode) {
+      setForm((prev) => ({ ...prev, referralCode: refCode }));
+    }
+  }, []);
 
   // -------- handleChange for input fields ---------
   const handleInputChange = (
@@ -559,6 +568,11 @@ const Signup = () => {
               itemSelected={birthDay.DD}
               onChange={(value: string) => {
                 setBirthday((prev) => ({ ...prev, DD: value }));
+                setFormErrors((prev) => {
+                  const updatedErrors = { ...prev };
+                  delete updatedErrors.dateOfBirth;
+                  return updatedErrors;
+                });
               }}
             />
             <DropDown
@@ -570,7 +584,11 @@ const Signup = () => {
               itemSelected={birthDay.MM}
               onChange={(value: string) => {
                 setBirthday((prev) => ({ ...prev, MM: value }));
-                console.log("month is", value);
+                setFormErrors((prev) => {
+                  const updatedErrors = { ...prev };
+                  delete updatedErrors.dateOfBirth;
+                  return updatedErrors;
+                });
               }}
             />
             <DropDown
@@ -582,6 +600,11 @@ const Signup = () => {
               itemSelected={birthDay.YYYY}
               onChange={(value: string) => {
                 setBirthday((prev) => ({ ...prev, YYYY: value }));
+                setFormErrors((prev) => {
+                  const updatedErrors = { ...prev };
+                  delete updatedErrors.dateOfBirth;
+                  return updatedErrors;
+                });
               }}
             />
           </div>

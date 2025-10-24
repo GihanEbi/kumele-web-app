@@ -35,28 +35,7 @@ import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 import ForgotPasswordModel from "@/components/Models/ForgotPasswordModel/ForgotPasswordModel";
 import GooglePasskeyLogin from "@/components/GooglePasskeyLogin/GooglePasskeyLogin";
 
-const languages = [
-  {
-    id: "english",
-    label: "English",
-  },
-  {
-    id: "french",
-    label: "French",
-  },
-  {
-    id: "spanish",
-    label: "Spanish",
-  },
-  {
-    id: "chinese",
-    label: "Chinese",
-  },
-  {
-    id: "arabic",
-    label: "Arabic",
-  },
-];
+
 
 type FormErrors = Record<string, string>;
 
@@ -161,8 +140,6 @@ const Signin = () => {
             router.push("/user/home");
           }
         }, 1000);
-      } else {
-        console.log(data);
       }
     } catch (err) {
       console.error("API call failed:", err);
@@ -264,70 +241,6 @@ const Signin = () => {
       setLoading(false);
     }
   };
-
-  // LANGUAGE SELECTION
-
-  const handleTabClick = (tabId: string) => {
-    setActiveTab(tabId);
-    scrollToTab(tabId);
-  }; // Mobile-like drag scrolling handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setStartX(e.pageX - (tabsContainerRef.current?.offsetLeft || 0));
-    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !tabsContainerRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - (tabsContainerRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2; // Scroll speed multiplier
-    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX - (tabsContainerRef.current?.offsetLeft || 0));
-    setScrollLeft(tabsContainerRef.current?.scrollLeft || 0);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !tabsContainerRef.current) return;
-    e.preventDefault();
-    const x = e.touches[0].pageX - (tabsContainerRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2;
-    tabsContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-  const scrollToTab = (tabId: string) => {
-    const tabElement = document.getElementById(`tab-${tabId}`);
-    if (tabElement && tabsContainerRef.current) {
-      const container = tabsContainerRef.current;
-      const containerWidth = container.offsetWidth;
-      const tabLeft = tabElement.offsetLeft;
-      const tabWidth = tabElement.offsetWidth;
-
-      const scrollPosition = tabLeft - (containerWidth - tabWidth) / 2;
-
-      container.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
-    }
-  };
-
   const handleGoogleIconClick = () => {
     if (googleLoginRef.current) {
       const googleButton =
@@ -339,7 +252,7 @@ const Signin = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       {/* Loading spinner */}
       {loading && (
         <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
@@ -348,7 +261,7 @@ const Signin = () => {
       )}
 
       {/* Header Section */}
-      <div className="relative h-[200px]">
+      <div className="relative h-[200px] flex-shrink-0">
         {" "}
         {/* Container for the header, same height as before */}
         {/* Background Image */}
@@ -378,31 +291,11 @@ const Signin = () => {
             height={100}
           />
         </div>
-        {/* Sign up Text & Google Icon */}
-        {/* This is positioned at the bottom of the 200px header area.
-        Ensure the part of your background.png where this text appears
-        has sufficient contrast for the 'text-black'.
-    */}
         <div className="absolute bottom-4 left-6 flex items-center space-x-2 z-10">
           {" "}
           <h1 className="text-xl font-bold text-app-text-black font-plusJakartaSans">
             Sign in
           </h1>
-          {/* <div className="mt-4">
-            <GooglePasskeyLogin
-              onSuccess={async (token) => {
-                try {
-                  const data = await google_sign_in({ token });
-                  if (data.success) {
-                    saveToken(data.data.token);
-                    router.push("/user/home");
-                  }
-                } catch (err) {
-                  console.error(err);
-                }
-              }}
-            />
-          </div> */}
           <div>
             <div onClick={handleGoogleIconClick} style={{ cursor: "pointer" }}>
               <GoogleIcon />
@@ -433,50 +326,10 @@ const Signin = () => {
           showForgotPasswordModel
             ? "bg-k-background-secondary"
             : "bg-k-background-primary"
-        } px-8 py-6 relative z-10`}
+        } px-8 py-6 relative z-10 flex-grow`}
       >
-        <div className="mb-6">
-          <p className="text-xs font-plusJakartaSans text-app-text-primary mb-5">
-            Language choice:
-          </p>
-          <div className="mb-6 sm:mb-8 relative w-full">
-            <div
-              ref={tabsContainerRef}
-              className="flex gap-5 space-x-2 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-0 sm:px-0 no-scrollbar"
-              onMouseDown={handleMouseDown}
-              onMouseLeave={handleMouseLeave}
-              onMouseUp={handleMouseUp}
-              onMouseMove={handleMouseMove}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              style={{
-                cursor: isDragging ? "grabbing" : "grab",
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
-                WebkitOverflowScrolling: "touch",
-              }}
-            >
-              {languages.map((tab, index) => (
-                <button
-                  key={tab.id}
-                  id={`tab-${tab.id}`}
-                  onClick={() => handleTabClick(tab.id)}
-                  className={`py-2 px-5 rounded-md text-sm font-medium whitespace-nowrap flex-shrink-0 transition-colors duration-150
-                  ${
-                    activeTab === tab.id
-                      ? "bg-app-button-yellow text-app-text-black font-medium"
-                      : "bg-app-input-primary text-app-text-secondary"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
         {/* form */}
-        <div className="space-y-4 mb-5">
+        <div className="space-y-4 mb-5 mt-6">
           <div className="relative">
             <InputComponent
               icon={<UserIcon />}
@@ -525,7 +378,7 @@ const Signin = () => {
             />
           </div>
           <p
-            className="text-xs font-semibold font-plusJakartaSans text-app-text-blue cursor-pointer"
+            className="text-xs font-semibold font-plusJakartaSans text-app-new-blue cursor-pointer"
             onClick={() => {
               setShowForgotPasswordModel(true);
             }}
@@ -594,7 +447,7 @@ const Signin = () => {
           /> */}
         </div>{" "}
         {/* Recommendation Text */}
-        <p className="text-[10px] text-app-text-blue font-plusJakartaSans text-center">
+        <p className="text-[10px] text-app-new-blue font-plusJakartaSans text-center ">
           We recommend Passkey if your device supports it for better security
           and a pleasant user experience.
         </p>

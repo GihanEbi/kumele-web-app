@@ -14,6 +14,8 @@ import InputComponent from "@/components/InputComponent/InputComponent";
 import { paddings } from "@/constants/layout-constants";
 import { changePassword } from "@/routes/profileSecurity";
 import CheckMarkGif from "@/components/GifComponents/CheckMarkGif/CheckMarkGif";
+import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
+import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
 
 interface FormData {
   oldPassword: string;
@@ -21,6 +23,7 @@ interface FormData {
   confirmNewPassword?: string;
 }
 
+type FormErrors = Record<string, string>;
 const ChangePasswordPage = () => {
   //   loading state
   const [loading, setLoading] = useState(false);
@@ -33,18 +36,47 @@ const ChangePasswordPage = () => {
 
   // ---------- show success model -----------
   const [showSuccessModel, setShowSuccessModel] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
   // ---------- show error model -----------
   const [showErrorModel, setShowErrorModel] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   // routing
+  // form errors
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
   const router = useRouter();
 
   // -------- handleChange for input fields ---------
   const handleChange = (value: string, name: string) => {
+    setFormErrors((prev) => {
+      const updatedErrors = { ...prev };
+      delete updatedErrors[name];
+      return updatedErrors;
+    });
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // check form data is not empty and valid
+  const validateForm = () => {
+    const errors: FormErrors = {};
+    if (!formData.oldPassword) {
+      errors.oldPassword = "Current password is required";
+    }
+    if (!formData.newPassword) {
+      errors.newPassword = "New password is required";
+    }
+    if (!formData.confirmNewPassword) {
+      errors.confirmNewPassword = "Confirm new password is required";
+    }
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
   // -------- handleSubmit for form submission ---------
   const handleSubmit = async () => {
+    // validate form
+    const isValid = validateForm();
+    if (!isValid) {
+      return;
+    }
     // check if new password is match to confirm new password
     if (formData.newPassword !== formData.confirmNewPassword) {
       console.log("Passwords do not match");
@@ -113,7 +145,13 @@ const ChangePasswordPage = () => {
               </h1>
             </header>
             <div>
-              <div className="mb-[25px]">
+              <div
+                className={`${
+                  formErrors.oldPassword
+                    ? "border-2 border-red-500 rounded-md p-2"
+                    : ""
+                } mb-[25px]`}
+              >
                 <p className="text-[16px] font-plusJakartaSans-400 text-app-text-primary mb-2">
                   Current password
                 </p>
@@ -128,7 +166,13 @@ const ChangePasswordPage = () => {
                   />
                 </div>
               </div>
-              <div className="mb-[25px]">
+              <div
+                className={`${
+                  formErrors.oldPassword
+                    ? "border-2 border-red-500 rounded-md p-2"
+                    : ""
+                } mb-[25px]`}
+              >
                 <p className="text-[16px] font-plusJakartaSans-400 text-app-text-primary mb-2">
                   New password
                 </p>
@@ -143,7 +187,13 @@ const ChangePasswordPage = () => {
                   />
                 </div>
               </div>
-              <div className="mb-[25px]">
+              <div
+                className={`${
+                  formErrors.oldPassword
+                    ? "border-2 border-red-500 rounded-md p-2"
+                    : ""
+                } mb-[25px]`}
+              >
                 <p className="text-[16px] font-plusJakartaSans-400 text-app-text-primary mb-2">
                   Confirm new password
                 </p>
@@ -191,6 +241,22 @@ const ChangePasswordPage = () => {
           </div>
         )}
       </div>
+      <SuccessModel
+        isOpen={showSuccessModel}
+        onClose={() => {
+          setShowSuccessModel(false);
+          setSuccess("");
+        }}
+        successMessage={success || ""}
+      />
+      <ErrorModel
+        isOpen={showErrorModel}
+        onClose={() => {
+          setShowErrorModel(false);
+          setError("");
+        }}
+        errorMessage={error || ""}
+      />
     </div>
   );
 };

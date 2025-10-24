@@ -604,6 +604,7 @@ const Profile = () => {
           onClose={() => {
             setShowReferralModel(false);
           }}
+          refCode={userData ? userData.my_referral_code : "No referral code"}
         />
         {/* delete account Model */}
         <DeleteAccountModel

@@ -28,6 +28,9 @@ const BottomNavBar = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
 
+  const queryParams = new URLSearchParams(window.location.search);
+  const active = queryParams.get("active");
+
   // ---------- show success model -----------
   const [showSuccessModel, setShowSuccessModel] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
@@ -37,7 +40,9 @@ const BottomNavBar = () => {
   const { theme, setTheme, systemTheme } = useTheme();
   const [selectedColor, setSelectedColor] = useState("");
   // set active page
-  const [activePageIndex, setActivePageIndex] = React.useState(0);
+  const [activePageIndex, setActivePageIndex] = React.useState(
+    active ? parseInt(active) : 0
+  );
   // --------- show more option model ----------
   const [showMoreOptionModel, setShowMoreOptionModel] = useState(false);
 
@@ -87,7 +92,7 @@ const BottomNavBar = () => {
             setActivePageIndex(0);
             if (isPartnershipUser === "yes") {
               // If the user is a partnership user, do something
-              router.push("/user/partnership-home");
+              router.push("/user/partnership-home?active=0");
             } else {
               router.push("/user/home");
             }
@@ -104,11 +109,7 @@ const BottomNavBar = () => {
             }`}
           > */}
           {activePageIndex === 0 ? (
-            <HomeIcon
-              className={`text-app-new-blue`}
-              width={30}
-              height={30}
-            />
+            <HomeIcon className={`text-app-new-blue`} width={30} height={30} />
           ) : (
             <HomeIcon width={30} height={30} />
           )}
@@ -122,7 +123,7 @@ const BottomNavBar = () => {
           <div
             onClick={() => {
               setActivePageIndex(5);
-              router.push("/user/advertise");
+              router.push("/user/advertise?active=5");
             }}
             className={`flex flex-col items-center text-app-text-primary ${
               activePageIndex === 5
@@ -155,7 +156,7 @@ const BottomNavBar = () => {
           <div
             onClick={() => {
               setActivePageIndex(6);
-              router.push("/user/partnership-blog");
+              router.push("/user/partnership-blog?active=6");
             }}
             className={`flex flex-col items-center text-app-text-primary ${
               activePageIndex === 6
@@ -188,7 +189,7 @@ const BottomNavBar = () => {
           <div
             onClick={() => {
               setActivePageIndex(1);
-              router.push("/user/blog");
+              router.push("/user/blog?active=1");
             }}
             className={`flex flex-col items-center text-app-text-primary ${
               activePageIndex === 1
@@ -221,7 +222,7 @@ const BottomNavBar = () => {
           <div
             onClick={() => {
               setActivePageIndex(2);
-              router.push("/user/shop");
+              router.push("/user/shop?active=2");
             }}
             className={`flex flex-col items-center text-app-text-primary ${
               activePageIndex === 2
@@ -290,7 +291,7 @@ const BottomNavBar = () => {
         <div
           onClick={() => {
             setActivePageIndex(4);
-            router.push("/user/profile");
+            router.push("/user/profile?active=4");
           }}
           className={`flex flex-col items-center text-app-text-primary ${
             activePageIndex === 4
