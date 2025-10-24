@@ -263,9 +263,9 @@ const ChooseInterests = () => {
                   } else if (selectedInterestsIds.length < MAX_SELECTIONS) {
                     setSelectedInterestsIds((prev) => [...prev, interestId]);
                   } else {
-                    alert(
-                      `You can only select up to ${MAX_SELECTIONS} interests.`
-                    );
+                    setError(`You can select up to ${MAX_SELECTIONS} interests only.`);
+                    setShowErrorModel(true);
+                    setTimeout(() => setShowErrorModel(false), 3600);
                   }
                 }}
               />

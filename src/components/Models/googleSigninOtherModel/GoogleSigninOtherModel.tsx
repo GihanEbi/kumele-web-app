@@ -49,6 +49,7 @@ type EmailVerificationModelProps = {
   //password: string; // optional password prop if needed for login
   //   formData: FormData;
 };
+type FormErrors = Record<string, string>;
 
 const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
   isOpen,
@@ -62,6 +63,8 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const [showVerificationFailed, setShowVerificationFailed] =
     useState<boolean>(false);
+  // form errors
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   // --------- state for loading spinner ---------
   const [loading, setLoading] = useState(false);
@@ -81,6 +84,7 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
     gender: "",
     dateOfBirth: "",
     referralCode: "",
+    beta_code: "",
     aboveLegalAge: false,
     termsAndConditionsAccepted: false,
     subscribedToNewsletter: false,
@@ -107,19 +111,55 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
   }
 
   // -------- handleChange for input fields ---------
-  const handleInputChange = (value: string | Boolean | string[], name: string) => {
+  const handleInputChange = (
+    value: string | Boolean | string[],
+    name: string
+  ) => {
+    setFormErrors((prev) => {
+      const updatedErrors = { ...prev };
+      delete updatedErrors[name];
+      return updatedErrors;
+    });
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   // Handle send OTP for email verification
   const handleSubmit = async () => {
+    if (loading) return;
+    if (!validateForm()) {
+      return;
+    }
     form.dateOfBirth = `${birthDay.YYYY}-${birthDay.MM}-${birthDay.DD}`;
-    console.log("form data is", form);
 
     // onClose(true), console.log("Notification permission: true")
 
     if (loading) return;
-    setLoading(true);
+    setLoading(true); // check if user is robot
+    if (!isRobot) {
+      setError("Please verify that you are not a robot.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      setLoading(false);
+      return;
+    }
+
+    // check if terms and conditions accepted
+    if (!form.termsAndConditionsAccepted) {
+      setError("You must accept the Terms & Conditions to proceed.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      setLoading(false);
+      return;
+    }
+
+    // check legal age
+    if (!form.aboveLegalAge) {
+      setError("You must be above legal age to proceed.");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      setLoading(false);
+      return;
+    }
 
     try {
       const data = await google_sign_up_complete(form);
@@ -147,6 +187,26 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
       setLoading(false);
     }
   };
+  // check form data is not empty and valid
+  const validateForm = () => {
+    const errors: FormErrors = {};
+    // Gender validation
+    if (!form.gender) {
+      errors.gender = "Gender is required";
+    }
+    // beta code validation
+    if (!form.beta_code) {
+      errors.beta_code = "Beta code is required";
+    }
+
+    // date of birth validation
+    if (!birthDay.DD || !birthDay.MM || !birthDay.YYYY) {
+      errors.dateOfBirth = "Complete date of birth is required";
+    }
+    setFormErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
 
   return (
     <div>
@@ -155,7 +215,15 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
         //   onClick={onClose}
       >
         <div
-          className={`bg-app-background-model w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
+          className={`${
+            isYearDropdownOpen ||
+            isMonthDropdownOpen ||
+            isDayDropdownOpen ||
+            showErrorModel ||
+            showSuccessModel
+              ? "bg-k-background-secondary"
+              : "bg-app-background-model"
+          } w-full max-w-md p-6 sm:p-8 rounded-t-4xl shadow-xl transform transition-transform duration-300 ease-out ${
             isOpen ? "translate-y-0" : "translate-y-full" // Animation handled by presence/absence of component
           }`}
           onClick={(e) => e.stopPropagation()} // Prevent click inside modal from closing it
@@ -182,7 +250,13 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
             </button>
           </div>
           <div>
-            <div className="pt-1">
+            <div
+              className={`${
+                formErrors.gender
+                  ? "border-2 border-red-500 rounded-md p-2"
+                  : ""
+              } pt-1`}
+            >
               <RadioButtonGroupComponent
                 name="Gender"
                 options={authConstants.gender}
@@ -192,7 +266,13 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
                 }}
               />
             </div>
-            <div className="pt-5">
+            <div
+              className={`${
+                formErrors.dateOfBirth
+                  ? "mt-2 border-2 border-red-500 rounded-md p-2"
+                  : ""
+              } pt-5`}
+            >
               <p className="text-sm font-plusJakartaSans text-app-text-primary mb-2">
                 Date of Birth
               </p>
@@ -206,6 +286,11 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
                   itemSelected={birthDay.DD}
                   onChange={(value: string) => {
                     setBirthday((prev) => ({ ...prev, DD: value }));
+                    setFormErrors((prev) => {
+                      const updatedErrors = { ...prev };
+                      delete updatedErrors.dateOfBirth;
+                      return updatedErrors;
+                    });
                   }}
                 />
                 <DropDown
@@ -217,6 +302,11 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
                   itemSelected={birthDay.MM}
                   onChange={(value: string) => {
                     setBirthday((prev) => ({ ...prev, MM: value }));
+                    setFormErrors((prev) => {
+                      const updatedErrors = { ...prev };
+                      delete updatedErrors.dateOfBirth;
+                      return updatedErrors;
+                    });
                   }}
                 />
                 <DropDown
@@ -228,6 +318,11 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
                   itemSelected={birthDay.YYYY}
                   onChange={(value: string) => {
                     setBirthday((prev) => ({ ...prev, YYYY: value }));
+                    setFormErrors((prev) => {
+                      const updatedErrors = { ...prev };
+                      delete updatedErrors.dateOfBirth;
+                      return updatedErrors;
+                    });
                   }}
                 />
               </div>
@@ -249,14 +344,26 @@ const GoogleSigninOtherModel: React.FC<EmailVerificationModelProps> = ({
                   }
                 />
               </div>
-              <div className="pt-5">
+              <div
+                className={`${
+                  formErrors.beta_code
+                    ? "border-2 border-red-500 rounded-md p-2"
+                    : ""
+                } mt-5`}
+              >
                 <p className="text-sm font-plusJakartaSans text-app-text-primary mb-1">
                   Beta code{" "}
                   {/* <span className="font-plusJakartaSans text-app-text-primary">
               (Optional)
             </span> */}
                 </p>
-                <InputComponent placeholder="e.g. DF3R435" />
+                <InputComponent
+                  placeholder="e.g. DF3R435"
+                  onChange={(e) => {
+                    handleInputChange(e.target.value, "beta_code");
+                  }}
+                  value={form.beta_code}
+                />
               </div>
             </div>
             {/* check boxes */}

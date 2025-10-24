@@ -32,12 +32,12 @@ const CheckBoxComponent: React.FC<CheckBoxComponentProps> = ({
 
         <div
           className={`w-4.5 h-4.5 rounded border-2 ${
-            !value ? "border-app-button-radio" : "border-app-button-blue"
+            !value ? "border-app-button-radio" : "border-app-new-blue"
           } flex items-center justify-center`}
         >
           <div
             className={`w-2.5 h-2.5 ${
-              !value ? "" : "bg-app-button-blue"
+              !value ? "" : "bg-app-new-blue"
             } transition-all`}
           />
         </div>

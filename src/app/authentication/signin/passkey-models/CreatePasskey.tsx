@@ -1,15 +1,17 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   CloseIcon,
   FaceIdIcon,
+  GoogleIcon,
   ThumbIcon,
 } from "../../../../../public/svg-icons/icons";
 import InputComponent from "@/components/InputComponent/InputComponent";
 import {
   finishPasskeyRegistration,
+  google_sign_in,
   login,
   passkeyRegistration,
 } from "@/routes/signup_and_signin";
@@ -24,6 +26,9 @@ import {
   getPartnershipToken,
   saveNewPartnershipUser,
 } from "@/utils/partnershipUtils";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+
+type FormErrors = Record<string, string>;
 
 // props types
 type passkeyModelProps = {
@@ -42,6 +47,8 @@ const CreatePasskey: React.FC<passkeyModelProps> = ({
     email: "",
     password: "",
   });
+
+  const googleLoginRef = useRef<HTMLInputElement>(null);
 
   // ---------- show success model -----------
   const [showSuccessModel, setShowSuccessModel] = useState(false);
@@ -145,6 +152,84 @@ const CreatePasskey: React.FC<passkeyModelProps> = ({
       setLoading(false);
     }
   };
+
+  // google signin
+
+  const handleGoogleSignInSuccess = async (
+    credentialResponse: CredentialResponse
+  ) => {
+    // The 'credential' field contains the ID Token.
+    const idToken = credentialResponse.credential;
+
+    if (!idToken) {
+      setError("Google sign-in failed: No ID token received.");
+      return;
+    }
+
+    try {
+      const data = await google_sign_in({ token: idToken });
+      if (data.success) {
+        saveToken(data.data.token);
+
+        const passkey = await passkeyRegistration();
+        if (!passkey?.success) {
+          setError(passkey?.message);
+          setShowErrorModel(true); // you can render a simple error modal/toast if desired
+          setTimeout(() => setShowErrorModel(false), 3600);
+          return;
+        }
+
+        const attestationResponse = await startRegistration(passkey.data);
+
+        // Step 3: Send response to server for verification
+        const verificationResponse = await finishPasskeyRegistration({
+          attestationResponse: attestationResponse,
+        });
+
+        if (verificationResponse?.success) {
+          setShowSuccessModel(true);
+          setTimeout(() => {
+            setShowSuccessModel(false);
+            const isPartner = getPartnershipToken(); // "yes" | "no" | null
+            if (isPartner === "yes") {
+              saveNewPartnershipUser("no");
+              router.push("/user/partnership-home");
+            } else {
+              router.push("/user/home");
+            }
+          }, 800);
+        }
+
+        setError(verificationResponse?.message || "Passkey creation failed");
+        setShowErrorModel(true);
+        setTimeout(() => {
+          setShowErrorModel(false);
+        }, 800);
+      }
+    } catch (error: any) {
+      setError("Sign in failed");
+      setShowErrorModel(true); // you can render a simple error modal/toast if desired
+      setTimeout(() => setShowErrorModel(false), 3600);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignInError = () => {
+    console.error("Google Sign-In failed.");
+    setError("Google Sign-In failed. Please try again.");
+  };
+
+  const handleGoogleIconClick = () => {
+    if (googleLoginRef.current) {
+      const googleButton =
+        googleLoginRef.current.querySelector('div[role="button"]');
+      if (googleButton instanceof HTMLElement) {
+        googleButton.click();
+      }
+    }
+  };
+
   return (
     <div>
       {isOpen && (
@@ -198,6 +283,29 @@ const CreatePasskey: React.FC<passkeyModelProps> = ({
                   handleInputChange(e.target.value, "password");
                 }}
               />
+            </div>
+            <div className="left-6 flex items-center space-x-2 z-10 mt-5">
+              {" "}
+              <h1 className="text-xl font-bold text-app-text-primary font-plusJakartaSans">
+                Sign in
+              </h1>
+              <div>
+                <div
+                  onClick={handleGoogleIconClick}
+                  style={{ cursor: "pointer" }}
+                >
+                  <GoogleIcon />
+                </div>
+                <div ref={googleLoginRef} style={{ display: "none" }}>
+                  <GoogleLogin
+                    onSuccess={handleGoogleSignInSuccess}
+                    onError={handleGoogleSignInError}
+                    theme="outline"
+                    size="large"
+                    use_fedcm_for_prompt={true}
+                  />
+                </div>
+              </div>
             </div>
             <div className="mt-[63px] px-2 mb-[48px]">
               <button
