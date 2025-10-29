@@ -7,6 +7,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers"; // <-- Import your new client-side providers
+import GoogleTranslateLoader from "@/components/GoogleTranslateLoader/GoogleTranslateLoader";
 
 // --- All your font definitions remain here ---
 const geistSans = Geist({
@@ -63,12 +64,15 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
       <body
+        translate="no"
         className={`${fredoka.variable} ${plusJakartaSans.variable} antialiased`}
       >
         {/*
           Wrap the children with the 'Providers' component.
           This creates a "client boundary" where all client-side logic lives.
         */}
+        {/* ✅ Mount translate script dynamically */}
+        <GoogleTranslateLoader />
         <Providers>
           <>
             {/* Mobile view */}

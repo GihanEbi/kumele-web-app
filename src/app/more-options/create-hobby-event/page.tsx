@@ -42,6 +42,7 @@ interface OptionConfig {
   mainLabel: string;
   valueText: string;
   value: string;
+  isInput?: boolean;
 }
 
 type ChooseInterestsProps = {
@@ -79,23 +80,28 @@ const paymentOptionsConfig: OptionConfig[] = [
     mainLabel: "Free Event",
     valueText: "Free",
     value: "free",
+    isInput: false,
   },
   {
     id: "payment-card",
     mainLabel: "Card Payment",
     valueText: "20$",
     value: "card_payment",
+    isInput: true,
   },
   {
     id: "payment-cash",
     mainLabel: "Cash On Entry",
     valueText: "50$",
     value: "cash_on_entry",
+    isInput: true,
   },
 ];
 
 //maximum characters define for event description text area
 const maxCharacters = 1200;
+
+type FormErrors = Record<string, string>;
 
 const CreateEventSection = () => {
   // loading
@@ -119,12 +125,14 @@ const CreateEventSection = () => {
     district: "",
     postal_zip_code: "",
     state: "",
-    age_range_min: "",
-    age_range_max: "",
+    age_range_min: "18",
+    age_range_max: "28",
     max_guests: "",
     payment_type: "",
-    price: "0$",
+    price: "",
   });
+  // form errors
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   const [isAvailable, setIsAvailable] = useState<boolean>(false);
 
@@ -178,6 +186,7 @@ const CreateEventSection = () => {
 
   // -------- handleChange for input fields ---------
   const handleInputChange = (value: string | Boolean, name: string) => {
+    setFormErrors((prev) => ({ ...prev, [name]: "" }));
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -255,6 +264,7 @@ const CreateEventSection = () => {
     const newValue = event.target.value;
     setSelectedPayment(newValue);
     handleInputChange(newValue, "payment_type");
+    setForm((prev) => ({ ...prev, price: "" }));
     // Update your form state or perform actions based on the selection
   };
 
@@ -301,9 +311,12 @@ const CreateEventSection = () => {
     form.event_start_time = selectedStartTime;
     form.event_end_time = selectedEndTime;
     // validate form
+    console.log(form);
+    
     const isValid = formValidation();
+    console.log(isValid);
+    
     if (!isValid) return;
-    console.log("form data for preview:", form);
 
     setIsPreviewOpen(true);
   };
@@ -364,76 +377,108 @@ const CreateEventSection = () => {
   const formValidation = () => {
     // check if category_id is empty in form
     if (!form.category_id) {
-      setError("Please select a category.");
+      setError("Please select an event category.");
       setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
       return false;
     } else if (!form.event_image) {
       setError("Please upload an event image.");
       setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
       return false;
     } else if (!form.event_name) {
-      setError("Event name is required.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        event_name: "Event name is required.",
+      }));
       return false;
     } else if (!form.subtitle) {
-      setError("Event subtitle is required.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        subtitle: "Event subtitle is required.",
+      }));
       return false;
     } else if (!form.description) {
-      setError("Event description is required.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        description: "Event description is required.",
+      }));
       return false;
     } else if (!form.event_date) {
-      setError("Please select an event date.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        event_date: "Event date is required.",
+      }));
       return false;
     } else if (!form.event_start_time) {
-      setError("Please select an event start time.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        event_start_time: "Event start time is required.",
+      }));
       return false;
     } else if (!form.event_end_time) {
-      setError("Please select an event end time.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        event_end_time: "Event end time is required.",
+      }));
       return false;
     } else if (!form.street_address) {
-      setError("Street address is required.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        street_address: "Street address is required.",
+      }));
       return false;
     } else if (!form.home_number) {
-      setError("Home number is required.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        home_number: "Home number is required.",
+      }));
       return false;
     } else if (!form.district) {
-      setError("District is required.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        district: "District is required.",
+      }));
       return false;
     } else if (!form.postal_zip_code) {
-      setError("Postal/Zip code is required.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        postal_zip_code: "Postal/Zip code is required.",
+      }));
       return false;
     } else if (!form.state) {
-      setError("State is required.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        state: "State is required.",
+      }));
       return false;
     } else if (!form.age_range_min || !form.age_range_max) {
-      setError("Please select an age range.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        age_range: "Please select an age range.",
+      }));
       return false;
     } else if (!form.max_guests) {
-      setError("Please specify the number of guests.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        max_guests: "Please specify the number of guests.",
+      }));
       return false;
     } else if (!form.payment_type) {
-      setError("Please select a payment method.");
-      setShowErrorModel(true);
+      setFormErrors((prev) => ({
+        ...prev,
+        payment_type: "Please select a payment method.",
+      }));
       return false;
     } else if (isStartLater(form.event_start_time, form.event_end_time)) {
       setError("Event end time must be later than start time.");
       setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
       return false;
     } else if (new Date(form.event_date) < new Date()) {
-      setError("Event date must be in the future.");
+      setError("Event date cannot be in the past.");
       setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
       return false;
     } else {
       return true;
@@ -555,7 +600,7 @@ const CreateEventSection = () => {
           Event Image
         </label>
         <p className="text-text-sub-caption mb-3 font-plusJakartaSans font-normal text-[11.29px] text-gray-500">
-          (Recommended size 400*400px)
+          (Recommended size 400*400px and max size 2MB)
         </p>
 
         <div
@@ -589,6 +634,18 @@ const CreateEventSection = () => {
             type="file"
             ref={fileInputRef}
             onChange={(e: any) => {
+              const file = e.target.files[0];
+              if (!file) return;
+
+              const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+              if (file.size > maxSize) {
+                setError("File size exceeds 2MB limit.");
+                setShowErrorModel(true);
+                setTimeout(() => {
+                  setShowErrorModel(false);
+                }, 3600);
+                return;
+              }
               setImagePreview(URL.createObjectURL(e.target.files[0]));
               handleInputChange(e.target.files[0], "event_image");
             }}
@@ -629,6 +686,7 @@ const CreateEventSection = () => {
             onChange={(e) => {
               handleInputChange(e.target.value, "event_name");
             }}
+            error={formErrors.event_name}
           />
         </div>
 
@@ -643,6 +701,7 @@ const CreateEventSection = () => {
             onChange={(e) => {
               handleInputChange(e.target.value, "subtitle");
             }}
+            error={formErrors.subtitle}
           />
         </div>
 
@@ -658,7 +717,9 @@ const CreateEventSection = () => {
             }}
             maxLength={maxCharacters}
             placeholder="More About the event"
-            className="w-full h-32 p-3 bg-app-input-primary  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500 resize-none"
+            className={`w-full h-32 p-3 bg-app-input-primary  rounded-lg text-sm focus:ring-1 focus:ring-yellow-400 placeholder-gray-500 resize-none ${
+              formErrors.description && "border border-red-500"
+            }`}
           />
           <p className="font-plusJakartaSans font-normal text-[10px] text-app-text-secondary mt-1 text-right">
             {form.description.length}/{maxCharacters} Max
@@ -684,7 +745,9 @@ const CreateEventSection = () => {
         />
       </div>
 
-      <div className="mt-8 ">
+      <div
+        className={`mt-8 ${formErrors.event_date && "border border-red-500"}`}
+      >
         <DatePicker
           label="Date"
           isOpen={isDatePickerOpen}
@@ -725,6 +788,7 @@ const CreateEventSection = () => {
               onChange={(e) => {
                 handleInputChange(e.target.value, "street_address");
               }}
+              error={formErrors.street_address}
             />
           </div>
           <div>
@@ -734,6 +798,7 @@ const CreateEventSection = () => {
               onChange={(e) => {
                 handleInputChange(e.target.value, "home_number");
               }}
+              error={formErrors.home_number}
             />
           </div>
         </div>
@@ -747,6 +812,7 @@ const CreateEventSection = () => {
               onChange={(e) => {
                 handleInputChange(e.target.value, "district");
               }}
+              error={formErrors.district}
             />
           </div>
           <div>
@@ -756,6 +822,7 @@ const CreateEventSection = () => {
               onChange={(e) => {
                 handleInputChange(e.target.value, "postal_zip_code");
               }}
+              error={formErrors.postal_zip_code}
             />
           </div>
         </div>
@@ -769,7 +836,9 @@ const CreateEventSection = () => {
               onChange={(e) => {
                 handleInputChange(e.target.value, "state");
               }}
+              error={formErrors.state}
             />
+
           </div>
           {/* Empty div to maintain grid alignment */}
           <div></div>
@@ -846,6 +915,12 @@ const CreateEventSection = () => {
             value={option.value}
             checked={selectedPayment === option.value}
             onChange={handlePaymentChange}
+            onValueChange={(val)=>{
+              handleInputChange(val, "price");
+            }}
+            price={selectedPayment === option.value ? form.price : ""}
+            isInput={option.isInput || false}
+            isDisabled={selectedPayment === option.value ? false : true}
           />
         ))}
       </div>

@@ -3,9 +3,35 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Hide Google Translate top banner */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+/* Fix page jumping after hiding banner */
+html,
+body {
+  top: 0 !important;
+}
+
+/* Hide logo / powered by Google */
+.goog-logo-link,
+.goog-te-gadget span {
+  display: none !important;
+}
+
+/* Hide default dropdown */
+.goog-te-gadget {
+  font-size: 0 !important;
+}
+
+#google_translate_container {
+  display: none !important;
+}
+
 @theme inline {
   --color-background: var(--background);
-  --color-app-new-blue: #7697EA;
+  --color-app-new-blue: #7697ea;
   /* --color-app-new-blue: #004DFF; */
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -262,7 +288,9 @@
   --app-button-secondary: oklch(1 0 89.88); /* #FFFFFF */
   --app-button-gray: oklch(0.2393 0 89.88); /* #3D3D3D */
   --app-button-yellow: oklch(0.8564 0.1871 83.38); /* #FFD966 */
-  --app-button-blue: oklch(0.5275 0.2823471673233279 260.80097789574415); /* #645EFF */
+  --app-button-blue: oklch(
+    0.5275 0.2823471673233279 260.80097789574415
+  ); /* #645EFF */
   --app-button-white: oklch(1 0 89.88);
   --app-button-radio: oklch(0.7952 0 0); /* #BCBCBC */
 
@@ -315,8 +343,8 @@
   /*EVENT SHARE MODAL COLORS*/
   --app-section-bg: oklch(0.9446 0.0022 17.2);
 
-   /*CALENDAR DATES*/
-   --app-calendar-date: oklch(0.5999 0 0); /*#808080*/
+  /*CALENDAR DATES*/
+  --app-calendar-date: oklch(0.5999 0 0); /*#808080*/
 }
 
 .dark {
@@ -478,8 +506,8 @@
   /*EVENT SHARE MODAL COLORS*/
   --app-section-bg: oklch(0.1591 0 0);
 
-   /*CALENDAR DATES*/
-   --app-calendar-date: oklch(0.4276 0 0); /* #4F4F4F*/
+  /*CALENDAR DATES*/
+  --app-calendar-date: oklch(0.4276 0 0); /* #4F4F4F*/
 }
 /* Add this utility for the annotation's dotted line */
 .bg-dotted-line {

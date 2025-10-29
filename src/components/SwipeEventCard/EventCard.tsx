@@ -38,6 +38,8 @@ import CommentList from "../CommentList/CommentList";
 import StarRating from "../StarRating/StarRating";
 import { PercentageRateIcon } from "../PercentageRateIcon/PercentageRateIcon";
 import Head from "next/head";
+import GoogleTranslate from "../LanguageSelector/LanguageSelector";
+import LanguageSelector from "../LanguageSelector/LanguageSelector";
 
 //types of a event
 type Event = {
@@ -350,7 +352,6 @@ export default function EventCard({
     // });
     // const data = await res.json();
     // console.log(data.translatedText);
-    
 
     const text = encodeURIComponent(event.description);
     const url = `https://translate.google.com/m/translate?sl=auto&tl=en&q=${text}`;
@@ -585,11 +586,19 @@ export default function EventCard({
                             id="google_translate_element"
                             className=""
                           ></div> */}
-                          <TranslateIcon
+                          {/* <TranslateIcon
                             onClick={() => {
                               handleTranslate();
                             }}
-                          />
+                          /> */}
+                          {/* ✅ Add container for translator widget */}
+                          {/* <div
+                            id="google_translate_container"
+                            style={{ position: "fixed", bottom: 20, right: 20 }}
+                          /> */}
+
+                          {/* ✅ Add Google Translate widget */}
+                          <GoogleTranslate />
 
                           {/* 🟢 Icon to trigger translation */}
                           {/* <button
@@ -600,12 +609,20 @@ export default function EventCard({
                             <TranslateIcon />
                           </button> */}
                         </div>
-                        <p
-                          className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px] mt-1"
-                          // lang="gr"
-                        >
-                          {event.description}
-                        </p>
+                        {/* <div className="partial-translate-section">
+                          <p
+                            className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px] mt-1"
+                            // lang="gr"
+                          >
+                            {event.description}
+                          </p>
+                        </div> */}
+                        {/* <LanguageSelector /> */}
+                        <div className="auto-translate" translate="yes">
+                          <p className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[13px] mt-1">
+                            {event.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
 

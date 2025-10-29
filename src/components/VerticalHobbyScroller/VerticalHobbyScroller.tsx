@@ -106,11 +106,11 @@ const VerticalHobbyScroller = ({
   };
   return (
     <div>
-      {loading && (
+      {/* {loading && (
         <div className="flex items-center justify-center min-h-screen">
           <LoadingComponent />
         </div>
-      )}
+      )} */}
       <div className="mb-6 sm:mb-8 relative w-full">
         <div
           ref={tabsContainerRef}

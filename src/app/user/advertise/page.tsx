@@ -33,6 +33,8 @@ import {
 } from "@/routes/advert";
 import Image from "next/image";
 import SavedAdvertTemplateModel from "@/components/Models/SavedAdvertTemplateModel/SavedAdvertTemplateModel";
+import StripeModel from "@/components/StripeModel/StripeModel";
+import { useRouter } from "next/navigation";
 
 // types
 type ChooseInterestsProps = {
@@ -66,6 +68,7 @@ type AdvertProps = {
   daily_budget: number;
   advert_duration: number;
   save_template?: boolean;
+  stripe_payment_intent_id: string;
 };
 
 type SavedAdvertList = {
@@ -83,8 +86,13 @@ const peoplePerUnit =
   Number(process.env.NEXT_PUBLIC_DAILY_BUDGET_PEOPLE_PER_UNIT) || 0;
 
 const page = () => {
+  const router = useRouter();
   //   loading state
   const [loading, setLoading] = useState(false);
+
+  // amount to pay in stripe
+  const [stripeAmount, setStripeAmount] = useState(0);
+  const [isStripeModelOpen, setIsStripeModelOpen] = useState(false);
 
   // ---------- show success model -----------
   const [showSuccessModel, setShowSuccessModel] = useState(false);
@@ -114,18 +122,23 @@ const page = () => {
   const [tempAdvertLocation, setTempAdvertLocation] = useState<string>("");
 
   // temp  state for advert image urls
-  const [staticAdvertImage, setStaticAdvertImage] = useState<string | null>(
-    null
-  );
-  const [carouselAdvertImage1, setCarouselAdvertImage1] = useState<
-    string | null
-  >(null);
-  const [carouselAdvertImage2, setCarouselAdvertImage2] = useState<
-    string | null
-  >(null);
-  const [carouselAdvertImage3, setCarouselAdvertImage3] = useState<
-    string | null
-  >(null);
+  const [staticAdvertImage, setStaticAdvertImage] = useState<{
+    url: string;
+    type: string;
+  } | null>(null);
+
+  const [carouselAdvertImage1, setCarouselAdvertImage1] = useState<{
+    url: string;
+    type: string;
+  } | null>(null);
+  const [carouselAdvertImage2, setCarouselAdvertImage2] = useState<{
+    url: string;
+    type: string;
+  } | null>(null);
+  const [carouselAdvertImage3, setCarouselAdvertImage3] = useState<{
+    url: string;
+    type: string;
+  } | null>(null);
 
   // template saved model
   const [isSavedTemplateModelOpen, setIsSavedTemplateModelOpen] =
@@ -157,6 +170,7 @@ const page = () => {
     daily_budget: 0,
     advert_duration: 0,
     save_template: false,
+    stripe_payment_intent_id: "",
   });
 
   // preview advert form state
@@ -172,6 +186,24 @@ const page = () => {
     fetchAdvertDailyBudgets();
     fetchAdvertPlacementPricing();
   }, []);
+
+  function detectFileType(url: string): "video" | "image" {
+    // If it's a blob URL → use memory of last uploaded type if available
+    if (url.startsWith("blob:")) {
+      // you can’t tell from blob URL — fallback to stored type if you have it
+      return "image"; // default fallback
+    }
+
+    // Check file extension
+    const videoExtensions = /\.(mp4|mov|avi|mkv|webm)$/i;
+    const imageExtensions = /\.(jpg|jpeg|png|gif|webp|avif)$/i;
+
+    if (videoExtensions.test(url)) return "video";
+    if (imageExtensions.test(url)) return "image";
+
+    // default fallback
+    return "image";
+  }
 
   const fetchSavedAdvertByUser = async () => {
     setLoading(true);
@@ -224,14 +256,31 @@ const page = () => {
           daily_budget: data.data.daily_budget,
           advert_duration: data.data.advert_duration,
           save_template: data.data.save_template,
+          stripe_payment_intent_id: "",
         });
         if (data.data.advert_image_type === "static") {
-          setStaticAdvertImage(data.data.advert_image_url_1 || null);
+          setStaticAdvertImage(
+            data.data.advert_image_url_1
+              ? { url: data.data.advert_image_url_1, type: "image" }
+              : null
+          );
         } else {
-          setCarouselAdvertImage1(data.data.advert_image_url_1 || null);
+          setCarouselAdvertImage1(
+            data.data.advert_image_url_1
+              ? { url: data.data.advert_image_url_1, type: "image" }
+              : null
+          );
         }
-        setCarouselAdvertImage2(data.data.advert_image_url_2 || null);
-        setCarouselAdvertImage3(data.data.advert_image_url_3 || null);
+        setCarouselAdvertImage2(
+          data.data.advert_image_url_2
+            ? { url: data.data.advert_image_url_2, type: "image" }
+            : null
+        );
+        setCarouselAdvertImage3(
+          data.data.advert_image_url_3
+            ? { url: data.data.advert_image_url_3, type: "image" }
+            : null
+        );
       }
     } catch (error) {
       setError("An error occurred");
@@ -389,7 +438,6 @@ const page = () => {
       return;
     }
     let previewForm = { ...form };
-    // set label of form.call_to_action to previewForm.call_to_action
     const callToAction = callToActions.find(
       (item) => item.value === form.call_to_action
     );
@@ -512,9 +560,30 @@ const page = () => {
     if (loading) return;
     try {
       setLoading(true);
+      setStripeAmount(form.daily_budget * form.advert_duration);
 
-      // set advert_image_urls
-      if (form.advert_image_type === "static" && form.advert_image_url_1) {
+      setIsStripeModelOpen(true);
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePaymentSuccess = async (paymentID: string) => {
+    form.stripe_payment_intent_id = paymentID;
+
+    setIsStripeModelOpen(false);
+
+    try {
+      setLoading(true);
+      if (
+        form.advert_image_type === "static" &&
+        form.advert_image_url_1 instanceof File
+      ) {
         const formData = new FormData();
         formData.append("destination", "advert");
         formData.append("advert_image", form.advert_image_url_1);
@@ -529,7 +598,7 @@ const page = () => {
           return;
         }
       } else if (form.advert_image_type === "carousel") {
-        if (form.advert_image_url_1) {
+        if (form.advert_image_url_1 instanceof File) {
           const formData = new FormData();
           formData.append("destination", "advert");
           formData.append("advert_image", form.advert_image_url_1);
@@ -543,7 +612,7 @@ const page = () => {
             return;
           }
         }
-        if (form.advert_image_url_2) {
+        if (form.advert_image_url_2 instanceof File) {
           const formData = new FormData();
           formData.append("destination", "advert");
           formData.append("advert_image", form.advert_image_url_2);
@@ -557,7 +626,7 @@ const page = () => {
             return;
           }
         }
-        if (form.advert_image_url_3) {
+        if (form.advert_image_url_3 instanceof File) {
           const formData = new FormData();
           formData.append("destination", "advert");
           formData.append("advert_image", form.advert_image_url_3);
@@ -572,12 +641,15 @@ const page = () => {
           }
         }
       }
+
       // set form data
       let data = await create_advert(form);
       if (data.success) {
         setSuccess("Your advert has been created successfully.");
         setShowSuccessModel(true);
         setTimeout(() => setShowSuccessModel(false), 3600);
+        // redirect to home page
+        router.push("/user/partnership-home?active=0");
         // reset form
         setForm({
           category_id: "",
@@ -604,6 +676,7 @@ const page = () => {
           daily_budget: 0,
           advert_duration: 0,
           save_template: false,
+          stripe_payment_intent_id: paymentID,
         });
         // reset all preview images
         setStaticAdvertImage(null);
@@ -616,6 +689,7 @@ const page = () => {
         setTimeout(() => setShowErrorModel(false), 3600);
       }
     } catch (error) {
+      console.error("Payment processing error:", error);
     } finally {
       setLoading(false);
     }
@@ -675,7 +749,7 @@ const page = () => {
                   }}
                 />
               </div>
-              <div
+              {/* <div
                 className="bg-app-okay-icon-filter rounded-lg p-2 h-1/2"
                 onClick={() => {
                   setConfirm(!confirm);
@@ -686,7 +760,7 @@ const page = () => {
                 ) : (
                   <OkayGreenIcon />
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="mt-4">
               <p className="mb-1 text-app-text-primary font-plusJakartaSans font-normal text-[13.89px]">
@@ -752,13 +826,26 @@ const page = () => {
             >
               {staticAdvertImage ? (
                 <div className="relative w-full h-40 rounded-md overflow-hidden">
-                  <Image
-                    src={staticAdvertImage}
-                    alt="Event preview"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-md"
-                  />
+                  <div className="relative w-full h-40 rounded-md overflow-hidden">
+                    {staticAdvertImage.type?.startsWith("video/") ||
+                    detectFileType(staticAdvertImage.url) === "video" ? (
+                      <video
+                        src={staticAdvertImage.url}
+                        className="w-full h-full object-cover rounded-md"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      />
+                    ) : (
+                      <Image
+                        src={staticAdvertImage.url}
+                        alt="Event preview"
+                        fill
+                        className="object-cover rounded-md"
+                      />
+                    )}
+                  </div>
                 </div>
               ) : (
                 <>
@@ -776,10 +863,32 @@ const page = () => {
                 ref={fileInputRef}
                 disabled={form.advert_image_type !== "static"}
                 onChange={(e: any) => {
-                  setStaticAdvertImage(URL.createObjectURL(e.target.files[0]));
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+
+                  // ✅ Accept only image or video
+                  const validTypes = ["image/", "video/"];
+                  if (!validTypes.some((type) => file.type.startsWith(type))) {
+                    alert("Please upload an image or video file.");
+                    e.target.value = "";
+                    return;
+                  }
+
+                  // ✅ Limit file size to 3 MB
+                  const maxSize = 3 * 1024 * 1024; // 3MB
+                  if (file.size > maxSize) {
+                    alert("File size must be less than 3MB.");
+                    e.target.value = "";
+                    return;
+                  }
+                  setStaticAdvertImage({
+                    url: URL.createObjectURL(file),
+                    type: file.type,
+                  });
+
                   handleInputChange(e.target.files[0], "advert_image_url_1");
                 }}
-                accept="image/*"
+                accept="image/*,video/*"
                 className="hidden"
               />
             </div>
@@ -800,18 +909,32 @@ const page = () => {
             <div className="flex items-center justify-between gap-1.5 mt-4">
               <div
                 onClick={triggerFileInput2}
-                className={
-                  "w-1/3 h-[100px] border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
-                }
+                className={`${
+                  !carouselAdvertImage1
+                    ? "p-5 border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg text-center cursor-pointer transition-colors"
+                    : ""
+                } w-1/3 h-[100px]`}
               >
                 {carouselAdvertImage1 ? (
-                  <div className="relative w-1/3 h-[100px] rounded-md overflow-hidden">
-                    <Image
-                      src={carouselAdvertImage1}
-                      alt="Image preview"
-                      width={100}
-                      height={100}
-                    />
+                  <div className="relative w-full h-full rounded-md overflow-hidden">
+                    {carouselAdvertImage1.type?.startsWith("video/") ||
+                    detectFileType(carouselAdvertImage1.url) === "video" ? (
+                      <video
+                        src={carouselAdvertImage1.url}
+                        className="w-full h-full object-cover rounded-md"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      />
+                    ) : (
+                      <Image
+                        src={carouselAdvertImage1.url}
+                        alt="Event preview"
+                        fill
+                        className="object-cover rounded-md"
+                      />
+                    )}
                   </div>
                 ) : (
                   <>
@@ -829,29 +952,64 @@ const page = () => {
                   ref={fileInputRef2}
                   disabled={form.advert_image_type !== "carousel"}
                   onChange={(e: any) => {
-                    setCarouselAdvertImage1(
-                      URL.createObjectURL(e.target.files[0])
-                    );
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    // ✅ Accept only image or video
+                    const validTypes = ["image/", "video/"];
+                    if (
+                      !validTypes.some((type) => file.type.startsWith(type))
+                    ) {
+                      alert("Please upload an image or video file.");
+                      e.target.value = "";
+                      return;
+                    }
+
+                    // ✅ Limit file size to 3 MB
+                    const maxSize = 3 * 1024 * 1024; // 3MB
+                    if (file.size > maxSize) {
+                      alert("File size must be less than 3MB.");
+                      e.target.value = "";
+                      return;
+                    }
+                    setCarouselAdvertImage1({
+                      url: URL.createObjectURL(file),
+                      type: file.type,
+                    });
                     handleInputChange(e.target.files[0], "advert_image_url_1");
                   }}
-                  accept="image/*"
+                  accept="image/*,video/*"
                   className="hidden"
                 />
               </div>
               <div
                 onClick={triggerFileInput3}
-                className={
-                  "w-1/3 h-[100px] border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
-                }
+                className={`${
+                  !carouselAdvertImage2
+                    ? "p-5 border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg text-center cursor-pointer transition-colors"
+                    : ""
+                } w-1/3 h-[100px]`}
               >
                 {carouselAdvertImage2 ? (
-                  <div className="relative w-1/3 h-[100px] rounded-md overflow-hidden">
-                    <Image
-                      src={carouselAdvertImage2}
-                      alt="Image preview"
-                      width={100}
-                      height={100}
-                    />
+                  <div className="relative w-full h-full rounded-md overflow-hidden">
+                    {carouselAdvertImage2.type?.startsWith("video/") ||
+                    detectFileType(carouselAdvertImage2.url) === "video" ? (
+                      <video
+                        src={carouselAdvertImage2.url}
+                        className="w-full h-full object-cover rounded-md"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      />
+                    ) : (
+                      <Image
+                        src={carouselAdvertImage2.url}
+                        alt="Event preview"
+                        fill
+                        className="object-cover rounded-md"
+                      />
+                    )}
                   </div>
                 ) : (
                   <>
@@ -869,29 +1027,64 @@ const page = () => {
                   ref={fileInputRef3}
                   disabled={form.advert_image_type !== "carousel"}
                   onChange={(e: any) => {
-                    setCarouselAdvertImage2(
-                      URL.createObjectURL(e.target.files[0])
-                    );
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    // ✅ Accept only image or video
+                    const validTypes = ["image/", "video/"];
+                    if (
+                      !validTypes.some((type) => file.type.startsWith(type))
+                    ) {
+                      alert("Please upload an image or video file.");
+                      e.target.value = "";
+                      return;
+                    }
+
+                    // ✅ Limit file size to 3 MB
+                    const maxSize = 3 * 1024 * 1024; // 3MB
+                    if (file.size > maxSize) {
+                      alert("File size must be less than 3MB.");
+                      e.target.value = "";
+                      return;
+                    }
+                    setCarouselAdvertImage2({
+                      url: URL.createObjectURL(file),
+                      type: file.type,
+                    });
                     handleInputChange(e.target.files[0], "advert_image_url_2");
                   }}
-                  accept="image/*"
+                  accept="image/*,video/*"
                   className="hidden"
                 />
               </div>
               <div
                 onClick={triggerFileInput4}
-                className={
-                  "w-1/3 h-[100px] border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-5 text-center cursor-pointer transition-colors"
-                }
+                className={`${
+                  !carouselAdvertImage3
+                    ? "p-5 border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg text-center cursor-pointer transition-colors"
+                    : ""
+                } w-1/3 h-[100px]`}
               >
                 {carouselAdvertImage3 ? (
-                  <div className="relative w-1/3 h-[100px] rounded-md overflow-hidden">
-                    <Image
-                      src={carouselAdvertImage3}
-                      alt="Image preview"
-                      width={100}
-                      height={100}
-                    />
+                  <div className="relative w-full h-full rounded-md overflow-hidden">
+                    {carouselAdvertImage3.type?.startsWith("video/") ||
+                    detectFileType(carouselAdvertImage3.url) === "video" ? (
+                      <video
+                        src={carouselAdvertImage3.url}
+                        className="w-full h-full object-cover rounded-md"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      />
+                    ) : (
+                      <Image
+                        src={carouselAdvertImage3.url}
+                        alt="Event preview"
+                        fill
+                        className="object-cover rounded-md"
+                      />
+                    )}
                   </div>
                 ) : (
                   <>
@@ -909,12 +1102,33 @@ const page = () => {
                   ref={fileInputRef4}
                   disabled={form.advert_image_type !== "carousel"}
                   onChange={(e: any) => {
-                    setCarouselAdvertImage3(
-                      URL.createObjectURL(e.target.files[0])
-                    );
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    // ✅ Accept only image or video
+                    const validTypes = ["image/", "video/"];
+                    if (
+                      !validTypes.some((type) => file.type.startsWith(type))
+                    ) {
+                      alert("Please upload an image or video file.");
+                      e.target.value = "";
+                      return;
+                    }
+
+                    // ✅ Limit file size to 3 MB
+                    const maxSize = 3 * 1024 * 1024; // 3MB
+                    if (file.size > maxSize) {
+                      alert("File size must be less than 3MB.");
+                      e.target.value = "";
+                      return;
+                    }
+                    setCarouselAdvertImage3({
+                      url: URL.createObjectURL(file),
+                      type: file.type,
+                    });
                     handleInputChange(e.target.files[0], "advert_image_url_3");
                   }}
-                  accept="image/*"
+                  accept="image/*,video/*"
                   className="hidden"
                 />
               </div>
@@ -1381,6 +1595,16 @@ const page = () => {
           handleInputChange(value, "save_template");
           setIsSavedTemplateModelOpen(false);
           handleSubmit();
+        }}
+      />
+      <StripeModel
+        isOpen={isStripeModelOpen}
+        onClose={() => {
+          setIsStripeModelOpen(false);
+        }}
+        amount={stripeAmount.toString()}
+        onChangePaymentSuccess={(paymentID: string) => {
+          handlePaymentSuccess(paymentID);
         }}
       />
     </div>

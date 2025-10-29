@@ -227,6 +227,32 @@ const EventPreviewModal = ({
       setLoading(false);
     }
   };
+  function convertTo24Hour(time12h?: string | null): string {
+    if (!time12h || typeof time12h !== "string") return "";
+
+    // Normalize input: remove spaces and make uppercase
+    const normalized = time12h.trim().toUpperCase().replace(/\s+/g, "");
+
+    // Match patterns like 01.52PM, 1:52PM, 1.52 PM, etc.
+    const match = normalized.match(/^(\d{1,2})[:.]?(\d{2})?(AM|PM)$/i);
+    if (!match) return time12h; // return original if it doesn’t match expected format
+
+    let [, h, m, modifier] = match;
+    let hours = parseInt(h, 10);
+    const minutes = parseInt(m || "00", 10);
+
+    if (modifier === "PM" && hours !== 12) {
+      hours += 12;
+    }
+    if (modifier === "AM" && hours === 12) {
+      hours = 0;
+    }
+
+    const hh = hours.toString().padStart(2, "0");
+    const mm = minutes.toString().padStart(2, "0");
+
+    return `${hh}.${mm}`;
+  }
 
   return (
     <>
@@ -288,19 +314,15 @@ const EventPreviewModal = ({
                 <div className="flex items-center space-x-1">
                   <TwoTicketsIcon className="h-[20px] w-[20px]" />{" "}
                   <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                    {eventDataObj?.payment_type}
+                    {eventDataObj?.price}
                   </span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <ClockIcon className="h-[20px] w-[20px]" />{" "}
                   <span className="font-plusJakartaSans text-app-button-model-text-color font-normal text-[16px]">
-                    {eventDataObj?.event_start_time
-                      .replace(/(AM|PM)/i, "")
-                      .trim()}
-                    -
-                    {eventDataObj?.event_end_time
-                      .replace(/(AM|PM)/i, "")
-                      .trim()}
+                    {/* convert time to 24 hr */}
+                    {convertTo24Hour(eventDataObj?.event_start_time)} -{" "}
+                    {convertTo24Hour(eventDataObj?.event_end_time)}
                   </span>
                 </div>
                 <div className="flex items-center space-x-1">

@@ -1,7 +1,8 @@
 // components/PaymentOptionChip.tsx
 "use client";
 
-import React from 'react';
+import InputComponent from "@/components/InputComponent/InputComponent";
+import React from "react";
 
 interface PaymentSelectionProps {
   id: string; // Unique ID for the input and label association
@@ -12,6 +13,10 @@ interface PaymentSelectionProps {
   checked: boolean; // Is this option currently selected?
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; // Handler for selection change
   className?: string; // Optional additional class for the outer div
+  isInput: boolean; // Optional prop to indicate if it's an input
+  onValueChange?: (value: string) => void; // Optional handler for input value change
+  price?: string; // Optional price value
+  isDisabled : boolean; // Optional prop to indicate if the input is disabled
 }
 
 const PaymentSelection: React.FC<PaymentSelectionProps> = ({
@@ -23,6 +28,10 @@ const PaymentSelection: React.FC<PaymentSelectionProps> = ({
   checked,
   onChange,
   className = "",
+  isInput = false,
+  onValueChange,
+  price,
+  isDisabled
 }) => {
   return (
     <div className={`flex flex-col   ${className}`}>
@@ -35,16 +44,36 @@ const PaymentSelection: React.FC<PaymentSelectionProps> = ({
         role="radio"
         aria-checked={checked}
         tabIndex={0} // Make the label focusable
-        onKeyDown={(e) => { // Allow selection with Space or Enter
-          if (e.key === ' ' || e.key === 'Enter') {
+        onKeyDown={(e) => {
+          // Allow selection with Space or Enter
+          if (e.key === " " || e.key === "Enter") {
             e.preventDefault();
             // Simulate a change event
-            onChange({ target: { value: value, checked: true, name: name } } as any);
+            onChange({
+              target: { value: value, checked: true, name: name },
+            } as any);
           }
         }}
       >
-        <div className="bg-app-input-primary font-plusJakartaSans font-normal text-[13.89px] text-app-text-secondary px-3 py-2.5 rounded-lg  text-center select-none ml-[-4px]">
-          {valueText}
+        <div
+          className={`${
+            !isInput
+              ? "bg-app-input-primary font-plusJakartaSans font-normal text-[13.89px] text-app-text-secondary px-3 py-2.5 rounded-lg  text-center select-none ml-[-4px]"
+              : ""
+          }`}
+        >
+          {!isInput ? (
+            valueText
+          ) : (
+            <input
+              type="text"
+              className="max-w-15 placeholder:font-plusJakartaSans placeholder:text-app-text-secondary placeholder:text-sm bg-app-input-primary text-app-text-primary px-3 py-2.5 rounded-lg text-sm focus:ring-1 focus:outline-none"
+              placeholder="1$"
+              onChange={(e) => onValueChange?.(e.target.value)}
+              value={price}
+              disabled={isDisabled}
+            />
+          )}
         </div>
         <input
           type="radio"
@@ -56,12 +85,16 @@ const PaymentSelection: React.FC<PaymentSelectionProps> = ({
           className="sr-only" // Visually hide the native radio button
         />
         {/* Custom Radio Button Visual */}
-        <div className="relative flex items-center justify-center w-5 h-5" aria-hidden="true">
+        <div
+          className="relative flex items-center justify-center w-5 h-5"
+          aria-hidden="true"
+        >
           <div
             className={`w-5 h-5 rounded-full border-2 transition-all duration-150 ease-in-out
-                        ${checked
-                          ? 'border-app-button-blue bg-app-button-blue'
-                          : 'border-gray-400 border-3 bg-app-background-primary hover:border-gray-500'
+                        ${
+                          checked
+                            ? "border-app-button-blue bg-app-button-blue"
+                            : "border-gray-400 border-3 bg-app-background-primary hover:border-gray-500"
                         }`}
           >
             {checked && (

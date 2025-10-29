@@ -20,7 +20,7 @@ import StripeModel from "@/components/StripeModel/StripeModel";
 import { useRouter } from "next/navigation";
 import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
-import { get_all_subscribe_and_unsubscribed_data } from "@/routes/subscription";
+import { createUserSubscription, get_all_subscribe_and_unsubscribed_data } from "@/routes/subscription";
 import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import InlineSvg from "@/components/InlineSVG/InlineSVG";
 
@@ -145,6 +145,35 @@ export default function SubscriptionsPage() {
 
       if (data.success) {
         setSubscriptionData(data.subscriptions);
+      }
+    } catch (error) {
+      setError("An error occurred");
+      setShowErrorModel(true);
+      setTimeout(() => setShowErrorModel(false), 3600);
+      return;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handelCreateUserSubscription = async (paymentID: string) => {
+    setLoading(true);
+    try {
+      let data = await createUserSubscription({
+        subscription_id: selectedSubscriptionID!,
+        stripe_payment_intent_id: paymentID,
+      });
+      if (data.success) {
+        setSuccess(data.message);
+        setShowSuccessModel(true);
+        setTimeout(() => {
+          setShowSuccessModel(false);
+          setIsStripeModelOpen(false);
+          fetchSubscriptionAndUnSubscriptionByUser();
+        }, 3600);
+      } else {
+        setError("Error");
+        setShowErrorModel(true);
       }
     } catch (error) {
       setError("An error occurred");
@@ -313,7 +342,9 @@ export default function SubscriptionsPage() {
           fetchSubscriptionAndUnSubscriptionByUser();
         }}
         amount={stripeAmount.toString()}
-        subscription_id={selectedSubscriptionID ?? ""}
+        onChangePaymentSuccess={(paymentID: string) => {
+          handelCreateUserSubscription(paymentID);
+        }}
       />
       <SuccessModel
         isOpen={showSuccessModel}

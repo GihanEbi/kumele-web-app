@@ -5,9 +5,9 @@ import LoadingComponent from "@/components/LoadingComponent/LoadingComponent";
 import { create_payment_intent } from "@/routes/stripe_payments";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { useTheme } from "next-themes";
-import CheckoutModel from "./CheckoutModel/CheckoutModel";
 import SuccessModel from "@/components/Models/SuccessModel/SuccessModel";
 import ErrorModel from "@/components/Models/ErrorModel/ErrorModel";
+import NewCheckoutModel from "./NewCheckoutModel/NewCheckoutModel";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -17,14 +17,14 @@ type ContactModelProps = {
   isOpen: boolean;
   onClose: () => void;
   amount: string;
-  subscription_id: string;
+  onChangePaymentSuccess?: Function;
 };
 
 const StripeModel = ({
   isOpen,
   onClose,
   amount,
-  subscription_id,
+  onChangePaymentSuccess,
 }: ContactModelProps) => {
   const { theme } = useTheme();
   const [clientSecret, setClientSecret] = useState("");
@@ -90,9 +90,19 @@ const StripeModel = ({
           {/* We show a loader while waiting for the clientSecret */}
           {clientSecret ? (
             <Elements options={options} stripe={stripePromise}>
-              <CheckoutModel
+              <NewCheckoutModel
                 amount={amount}
-                subscription_id={subscription_id}
+                onChangePaymentSuccess={(paymentID: string) => {
+                  if (onChangePaymentSuccess) {
+                    onChangePaymentSuccess(paymentID);
+                  }
+                  setSuccess("Payment successful!");
+                  setShowSuccessModel(true);
+                  setTimeout(() => {
+                    setShowSuccessModel(false);
+                    onClose();
+                  }, 3600);
+                }}
                 onClose={onClose}
               />
             </Elements>
