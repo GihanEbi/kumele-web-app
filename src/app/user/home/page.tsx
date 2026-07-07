@@ -13,6 +13,8 @@ import ReferralModel from "@/components/Models/ReferralModel/ReferralModel";
 
 import SwipeEventCards from "@/components/SwipeEventCard/SwipeCard";
 
+console.log("Home page rendered");
+
 const Home = () => {
   const router = useRouter();
   const [showReferralModel, setShowReferralModel] = useState(false);
