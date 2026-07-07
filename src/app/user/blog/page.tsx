@@ -91,6 +91,9 @@ const Blog: React.FC = () => {
     }
   }, [categories]);
 
+  //git version testing
+  //testing codess  
+
   // Mobile-like drag scrolling handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
